@@ -21,6 +21,10 @@
         flex-direction: column;
       }
 
+      .leaflet-control {
+        font-size: 2em;
+      }
+
       #map {
         background-color: gray;
         flex-grow: 1;
@@ -33,7 +37,7 @@
         z-index: 14;
         padding: 0.5em;
         color: black;
-        font-size: 1em;
+        font-size: 2em;
         font-weight: bold;
         color: black;
         cursor: pointer;
@@ -46,7 +50,7 @@
         padding: 1em;
         text-align: center;
         color: white;
-        font-size: 1.5em;
+        font-size: 1em;
         background-color: black;
       }
 
@@ -54,7 +58,8 @@
         padding-right: 0.5em;
       }
       #hud span.value {
-        font-size: 2.0em;
+        font-weight: bold;
+        font-size: 1.5em;
       }
       #hud span.value_small {
         font-size: 1.0em;
@@ -159,6 +164,8 @@
         var osm = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
+          tileSize: 512,
+          zoomOffset: -1,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
@@ -174,24 +181,32 @@
         var stamen_black_white = new L.TileLayer("http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
+          tileSize: 512,
+          zoomOffset: -1,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var stamen_terrain = new L.TileLayer("http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
+          tileSize: 512,
+          zoomOffset: -1,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
+          tileSize: 512,
+          zoomOffset: -1,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var carto_dark = new L.TileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
+          tileSize: 512,
+          zoomOffset: -1,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
@@ -290,6 +305,35 @@
         follow_plane = !follow_plane;
       }
 
+      function set_airplane_marker_visibility(visible) {
+        console.log("set_airplane_marker_visibility()", visible);
+        if (visible) {
+          marker.setOpacity(1);
+        }
+        else {
+          marker.setOpacity(0);
+        }
+      }
+
+      function toggle_airplane_visibility(e) {
+        console.log("toggle_airplane_visibility()", e, "checked: ", e.checked);
+        set_airplane_marker_visibility(e.checked);
+        follow_plane = e.checked;
+      } 
+
+      function center_airplane() {
+        console.log("center_airplane()");
+        let cb = document.querySelector("#hud-controls-show-airplane");
+        if (cb) {
+          cb.checked = true;
+        }
+
+        set_airplane_marker_visibility(true);
+        follow_plane = true;
+
+        map.panTo(pos);
+      }
+
       function hide_hud() {
          var hud = document.getElementById("hud");
          hud.style.display = "none";
@@ -298,6 +342,8 @@
       }
 
       document.addEventListener("DOMContentLoaded", function(event) {
+        console.log("DOMContentLoaded");
+
         plane_popup = {
           main: document.getElementById("plane-popup"),
           pos: document.getElementById("plane-popup-pos"),
@@ -352,7 +398,12 @@
         <p><label for="teleport-popup-alt">Altitude:</label><input type="text" id="teleport-popup-altitude"></p>
         <p><button type="button" id="teleport-popup-submit" onclick="teleport_here();">teleport</button></p>
       </div>
-
     </div>
+
+    <div id="hud-controls">
+      <span><input type="checkbox" id="hud-controls-show-airplane" onchange="toggle_airplane_visibility(this);" /><label for="teleport-popup-gps">Show Airplane</label></span>
+      <span><button type="button" id="hud-controls-follow-airplane" onclick="center_airplane();">Center Aircraft</button></span>
+    </div>
+    <span id="hide-hud" onclick="hide_hud();">hide hud</span>
   </body>
 </html>

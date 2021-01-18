@@ -2,7 +2,7 @@ package main
 
 //go:generate go-bindata -pkg main -o bindata.go -modtime 1 -prefix html html
 
-// build: GOOS=windows GOARCH=amd64 go build -o vfrmap.exe github.com/lian/msfs2020-go/vfrmap
+// build: GOOS=windows GOARCH=amd64 go build -o vfrmap.exe msfs2020-go/vfrmap
 
 import (
 	"encoding/json"
@@ -16,9 +16,9 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/lian/msfs2020-go/simconnect"
-	"github.com/lian/msfs2020-go/vfrmap/html/leafletjs"
-	"github.com/lian/msfs2020-go/vfrmap/websockets"
+	"msfs2020-go/simconnect"
+	"msfs2020-go/vfrmap/html/leafletjs"
+	"msfs2020-go/vfrmap/websockets"
 )
 
 type Report struct {
@@ -112,35 +112,44 @@ func main() {
 
 	s, err := simconnect.New("msfs2020-go/vfrmap")
 	if err != nil {
-		panic(err)
+		fmt.Println("flight simulator not running!")
+		//panic(err)
+	} else {
+		fmt.Println("connected to flight simulator!")
 	}
-	fmt.Println("connected to flight simulator!")
 
 	report := &Report{}
-	err = s.RegisterDataDefinition(report)
-	if err != nil {
-		panic(err)
-	}
-
 	trafficReport := &TrafficReport{}
-	err = s.RegisterDataDefinition(trafficReport)
-	if err != nil {
-		panic(err)
-	}
-
 	teleportReport := &TeleportRequest{}
-	err = s.RegisterDataDefinition(teleportReport)
-	if err != nil {
-		panic(err)
+
+	eventSimStartID := simconnect.DWORD(0)
+	startupTextEventID := simconnect.DWORD(0)
+
+	if s != nil {
+		err = s.RegisterDataDefinition(report)
+		if err != nil {
+			fmt.Println(err)
+			panic(err)
+		}
+
+		err = s.RegisterDataDefinition(trafficReport)
+		if err != nil {
+			panic(err)
+		}
+
+		err = s.RegisterDataDefinition(teleportReport)
+		if err != nil {
+			panic(err)
+		}
+
+		eventSimStartID = s.GetEventID()
+		//s.SubscribeToSystemEvent(eventSimStartID, "SimStart")
+		//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_AIRPORT, s.GetDefineID(&simconnect.DataFacilityAirport{}))
+		//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_WAYPOINT, s.GetDefineID(&simconnect.DataFacilityWaypoint{}))
+	
+		startupTextEventID = s.GetEventID()
+		s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, "msfs2020-go/vfrmap connected")
 	}
-
-	eventSimStartID := s.GetEventID()
-	//s.SubscribeToSystemEvent(eventSimStartID, "SimStart")
-	//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_AIRPORT, s.GetDefineID(&simconnect.DataFacilityAirport{}))
-	//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_WAYPOINT, s.GetDefineID(&simconnect.DataFacilityWaypoint{}))
-
-	startupTextEventID := s.GetEventID()
-	s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, "msfs2020-go/vfrmap connected")
 
 	go func() {
 		app := func(w http.ResponseWriter, r *http.Request) {
@@ -178,15 +187,26 @@ func main() {
 	for {
 		select {
 		case <-planePositionTick.C:
+			if s == nil {
+				continue
+			}
+
 			report.RequestData(s)
 
 		case <-trafficPositionTick.C:
+			if s == nil {
+				continue
+			}
 			//fmt.Println("--------------------------------- REQUEST TRAFFIC --------------")
 			//trafficReport.RequestData(s)
 			//s.RequestFacilitiesList(simconnect.FACILITY_LIST_TYPE_AIRPORT, airportRequestID)
 			//s.RequestFacilitiesList(simconnect.FACILITY_LIST_TYPE_WAYPOINT, waypointRequestID)
 
 		case <-simconnectTick.C:
+			if s == nil {
+				continue
+			}
+
 			ppData, r1, err := s.GetNextDispatch()
 
 			if r1 < 0 {
@@ -274,16 +294,22 @@ func main() {
 			}
 
 		case <-exitSignal:
-			fmt.Println("exiting..")
-			if err = s.Close(); err != nil {
-				panic(err)
+			fmt.Println("exiting...")
+			if s != nil {
+				if err = s.Close(); err != nil {
+					panic(err)
+				}
 			}
 			os.Exit(0)
 
 		case _ = <-ws.NewConnection:
 			// drain and skip
 
-		case m := <-ws.ReceiveMessages:
+		case m := <-ws.ReceiveMessages:			
+			fmt.Println("ws.ReceiveMessages!")
+			if s == nil {
+				continue
+			}
 			handleClientMessage(m, s)
 		}
 	}
