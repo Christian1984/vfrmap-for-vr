@@ -14,6 +14,7 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif
       }
 
       body {
@@ -21,8 +22,15 @@
         flex-direction: column;
       }
 
-      .leaflet-control {
-        font-size: 2em;
+      .leaflet-control-layers {
+        /*font-size: 2em;*/
+        transform: scale(2) translate(-25%, 25%);
+      }
+      .leaflet-control-zoom {
+        transform: scale(2) translate(25%, 25%);
+      }
+      .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+        font-size: 1.25em !important;
       }
 
       #map {
@@ -81,7 +89,14 @@
         background-color: white;
         border: 1px solid black;
         padding: 0.5em;
+        /*font-size: 2em;*/
+        transform: scale(2) translate(-25%, -25%);
       }
+      /*.leaflet-touch .leaflet-bar a {
+        width: 2em;
+        height: 2em;
+        line-height: 2em;
+      }*/
     </style>
 
     <script>
@@ -268,8 +283,16 @@
 
 
         map.on('dragstart', function(e) {
-          follow_plane = true
-          toggle_follow();
+          set_follow(false);
+        });
+
+        map.on('dragend', function(e) {
+          updateStoredCenter();
+        });
+
+        map.on('zoomend', function(e) {
+          updateStoredCenter();
+          localStorage.setItem("n_zoom", map.getZoom());
         });
 
         map.on('click', function(e) {
@@ -360,6 +383,12 @@
 
         map.panTo(pos);
       }
+
+      function updateStoredCenter() {
+          const center = map.getCenter();
+          localStorage.setItem("n_last_lat", center.lat);
+          localStorage.setItem("n_last_long", center.lng);
+      }
       
       function loadStoredState() {
         let show_airplane = localStorage.getItem('b_show_airplane');
@@ -387,6 +416,28 @@
         if (zoom !== undefined && zoom !== null) {
           map.setZoom(zoom);
         }
+
+        let nav_data = localStorage.getItem('b_nav_data');
+        console.log("nav_data", nav_data);
+        if (nav_data !== undefined && nav_data !== null) {
+          const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
+          if (nav_data_cb) {
+            nav_data_cb.checked = !(nav_data == "true");
+            nav_data_cb.click();
+          }
+        }
+
+        //let controls = document.querySelectorAll(".leaflet-control-layers-selector");
+        //controls[2].click();
+      }
+
+      function registerHandlers() {
+        const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
+        if (!nav_data_cb) return;
+
+        nav_data_cb.addEventListener("change", (e) => {
+          localStorage.setItem("b_nav_data", nav_data_cb.checked)
+        });
       }
 
       function hide_hud() {
@@ -425,6 +476,7 @@
         toggle_follow();
         initMap();
         loadStoredState();
+        registerHandlers();
       });
     </script>
   </head>
@@ -457,9 +509,8 @@
     </div>
 
     <div id="hud-controls">
-      <span><input type="checkbox" id="hud-controls-show-airplane" onchange="toggle_airplane_visibility(this);" checked /><label for="teleport-popup-gps">Show Airplane</label></span>
+      <span><input type="checkbox" id="hud-controls-show-airplane" onchange="toggle_airplane_visibility(this);" checked /><label for="hud-controls-show-airplane">Show Airplane</label></span>
       <span><button type="button" id="hud-controls-follow-airplane" onclick="center_airplane();">Center Aircraft</button></span>
     </div>
-    <span id="hide-hud" onclick="hide_hud();">hide hud</span>
   </body>
 </html>
