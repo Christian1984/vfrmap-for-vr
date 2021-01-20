@@ -199,12 +199,27 @@
         iconUrl: encodeURI("data:image/svg+xml," + svgPlaneIconString).replace("#","%23").replace("__COLOR__", "green"),
         iconSize: [64, 64],
       });
+      const map_resolutions = {
+        high: {
+          tile_size: 256,
+          zoom_offset: 0
+        },
+        medium: {
+          tile_size: 512,
+          zoom_offset: -1
+        },
+        low: {
+          tile_size: 1024,
+          zoom_offset: -2
+        }
+      };
+      let map_resolution = map_resolutions.low;
 
-      document.onkeyup = function(event) {
+      /*document.onkeyup = function(event) {
          if (event.key === "Escape"){
            toggle_follow();
          }
-      }
+      }*/
 
       function open_in_google_maps() {
         var url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
@@ -260,14 +275,16 @@
         var osm = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
-          tileSize: 512,
-          zoomOffset: -1,
+          tileSize: map_resolution.tile_size,
+          zoomOffset: map_resolution.zoom_offset,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var openaip_cached_basemap = new L.TileLayer("http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", {
           maxZoom: 14,
           minZoom: 4,
+          tileSize: map_resolution.tile_size,
+          zoomOffset: map_resolution.zoom_offset,
           tms: true,
           //detectRetina: true,
           subdomains: "12",
@@ -277,32 +294,32 @@
         var stamen_black_white = new L.TileLayer("http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
-          tileSize: 512,
-          zoomOffset: -1,
+          tileSize: map_resolution.tile_size,
+          zoomOffset: map_resolution.zoom_offset,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var stamen_terrain = new L.TileLayer("http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
-          tileSize: 512,
-          zoomOffset: -1,
+          tileSize: map_resolution.tile_size,
+          zoomOffset: map_resolution.zoom_offset,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
-          tileSize: 512,
-          zoomOffset: -1,
+          tileSize: map_resolution.tile_size,
+          zoomOffset: map_resolution.zoom_offset,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
         var carto_dark = new L.TileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", {
           maxZoom: 18,
           minZoom: 2,
-          tileSize: 512,
-          zoomOffset: -1,
+          tileSize: map_resolution.tile_size,
+          zoomOffset: map_resolution.zoom_offset,
           format: "image/png",
           subdomains: ["a", "b", "c"]
         });
