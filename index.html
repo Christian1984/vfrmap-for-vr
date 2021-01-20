@@ -26,12 +26,27 @@
         /*font-size: 2em;*/
         transform: scale(2) translate(-25%, 25%);
       }
+      
       .leaflet-control-zoom {
         transform: scale(2) translate(25%, 25%);
       }
-      .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+
+      .leaflet-control-zoom-in,
+      .leaflet-control-zoom-out {
         font-size: 1.25em !important;
       }
+
+      /*
+      .leaflet-control-zoom-out::before {
+        content:"-";
+        font-size: 2em !important;
+        visibility: visible;
+      }
+      
+      .leaflet-control-zoom-out {
+        visibility: hidden;
+      }
+      */
 
       #map {
         background-color: gray;
@@ -97,6 +112,83 @@
         height: 2em;
         line-height: 2em;
       }*/
+      
+      input[type="checkbox"] +label,
+      input[type="checkbox"] +span {
+        padding-left: 2.25em;
+      }
+
+      input[type="checkbox"] +label::before,
+      input[type="checkbox"] +span::before {
+        width: 2em;
+      }
+
+      input[type="checkbox"] +label::after,
+      input[type="checkbox"] +span::after {
+        border: 1px solid black;
+        background-color: black;
+      }
+        
+      input[type="checkbox"]:checked +span::after,
+      input[type="checkbox"]:checked +label::after {
+        left: 1.2em;
+        border-color: white;
+        background-color: white;
+      }
+      
+      input {
+        display: none;
+      }
+        
+      input +label,
+      input +span {
+        position: relative;
+        margin-right: 1em;
+        padding-left: 1.25em;
+        height: 1em;
+        line-height: 1em;
+        user-select: none;
+      }
+
+      input +label::before,
+      input +label::after,
+      input +span::before,
+      input +span::after {
+        content: '';
+        position: absolute;
+        transition: all 0.1s ease;
+        border: 1px solid black;
+        border-radius: 1em;
+        background-color: white;
+      }
+
+      input +label::before,
+      input +span::before {
+        height: 1em;
+        width: 1em;
+        left: 0;
+        top: 0;
+      }
+
+      input +label::after,
+      input +span::after {
+        border-color:transparent;
+        background-color: transparent;
+        height: 0.6em;
+        width: 0.6em;
+        left: 0.2em;
+        top: 0.2em;
+      }
+
+      input:checked +label::before,
+      input:checked +span::before {
+        border-color: blue;
+        background-color: blue;
+      }
+
+      input:checked +label::after,
+      input:checked +span::after {
+      }
     </style>
 
     <script>
