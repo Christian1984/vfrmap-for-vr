@@ -113,29 +113,6 @@
         line-height: 2em;
       }*/
       
-      input[type="checkbox"] +label,
-      input[type="checkbox"] +span {
-        padding-left: 2.25em;
-      }
-
-      input[type="checkbox"] +label::before,
-      input[type="checkbox"] +span::before {
-        width: 2em;
-      }
-
-      input[type="checkbox"] +label::after,
-      input[type="checkbox"] +span::after {
-        border: 1px solid black;
-        background-color: black;
-      }
-        
-      input[type="checkbox"]:checked +span::after,
-      input[type="checkbox"]:checked +label::after {
-        left: 1.2em;
-        border-color: white;
-        background-color: white;
-      }
-      
       input {
         display: none;
       }
@@ -144,7 +121,7 @@
       input +span {
         position: relative;
         margin-right: 1em;
-        padding-left: 1.25em;
+        padding-left: 2.25em;
         height: 1em;
         line-height: 1em;
         user-select: none;
@@ -165,15 +142,14 @@
       input +label::before,
       input +span::before {
         height: 1em;
-        width: 1em;
+        width: 2em;
         left: 0;
         top: 0;
       }
 
       input +label::after,
       input +span::after {
-        border-color:transparent;
-        background-color: transparent;
+        background-color: black;
         height: 0.6em;
         width: 0.6em;
         left: 0.2em;
@@ -184,6 +160,13 @@
       input:checked +span::before {
         border-color: blue;
         background-color: blue;
+      }
+        
+      input:checked +span::after,
+      input:checked +label::after {
+        transform: translateX(1em);
+        border-color: white;
+        background-color: white;
       }
     </style>
 
