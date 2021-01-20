@@ -232,7 +232,6 @@
           marker.setRotationAngle(msg.heading);
 
           plane_popup.pos.innerText = Number(pos.lat).toFixed(6) + "," + Number(pos.lng).toFixed(6);
-          //plane_popup.gmap.innerHTML = "<a href=\"https://www.google.com/maps/@" + pos.lat + "," + pos.lng + "," + map.getZoom() + "z\">google maps</a>";
 
           if (follow_plane) {
             map.panTo(pos);
@@ -417,11 +416,12 @@
             "altitude": parseFloat(teleport_popup.altitude.value) + 0.5,
           }
         );
-        console.log(msg);
+        //console.log(msg);
         ws.send(msg);
       }
 
       function set_follow(follow) {
+        //console.log("set_follow()", follow)
         if (follow) {
           plane_popup.follow.innerText = "don't follow plane";
         } else {
@@ -437,7 +437,7 @@
       }
 
       function set_airplane_marker_visibility(visible) {
-        console.log("set_airplane_marker_visibility()", visible);
+        //console.log("set_airplane_marker_visibility()", visible);
         if (visible) {
           marker.setOpacity(1);
         }
@@ -450,12 +450,12 @@
       }
 
       function toggle_airplane_visibility(e) {
-        console.log("toggle_airplane_visibility()", e, "checked: ", e.checked);
+        //console.log("toggle_airplane_visibility()", e, "checked: ", e.checked);
         set_airplane_marker_visibility(e.checked);
       } 
 
       function center_airplane() {
-        console.log("center_airplane()");
+        //console.log("center_airplane()");
         let cb = document.querySelector("#hud-controls-show-airplane");
         if (cb) {
           cb.checked = true;
@@ -491,13 +491,15 @@
         }
 
         let follow = localStorage.getItem('b_follow');
-        if (show_airplane !== undefined && show_airplane !== null) {
+        if (follow !== undefined && follow !== null) {
             follow_plane = follow == "true" && show_airplane == "true";
         }
 
         let last_long = localStorage.getItem('n_last_long');
         let last_lat = localStorage.getItem('n_last_lat');
-        if (last_long !== undefined && last_long !== null && last_lat !== undefined && last_lat !== null) {
+        if (last_long !== undefined && last_long !== null 
+          && last_lat !== undefined && last_lat !== null) {
+            console.log("panTo:", last_lat, last_long);
           map.panTo(L.latLng(last_lat, last_long));
         }
 
@@ -507,7 +509,7 @@
         }
 
         let nav_data = localStorage.getItem('b_nav_data');
-        console.log("nav_data", nav_data);
+        //console.log("nav_data", nav_data);
         if (nav_data !== undefined && nav_data !== null) {
           const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
           if (nav_data_cb) {
@@ -537,7 +539,7 @@
       }
 
       document.addEventListener("DOMContentLoaded", function(event) {
-        console.log("DOMContentLoaded");
+        //console.log("DOMContentLoaded");
 
         plane_popup = {
           main: document.getElementById("plane-popup"),
@@ -562,7 +564,6 @@
           rudder_trim: document.getElementById("rudder_trim_value"),
         };
 
-        toggle_follow();
         initMap();
         loadStoredState();
         registerHandlers();
@@ -570,17 +571,6 @@
     </script>
   </head>
   <body>
-    <!--<div id="hud">
-      <span class="field">Airspeed: <span id="airspeed_value" class="value">0</span><span id="airspeed_true_value" class="value_small">0</span> </span>
-      <span class="field">Altitude: <span id="altitude_value" class="value">0</span></span>
-      <span class="field">Heading: <span id="heading_value" class="value">0</span></span>
-      <span class="field">V.Speed: <span id="vertical_speed_value" class="value">0</span></span>
-      <span class="field">Flaps: <span id="flaps_value" class="value">0</span></span>
-      <span class="field">Trim: <span id="trim_value" class="value">0</span></span>
-      <span class="field">R.Trim: <span id="rudder_trim_value" class="value">0</span></span>
-    </div>
-    <span id="hide-hud" onclick="hide_hud();">hide hud</span>-->
-
     <div id="map"></div>
 
     <div style="display:none;">
