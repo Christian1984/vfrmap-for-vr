@@ -480,55 +480,65 @@
       }
       
       function loadStoredState() {
-        let show_airplane = localStorage.getItem('b_show_airplane');
+        const show_airplane = localStorage.getItem('b_show_airplane');
         if (show_airplane !== undefined && show_airplane !== null) {
           set_airplane_marker_visibility(show_airplane == "true");
   
-          let cb = document.querySelector("#hud-controls-show-airplane");
+          const cb = document.querySelector("#hud-controls-show-airplane");
           if (cb) {
             cb.checked = show_airplane == "true";
           }
         }
 
-        let follow = localStorage.getItem('b_follow');
+        const follow = localStorage.getItem('b_follow');
         if (follow !== undefined && follow !== null) {
             follow_plane = follow == "true" && show_airplane == "true";
         }
 
-        let last_long = localStorage.getItem('n_last_long');
-        let last_lat = localStorage.getItem('n_last_lat');
+        const last_long = localStorage.getItem('n_last_long');
+        const last_lat = localStorage.getItem('n_last_lat');
         if (last_long !== undefined && last_long !== null 
           && last_lat !== undefined && last_lat !== null) {
             console.log("panTo:", last_lat, last_long);
           map.panTo(L.latLng(last_lat, last_long));
         }
 
-        let zoom = localStorage.getItem('n_zoom');
+        const zoom = localStorage.getItem('n_zoom');
         if (zoom !== undefined && zoom !== null) {
           map.setZoom(zoom);
         }
 
-        let nav_data = localStorage.getItem('b_nav_data');
+        const nav_data = localStorage.getItem('b_nav_data');
         //console.log("nav_data", nav_data);
         if (nav_data !== undefined && nav_data !== null) {
           const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
           if (nav_data_cb) {
-            nav_data_cb.checked = !(nav_data == "true");
+            //nav_data_cb.checked = !(nav_data == "true");
             nav_data_cb.click();
           }
         }
 
-        //let controls = document.querySelectorAll(".leaflet-control-layers-selector");
-        //controls[2].click();
+        const active_map = localStorage.getItem('n_active_map');
+        const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
+        if (active_map !== undefined && active_map !== null && nav_data_rbs.length > 0 && active_map < nav_data_rbs.length) {
+          nav_data_rbs[active_map].click();
+        }
       }
 
       function registerHandlers() {
         const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
-        if (!nav_data_cb) return;
+        if (nav_data_cb) {
+          nav_data_cb.addEventListener("change", (e) => {
+            localStorage.setItem("b_nav_data", nav_data_cb.checked)
+          });
+        }
 
-        nav_data_cb.addEventListener("change", (e) => {
-          localStorage.setItem("b_nav_data", nav_data_cb.checked)
-        });
+        const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
+        for (let i = 0; i < nav_data_rbs.length; i++) {
+          nav_data_rbs[i].addEventListener("change", (e) => {
+            localStorage.setItem("n_active_map", i)
+          });
+        }
       }
 
       function hide_hud() {
