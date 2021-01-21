@@ -39,8 +39,8 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 
 # How to use?
 
-- Start MSFS
-- Start `vfrmap.exe`
+- Start MSFS FIRST(!)
+- Start `vfrmap.exe` AFTERWARDS(!)
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
