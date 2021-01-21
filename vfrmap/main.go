@@ -172,7 +172,6 @@ func main() {
 		http.HandleFunc("/ws", ws.Serve)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
 		http.HandleFunc("/", app)
-		//http.Handle("/", http.FileServer(http.Dir(".")))
 
 		err := http.ListenAndServe(httpListen, nil)
 		if err != nil {
@@ -197,10 +196,6 @@ func main() {
 			if s == nil {
 				continue
 			}
-			//fmt.Println("--------------------------------- REQUEST TRAFFIC --------------")
-			//trafficReport.RequestData(s)
-			//s.RequestFacilitiesList(simconnect.FACILITY_LIST_TYPE_AIRPORT, airportRequestID)
-			//s.RequestFacilitiesList(simconnect.FACILITY_LIST_TYPE_WAYPOINT, waypointRequestID)
 
 		case <-simconnectTick.C:
 			if s == nil {

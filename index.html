@@ -23,7 +23,6 @@
       }
 
       .leaflet-control-layers {
-        /*font-size: 2em;*/
         transform: scale(3) translate(-30%, 30%);
       }
       
@@ -36,66 +35,21 @@
         font-size: 1.25em !important;
       }
 
-      /*
-      .leaflet-control-zoom-out::before {
-        content:"-";
-        font-size: 2em !important;
-        visibility: visible;
-      }
-      
-      .leaflet-control-zoom-out {
-        visibility: hidden;
-      }
-      */
-
       #map {
         background-color: gray;
         flex-grow: 1;
       }
 
-      #hide-hud {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 14;
-        padding: 0.5em;
-        color: black;
-        font-size: 2em;
-        font-weight: bold;
-        color: black;
-        cursor: pointer;
-      }
-      #hide-hud:hover {
-        color: white;
-      }
-
-      #hud {
-        padding: 1em;
-        text-align: center;
-        color: white;
-        font-size: 1em;
-        background-color: black;
-      }
-
-      #hud span.field {
-        padding-right: 0.5em;
-      }
-      #hud span.value {
-        font-weight: bold;
-        font-size: 1.5em;
-      }
-      #hud span.value_small {
-        font-size: 1.0em;
-        padding-left: 0.1em;
-      }
       #teleport-popup p {
         padding:0.2em;
         margin: 0;
         text-align: center;
       }
+
       #teleport-popup p label {
         padding-right: 0.2em;
       }
+
       #hud-controls {
         position: absolute;
         bottom: 1em;
@@ -104,14 +58,8 @@
         background-color: white;
         border: 1px solid black;
         padding: 0.5em;
-        /*font-size: 2em;*/
         transform: scale(3) translate(-33%, -30%);
       }
-      /*.leaflet-touch .leaflet-bar a {
-        width: 2em;
-        height: 2em;
-        line-height: 2em;
-      }*/
       
       input {
         display: none;
@@ -173,7 +121,6 @@
     <script>
       "use strict";
 
-      let hud;
       let map;
       let marker;
       let markerTeleport;
@@ -215,12 +162,6 @@
       };
       let map_resolution = map_resolutions.medium;
 
-      /*document.onkeyup = function(event) {
-         if (event.key === "Escape"){
-           toggle_follow();
-         }
-      }*/
-
       function open_in_google_maps() {
         var url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
         window.open(url,'_blank');
@@ -237,17 +178,6 @@
             map.panTo(pos);
           }
       }
-      
-      function updateHUD(msg) {
-        hud.altitude.innerText = msg.altitude;
-        hud.heading.innerText = msg.heading;
-        hud.airspeed.innerText = msg.airspeed;
-        hud.vertical_speed.innerText = msg.vertical_speed;
-        hud.airspeed_true.innerText = "(" + msg.airspeed_true + ")";
-        hud.flaps.innerText = msg.flaps;
-        hud.trim.innerText = msg.trim;
-        hud.rudder_trim.innerText = msg.rudder_trim;
-      }
 
       ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/ws");
       ws.onopen = function() {
@@ -258,10 +188,7 @@
       };
       ws.onmessage = function(e) {
         var msg = JSON.parse(e.data);
-        //console.log("ws data", msg);
         last_report = msg;
-
-        //updateHUD(msg);
 
         if (map !== undefined) {
           updateMap(msg);
@@ -407,7 +334,6 @@
       }
 
       function teleport_here() {
-        //var pos = markerTeleport.getLatLng();
         var msg = JSON.stringify(
           {
             "type": "teleport",
@@ -416,12 +342,10 @@
             "altitude": parseFloat(teleport_popup.altitude.value) + 0.5,
           }
         );
-        //console.log(msg);
         ws.send(msg);
       }
 
       function set_follow(follow) {
-        //console.log("set_follow()", follow)
         if (follow) {
           plane_popup.follow.innerText = "don't follow plane";
         } else {
@@ -437,7 +361,6 @@
       }
 
       function set_airplane_marker_visibility(visible) {
-        //console.log("set_airplane_marker_visibility()", visible);
         if (visible) {
           marker.setOpacity(1);
         }
@@ -450,12 +373,10 @@
       }
 
       function toggle_airplane_visibility(e) {
-        //console.log("toggle_airplane_visibility()", e, "checked: ", e.checked);
         set_airplane_marker_visibility(e.checked);
       } 
 
       function center_airplane() {
-        //console.log("center_airplane()");
         let cb = document.querySelector("#hud-controls-show-airplane");
         if (cb) {
           cb.checked = true;
@@ -509,11 +430,9 @@
         }
 
         const nav_data = localStorage.getItem('b_nav_data');
-        //console.log("nav_data", nav_data);
         if (nav_data !== undefined && nav_data !== null) {
           const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
           if (nav_data_cb) {
-            //nav_data_cb.checked = !(nav_data == "true");
             nav_data_cb.click();
           }
         }
@@ -541,16 +460,7 @@
         }
       }
 
-      function hide_hud() {
-         var hud = document.getElementById("hud");
-         hud.style.display = "none";
-         hud = document.getElementById("hide-hud");
-         hud.style.display = "none";
-      }
-
       document.addEventListener("DOMContentLoaded", function(event) {
-        //console.log("DOMContentLoaded");
-
         plane_popup = {
           main: document.getElementById("plane-popup"),
           pos: document.getElementById("plane-popup-pos"),
@@ -562,16 +472,6 @@
           submit: document.getElementById("teleport-popup-submit"),
           gps: document.getElementById("teleport-popup-gps"),
           altitude: document.getElementById("teleport-popup-altitude"),
-        };
-        hud = {
-          altitude: document.getElementById("altitude_value"),
-          heading: document.getElementById("heading_value"),
-          airspeed: document.getElementById("airspeed_value"),
-          airspeed_true: document.getElementById("airspeed_true_value"),
-          vertical_speed: document.getElementById("vertical_speed_value"),
-          flaps: document.getElementById("flaps_value"),
-          trim: document.getElementById("trim_value"),
-          rudder_trim: document.getElementById("rudder_trim_value"),
         };
 
         initMap();
