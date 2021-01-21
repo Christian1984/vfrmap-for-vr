@@ -19,6 +19,7 @@ also allows you to quickly teleport your plane to any location.
 * `-v` show program version
 * `-verbose` verbose output
 * `-disable-teleport` disables teleport
+* `-dev` enable development mode, i.e. the software can run without msfs running
 
 ## usage
 

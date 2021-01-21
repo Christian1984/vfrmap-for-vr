@@ -92,6 +92,7 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 var buildVersion string
 var buildTime string
 var disableTeleport bool
+var devMode bool
 
 var verbose bool
 var httpListen string
@@ -100,6 +101,7 @@ func main() {
 	flag.BoolVar(&verbose, "verbose", false, "verbose output")
 	flag.StringVar(&httpListen, "listen", "0.0.0.0:9000", "http listen")
 	flag.BoolVar(&disableTeleport, "disable-teleport", false, "disable teleport")
+	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.Parse()
 
 	fmt.Printf("\nmsfs2020-go/vfrmap\n  readme: https://github.com/lian/msfs2020-go/blob/master/vfrmap/README.md\n  issues: https://github.com/lian/msfs2020-go/issues\n  version: %s (%s)\n\n", buildVersion, buildTime)
@@ -113,7 +115,11 @@ func main() {
 	s, err := simconnect.New("msfs2020-go/vfrmap")
 	if err != nil {
 		fmt.Println("flight simulator not running!")
-		//panic(err)
+
+		if (!devMode) {
+			fmt.Println("run with option -dev to run without msfs connection...")
+			panic(err)
+		}
 	} else {
 		fmt.Println("connected to flight simulator!")
 	}
