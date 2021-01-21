@@ -102,49 +102,12 @@ class IngamePanelCustomPanel extends TemplateElement {
                     self.iframeElement.src = '';
                 }
             });
-            this.ingameUi.addEventListener("onResizeElement", () => {
-                //self.updateImage();
-            });
-            this.ingameUi.addEventListener("dblclick", () => {
-                if (self.m_Footer) {
-                    self.m_Footer.classList.remove("hidden");
-                }
-			});
         }
     }
     initialize() {
         if (this.started) {
             return;
         }
-
-        //var self = this;
-        //this.m_MainDisplay = document.querySelector("#MainDisplay");
-        //this.m_MainDisplay.classList.add("hidden");
-
-        //this.m_Footer = document.querySelector("#Footer");
-        //this.m_Footer.classList.add("hidden");
-
-        //this.iframeElement = document.getElementById("CustomPanelIframe");
-        //this.ingameUi = this.querySelector('ingame-ui');
-
-        /*if (this.ingameUi) {
-            this.ingameUi.addEventListener("panelActive", (e) => {
-                console.log('panelActive');
-                self.updateImage();
-            });
-            this.ingameUi.addEventListener("panelInactive", (e) => {
-                console.log('panelInactive');
-                self.iframeElement.src = '';
-            });
-            this.ingameUi.addEventListener("onResizeElement", () => {
-                //self.updateImage();
-            });
-            this.ingameUi.addEventListener("dblclick", () => {
-                if (self.m_Footer) {
-                    self.m_Footer.classList.remove("hidden");
-                }
-            });
-        }*/
         this.started = true;
     }
     disconnectedCallback() {

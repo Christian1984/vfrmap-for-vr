@@ -104,7 +104,7 @@ func main() {
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.Parse()
 
-	fmt.Printf("\nmsfs2020-go/vfrmap\n  readme: https://github.com/lian/msfs2020-go/blob/master/vfrmap/README.md\n  issues: https://github.com/lian/msfs2020-go/issues\n  version: %s (%s)\n\n", buildVersion, buildTime)
+	fmt.Printf("\nmsfs2020-go/vfrmap\n  readme: https://github.com/Christian1984/vfrmap-for-vr/blob/master/vfrmap-server/README.md\n  issues: https://github.com/Christian1984/vfrmap-for-vr/issues\n  version: %s (%s)\n\n", buildVersion, buildTime)
 
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)

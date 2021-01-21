@@ -43,10 +43,13 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 - Start `vfrmap.exe`
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
+- Click "Center Airplane" to initially center the map on your airplane.
 
 # Known Issues
 
 - `vfrmap-server/build-vfrmap.sh` does not work properly at the moment. I somehow messed up the go module structure. For know, cd to `vfrmap-server/vfrmap` and run `go build` which should work, even though it does not generate the bindata.go files properly.
+- When the server isn't running, the ingame panel is just blank. A "Map-Server isn't running. Please run vfrmap.exe!" message would be nice.
+- Clicking "Center Airplane" to initially center the map on the airplane shouldn't be necessary. That's probably due to how MSFS or this addon handle what is stored inside `localstorage`. This behaviour should be investigated and improved.
 
 # Screenshots
 
@@ -60,6 +63,8 @@ This project uses forks of two amazing community projects. Without them it would
 - The client/ingame panel is forked from [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
 
 Great work, guys! Thanks for sharing your work with us!!!
+
+Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
 
 # Releases and Download
 
