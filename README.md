@@ -35,7 +35,7 @@ Place the `vfrmap.exe` file somewhere convenient (like C:\Tools\vfrmap\).
 
 ## Client
 
-Place the folder `chris1984-ingamepanel-vfrmapforvr` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
+Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
 
 # How to use?
 

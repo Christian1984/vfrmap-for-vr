@@ -92,7 +92,7 @@ class IngamePanelCustomPanel extends TemplateElement {
                 console.log('panelActive');
                 self.panelActive = true;
                 if (self.iframeElement) {
-                    self.iframeElement.src = 'https://widgets.tipeeestream.com/widget/embed/v1/g5fff12eb51cc7i?v=20210113043403#ca8d3e3cad4cde7e45e889fd2ec6b8d102e56720';
+                    self.iframeElement.src = 'http://localhost:9000';
                 }
             });
             this.ingameUi.addEventListener("panelInactive", (e) => {
