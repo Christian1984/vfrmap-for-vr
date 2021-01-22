@@ -76,7 +76,7 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 
 This project uses forks of two amazing community projects. Without them it would have taken me an incredible amount of time building this thing. Hence, I want to thank the two:
 
-- The server is forked from [lian/msfs2020-go] (https://github.com/lian/msfs2020-go).
+- The server is forked from [lian/msfs2020-go](https://github.com/lian/msfs2020-go).
 - The client/ingame panel is forked from [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
 
 Great work, guys! Thanks for sharing your work with us!!!
