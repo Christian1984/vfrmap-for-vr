@@ -25,7 +25,7 @@ The mod projects consists of two components:
 
 `msfs-panel` is the actual ingame panel.
 
-# How to install?
+# Installation
 
 Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/releases)
 
@@ -37,7 +37,7 @@ Place the `vfrmap.exe` file somewhere convenient (like C:\Tools\vfrmap\).
 
 Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
 
-# How to use?
+# Usage
 
 - Start MSFS FIRST(!)
 - Start `vfrmap.exe` AFTERWARDS(!)
@@ -45,15 +45,32 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
 
+## Advanced Usage
+
+If the text on the map is too large or too small for you to read, head over to `vrmap-server/index.html` and scroll to line 161. Set on of the following values:
+
+- `let map_resolution = map_resolutions.low;`: Large text on map, low resolution
+- `let map_resolution = map_resolutions.medium;`: Medium sized text on map, medium resolution (recommended for VR usage)
+- `let map_resolution = map_resolutions.high;`: Small text on map, but high resolution (recommended for non-VR usage)
+
+If the UI elements are too large for you, head over to `vrmap-server/index.html` and look at lines 41, 46 and 59.
+
+- For large UI elements, uncomment the lines with `transform: scale(3) [...]`, and comment in lines with `transform: scale(2) [...]` (recommended for VR usage)
+- For medium UI elements, uncomment the lines with `transform: scale(2) [...]`, and comment in lines with `transform: scale(3) [...]`
+- For small UI elements, comment in the lines with `transform: scale(2) [...]` as well as the lines with `transform: scale(3) [...]` (recommended for non-VR usage)
+
 # Known Issues
 
 - `vfrmap-server/build-vfrmap.sh` does not work properly at the moment. I somehow messed up the go module structure. For know, cd to `vfrmap-server/vfrmap` and run `go build` which should work, even though it does not generate the bindata.go files properly.
 - When the server isn't running, the ingame panel is just blank. A "Map-Server isn't running. Please run vfrmap.exe!" message would be nice.
 - Clicking "Center Airplane" to initially center the map on the airplane shouldn't be necessary. That's probably due to how MSFS or this addon handle what is stored inside `localstorage`. This behaviour should be investigated and improved.
+- Remove the need for the "Advanced Usage"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
 
 # Screenshots
 
-// TODO
+![Toolbar Icon](vfr-map-for-vr-1.png)
+!["Virtual Kneeboard Map"](vfr-map-for-vr-2.png)
+![Map Options](vfr-map-for-vr-3.png)
 
 # Attribution
 

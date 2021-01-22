@@ -22,19 +22,6 @@
         flex-direction: column;
       }
 
-      .leaflet-control-layers {
-        transform: scale(3) translate(-30%, 30%);
-      }
-      
-      .leaflet-control-zoom {
-        transform: scale(3) translate(30%, 30%);
-      }
-
-      .leaflet-control-zoom-in,
-      .leaflet-control-zoom-out {
-        font-size: 1.25em !important;
-      }
-
       #map {
         background-color: gray;
         flex-grow: 1;
@@ -50,6 +37,16 @@
         padding-right: 0.2em;
       }
 
+      .leaflet-control-layers {
+        /*transform: scale(2) translate(-25%, 25%);*/
+        transform: scale(3) translate(-30%, 30%);
+      }
+      
+      .leaflet-control-zoom {
+        /*transform: scale(2) translate(25%, 25%);*/
+        transform: scale(3) translate(30%, 30%);
+      }
+
       #hud-controls {
         position: absolute;
         bottom: 1em;
@@ -58,6 +55,7 @@
         background-color: white;
         border: 1px solid black;
         padding: 0.5em;
+        /*transform: scale(2) translate(-25%, -25%);*/
         transform: scale(3) translate(-33%, -30%);
       }
       
