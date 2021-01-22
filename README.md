@@ -55,9 +55,9 @@ If the text on the map is too large or too small for you to read, head over to `
 
 If the UI elements are too large for you, head over to `vrmap-server/index.html` and look at lines 41, 46 and 59.
 
-- For large UI elements, uncomment the lines with `transform: scale(3) [...]`, and comment in lines with `transform: scale(2) [...]` (recommended for VR usage)
-- For medium UI elements, uncomment the lines with `transform: scale(2) [...]`, and comment in lines with `transform: scale(3) [...]`
-- For small UI elements, comment in the lines with `transform: scale(2) [...]` as well as the lines with `transform: scale(3) [...]` (recommended for non-VR usage)
+- For large UI elements, activate the lines with `transform: scale(3) [...]`, and deactivate lines with `transform: scale(2) [...]` (recommended for VR usage)
+- For medium UI elements, activate the lines with `transform: scale(2) [...]`, and deactivate lines with `transform: scale(3) [...]`
+- For small UI elements, deactivate in the lines with `transform: scale(2) [...]` as well as the lines with `transform: scale(3) [...]` (recommended for non-VR usage)
 
 # Known Issues
 
