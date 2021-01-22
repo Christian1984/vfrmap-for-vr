@@ -6,8 +6,8 @@ I made this mod for myself and for now, it does exactly what I want. If you like
 
 # Features
 
-- VFR as a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
-- Map resolution etc. is optimized for VR use. Fair warning: On desktop browsers the map may look quite low res and UI elements may appear too big.
+- The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
+- Map resolution etc. is optimized for VR use. Fair warning: On desktop browsers the map may look quite low res and UI elements may appear too big (for adjustments see "Advanced Usage" below).
 - Hide your own airplane on the map for a fully fledged "paper map on kneeboard"-VFR-navigation feeling
 - Toggle to show and automatically follow your airplane on the map for a more "GPS"-ish style of navigation
 - Five different map types
@@ -31,7 +31,7 @@ Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/rele
 
 ## Server
 
-Place the `vfrmap.exe` file somewhere convenient (like C:\Tools\vfrmap\).
+Place the contents of `vfrmap-server` file somewhere convenient (like C:\Tools\vfrmap\). Make sure to copy both the `vfrmap.exe` and `index.html` files.
 
 ## Client
 
@@ -40,7 +40,7 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 # Usage
 
 - Start MSFS FIRST(!)
-- Start `vfrmap.exe` AFTERWARDS(!)
+- Start `vfrmap.exe` AFTERWARDS(!), not before MSFS has entered the main menu
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
