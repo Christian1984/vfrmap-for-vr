@@ -78,7 +78,8 @@ class IngamePanelCustomPanel extends TemplateElement {
 
         var self = this;
         this.ingameUi = this.querySelector('ingame-ui');
-
+        
+        this.warningMessage = document.getElementById("WarningMessage");
         this.iframeElement = document.getElementById("CustomPanelIframe");
 
         this.m_MainDisplay = document.querySelector("#MainDisplay");
@@ -91,6 +92,7 @@ class IngamePanelCustomPanel extends TemplateElement {
             this.ingameUi.addEventListener("panelActive", (e) => {
                 console.log('panelActive');
                 self.panelActive = true;
+                self.warningMessage.classList.add("show");
                 if (self.iframeElement) {
                     self.iframeElement.src = 'http://localhost:9000';
                 }
@@ -98,6 +100,7 @@ class IngamePanelCustomPanel extends TemplateElement {
             this.ingameUi.addEventListener("panelInactive", (e) => {
                 console.log('panelInactive');
                 self.panelActive = false;
+                self.warningMessage.classList.remove("show");
                 if (self.iframeElement) {
                     self.iframeElement.src = '';
                 }

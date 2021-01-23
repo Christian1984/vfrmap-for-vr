@@ -1,5 +1,19 @@
 ﻿/** This mixin makes a single line element fit exactly on the Roboto font for easier integration. */
+div#WarningMessage {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  opacity: 0;
+  text-align: center;
+  transition: all 1s linear;
+}
+div#WarningMessage.show {
+  opacity: 1;
+}
 ingame-ui#CustomPanel {
+  position: relative;
   display:flex;
   flex-direction:column;
   align-items:center;
