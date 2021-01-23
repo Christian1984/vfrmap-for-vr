@@ -4,6 +4,14 @@ This project adds a helpful VFR map as an ingame panel, which is especially help
 
 I made this mod for myself and for now, it does exactly what I want. If you like it. Let me know and share it with other VR pilots :-)
 
+# TL;DR
+
+The Mod consists of **TWO PARTS(!)**: a *server* and an *ingame-panel* that you need to install and run **BOTH**!
+
+**Please take the time to at least read the Installation and Usage sections below!!!**
+
+It's dead simple! But if you only install the panel to the community folder and ignore the server this mod won't run and may appear "broken" to you!
+
 # Features
 
 - The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
@@ -45,7 +53,7 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
 
-## Advanced Usage
+## Advanced Configuration
 
 If the text on the map is too large or too small for you to read, head over to `vrmap-server/index.html` and scroll to line 161. Set on of the following values:
 
@@ -64,7 +72,7 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 - `vfrmap-server/build-vfrmap.sh` does not work properly at the moment. I somehow messed up the go module structure. For know, cd to `vfrmap-server/vfrmap` and run `go build` which should work, even though it does not generate the bindata.go files properly.
 - When the server isn't running, the ingame panel is just blank. A "Map-Server isn't running. Please run vfrmap.exe!" message would be nice.
 - Clicking "Center Airplane" to initially center the map on the airplane shouldn't be necessary. That's probably due to how MSFS or this addon handle what is stored inside `localstorage`. This behaviour should be investigated and improved.
-- Remove the need for the "Advanced Usage"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
+- Remove the need for the "Advanced Configuration"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
 
 # Screenshots
 
@@ -85,7 +93,7 @@ Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://
 
 # Releases and Download
 
-program zips releases are uploaded [here](https://github.com/Christian1984/vfrmap-for-vr/releases)
+Program zips releases are uploaded [here](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
 # How to contribute?
 
