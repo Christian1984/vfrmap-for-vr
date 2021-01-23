@@ -70,7 +70,6 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 # Known Issues
 
 - `vfrmap-server/build-vfrmap.sh` does not work properly at the moment. I somehow messed up the go module structure. For know, cd to `vfrmap-server/vfrmap` and run `go build` which should work, even though it does not generate the bindata.go files properly.
-- When the server isn't running, the ingame panel is just blank. A "Map-Server isn't running. Please run vfrmap.exe!" message would be nice.
 - Clicking "Center Airplane" to initially center the map on the airplane shouldn't be necessary. That's probably due to how MSFS or this addon handle what is stored inside `localstorage`. This behaviour should be investigated and improved.
 - Remove the need for the "Advanced Configuration"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
 
