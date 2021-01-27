@@ -1,4 +1,4 @@
-module msfs2020-go
+module vfrmap-for-vr
 
 go 1.14
 

@@ -2,7 +2,7 @@ package main
 
 //go:generate go-bindata -pkg main -o bindata.go -modtime 1 -prefix html html
 
-// build: GOOS=windows GOARCH=amd64 go build -o vfrmap.exe msfs2020-go/vfrmap
+// build: GOOS=windows GOARCH=amd64 go build -o vfrmap-for-vr.exe vfrmap-for-vr/vfrmap
 
 import (
 	"encoding/json"
@@ -16,9 +16,9 @@ import (
 	"time"
 	"unsafe"
 
-	"msfs2020-go/simconnect"
-	"msfs2020-go/vfrmap/html/leafletjs"
-	"msfs2020-go/vfrmap/websockets"
+	"vfrmap-for-vr/simconnect"
+	"vfrmap-for-vr/vfrmap/html/leafletjs"
+	"vfrmap-for-vr/vfrmap/websockets"
 )
 
 type Report struct {
@@ -112,7 +112,7 @@ func main() {
 
 	ws := websockets.New()
 
-	s, err := simconnect.New("msfs2020-go/vfrmap")
+	s, err := simconnect.New("vfrmap-for-vr/vfrmap")
 	if err != nil {
 		fmt.Println("flight simulator not running!")
 
@@ -154,7 +154,7 @@ func main() {
 		//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_WAYPOINT, s.GetDefineID(&simconnect.DataFacilityWaypoint{}))
 	
 		startupTextEventID = s.GetEventID()
-		s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, "msfs2020-go/vfrmap connected")
+		s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, "vfrmap-for-vr/vfrmap connected")
 	}
 
 	go func() {

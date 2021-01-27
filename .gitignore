@@ -1,9 +1,8 @@
 **/_Temp/
+**/_vendor/*/
 .env
-build-vfrmap-upload.sh
-vfrmap.exe
-vfrmap-win64.zip
+vfrmap-for-vr.exe
+vfrmap-for-vr-win64.zip
 request_data.exe
 SimConnect.dll
 push.sh
-_vendor

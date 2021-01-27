@@ -83,7 +83,7 @@ func msfsSdkSimconnectSdkLibSimconnectDll() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "MSFS-SDK/SimConnect SDK/lib/SimConnect.dll", size: 58368, mode: os.FileMode(500), modTime: time.Unix(1, 0)}
+	info := bindataFileInfo{name: "MSFS-SDK/SimConnect SDK/lib/SimConnect.dll", size: 58368, mode: os.FileMode(438), modTime: time.Unix(1, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

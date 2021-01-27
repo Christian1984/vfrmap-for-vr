@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	"msfs2020-go/simconnect"
+	"vfrmap-for-vr/simconnect"
 )
 
 // ported from: MSFS-SDK/Samples/SimConnectSamples/RequestData/RequestData.cpp
-// build: GOOS=windows GOARCH=amd64 go build msfs2020-go/examples/request_data
+// build: GOOS=windows GOARCH=amd64 go build vfrmap-for-vr/examples/request_data
 
 type Report struct {
 	simconnect.RecvSimobjectDataByType
