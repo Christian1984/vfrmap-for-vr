@@ -411,12 +411,16 @@
 
         const follow = localStorage.getItem('b_follow');
         if (follow !== undefined && follow !== null) {
-            follow_plane = follow == "true" && show_airplane == "true";
+            set_follow(follow == "true" && show_airplane == "true");
+        }
+        else {
+          set_follow(true);
         }
 
         const last_long = localStorage.getItem('n_last_long');
         const last_lat = localStorage.getItem('n_last_lat');
-        if (last_long !== undefined && last_long !== null 
+        if (!follow_plane 
+          && last_long !== undefined && last_long !== null 
           && last_lat !== undefined && last_lat !== null) {
             console.log("panTo:", last_lat, last_long);
           map.panTo(L.latLng(last_lat, last_long));

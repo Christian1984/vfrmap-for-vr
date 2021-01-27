@@ -67,17 +67,36 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 - For medium UI elements, activate the lines with `transform: scale(2) [...]`, and deactivate lines with `transform: scale(3) [...]`
 - For small UI elements, deactivate in the lines with `transform: scale(2) [...]` as well as the lines with `transform: scale(3) [...]` (recommended for non-VR usage)
 
+## Troubleshooting
+
+- "I get errors when I try to start the server!" => This can happen if, for whatever reason, `vfrmap.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `vfrmap.exe` is located!
+- "I can't read any text on my map. It's super tiny!" => Most likely you didn't copy `index.html` along with `vfrmap.exe`. Make sure that the folder containing `vfrmap.exe` also contains `index.html`!
+
 # Known Issues
 
-- `vfrmap-server/build-vfrmap.sh` does not work properly at the moment. I somehow messed up the go module structure. For know, cd to `vfrmap-server/vfrmap` and run `go build` which should work, even though it does not generate the bindata.go files properly.
-- Clicking "Center Airplane" to initially center the map on the airplane shouldn't be necessary. That's probably due to how MSFS or this addon handle what is stored inside `localstorage`. This behaviour should be investigated and improved.
 - Remove the need for the "Advanced Configuration"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
+- Input elements for teleport are hidden
+
+## Feature Wishlist:
+
+- Draw course on map (Stage 1: manually, Stage 2: pull from flight plan)
+
+### TODO: Check if feasible?
+
+- Is it possible to add navigation data from Navigraph?
+- Is it possible to add frequencies (such as VOR/DME/Comm)?
+- Is it possible to change airport elevation data from [m] to [ft]?
+
+## Fixed / Added
+
+- Clicking "Center Airplane" to initially center the map on the airplane is no longer necessary.
+- `vfrmap-server/build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
 
 # Screenshots
 
 ![Toolbar Icon](vfr-map-for-vr-1.png)
 !["Virtual Kneeboard Map"](vfr-map-for-vr-2.png)
-![Map Options](vfr-map-for-vr-3.png)
+![Navigational Data Enabled](vfr-map-for-vr-3.png)
 
 # Attribution
 
