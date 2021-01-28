@@ -75,6 +75,7 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 # Known Issues
 
 - Remove the need for the "Advanced Configuration"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
+- Sometimes the panel doesn't properly load when clicking "restart" after a crash.
 
 ## Feature Wishlist:
 
