@@ -75,7 +75,6 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 # Known Issues
 
 - Remove the need for the "Advanced Configuration"-Section above by adding the possibility to change the UI scale at runtime through the UI itself. That feature didn't make it to this first version, though :-)
-- Input elements for teleport are hidden
 
 ## Feature Wishlist:
 
@@ -91,6 +90,7 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 
 - Clicking "Center Airplane" to initially center the map on the airplane is no longer necessary.
 - `vfrmap-server/build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
+- Input elements for teleport fixed
 
 # Screenshots
 

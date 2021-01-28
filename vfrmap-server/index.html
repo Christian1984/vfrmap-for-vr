@@ -59,12 +59,15 @@
         transform: scale(3) translate(-33%, -30%);
       }
       
-      input {
+      input[type=checkbox],
+      input[type=radio] {
         display: none;
       }
         
-      input +label,
-      input +span {
+      input[type=checkbox] +label,
+      input[type=checkbox] +span,
+      input[type=radio] +label,
+      input[type=radio] +span {
         position: relative;
         margin-right: 1em;
         padding-left: 2.25em;
@@ -73,10 +76,25 @@
         user-select: none;
       }
 
-      input +label::before,
-      input +label::after,
-      input +span::before,
-      input +span::after {
+      .leaflet-popup-content {
+        min-width: 300px;
+        width: unset !important;
+      }
+
+      .leaflet-popup-content label,
+      .leaflet-popup-content button,
+      .leaflet-popup-content input[type="text"] {
+        font-size: 300%;
+      }
+
+      input[type=checkbox] +label::before,
+      input[type=checkbox] +label::after,
+      input[type=checkbox] +span::before,
+      input[type=checkbox] +span::after,
+      input[type=radio] +label::before,
+      input[type=radio] +label::after,
+      input[type=radio] +span::before,
+      input[type=radio] +span::after {
         content: '';
         position: absolute;
         transition: all 0.1s ease;
@@ -85,16 +103,20 @@
         background-color: white;
       }
 
-      input +label::before,
-      input +span::before {
+      input[type=checkbox] +label::before,
+      input[type=checkbox] +span::before,
+      input[type=radio] +label::before,
+      input[type=radio] +span::before {
         height: 1em;
         width: 2em;
         left: 0;
         top: 0;
       }
 
-      input +label::after,
-      input +span::after {
+      input[type=checkbox] +label::after,
+      input[type=checkbox] +span::after,
+      input[type=radio] +label::after,
+      input[type=radio] +span::after {
         background-color: black;
         height: 0.6em;
         width: 0.6em;
@@ -102,14 +124,18 @@
         top: 0.2em;
       }
 
-      input:checked +label::before,
-      input:checked +span::before {
+      input:checked[type=checkbox] +label::before,
+      input:checked[type=checkbox] +span::before,
+      input:checked[type=radio] +label::before,
+      input:checked[type=radio] +span::before {
         border-color: blue;
         background-color: blue;
       }
         
-      input:checked +span::after,
-      input:checked +label::after {
+      input:checked[type=checkbox] +span::after,
+      input:checked[type=checkbox] +label::after,
+      input:checked[type=radio] +span::after,
+      input:checked[type=radio] +label::after {
         transform: translateX(1em);
         border-color: white;
         background-color: white;
