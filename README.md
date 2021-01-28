@@ -39,7 +39,7 @@ Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/rele
 
 ## Server
 
-Place the contents of `vfrmap-server` file somewhere convenient (like C:\Tools\vfrmap\). Make sure to copy both the `vfrmap.exe` and `index.html` files.
+Place the contents of `vfrmap-server` file somewhere convenient (like C:\Tools\vfrmap\).
 
 ## Client
 
@@ -48,14 +48,14 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 # Usage
 
 - Start MSFS FIRST(!)
-- Start `vfrmap.exe` AFTERWARDS(!), not before MSFS has entered the main menu
+- Start `vfrmap-for-vr.exe` AFTERWARDS(!), not before MSFS has entered the main menu
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
 
 ## Advanced Configuration
 
-If the text on the map is too large or too small for you to read, head over to `vrmap-server/index.html` and scroll to line 161. Set on of the following values:
+If the text on the map is too large or too small for you to read, copy `vfrmap/index.html` (from the repository) to the same directory as `vfrmap-for-vr.exe` and scroll to line 161. Set on of the following values:
 
 - `let map_resolution = map_resolutions.low;`: Large text on map, low resolution
 - `let map_resolution = map_resolutions.medium;`: Medium sized text on map, medium resolution (recommended for VR usage)
@@ -69,8 +69,7 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 
 ## Troubleshooting
 
-- "I get errors when I try to start the server!" => This can happen if, for whatever reason, `vfrmap.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `vfrmap.exe` is located!
-- "I can't read any text on my map. It's super tiny!" => Most likely you didn't copy `index.html` along with `vfrmap.exe`. Make sure that the folder containing `vfrmap.exe` also contains `index.html`!
+- "I get errors when I try to start the server!" => This can happen if, for whatever reason, `vfrmap-for-vr.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `vfrmap-for-vr.exe` is located!
 
 # Known Issues
 
@@ -90,8 +89,9 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 ## Fixed / Added
 
 - Clicking "Center Airplane" to initially center the map on the airplane is no longer necessary.
-- `vfrmap-server/build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
+- `build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
 - Input elements for teleport fixed
+- Separate index.html no longer required
 
 # Screenshots
 
