@@ -17,6 +17,7 @@ import (
 
 var proc_SimConnect_Open *syscall.LazyProc
 var proc_SimConnect_Close *syscall.LazyProc
+var proc_SimConnect_FlightSave *syscall.LazyProc
 var proc_SimConnect_AddToDataDefinition *syscall.LazyProc
 var proc_SimConnect_SubscribeToSystemEvent *syscall.LazyProc
 var proc_SimConnect_GetNextDispatch *syscall.LazyProc
@@ -67,6 +68,7 @@ func New(name string) (*SimConnect, error) {
 
 		proc_SimConnect_Open = mod.NewProc("SimConnect_Open")
 		proc_SimConnect_Close = mod.NewProc("SimConnect_Close")
+		proc_SimConnect_FlightSave = mod.NewProc("SimConnect_FlightSave")
 		proc_SimConnect_AddToDataDefinition = mod.NewProc("SimConnect_AddToDataDefinition")
 		proc_SimConnect_SubscribeToSystemEvent = mod.NewProc("SimConnect_SubscribeToSystemEvent")
 		proc_SimConnect_GetNextDispatch = mod.NewProc("SimConnect_GetNextDispatch")
@@ -167,6 +169,35 @@ func (s *SimConnect) Close() error {
 		return fmt.Errorf("SimConnect_Close error: %d %s", int32(r1), err)
 		panic("failed")
 	}
+	return nil
+}
+
+func (s *SimConnect) FlightSave(filename string, title string, description string) error {
+	// SimConnect_FlightSave(
+	//     HANDLE  hSimConnect,
+	//     const char*  szFileName,
+	//     const char*  sztitle,
+	//     const char*  szDescription,
+	//     DWORD  Flags
+	// );
+
+	_filename := []byte(filename + "\x00")
+	_title := []byte(title + "\x00")
+	_description := []byte(description+ "\x00")
+
+	args := []uintptr{
+		uintptr(s.handle),
+		uintptr(unsafe.Pointer(&_filename[0])),
+		uintptr(unsafe.Pointer(&_title[0])),
+		uintptr(unsafe.Pointer(&_description[0])),
+		uintptr(UNUSED),
+	}
+
+	r1, _, err := proc_SimConnect_FlightSave.Call(args...)
+	if int32(r1) < 0 {
+		return fmt.Errorf("SimConnect_FlightSave for %s error: %d %s", filename, r1, err)
+	}
+
 	return nil
 }
 

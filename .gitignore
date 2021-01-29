@@ -1,5 +1,8 @@
 **/_Temp/
 **/_vendor/*/
+**/autosave/*.FLT
+**/autosave/*.FSSAVE
+**/autosave/*.SPB
 .env
 vfrmap-for-vr.exe
 vfrmap-for-vr-win64.zip

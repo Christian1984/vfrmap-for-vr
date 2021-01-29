@@ -185,12 +185,27 @@ func main() {
 		}
 	}()
 
+	autosaveTick := time.NewTicker(5 * time.Minute)
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
 
 	for {
 		select {
+		case <-autosaveTick.C:
+			if s == nil {
+				continue
+			}
+
+			pwd, err := os.Getwd()
+			if err == nil {
+				t := time.Now()
+				ts := t.Format("2006-01-02T15-04-05")
+				fn := pwd + "\\autosave\\" + ts + ".FLT"
+				fmt.Println("Creating Autosave as " + fn)
+				s.FlightSave(fn, "test", "test");
+			}
+
 		case <-planePositionTick.C:
 			if s == nil {
 				continue
