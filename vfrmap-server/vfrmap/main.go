@@ -104,7 +104,7 @@ func main() {
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.Parse()
 
-	fmt.Printf("\nmsfs2020-go/vfrmap\n  readme: https://github.com/Christian1984/vfrmap-for-vr/blob/master/vfrmap-server/README.md\n  issues: https://github.com/Christian1984/vfrmap-for-vr/issues\n  version: %s (%s)\n\n", buildVersion, buildTime)
+	fmt.Printf("\nVFR Map For VR - Server\n  readme: https://github.com/Christian1984/vfrmap-for-vr/blob/master/vfrmap-server/README.md\n  issues: https://github.com/Christian1984/vfrmap-for-vr/issues\n  version: %s (%s)\n\n", buildVersion, buildTime)
 
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)
@@ -112,16 +112,16 @@ func main() {
 
 	ws := websockets.New()
 
-	s, err := simconnect.New("vfrmap-for-vr/vfrmap")
+	s, err := simconnect.New("VFR Map For VR")
 	if err != nil {
-		fmt.Println("flight simulator not running!")
+		fmt.Println("Flight Simulator not running!")
 
 		if (!devMode) {
 			fmt.Println("run with option -dev to run without msfs connection...")
 			panic(err)
 		}
 	} else {
-		fmt.Println("connected to flight simulator!")
+		fmt.Println("Connected to Flight Simulator!")
 	}
 
 	report := &Report{}
@@ -154,7 +154,7 @@ func main() {
 		//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_WAYPOINT, s.GetDefineID(&simconnect.DataFacilityWaypoint{}))
 	
 		startupTextEventID = s.GetEventID()
-		s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, "vfrmap-for-vr/vfrmap connected")
+		s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, ">> VFR Map For VR connected <<")
 	}
 
 	go func() {
