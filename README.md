@@ -12,6 +12,12 @@ The Mod consists of **TWO PARTS(!)**: a *server* and an *ingame-panel* that you 
 
 It's dead simple! But if you only install the panel to the community folder and ignore the server this mod won't run and may appear "broken" to you!
 
+# Support Your Modders :-)
+
+If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section. It allows us to keep developing addons and mods like this ones and making them available for free. Any amount is welcome! Thank you.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
+
 # Features
 
 - The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
@@ -55,17 +61,11 @@ Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community 
 
 ## Advanced Configuration
 
-If the text on the map is too large or too small for you to read, copy `vfrmap/index.html` (from the repository) to the same directory as `vfrmap-for-vr.exe` and scroll to line 161. Set on of the following values:
+If the text on the map is too large or too small for you to read, copy `vfrmap/index.html` (from the repository) to the same directory as `vfrmap-for-vr.exe` and scroll to line 161. Set one of the following values:
 
 - `let map_resolution = map_resolutions.low;`: Large text on map, low resolution
 - `let map_resolution = map_resolutions.medium;`: Medium sized text on map, medium resolution (recommended for VR usage)
 - `let map_resolution = map_resolutions.high;`: Small text on map, but high resolution (recommended for non-VR usage)
-
-If the UI elements are too large for you, head over to `vrmap-server/index.html` and look at lines 41, 46 and 59.
-
-- For large UI elements, activate the lines with `transform: scale(3) [...]`, and deactivate lines with `transform: scale(2) [...]` (recommended for VR usage)
-- For medium UI elements, activate the lines with `transform: scale(2) [...]`, and deactivate lines with `transform: scale(3) [...]`
-- For small UI elements, deactivate in the lines with `transform: scale(2) [...]` as well as the lines with `transform: scale(3) [...]` (recommended for non-VR usage)
 
 ## Troubleshooting
 
@@ -79,8 +79,11 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 ## Feature Wishlist:
 
 - Draw course on map (Stage 1: manually, Stage 2: pull from flight plan)
+- Show PDF documents (approach charts etc.)
+- Virtual Kneeboard (write with your mouse or separate tablet computer)
+- Embed Twitch Chat
 
-### TODO: Check if feasible?
+### TODO: Check if Feasible?
 
 - Is it possible to add navigation data from Navigraph?
 - Is it possible to add frequencies (such as VOR/DME/Comm)?
@@ -88,6 +91,8 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 
 ## Fixed / Added
 
+- Reworked "Center on Airplane" and "Show Airplane" UI elements
+- Fixed scaling issues introduced with MSFS world update 3
 - Clicking "Center Airplane" to initially center the map on the airplane is no longer necessary.
 - `build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
 - Input elements for teleport fixed
@@ -96,8 +101,8 @@ If the UI elements are too large for you, head over to `vrmap-server/index.html`
 # Screenshots
 
 ![Toolbar Icon](vfr-map-for-vr-1.png)
-!["Virtual Kneeboard Map"](vfr-map-for-vr-2.png)
-![Navigational Data Enabled](vfr-map-for-vr-3.png)
+![Navigational Data Enabled](vfr-map-for-vr-2.png)
+![Map Types](vfr-map-for-vr-3.png)
 
 # Attribution
 
@@ -114,17 +119,26 @@ Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://
 
 Program zips releases are uploaded [here](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
-# How to contribute?
+# How to Contribute?
 
 If you have suggestions or issues, please feel free to reach out to me or create an issue within the github repository. You may also add stuff yourself. Pull requests are very welcome!
 
-# Why does my virus-scanning software think this program is infected?
+# HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?
 
 From official golang website https://golang.org/doc/faq#virus
 
 "This is a common occurrence, especially on Windows machines, and is almost always a false positive. Commercial virus scanning programs are often confused by the structure of Go binaries, which they don't see as often as those compiled from other languages."
 
-# Support your modders :-)
+Personal statement:
+
+If you don't trust the binary my suggestion would be two-fold:
+
+- Step 1: Upload the binaries to virustotal and see how many scanners throw a positive.
+- Step 2: Clone the repository and build the binary yourself. Everything is open source, hence anyone who knows anything about building software can check the codebase for harmful code...
+
+Generally speaking (and that's true for anything you download from the web): If you don't trust the code, don't execute it! Especially NOT with elevated rights(!!!) I can understand anyone who doesn't want to run the software and appreciate how people ask questions instead of simply running the server...
+
+# Support Your Modders :-)
 
 If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section above. It allows us to keep developing addons and mods like this ones and making them available for free. Any amount is welcome! Thank you.
 
