@@ -146,6 +146,7 @@
       let ws;
       let plane_popup;
       let teleport_popup;
+      let waypoints;
       let follow_plane = false;
       let plane_visible = true;
       let last_report = {};
@@ -193,7 +194,7 @@
           marker.setLatLng(pos);
           marker.setRotationAngle(msg.heading);
 
-          Waypoints.update_planepos(plane_visible, pos);
+          waypoints.update_planepos(plane_visible, pos);
 
           plane_popup.pos.innerText = Number(pos.lat).toFixed(6) + "," + Number(pos.lng).toFixed(6);
 
@@ -319,6 +320,8 @@
         markerTeleport.bindPopup(L.popup({autoPan: false}).setContent(teleport_popup.main));
         set_teleport_marker(markerPos);
 
+        waypoints = new Waypoints(map, pos);
+
 
         map.on('dragstart', function(e) {
           set_follow(false);
@@ -335,7 +338,7 @@
 
         map.on('click', function(e) {
           //set_teleport_marker(e.latlng);
-          Waypoints.add_marker(e.latlng);
+          waypoints.add_marker(e.latlng);
         });
 
         map.on('baselayerchange', function(e) {
@@ -395,7 +398,7 @@
           set_follow(false);
         }
 
-        Waypoints.update_track();
+        waypoints.update_track();
 
         localStorage.setItem("b_show_airplane", visible);
       }
@@ -475,7 +478,7 @@
           nav_data_rbs[active_map].click();
         }
 
-        Waypoints.load_track();
+        waypoints.load_trackdata();
       }
 
       function registerHandlers() {
