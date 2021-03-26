@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-title" content="VFRMap">
     <script src="leafletjs/leaflet.js"></script>
     <script src="leafletjs/leaflet.rotatedMarker.js"></script>
+    <script src="premium/waypoints.js"></script>
     <style type="text/css">
 
       html, body {
@@ -502,6 +503,7 @@
         initMap();
         loadStoredState();
         registerHandlers();
+        Waypoints.doSomething();
       });
     </script>
   </head>

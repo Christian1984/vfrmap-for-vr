@@ -2,6 +2,7 @@ copy index.html vfrmap\html\index.html
 
 go generate -v .\vfrmap\
 go generate -v .\vfrmap\html\leafletjs
+go generate -v .\vfrmap\html\premium
 go generate -v .\simconnect\
 
 del vfrmap\html\index.html

@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"strings"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,6 +19,7 @@ import (
 
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
+	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/websockets"
 )
 
@@ -175,8 +177,30 @@ func main() {
 			}
 		}
 
+		premium := func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+			w.Header().Set("Content-Type", "text/javascript")
+
+			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/");
+
+			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
+
+			if _, err = os.Stat(filePath); os.IsNotExist(err) {
+				fmt.Println("use embedded", requestedResource)
+				w.Write(premium.MustAsset(requestedResource))
+			} else {
+				fmt.Println("use local", filePath)
+				http.ServeFile(w, r, filePath)
+			}
+		}
+
 		http.HandleFunc("/ws", ws.Serve)
+		http.HandleFunc("/premium/", premium)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
+		//http.Handle("/premium/", http.StripPrefix("/premium/", premium.FS{}))
 		http.HandleFunc("/", app)
 
 		err := http.ListenAndServe(httpListen, nil)
