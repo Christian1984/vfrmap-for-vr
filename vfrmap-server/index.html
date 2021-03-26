@@ -11,12 +11,11 @@
     <script src="leafletjs/leaflet.rotatedMarker.js"></script>
     <script src="premium/waypoints.js"></script>
     <style type="text/css">
-
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-        font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+        font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif
       }
 
       html {
@@ -148,9 +147,9 @@
       let plane_popup;
       let teleport_popup;
       let follow_plane = false;
+      let plane_visible = true;
       let last_report = {};
       const initial_pos = L.latLng(52.4727,-1.7523);
-      
       const map_resolutions = {
         high: {
           tile_size: 256,
@@ -193,6 +192,8 @@
           var pos = L.latLng(msg.latitude, msg.longitude);
           marker.setLatLng(pos);
           marker.setRotationAngle(msg.heading);
+
+          Waypoints.update_planepos(plane_visible, pos);
 
           plane_popup.pos.innerText = Number(pos.lat).toFixed(6) + "," + Number(pos.lng).toFixed(6);
 
@@ -333,7 +334,8 @@
         });
 
         map.on('click', function(e) {
-          set_teleport_marker(e.latlng);
+          //set_teleport_marker(e.latlng);
+          Waypoints.add_marker(e.latlng);
         });
 
         map.on('baselayerchange', function(e) {
@@ -383,6 +385,8 @@
       }
 
       function set_airplane_marker_visibility(visible) {
+        plane_visible = visible;
+
         if (visible) {
           marker.setOpacity(1);
         }
@@ -390,6 +394,8 @@
           marker.setOpacity(0);
           set_follow(false);
         }
+
+        Waypoints.update_track();
 
         localStorage.setItem("b_show_airplane", visible);
       }
@@ -468,6 +474,8 @@
         if (active_map !== undefined && active_map !== null && nav_data_rbs.length > 0 && active_map < nav_data_rbs.length) {
           nav_data_rbs[active_map].click();
         }
+
+        Waypoints.load_track();
       }
 
       function registerHandlers() {
@@ -503,7 +511,6 @@
         initMap();
         loadStoredState();
         registerHandlers();
-        Waypoints.doSomething();
       });
     </script>
   </head>
