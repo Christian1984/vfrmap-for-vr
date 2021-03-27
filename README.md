@@ -18,6 +18,12 @@ If you enjoy this project, please consider buying me a coffee and/or donating to
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
 
+# Screenshots
+
+![Toolbar Icon](vfr-map-for-vr-1.png)
+![Navigational Data Enabled](vfr-map-for-vr-2.png)
+![Map Types](vfr-map-for-vr-3.png)
+
 # Features
 
 - The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
@@ -97,12 +103,6 @@ If the text on the map is too large or too small for you to read, copy `vfrmap/i
 - `build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
 - Input elements for teleport fixed
 - Separate index.html no longer required
-
-# Screenshots
-
-![Toolbar Icon](vfr-map-for-vr-1.png)
-![Navigational Data Enabled](vfr-map-for-vr-2.png)
-![Map Types](vfr-map-for-vr-3.png)
 
 # Attribution
 
