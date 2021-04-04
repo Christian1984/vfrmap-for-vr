@@ -28,7 +28,13 @@
         <ingame-ui id="CustomPanel" panel-id="PANEL_CUSTOM_PANEL" title="" class="ingameUiFrame panelInvisible" content-fit="true" min-width="160" min-height="90">
 
             <div id="CustomPanelWrap">
-                <iframe id="CustomPanelIframe" src=""></iframe>
+                <div>
+                    <button>Test</button>
+                    <span id="switch_map">Map</span>
+                    <span id="switch_charts">Charts</span>
+                </div>
+                <iframe id="iframe_map" src=""></iframe>
+                <iframe class="hidden" id="iframe_charts" src=""></iframe>
             </div>
             <div id="WarningMessage">
                 <h1>Can't Load Map</h1>
