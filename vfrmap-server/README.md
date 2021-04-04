@@ -4,6 +4,13 @@ simconnect package [msfs2020-go/simconnect](simconnect/) connects to microsoft f
 
 cross-compiles from macos/linux, no other dependencies required. produces a single binary with no other files or configuration required.
 
+## how to build
+
+- install go version 1.14.14
+- install https://github.com/jteeuwen/go-bindata globally
+- copy required stuff to folder _vendor (see README.md there)
+- run build-vfrmap-server.bat
+
 ## status
 
 [msfs2020-go/simconnect](simconnect/) package currently only implements enough of the simconnect api for [examples](examples/) and [vfrmap](vfrmap).
