@@ -160,41 +160,35 @@ func main() {
     }
 
     go func() {
-        app := func(w http.ResponseWriter, r *http.Request) {
+        setHeaders := func(contentType string, w http.ResponseWriter) {
             w.Header().Set("Access-Control-Allow-Origin", "*")
             w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
             w.Header().Set("Pragma", "no-cache")
             w.Header().Set("Expires", "0")
-            w.Header().Set("Content-Type", "text/html")
+            w.Header().Set("Content-Type", contentType)
+        }
 
-            filePath := filepath.Join(filepath.Dir(exePath), "index.html")
+        sendResponse := func(contentType string, w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte) {
+            setHeaders(contentType, w);
 
             if _, err = os.Stat(filePath); os.IsNotExist(err) {
-                w.Write(MustAsset(filepath.Base(filePath)))
+                fmt.Println("use embedded", requestedResource)
+                w.Write(asset)
             } else {
                 fmt.Println("use local", filePath)
                 http.ServeFile(w, r, filePath)
             }
         }
 
+        app := func(w http.ResponseWriter, r *http.Request) {
+            filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "index.html")
+            sendResponse("text/html", w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
+        }
+
         premium := func(w http.ResponseWriter, r *http.Request) {
-            w.Header().Set("Access-Control-Allow-Origin", "*")
-            w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-            w.Header().Set("Pragma", "no-cache")
-            w.Header().Set("Expires", "0")
-            w.Header().Set("Content-Type", "text/javascript")
-
             requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/");
-
             filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
-
-            if _, err = os.Stat(filePath); os.IsNotExist(err) {
-                fmt.Println("use embedded", requestedResource)
-                w.Write(premium.MustAsset(requestedResource))
-            } else {
-                fmt.Println("use local", filePath)
-                http.ServeFile(w, r, filePath)
-            }
+            sendResponse("text/javascript", w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
         }
 
         http.HandleFunc("/ws", ws.Serve)
