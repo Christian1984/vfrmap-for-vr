@@ -165,7 +165,7 @@ func main() {
             w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
             w.Header().Set("Pragma", "no-cache")
             w.Header().Set("Expires", "0")
-            w.Header().Set("Content-Type", contentType)
+            //w.Header().Set("Content-Type", contentType)
         }
 
         sendResponse := func(contentType string, w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte) {
@@ -180,22 +180,25 @@ func main() {
             }
         }
 
-        app := func(w http.ResponseWriter, r *http.Request) {
+        vfrmap := func(w http.ResponseWriter, r *http.Request) {
             filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "index.html")
             sendResponse("text/html", w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
         }
 
         premium := func(w http.ResponseWriter, r *http.Request) {
             requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/");
+            fmt.Println("requestedResource", requestedResource)
             filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
-            sendResponse("text/javascript", w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
+            sendResponse("text/html", w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
         }
+
+        chartServer := http.FileServer(http.Dir("./charts"))
 
         http.HandleFunc("/ws", ws.Serve)
         http.HandleFunc("/premium/", premium)
         http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
-        //http.Handle("/premium/", http.StripPrefix("/premium/", premium.FS{}))
-        http.HandleFunc("/", app)
+        http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
+        http.HandleFunc("/", vfrmap)
 
         err := http.ListenAndServe(httpListen, nil)
         if err != nil {
