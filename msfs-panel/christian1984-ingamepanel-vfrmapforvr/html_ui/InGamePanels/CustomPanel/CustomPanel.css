@@ -38,14 +38,20 @@ ingame-ui#CustomPanel #CustomPanelWrap div {
     display: flex;
 }
 ingame-ui#CustomPanel #CustomPanelWrap div span {
-    margin: 0 1em;
+    margin: 0;
     padding: 0.5em;
     border: 1px solid black;
-    border-radius: 1px;
+    background-color: white;
+    color: black;
+}
+ingame-ui#CustomPanel #CustomPanelWrap div span.active {
+    border: none;
+    background-color: blue;
+    color: white;
 }
 ingame-ui#CustomPanel #CustomPanelWrap iframe {
   flex: 1 1 auto !important;
-  border: 0;
+  border-top: 3px solid blue;
 }
 ingame-ui#CustomPanel #CustomPanelWrap iframe.hidden {
     display: none;

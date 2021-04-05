@@ -20,5 +20,14 @@ func (_ FS) ServeHTTP(w http.ResponseWriter, r *http.Request) {
         case "charts.css":
             w.Header().Set("Content-Type", "text/css")
             w.Write(MustAsset("charts.css"))
+        case "notepad.html":
+            w.Header().Set("Content-Type", "text/html")
+            w.Write(MustAsset("notepad.html"))
+        case "notepad.css":
+            w.Header().Set("Content-Type", "text/javascript")
+            w.Write(MustAsset("notepad.css"))
+        case "notepad.js":
+            w.Header().Set("Content-Type", "text/javascript")
+            w.Write(MustAsset("notepad.js"))
     }
 }
