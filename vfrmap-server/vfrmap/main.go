@@ -21,6 +21,7 @@ import (
     "vfrmap-for-vr/vfrmap/html/leafletjs"
     "vfrmap-for-vr/vfrmap/html/premium"
     "vfrmap-for-vr/vfrmap/websockets"
+    "vfrmap-for-vr/_vendor/premium/charts"
 )
 
 type Report struct {
@@ -160,6 +161,8 @@ func main() {
     }
 
     go func() {
+        charts.DoSomething();
+
         setHeaders := func(contentType string, w http.ResponseWriter) {
             w.Header().Set("Access-Control-Allow-Origin", "*")
             w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")

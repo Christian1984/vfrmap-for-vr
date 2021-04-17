@@ -1,0 +1,2 @@
+- Batch script to start both msfs and server, make changes to server
+- twitch / discord integration
