@@ -20,9 +20,9 @@ func (_ FS) ServeHTTP(w http.ResponseWriter, r *http.Request) {
         case "charts.html":
             w.Header().Set("Content-Type", "text/html")
             w.Write(MustAsset("charts.html"))
-        case "charts2.html":
-            w.Header().Set("Content-Type", "text/html")
-            w.Write(MustAsset("charts2.html"))
+        case "charts.js":
+            w.Header().Set("Content-Type", "text/javascript")
+            w.Write(MustAsset("charts.js"))
         case "charts.css":
             w.Header().Set("Content-Type", "text/css")
             w.Write(MustAsset("charts.css"))
