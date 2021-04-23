@@ -5,6 +5,7 @@ package main
 // build: GOOS=windows GOARCH=amd64 go build -o fskneeboard.exe vfrmap-for-vr/vfrmap
 
 import (
+	"bufio"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -18,6 +19,7 @@ import (
 	"unsafe"
 
 	"vfrmap-for-vr/_vendor/premium/charts"
+	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
@@ -94,6 +96,11 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 
 var buildVersion string
 var buildTime string
+var pro string
+
+var bPro bool
+var productName string
+
 var disableTeleport bool
 var devMode bool
 
@@ -107,15 +114,43 @@ func main() {
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.Parse()
 
-	fmt.Printf("\nFSKneeboard - Server\n  readme: https://github.com/Christian1984/vfrmap-for-vr/blob/master/fskneeboard-server/README.md\n  issues: https://github.com/Christian1984/vfrmap-for-vr/issues\n  version: %s (%s)\n\n", buildVersion, buildTime)
+	bPro = pro == "true"
+
+	productName = "FSKneeboard"
+	if bPro {
+		productName += " PRO"
+	}
+
+	fmt.Printf("\n"+productName+" - Server\n  Website: https://fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/fskneeboard-server/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", buildVersion, buildTime)
 
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)
 	exePath, _ := os.Executable()
 
+	if bPro {
+		if !drm.Valid() {
+			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
+			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard-server.exe.")
+
+			buf := bufio.NewReader(os.Stdin)
+			fmt.Print("\nPress ENTER to continue...")
+			buf.ReadBytes('\n')
+
+			os.Exit(0)
+		} else {
+			fmt.Println("Valid license found!")
+			fmt.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
+			fmt.Println("")
+		}
+	} else {
+		fmt.Println("Thanks for trying FSKneeboard FREE!")
+		fmt.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
+		fmt.Println("")
+	}
+
 	ws := websockets.New()
 
-	s, err := simconnect.New("FSKneeboard")
+	s, err := simconnect.New(productName)
 	if err != nil {
 		fmt.Println("Flight Simulator not running!")
 
@@ -162,7 +197,6 @@ func main() {
 
 	go func() {
 		charts.UpdateIndex()
-		charts.PrintIndex()
 
 		setHeaders := func(contentType string, w http.ResponseWriter) {
 			w.Header().Set("Access-Control-Allow-Origin", "*")

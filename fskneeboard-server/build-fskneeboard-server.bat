@@ -13,4 +13,4 @@ set /p versionstr=<versionstr.txt
 del versionstr.txt
 @echo on
 
-go build -o fskneeboard.exe -ldflags "-s -w -X main.buildVersion=%versionstr% -X main.buildTime=%datestr%" -v .\vfrmap\
+go build -o fskneeboard.exe -ldflags "-s -w -X main.buildVersion=%versionstr% -X main.buildTime=%datestr% -X main.pro=true" -v .\vfrmap\
