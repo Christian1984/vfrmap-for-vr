@@ -1,7 +1,7 @@
-<AssetPackage Name="christian1984-ingamepanel-vfrmapforvr" Version="2.0.0">
+<AssetPackage Name="christian1984-ingamepanel-fskneeboard" Version="2.0.0">
     <ItemSettings>
         <ContentType>SPB</ContentType>
-        <Title>christian1984-ingamepanel-vfrmapforvr</Title>
+        <Title>christian1984-ingamepanel-fskneeboard</Title>
         <Manufacturer>Christian1984</Manufacturer>
         <Creator>Christian1984</Creator>
     </ItemSettings>
@@ -10,7 +10,7 @@
         <CanBeReferenced>false</CanBeReferenced>
     </Flags>
     <AssetGroups>
-        <AssetGroup Name="christian1984-ingamepanel-vfrmapforvr">
+        <AssetGroup Name="christian1984-ingamepanel-fskneeboard">
             <Type>SPB</Type>
             <Flags>
                 <FSXCompatibility>false</FSXCompatibility>

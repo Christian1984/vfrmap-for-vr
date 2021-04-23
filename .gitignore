@@ -3,10 +3,12 @@
 **/autosave/*.FLT
 **/autosave/*.FSSAVE
 **/autosave/*.SPB
-vfrmap-server/charts/*.PNG
+fskneeboard-server/charts/*.PNG
 .env
-vfrmap-for-vr.exe
+fskneeboard.exe
 vfrmap-for-vr-win64.zip
+fskneeboard.exe
+fskneeboard-win64.zip
 request_data.exe
 SimConnect.dll
 push.sh

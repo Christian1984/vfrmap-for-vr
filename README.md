@@ -33,11 +33,11 @@ The mod projects consists of two components:
 
 ## Server
 
-`vfrmap-server` is the webserver that connects to your flight simulator and communicates with it to receive location data etc.
+`fskneeboard-server` is the webserver that connects to your flight simulator and communicates with it to receive location data etc.
 
 ## Client
 
-`msfs-panel` is the actual ingame panel.
+`fskneeboard-panel` is the actual ingame panel.
 
 # Installation
 
@@ -45,23 +45,23 @@ Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/rele
 
 ## Server
 
-Place the contents of `vfrmap-server` file somewhere convenient (like C:\Tools\vfrmap\).
+Place the contents of `fskneeboard-server` file somewhere convenient (like C:\Tools\vfrmap\).
 
 ## Client
 
-Place the folder `christian1984-ingamepanel-vfrmapforvr` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
+Place the folder `christian1984-ingamepanel-fskneeboard` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
 
 # Usage
 
 - Start MSFS FIRST(!)
-- Start `vfrmap-for-vr.exe` AFTERWARDS(!), not before MSFS has entered the main menu
+- Start `fskneeboard.exe` AFTERWARDS(!), not before MSFS has entered the main menu
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
 
 ## Advanced Configuration
 
-If the text on the map is too large or too small for you to read, copy `vfrmap/index.html` (from the repository) to the same directory as `vfrmap-for-vr.exe` and scroll to line 161. Set one of the following values:
+If the text on the map is too large or too small for you to read, copy `vfrmap/index.html` (from the repository) to the same directory as `fskneeboard.exe` and scroll to line 161. Set one of the following values:
 
 - `let map_resolution = map_resolutions.low;`: Large text on map, low resolution
 - `let map_resolution = map_resolutions.medium;`: Medium sized text on map, medium resolution (recommended for VR usage)
@@ -69,7 +69,7 @@ If the text on the map is too large or too small for you to read, copy `vfrmap/i
 
 ## Troubleshooting
 
-- "I get errors when I try to start the server!" => This can happen if, for whatever reason, `vfrmap-for-vr.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `vfrmap-for-vr.exe` is located!
+- "I get errors when I try to start the server!" => This can happen if, for whatever reason, `fskneeboard.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `fskneeboard.exe` is located!
 
 # Known Issues
 
@@ -94,7 +94,7 @@ If the text on the map is too large or too small for you to read, copy `vfrmap/i
 - Reworked "Center on Airplane" and "Show Airplane" UI elements
 - Fixed scaling issues introduced with MSFS world update 3
 - Clicking "Center Airplane" to initially center the map on the airplane is no longer necessary.
-- `build-vfrmap.sh` replaced with working `build-vfrmap-server.bat`
+- `build-vfrmap.sh` replaced with working `build-fskneeboard-server.bat`
 - Input elements for teleport fixed
 - Separate index.html no longer required
 
