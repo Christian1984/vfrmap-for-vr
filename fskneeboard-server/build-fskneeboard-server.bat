@@ -1,4 +1,5 @@
 go generate -v .\vfrmap\
+go generate -v .\vfrmap\html\fontawesome
 go generate -v .\vfrmap\html\leafletjs
 go generate -v .\vfrmap\html\premium
 go generate -v .\simconnect\

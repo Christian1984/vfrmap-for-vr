@@ -21,6 +21,7 @@ import (
 	"vfrmap-for-vr/_vendor/premium/charts"
 	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/simconnect"
+	"vfrmap-for-vr/vfrmap/html/fontawesome"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/websockets"
@@ -246,6 +247,7 @@ func main() {
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
+		http.Handle("/fontawesome/", http.StripPrefix("/fontawesome/", fontawesome.FS{}))
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
 		http.HandleFunc("/", vfrmap)
 
