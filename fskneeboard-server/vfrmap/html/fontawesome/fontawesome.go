@@ -11,15 +11,9 @@ type FS struct {
 
 func (_ FS) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
-	case "js/all.js":
-		w.Header().Set("Content-Type", "text/javascript")
-		w.Write(MustAsset("js/all.js"))
 	case "js/all.min.js":
 		w.Header().Set("Content-Type", "text/javascript")
 		w.Write(MustAsset("js/all.min.js"))
-	case "css/all.css":
-		w.Header().Set("Content-Type", "text/css")
-		w.Write(MustAsset("css/all.css"))
 	case "css/all.min.css":
 		w.Header().Set("Content-Type", "text/css")
 		w.Write(MustAsset("css/all.min.css"))

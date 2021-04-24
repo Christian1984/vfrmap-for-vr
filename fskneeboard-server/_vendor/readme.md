@@ -6,8 +6,8 @@ Must contain the MSFS SDK
 
 ## Folder fontawesome
 
-- Must contain folder css with all.css
-- Must contain folder js with all.js
+- Must contain folder css with all.min.css
+- Must contain folder js with all.min.js
 - Must contain folder webfonts with all fa-webfonts
 
 ## Folder leafletjs
