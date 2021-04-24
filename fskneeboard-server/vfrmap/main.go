@@ -94,6 +94,14 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 	s.SetDataOnSimObject(defineID, simconnect.OBJECT_ID_USER, 0, 0, size, unsafe.Pointer(&buf[0]))
 }
 
+func shutdownWithPromt() {
+	buf := bufio.NewReader(os.Stdin)
+	fmt.Print("\nPress ENTER to continue...")
+	buf.ReadBytes('\n')
+
+	os.Exit(0)
+}
+
 var buildVersion string
 var buildTime string
 var pro string
@@ -121,7 +129,7 @@ func main() {
 		productName += " PRO"
 	}
 
-	fmt.Printf("\n"+productName+" - Server\n  Website: https://fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/fskneeboard-server/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", buildVersion, buildTime)
+	fmt.Printf("\n"+productName+" - Server\n  Website: https://fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", buildVersion, buildTime)
 
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)
@@ -131,12 +139,7 @@ func main() {
 		if !drm.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard-server.exe.")
-
-			buf := bufio.NewReader(os.Stdin)
-			fmt.Print("\nPress ENTER to continue...")
-			buf.ReadBytes('\n')
-
-			os.Exit(0)
+			shutdownWithPromt()
 		} else {
 			fmt.Println("Valid license found!")
 			fmt.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
@@ -155,8 +158,8 @@ func main() {
 		fmt.Println("Flight Simulator not running!")
 
 		if !devMode {
-			fmt.Println("run with option -dev to run without msfs connection...")
-			panic(err)
+			fmt.Println("Run with option -dev for development purposes without a Flight Simulator connection...")
+			shutdownWithPromt()
 		}
 	} else {
 		fmt.Println("Connected to Flight Simulator!")
@@ -312,7 +315,7 @@ func main() {
 			case simconnect.RECV_ID_OPEN:
 				recvOpen := *(*simconnect.RecvOpen)(ppData)
 				fmt.Printf(
-					"\nflight simulator info:\n  codename: %s\n  version: %d.%d (%d.%d)\n  simconnect: %d.%d (%d.%d)\n\n",
+					"\nFlight Simulator Info:\n  Codename: %s\n  Version: %d.%d (%d.%d)\n  Simconnect: %d.%d (%d.%d)\n\n",
 					recvOpen.ApplicationName,
 					recvOpen.ApplicationVersionMajor,
 					recvOpen.ApplicationVersionMinor,
@@ -323,6 +326,7 @@ func main() {
 					recvOpen.SimConnectBuildMajor,
 					recvOpen.SimConnectBuildMinor,
 				)
+				fmt.Printf("Ready... Please leave this window open during your Flight Simulator session. Have a safe flight :-)\n\n")
 
 			case simconnect.RECV_ID_EVENT:
 				recvEvent := *(*simconnect.RecvEvent)(ppData)
@@ -373,14 +377,19 @@ func main() {
 					fmt.Printf("TRAFFIC REPORT: %s\n", trafficReport.Inspect())
 				}
 
+			case simconnect.RECV_ID_QUIT:
+				fmt.Println("Flight Simulator was shut down. Exiting...")
+				shutdownWithPromt()
+
 			default:
 				fmt.Println("recvInfo.ID unknown", recvInfo.ID)
 			}
 
 		case <-exitSignal:
-			fmt.Println("exiting...")
+			fmt.Println("Exiting...")
 			if s != nil {
-				if err = s.Close(); err != nil {
+				s.Close()
+				if err != nil {
 					panic(err)
 				}
 			}
