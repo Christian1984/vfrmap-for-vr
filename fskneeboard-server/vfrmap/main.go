@@ -152,19 +152,32 @@ func main() {
 		fmt.Println("")
 	}
 
-	ws := websockets.New()
+	// wait for flight simulator
+	var s *simconnect.SimConnect
+	var err error
 
-	s, err := simconnect.New(productName)
-	if err != nil {
-		fmt.Println("Flight Simulator not running!")
+	fmt.Print("Connecting to Flight Simulator..")
 
-		if !devMode {
-			fmt.Println("Run with option -dev for development purposes without a Flight Simulator connection...")
-			shutdownWithPromt()
+	for true {
+		fmt.Print(".")
+
+		s, err = simconnect.New(productName)
+
+		if err != nil {
+
+			if devMode {
+				fmt.Println("\nRunning with --dev: Not connected to Flight Simulator!!!")
+				break
+			}
+
+			time.Sleep(5 * time.Second)
+		} else if s != nil {
+			fmt.Println("\nConnected to Flight Simulator!")
+			break
 		}
-	} else {
-		fmt.Println("Connected to Flight Simulator!")
 	}
+
+	ws := websockets.New()
 
 	report := &Report{}
 	trafficReport := &TrafficReport{}
@@ -173,7 +186,9 @@ func main() {
 	eventSimStartID := simconnect.DWORD(0)
 	startupTextEventID := simconnect.DWORD(0)
 
-	if s != nil {
+	if s == nil {
+		fmt.Println("s == nil")
+	} else {
 		err = s.RegisterDataDefinition(report)
 		if err != nil {
 			fmt.Println(err)
