@@ -15,6 +15,6 @@ Must contain the MSFS SDK
 - Must contain leafletjs
 - Must contain leaflet.rotatedMarker.js
 
-## Folder premium
+## Folder premium_src
 
 Must contain content from private premium feature repository if premium version shall be built

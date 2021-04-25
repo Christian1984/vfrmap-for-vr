@@ -563,9 +563,24 @@
                         mode_options.mode = i;
 
                         if (mode_options.mode != MODES.teleport) {
-                            hide_teleport_marker();
+                            if (!waypoints.is_mode_available()) {
+                                waypoints.activate_mode_failed();
+                                activate_default_mode();
+                            }
+                            else {
+                                hide_teleport_marker();
+                            }
                         }
                     });
+                }
+            }
+            
+            function activate_default_mode() {
+                if (!waypoints.is_mode_available()) {
+                    const teleport = document.querySelector("#mode-controls-teleport");
+                    if (teleport) {
+                        teleport.click();
+                    }
                 }
             }
 
@@ -586,6 +601,7 @@
                 initMap();
                 loadStoredState();
                 registerHandlers();
+                activate_default_mode();
             });
         </script>
     </head>
@@ -615,7 +631,7 @@
             <span class="selected"><i class="fas fa-map-marker-alt"></i></span>
             <span><i class="fas fa-trash"></i></span>
             |
-            <span><i class="fas fa-magic"></i></span>
+            <span id="mode-controls-teleport"><i class="fas fa-magic"></i></span>
         </div>
     </body>
 </html>

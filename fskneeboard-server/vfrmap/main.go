@@ -186,9 +186,7 @@ func main() {
 	eventSimStartID := simconnect.DWORD(0)
 	startupTextEventID := simconnect.DWORD(0)
 
-	if s == nil {
-		fmt.Println("s == nil")
-	} else {
+	if s != nil {
 		err = s.RegisterDataDefinition(report)
 		if err != nil {
 			fmt.Println(err)
