@@ -7,4 +7,26 @@ html {
 body {
     /* compensate for weird in-game-browser scaling, step 2 */
     /* transform: scaleX(0.8) translate(-12.5%); */
+
+    margin: 0;
+    background-color: black;
+    color: white;
+    overflow: hidden;
+    text-align: center;
+}
+
+.highlight {
+    color: #ffbf00;
+}
+
+a {
+    color: #ffbf00;
+    text-decoration: none;
+}
+
+iframe {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    border: none;
 }
