@@ -11,14 +11,25 @@ body {
     /* transform: scaleX(0.8) translate(-12.5%); */
 
     margin: 0;
-    background-color: black;
+    background-color: #222;
     color: white;
     overflow: hidden;
     text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
 }
 
 .highlight {
     color: #ffbf00;
+}
+
+h3 {
+    flex-grow: 0;
+    margin: 0.5em;
+    padding: 0;
 }
 
 a {
@@ -31,4 +42,5 @@ iframe {
     height: 100vh;
     overflow-x: hidden;
     border: none;
+    flex-grow: 1;
 }
