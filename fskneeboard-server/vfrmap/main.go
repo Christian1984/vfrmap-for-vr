@@ -215,41 +215,58 @@ func main() {
 	go func() {
 		charts.UpdateIndex()
 
+		getContentType := func(requestedResource string) string {
+			split := strings.Split(requestedResource, ".")
+			extension := split[len(split)-1]
+
+			switch extension {
+			case "css":
+				return "text/css"
+			case "js":
+				return "text/javascript"
+			case "html":
+				return "text/html"
+			default:
+				return "text/plain"
+			}
+		}
+
 		setHeaders := func(contentType string, w http.ResponseWriter) {
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 			w.Header().Set("Pragma", "no-cache")
 			w.Header().Set("Expires", "0")
-			//w.Header().Set("Content-Type", contentType)
+			w.Header().Set("Content-Type", contentType)
 		}
 
-		sendResponse := func(contentType string, w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte) {
+		sendResponse := func(w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte) {
+			contentType := getContentType(requestedResource)
 			setHeaders(contentType, w)
 
 			if _, err = os.Stat(filePath); os.IsNotExist(err) {
-				fmt.Println("use embedded", requestedResource)
+				//fmt.Println("use embedded", requestedResource)
 				w.Write(asset)
 			} else {
-				fmt.Println("use local", filePath)
+				//fmt.Println("use local", filePath)
 				http.ServeFile(w, r, filePath)
 			}
 		}
 
 		vfrmap := func(w http.ResponseWriter, r *http.Request) {
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "index.html")
-			sendResponse("text/html", w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
+			sendResponse(w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/")
-			fmt.Println("requestedResource", requestedResource)
+			//fmt.Println("requestedResource", requestedResource)
 			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
-			sendResponse("text/html", w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
+			sendResponse(w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
 		}
 
 		chartsIndex := func(w http.ResponseWriter, r *http.Request) {
-			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/chartsIndex/")
-			fmt.Println("requestedResource", requestedResource)
+			//requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/chartsIndex/")
+			//fmt.Println("requestedResource", requestedResource)
 			setHeaders("application/json", w)
 			charts.Json(w, r)
 		}
@@ -404,9 +421,9 @@ func main() {
 			fmt.Println("Exiting...")
 			if s != nil {
 				s.Close()
-				if err != nil {
+				/*if err != nil {
 					panic(err)
-				}
+				}*/
 			}
 			os.Exit(0)
 
