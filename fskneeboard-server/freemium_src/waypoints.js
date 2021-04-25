@@ -3,17 +3,12 @@ class Waypoints {
         //intentionally left empty
     }
 
-    show_premium_feature_info() {
-        //TODO
-        console.log("")
-    }
-
     is_mode_available() {
         return false;
     }
 
-    activate_mode_failed() {
-        this.show_premium_feature_info();
+    activate_mode_failed(show_infobox_callback) {
+        show_infobox_callback(false);
     }
 
     load_trackdata() {
@@ -25,7 +20,7 @@ class Waypoints {
     }
 
     add_marker() {
-        this.show_premium_feature_info();
+        //intentionally left empty
     }
 
     update_track() {

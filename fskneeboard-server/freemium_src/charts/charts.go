@@ -4,10 +4,6 @@ import (
 	"net/http"
 )
 
-type FileIndex struct {
-	Files []string
-}
-
 func UpdateIndex() []string {
 	return []string{}
 }

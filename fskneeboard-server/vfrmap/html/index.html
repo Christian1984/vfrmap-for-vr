@@ -164,6 +164,49 @@
                 border-color: white;
                 background-color: white;
             }
+
+            #premium-info {
+                top:1em;
+                right: 1em;
+                bottom: 1em;
+                left: 1em;
+                background-color: black;
+                color: white;
+                position: fixed;
+                z-index: 10000;
+                overflow: hidden;
+            }
+            #premium-info #premium-info-wrapper {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+            }
+
+            #premium-info .highlight,
+            #premium-info a {
+                color: #ffbf00;
+                text-decoration: none;
+            }
+
+            #premium-info iframe {
+                width: 100%;
+                height: 100vh;
+                overflow-x: hidden;
+                border: none;
+            }
+
+            #premium-info #premium-info-close {
+                position: absolute;
+                top: 0.25em;
+                right: 1em;
+                color: #ffbf00;
+                font-size: large;
+            }
+
+            #premium-info.hidden {
+                display: none;
+            }
         </style>
 
         <script>
@@ -564,7 +607,7 @@
 
                         if (mode_options.mode != MODES.teleport) {
                             if (!waypoints.is_mode_available()) {
-                                waypoints.activate_mode_failed();
+                                waypoints.activate_mode_failed(hide_premium_info);
                                 activate_default_mode();
                             }
                             else {
@@ -583,6 +626,19 @@
                     }
                 }
             }
+
+            function hide_premium_info(hide = true) {
+                const infobox = document.querySelector("#premium-info");
+                if (!infobox) return;
+
+                if (hide) {
+                    infobox.classList.add("hidden");
+                }
+                else {
+                    infobox.classList.remove("hidden");
+                }
+            }
+
 
             document.addEventListener("DOMContentLoaded", function(event) {
                 plane_popup = {
@@ -632,6 +688,16 @@
             <span><i class="fas fa-trash"></i></span>
             |
             <span id="mode-controls-teleport"><i class="fas fa-magic"></i></span>
+        </div>
+
+        <div id="premium-info" class="hidden">
+            <div id="premium-info-wrapper">
+                <a href="#" id="premium-info-close" onclick="hide_premium_info()">[x]</a>
+                <h3>The <span class="highlight">Waypoints and Tracks</span> are adavanced features that are part of <span class="highlight">FSKneeboard PRO</span>.</h3>
+                <h3>Learn more below or purchase your copy of <span class="highlight">FSKneeboard PRO</span> at <a href="https://fskneeboard.com/buy-now">https://fskneeboard.com/buy-now</a></h3>
+                <h3><span class="highlight">FSKneeboard PRO</span> comes with the fairest pricing model on the market: <span class="highlight">YOU PAY WHAT YOU WANT!</span></h3>
+                <iframe src="https://fskneeboard.com/maps-explained/"></iframe>
+            </div>
         </div>
     </body>
 </html>
