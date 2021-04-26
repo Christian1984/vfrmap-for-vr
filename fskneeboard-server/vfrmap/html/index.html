@@ -568,7 +568,6 @@
                 if (!follow_plane
                     && last_long !== undefined && last_long !== null
                     && last_lat !== undefined && last_lat !== null) {
-                        console.log("panTo:", last_lat, last_long);
                     map.panTo(L.latLng(last_lat, last_long));
                 }
 
@@ -580,7 +579,7 @@
                 const nav_data = localStorage.getItem('b_nav_data');
                 if (nav_data !== undefined && nav_data !== null) {
                     const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
-                    if (nav_data_cb) {
+                    if (nav_data_cb && nav_data == "false") {
                         nav_data_cb.click();
                     }
                 }
@@ -632,7 +631,6 @@
                 }
 
                 const premium_info_close = document.querySelector("#premium-info-close");
-                console.log(premium_info_close);
                 if (premium_info_close) {
                     premium_info_close.addEventListener("click", (e) => {
                         e.preventDefault();
