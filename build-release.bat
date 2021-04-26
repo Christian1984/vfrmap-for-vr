@@ -1,5 +1,7 @@
 
 @echo off
+echo BUILD README.pdf MANUALLY!!!
+echo ============================
 echo Preparing...
 del /s /q dist\*.* >nul 2>&1
 rmdir /s /q dist\ >nul 2>&1
@@ -7,7 +9,7 @@ rmdir /s /q dist\ >nul 2>&1
 echo Build Ingame Panel...
 cd fskneeboard-panel\
 
-rem call build.bat
+call build.bat
 
 echo Build FSKneeboard FREE...
 cd ..\fskneeboard-server\
@@ -31,13 +33,21 @@ del /s /q ..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\Bu
 rmdir /s /q ..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\Build\ >nul 2>&1
 
 robocopy .\charts\ ..\dist\pro\fskneeboard-server\charts traffic-pattern.png /NFL /NDL /NJH /NJS /nc /ns /np
+
+echo Creating hints...
 echo Convert your charts to .png-files and copy them here! > ..\dist\pro\fskneeboard-server\charts\copy-your-charts-here.txt
 echo Place your fskneeboard.lic license file right here inside this folder! > ..\dist\pro\fskneeboard-server\copy-your-license-file-here.txt
 
-echo Copy README.pdf
+echo Copying README.pdf...
 robocopy ..\ ..\dist\free\ README.pdf /NFL /NDL /NJH /NJS /nc /ns /np
 robocopy ..\ ..\dist\pro\ README.pdf /NFL /NDL /NJH /NJS /nc /ns /np
 
+echo Zipping...
+cd ..\dist
+powershell -Command "Compress-Archive .\free\* .\fskneeboard-free"
+powershell -Command "Compress-Archive .\pro\* .\fskneeboard-pro"
+
+cd ..
 
 echo BUILD FINISHED!
 
