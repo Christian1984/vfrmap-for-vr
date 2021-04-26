@@ -3,6 +3,7 @@
 **/autosave/*.FLT
 **/autosave/*.FSSAVE
 **/autosave/*.SPB
+/dist
 fskneeboard-server/charts/*.PNG
 .env
 fskneeboard.exe
@@ -14,3 +15,6 @@ SimConnect.dll
 push.sh
 bindata.go
 *.lic
+*.pdf
+
+!fskneeboard-server/charts/traffic-pattern.png
