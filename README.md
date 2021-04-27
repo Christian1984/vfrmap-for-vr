@@ -36,6 +36,8 @@ If you like it, please let me know and share it with other VR pilots :-)
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 # Screenshots
 
 ![Toolbar Icon](screenshots/fskneeboard-1.png)
@@ -67,6 +69,8 @@ Alternatively you may decide to "go pro" at a Pay-What-You-Want-Price! It's real
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 # Features
 
 - The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
@@ -97,29 +101,39 @@ The mod projects consists of two components:
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 # Installation
 
 Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/releases)
 
 ## Server
 
-Place the contents of `fskneeboard-server` file somewhere convenient (like C:\Tools\fskneeboard\ ).
+Place the contents of `fskneeboard-server` file somewhere convenient (like `C:\Tools\fskneeboard\?  ).
 
 ![Server Installation](screenshots/fskneeboard-install-server-1.png)
+
+<div style="page-break-after: always;"></div>
 
 Afterwards, your `fskneeboard-server` folder should look like this:
 
 ![Server Installation - Done](screenshots/fskneeboard-install-server-2.png)
 
+<div style="page-break-after: always;"></div>
+
 If you have purchased FSKneeboard PRO make sure to also place your fskneeboard.lic-License file here! Your finished PRO-installation should look like this:
 
 ![Server Installation - FSKneeboard PRO - Done](screenshots/fskneeboard-pro-install-server-2.png)
+
+<div style="page-break-after: always;"></div>
 
 ## Client
 
 Place the folder `christian1984-ingamepanel-fskneeboard` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
 
 ![Panel Installation](screenshots/fskneeboard-install-panel-1.png)
+
+<div style="page-break-after: always;"></div>
 
 When finished, your Community folder should look like this (though there may be more than one extension installed, obviously).
 
@@ -131,12 +145,19 @@ Please remove **all files** from server directory and `christian1984-ingamepanel
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 # Usage
 
-- Start `fskneeboard.exe`. You can do that before or after you start Microsoft Flight Simulator. (Since Version 1.1 there is no particular order to start the server anymore.)
+- Simply start `fskneeboard.exe`! No other action required. FSKneeboard will also try to launch Flight Simulator for you! You can prevent FSKneeboard from starting Flight Simulator by calling it with option `--nofs`. Simply type `fskneeboard.exe --nofs` instead. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--nofs` to the end.)
+
+![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut.png)
+
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
+
+<div style="page-break-after: always;"></div>
 
 ## Map Viewer
 
@@ -146,19 +167,27 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
+<div style="page-break-after: always;"></div>
+
 ## Charts Viewer
 
 FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format. You can navigate the charts by either using the toolbar on the top or by dragging to pan the map around. You can also use your mouse wheel to zoom. 
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
+<div style="page-break-after: always;"></div>
+
 Make sure place your charts inside the `charts` folder inside the server-directory.
 
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
 
+<div style="page-break-after: always;"></div>
+
 Your charts folder should look like this:
 
 ![Inside Your Charts Folder](screenshots/fskneeboard-pro-charts-2.png)
+
+<div style="page-break-after: always;"></div>
 
 ## Notepad
 
@@ -167,6 +196,8 @@ Notepad is another feature that FSKneeboard PRO users have access to. It allows 
 ![Map Viewer](screenshots/fskneeboard-notepad-legend.png)
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 # Advanced Configuration
 
