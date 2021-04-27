@@ -1,0 +1,46 @@
+html, body {
+    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+html {
+    /* compensate for weird in-game-browser scaling, step 1 */
+    /* width: 125%; */
+}
+
+body {
+    /* compensate for weird in-game-browser scaling, step 2 */
+    /* transform: scaleX(0.8) translate(-12.5%); */
+
+    margin: 0;
+    background-color: #222;
+    color: white;
+    overflow: hidden;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.highlight {
+    color: #ffbf00;
+}
+
+h3 {
+    flex-grow: 0;
+    margin: 0.5em;
+    padding: 0;
+}
+
+a {
+    color: #ffbf00;
+    text-decoration: none;
+}
+
+iframe {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    border: none;
+    flex-grow: 1;
+}

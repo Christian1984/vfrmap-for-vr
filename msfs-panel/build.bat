@@ -1,2 +1,0 @@
-"%MSFS_SDK%\Tools\bin\fspackagetool.exe" "christian1984-ingamepanel-vfrmapforvr\Build\christian1984-ingamepanel-vfrmapforvr.xml" -nomirroring
-copy /Y "christian1984-ingamepanel-vfrmapforvr\Build\Packages\christian1984-ingamepanel-vfrmapforvr\Build\christian1984-ingamepanel-vfrmapforvr.spb" "christian1984-ingamepanel-vfrmapforvr\InGamePanels"
