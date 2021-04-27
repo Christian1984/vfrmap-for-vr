@@ -6,7 +6,7 @@ This project (formerly known as VFR Map For VR) adds a helpful ingame panel to y
 - a Charts Viewer<sup>\*</sup> and
 - a Notepad<sup>\*</sup>
 
-right into your cockpit! This is is especially helpful for those of us who like to fly in VR (and thus not being able to look on a physical kneeboard, tablet or second screen).
+right into your cockpit! This is is especially helpful for those of us who like to fly in VR (and thus not being able to look on a physical kneeboard, tablet, or second screen).
 
 I made this mod for myself and for now, it does exactly what I want. And since the latest release, it does even more stuff that you guys, the community, asked for!
 
@@ -53,19 +53,19 @@ The Mod consists of **TWO PARTS(!)**: a *server* and an *ingame-panel* that you 
 
 It's dead simple! But if you only install the panel to the community folder and ignore the server this mod won't run and may appear "broken" to you!
 
-**Some malware- and virus-scanners detect FSKneeboard.exe as a virus! This is a false positive and known issue. Please read below ["HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?"](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) to learn more!**
+**Some malware- and virus scanners detect FSKneeboard.exe as a virus! This is a false positive and known issue. Please read below ["HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?"](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) to learn more!**
 
 ---
 
 # Support Your Modders :-)
 
-If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section. It allows us to keep developing addons and mods like this ones and making them available for free. Any amount is welcome! Thank you.
+If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section. It allows us to keep developing addons and mods like these ones and making them available for free. Any amount is welcome! Thank you.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
 
 ## Go PRO
 
-Alternatively you may decide to "go pro" at a Pay-What-You-Want-Price! It's really your call! You'll unlock all features of FSKneeboard plus you support the mod development. Also, you'll make a 1-year-old and and a 5-year-old very, very happy, as I can buy them more ice cream :-)
+Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's really your call! You'll unlock all features of FSKneeboard plus you support the mod development. Also, you'll make a 1-year-old and a 5-year-old very, very happy, as I can buy them more ice cream :-)
 
 ---
 
@@ -74,8 +74,8 @@ Alternatively you may decide to "go pro" at a Pay-What-You-Want-Price! It's real
 # Features
 
 - The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
-- Map resolution etc. is optimized for VR use. Fair warning: On desktop browsers the map may look quite low res and UI elements may appear too big and stretched (for adjustments see "Advanced Usage" below).
-- Hide your own airplane on the map for a fully fledged "paper map on kneeboard"-VFR-navigation feeling
+- Map resolution etc. is optimized for VR use.
+- Hide your own airplane on the map for a fully-fledged "paper map on kneeboard"-VFR navigation feeling
 - Toggle to show and automatically follow your airplane on the map for a more "GPS"-ish style of navigation
 - Five different map types
 - Navigation data overlay
@@ -89,7 +89,7 @@ Alternatively you may decide to "go pro" at a Pay-What-You-Want-Price! It's real
 
 # Components
 
-The mod projects consists of two components:
+The mod project consists of two components:
 
 ## Server
 
@@ -109,13 +109,13 @@ Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/rele
 
 ## Server
 
-Place the contents of `fskneeboard-server` file somewhere convenient (like `C:\Tools\fskneeboard\?  ).
+Place the contents of `fskneeboard-server` file somewhere convenient (like `C:\Tools\fskneeboard\`).
 
 ![Server Installation](screenshots/fskneeboard-install-server-1.png)
 
 <div style="page-break-after: always;"></div>
 
-Afterwards, your `fskneeboard-server` folder should look like this:
+Afterward, your `fskneeboard-server` folder should look like this:
 
 ![Server Installation - Done](screenshots/fskneeboard-install-server-2.png)
 
@@ -141,7 +141,7 @@ When finished, your Community folder should look like this (though there may be 
 
 ## Upgrading to a New Version
 
-Please remove **all files** from server directory and `christian1984-ingamepanel-fskneeboard` from your community folder, before installing a new version. Do not "copy over". No excuses! Old files may interfere with new once and break the mod. Just do it, but keep your license file :-)
+Please remove **all files** from the server directory and `christian1984-ingamepanel-fskneeboard` from your community folder, before installing a new version. Do not "copy over". No excuses! Old files may interfere with new ones and break the mod. Just do it, but keep your license file :-)
 
 ---
 
@@ -149,7 +149,9 @@ Please remove **all files** from server directory and `christian1984-ingamepanel
 
 # Usage
 
-- Simply start `fskneeboard.exe`! No other action required. FSKneeboard will also try to launch Flight Simulator for you! You can prevent FSKneeboard from starting Flight Simulator by calling it with option `--nofs`. Simply type `fskneeboard.exe --nofs` instead. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--nofs` to the end.)
+- Simply start `fskneeboard.exe`! No other action is required. FSKneeboard will also try to launch Flight Simulator for you!
+
+- You can prevent FSKneeboard from starting Flight Simulator by calling it with option `--nofs`. Simply type `fskneeboard.exe --nofs` instead. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--nofs` to the end.)
 
 ![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut.png)
 
@@ -163,7 +165,7 @@ Please remove **all files** from server directory and `christian1984-ingamepanel
 
 The map is the core component of FSKneeboard and available to FREE and PRO users alike. It contains several map modes as well as a representation of your own aircraft that you may also turn off so that you can "navigate by hand" on bush trips and the likes.
 
-Owners of FSKneeboard PRO can also access the waypoint feature, which allows you to manually place waypoints on the map. A track will be automatically added between waypoints and flags will show you informtion about the distance to that waypoint and the heading.
+Owners of FSKneeboard PRO can also access the waypoint feature, which allows you to manually place waypoints on the map. A track will be automatically added between waypoints and flags will show you information about the distance to that waypoint and the heading.
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
@@ -177,7 +179,7 @@ FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format.
 
 <div style="page-break-after: always;"></div>
 
-Make sure place your charts inside the `charts` folder inside the server-directory.
+Make sure to place your charts inside the `charts` folder inside the server directory.
 
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
 
@@ -212,15 +214,15 @@ If the text on the map is too large or too small for you to read, copy `vfrmap/h
 # Troubleshooting
 
 - "I get errors when I try to start the server!" => This can happen if, for whatever reason, `fskneeboard.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `fskneeboard.exe` is located!
-- "MSFS crashes when I use your mod!" => I've noticed that this can happen when you have multiple extensions running that each add an additional panel/"window" to your flight simulator environment. In that case you will probably have to pick one mod and remove the other. Sorry! I haven't found away around that limitation, yet.
-- "Windows says, FSKneeboard contains a virus!" => That is a false positive and a well-known problem with software written in GO. Please make sure to read the section [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) below.
-- "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!" => Due to limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. There is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add it to this readme file.
+- "MSFS crashes when I use your mod!" => I've noticed that this can happen when you have multiple extensions running that each add an additional panel/"window" to your flight simulator environment. In that case, you will probably have to pick one mod and remove the other. Sorry! I haven't found a way around that limitation, yet.
+- "Windows says FSKneeboard contains a virus!" => That is a false positive and a well-known problem with software written in GO. Please make sure to read the section [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) below.
+- "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!" => Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. There is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
 
 ---
 
 # Roadmap
 
-Here's a list of features that I've planned to implement in the forseable future: 
+Here's a list of features that I've planned to implement in the foreseeable future: 
 
 - Migrate the entire server component from GO to .NET to mitigate false virus alerts
 - Automatically generate waypoints from Flight Simulator's flight plan
@@ -240,7 +242,7 @@ And here are some wishes from the community that I have to check for feasibility
 
 # Attribution
 
-This project uses forks of two amazing community projects. Without them it would have taken me an incredible amount of time building this thing all on my own. Hence, I want to thank the two:
+This project uses forks of two amazing community projects. Without them, it would have taken me an incredible amount of time building this thing all on my own. Hence, I want to thank the two:
 
 - The server is forked from [lian/msfs2020-go](https://github.com/lian/msfs2020-go).
 - The client/ingame panel is forked from [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
@@ -263,7 +265,7 @@ If you decide to support the development of this mod by buying a copy of FSKneeb
 
 # How to Contribute?
 
-If you have suggestions or issues, please feel free to reach out to me or create an issue within the github repository. You may also add stuff yourself. Pull requests are very welcome!
+If you have suggestions or issues, please feel free to reach out to me or create an issue within the Github repository. You may also add stuff yourself. Pull requests are very welcome!
 
 ---
 
@@ -278,11 +280,11 @@ Personal statement:
 > If you don't trust the binary my suggestion would be two-fold:
 >
 > - Step 1: Upload the binaries to virustotal and see how many scanners throw a positive.
-> - Step 2: Clone the repository and build the binary yourself. Everything is open source, hence anyone who knows anything about building software can check the codebase for harmful code...
+> - Step 2: Clone the repository and build the binary yourself. Everything is open-source, hence anyone who knows anything about building software can check the codebase for harmful code...
 >
 > Generally speaking (and that's true for anything you download from the web): If you don't trust the code, don't execute it! Especially NOT with elevated rights(!!!) I can understand anyone who doesn't want to run the software and appreciate how people ask questions instead of simply running the server...
 >
-> At the end of the day, it is your call. If you don't trust me and a binary that is flagged by a virus scanner, I do respect that. It's common sense, and I am not happy with the entire false-positive-situation either. That is why in the mid-term I am planning to migrate the entire server component from GO to .NEt, which should hopefully help to mitigate the issue.
+> At the end of the day, it is your call. If you don't trust me and a binary that is flagged by a virus scanner, I do respect that. It's common sense, and I am not happy with the entire false-positive situation either. That is why in the mid-term I am planning to migrate the entire server component from GO to .NET, which should hopefully help to mitigate the issue.
 
 However, here's a virus report from virustotal for the binaries of Version 1.0.3. Please note how many virus scanners do NOT flag the server as a positive. Please upload your own copy of FSKneeboard to virustotal to see the results of the latest version for yourself.
 
@@ -292,6 +294,6 @@ However, here's a virus report from virustotal for the binaries of Version 1.0.3
 
 # Support Your Modders :-)
 
-If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section above. It allows us to keep developing addons and mods like this ones and making them available for free. Any amount is welcome! Thank you.
+If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section above. It allows us to keep developing addons and mods like these ones and making them available for free. Any amount is welcome! Thank you.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
