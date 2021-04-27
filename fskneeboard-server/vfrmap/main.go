@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"strings"
@@ -112,6 +113,7 @@ var productName string
 
 var disableTeleport bool
 var devMode bool
+var nofs bool
 
 var verbose bool
 var httpListen string
@@ -121,6 +123,7 @@ func main() {
 	flag.StringVar(&httpListen, "listen", "0.0.0.0:9000", "http listen")
 	flag.BoolVar(&disableTeleport, "disable-teleport", false, "disable teleport")
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
+	flag.BoolVar(&nofs, "nofs", false, "prevent FSKneeboard from starting Flight Simulator")
 	flag.Parse()
 
 	bPro = pro == "true"
@@ -152,7 +155,20 @@ func main() {
 		fmt.Println("")
 	}
 
-	// wait for flight simulator
+	// starting Flight Simulator
+	if nofs {
+		fmt.Println("FSKneeboard started with --nofs. If you haven't already, please start Flight Simulator manually!")
+	} else {
+		fmt.Println("Starting Flight Simulator... Just sit tight :-)")
+		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App \"-FastLaunch\"")
+		fserr := cmd.Start()
+		if fserr != nil {
+			fmt.Println("WARNING: Flight Simulator could not be started. Please start Flight Simulator manually!")
+			fmt.Println(fserr.Error())
+		}
+	}
+
+	// wait for Flight Simulator
 	var s *simconnect.SimConnect
 	var err error
 
