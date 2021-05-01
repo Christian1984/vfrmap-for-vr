@@ -175,7 +175,7 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format. You can navigate the charts by either using the toolbar on the top or by dragging to pan the map around. You can also use your mouse wheel to zoom. 
 
-![Map Viewer](screenshots/fskneeboard-map-legend.png)
+![Charts Viewer](screenshots/fskneeboard-charts-legend.png)
 
 <div style="page-break-after: always;"></div>
 
