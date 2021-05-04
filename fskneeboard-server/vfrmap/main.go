@@ -297,6 +297,11 @@ func main() {
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
 		http.HandleFunc("/", vfrmap)
 
+		if devMode {
+			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/CustomPanel"))
+			http.Handle("/test/", http.StripPrefix("/test/", testServer))
+		}
+
 		err := http.ListenAndServe(httpListen, nil)
 		if err != nil {
 			panic(err)

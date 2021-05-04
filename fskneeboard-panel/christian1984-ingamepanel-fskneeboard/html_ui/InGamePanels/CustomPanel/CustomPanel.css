@@ -1,4 +1,10 @@
 ﻿/** This mixin makes a single line element fit exactly on the Roboto font for easier integration. */
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
 div#WarningMessage {
   position: absolute;
   top: 100px;
