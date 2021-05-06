@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/SCSS/common.css" />
     <link rel="stylesheet" href="CustomPanel.css" />
+    <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css">
 
     <script type="text/javascript" src="/JS/coherent.js"></script>
     <script type="text/javascript" src="/JS/common.js"></script>
@@ -18,6 +19,8 @@
     <link rel="import" href="/templates/ingameUi/ingameUi.html" />
     <link rel="import" href="/templates/ingameUiHeader/ingameUiHeader.html" />
     <link rel="import" href="/templates/NewListButton/NewListButton.html" />
+
+    <script src="http://localhost:9000/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="/JS/debug.js"></script>
     <script type="text/javascript" src="CustomPanel.js"></script>
@@ -34,10 +37,10 @@
                         <span id="switch_notepad">Notepad</span>
                     </span>
                     <span id="tools">
-                        <span id="zoom_out">-</span>
-                        <span id="zoom_in">+</span>
-                        <span id="stretch">&gt;</span>
-                        <span id="unstretch">&lt;</span>
+                        <span id="zoom_out"><i class="fas fa-compress-arrows-alt"></i></span>
+                        <span id="zoom_in"><i class="fas fa-expand-arrows-alt"></i></span>
+                        <span id="stretch"><i class="fas fa-expand-alt" style="transform: rotate(45deg);"></i></span>
+                        <span id="unstretch"><i class="fas fa-compress-alt" style="transform: rotate(45deg);"></i></span>
                     </span>
                 </div>
                 <div id="content_wrap">

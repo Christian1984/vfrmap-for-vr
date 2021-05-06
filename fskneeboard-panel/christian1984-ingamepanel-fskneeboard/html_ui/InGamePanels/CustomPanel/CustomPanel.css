@@ -76,9 +76,9 @@ html, body {
 }
 
 #tools >span {
-    width: 0.5em;
-    height: 0.5em;
-    line-height: 0.5em;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
     text-align: center;
     margin-left: 0.25em;
 }
