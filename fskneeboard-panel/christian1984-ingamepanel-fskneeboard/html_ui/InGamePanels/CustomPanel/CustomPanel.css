@@ -6,7 +6,7 @@ html, body {
     margin: 0;
 }
 
-div#WarningMessage {
+#warning_message {
   position: absolute;
   top: 100px;
   left: 0;
@@ -17,50 +17,42 @@ div#WarningMessage {
   transition: all 1s linear;
 }
 
-div#WarningMessage.show {
+#warning_message.show {
   opacity: 1;
 }
 
-ingame-ui#CustomPanel {
-  position: relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content: center;
-  height:100% !important;
-  width: 100% !important;
+#CustomPanel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   /*border: 2px solid blue !important;*/
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap {
-  display: flex;
-  flex-direction: column;
-  width: 100% !important;
-  height: 100% !important;
-  /*border: 2px solid red !important;*/
-  min-height: 0;
-  min-width: 0;
-  overflow:hidden;
-  align-items: stretch !important;
-  flex: 1 1 auto !important;
+#custom_panel_wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    /*border: 2px solid red !important;*/
+    overflow:hidden;
+    flex: auto;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap div {
+#toolbar {
     display: flex;
     justify-content: space-between;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap div >span {
-    margin: 0;
+#toolbar >span {
     display: flex;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap div >span#tools {
-    align-items: center;
-    margin-right: 0.25em;
-}
-
-ingame-ui#CustomPanel #CustomPanelWrap div >span >span {
+#toolbar >span >span {
     padding: 0.5em;
     border: 1px solid black;
     background-color: white;
@@ -68,11 +60,22 @@ ingame-ui#CustomPanel #CustomPanelWrap div >span >span {
     cursor: pointer;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap div >span >span:hover {
+#toolbar >span >span:hover {
     background-color: lightblue;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap div >span#tools > span {
+#toolbar >span >span.active {
+    border: none;
+    background-color: blue;
+    color: white;
+}
+
+#tools {
+    align-items: center;
+    margin-right: 0.25em;
+}
+
+#tools >span {
     width: 0.5em;
     height: 0.5em;
     line-height: 0.5em;
@@ -80,52 +83,26 @@ ingame-ui#CustomPanel #CustomPanelWrap div >span#tools > span {
     margin-left: 0.25em;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap div span.active {
-    border: none;
-    background-color: blue;
-    color: white;
+#content_wrap {
+    position: relative;
+    flex: auto;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap iframe {
-  flex: 1 1 auto !important;
-  border-top: 3px solid blue;
+#content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
-ingame-ui#CustomPanel #CustomPanelWrap iframe.hidden {
+#content >iframe {
+    width: 100%;
+    height: 100%; 
+    border-top: 3px solid blue;
+}
+
+#content >iframe.hidden {
     display: none;
-}
-
-ingame-ui#CustomPanel #MainDisplay.hidden {
-  display: none;
-}
-
-ingame-ui#CustomPanel #Footer.hidden {
-  display: none;
-}
-
-ingame-ui#CustomPanel .ingameUiContent {
-  /*border: 2px solid green !important;*/
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  overflow:hidden !important;
-  align-items: stretch !important;
-  flex: 1 1 auto !important;
-}
-
-ingame-ui#CustomPanel .ingameUiWrapper {
-  /*border: 2px solid yellow !important;*/
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  overflow:hidden !important;
-  align-items: stretch !important;
-  flex: 1 1 auto !important;
 }
 
