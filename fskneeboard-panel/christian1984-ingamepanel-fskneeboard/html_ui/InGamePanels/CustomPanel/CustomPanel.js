@@ -1,6 +1,8 @@
 let MyTemplateElement;
 let myCheckAutoload;
 
+const zoom_modification_factor = 1.05;
+
 try {
     MyTemplateElement = TemplateElement;
 }
@@ -117,6 +119,8 @@ class IngamePanelCustomPanel extends MyTemplateElement {
 
             this.warning_message = document.getElementById("warning_message");
     
+            this.content_div = document.getElementById("content");
+
             this.iframe_map = document.getElementById("iframe_map");
             this.iframe_charts = document.getElementById("iframe_charts");
             this.iframe_notepad = document.getElementById("iframe_notepad");
@@ -124,6 +128,13 @@ class IngamePanelCustomPanel extends MyTemplateElement {
             this.switch_map = document.getElementById("switch_map");
             this.switch_charts = document.getElementById("switch_charts");
             this.switch_notepad = document.getElementById("switch_notepad");
+
+            this.zoom_in = document.getElementById("zoom_in");
+            this.zoom_out = document.getElementById("zoom_out");
+            this.stretch = document.getElementById("stretch");
+            this.unstretch = document.getElementById("unstretch");
+
+            this.current_zoom = { x: 1, y: 1 };
     
             this.hide_all_iframes = function() {
                 self.iframe_map.classList.add("hidden");
@@ -156,6 +167,46 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                 self.unselect_all_buttons();
                 self.iframe_notepad.classList.remove("hidden");
                 self.switch_notepad.classList.add("active");
+            }
+
+            this.apply_zoom = function() {
+                console.log(this.content_div);
+                if (!this.content_div) return;
+
+                console.log(this.current_zoom);
+
+                const offX = 100 * 0.5 * (1 - 1 / this.current_zoom.x);
+                const offY = 100 * 0.5 * (1 - 1 / this.current_zoom.y);
+  
+                this.content_div.style.transform = `scale(${this.current_zoom.x}, ${this.current_zoom.y})`;
+                this.content_div.style.left = `${offX}%`;  
+                this.content_div.style.right = `${offX}%`;
+                this.content_div.style.top = `${offY}%`;
+                this.content_div.style.bottom = `${offY}%`;
+            }
+
+            this.zoom_views = function(zoom_in) {
+                if (zoom_in) {
+                    this.current_zoom.x *= zoom_modification_factor;
+                    this.current_zoom.y *= zoom_modification_factor;
+                }
+                else {
+                    this.current_zoom.x /= zoom_modification_factor;
+                    this.current_zoom.y /= zoom_modification_factor;
+                }
+
+                this.apply_zoom();
+            }
+
+            this.stretch_views = function(stretch) {
+                if (stretch) {
+                    this.current_zoom.x *= zoom_modification_factor;
+                }
+                else {
+                    this.current_zoom.x /= zoom_modification_factor;
+                }
+
+                this.apply_zoom();
             }
     
             if (this.ingameUi) {
@@ -190,6 +241,30 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                     if(self.switch_notepad) {
                         self.switch_notepad.addEventListener("click", () => {
                             self.switch_to_notepad();
+                        });
+                    }
+
+                    if (self.zoom_in) {
+                        self.zoom_in.addEventListener("click", () => {
+                            self.zoom_views(true);
+                        });
+                    }
+
+                    if (self.zoom_out) {
+                        self.zoom_out.addEventListener("click", () => {
+                            self.zoom_views(false);
+                        });
+                    }
+
+                    if (self.stretch) {
+                        self.stretch.addEventListener("click", () => {
+                            self.stretch_views(true);
+                        });
+                    }
+
+                    if (self.unstretch) {
+                        self.unstretch.addEventListener("click", () => {
+                            self.stretch_views(false);
                         });
                     }
                 });
