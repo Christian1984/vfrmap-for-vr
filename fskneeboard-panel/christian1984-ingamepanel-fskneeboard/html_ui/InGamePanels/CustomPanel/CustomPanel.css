@@ -5,6 +5,7 @@ html, body {
     padding: 0;
     margin: 0;
 }
+
 div#WarningMessage {
   position: absolute;
   top: 100px;
@@ -15,9 +16,11 @@ div#WarningMessage {
   text-align: center;
   transition: all 1s linear;
 }
+
 div#WarningMessage.show {
   opacity: 1;
 }
+
 ingame-ui#CustomPanel {
   position: relative;
   display:flex;
@@ -28,6 +31,7 @@ ingame-ui#CustomPanel {
   width: 100% !important;
   /*border: 2px solid blue !important;*/
 }
+
 ingame-ui#CustomPanel #CustomPanelWrap {
   display: flex;
   flex-direction: column;
@@ -40,34 +44,65 @@ ingame-ui#CustomPanel #CustomPanelWrap {
   align-items: stretch !important;
   flex: 1 1 auto !important;
 }
+
 ingame-ui#CustomPanel #CustomPanelWrap div {
     display: flex;
+    justify-content: space-between;
 }
-ingame-ui#CustomPanel #CustomPanelWrap div span {
+
+ingame-ui#CustomPanel #CustomPanelWrap div >span {
     margin: 0;
+    display: flex;
+}
+
+ingame-ui#CustomPanel #CustomPanelWrap div >span#tools {
+    align-items: center;
+    margin-right: 0.25em;
+}
+
+ingame-ui#CustomPanel #CustomPanelWrap div >span >span {
     padding: 0.5em;
     border: 1px solid black;
     background-color: white;
     color: black;
+    cursor: pointer;
 }
+
+ingame-ui#CustomPanel #CustomPanelWrap div >span >span:hover {
+    background-color: lightblue;
+}
+
+ingame-ui#CustomPanel #CustomPanelWrap div >span#tools > span {
+    width: 0.5em;
+    height: 0.5em;
+    line-height: 0.5em;
+    text-align: center;
+    margin-left: 0.25em;
+}
+
 ingame-ui#CustomPanel #CustomPanelWrap div span.active {
     border: none;
     background-color: blue;
     color: white;
 }
+
 ingame-ui#CustomPanel #CustomPanelWrap iframe {
   flex: 1 1 auto !important;
   border-top: 3px solid blue;
 }
+
 ingame-ui#CustomPanel #CustomPanelWrap iframe.hidden {
     display: none;
 }
+
 ingame-ui#CustomPanel #MainDisplay.hidden {
   display: none;
 }
+
 ingame-ui#CustomPanel #Footer.hidden {
   display: none;
 }
+
 ingame-ui#CustomPanel .ingameUiContent {
   /*border: 2px solid green !important;*/
   display: flex !important;
@@ -80,6 +115,7 @@ ingame-ui#CustomPanel .ingameUiContent {
   align-items: stretch !important;
   flex: 1 1 auto !important;
 }
+
 ingame-ui#CustomPanel .ingameUiWrapper {
   /*border: 2px solid yellow !important;*/
   display: flex !important;
@@ -92,3 +128,4 @@ ingame-ui#CustomPanel .ingameUiWrapper {
   align-items: stretch !important;
   flex: 1 1 auto !important;
 }
+
