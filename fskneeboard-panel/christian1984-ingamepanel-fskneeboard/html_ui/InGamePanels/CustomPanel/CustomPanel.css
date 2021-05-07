@@ -81,6 +81,7 @@ html, body {
     line-height: 1em;
     text-align: center;
     margin-left: 0.25em;
+    border-radius: 5px;
 }
 
 #content_wrap {

@@ -133,6 +133,7 @@ class IngamePanelCustomPanel extends MyTemplateElement {
             this.zoom_out = document.getElementById("zoom_out");
             this.stretch = document.getElementById("stretch");
             this.unstretch = document.getElementById("unstretch");
+            this.reset = document.getElementById("reset");
 
             this.current_zoom = { x: 1, y: 1 };
     
@@ -208,6 +209,13 @@ class IngamePanelCustomPanel extends MyTemplateElement {
 
                 this.apply_zoom();
             }
+
+            this.reset_zoom = function() {
+                this.current_zoom.x = 1;
+                this.current_zoom.y = 1;
+
+                this.apply_zoom();
+            }
     
             if (this.ingameUi) {
     
@@ -265,6 +273,12 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                     if (self.unstretch) {
                         self.unstretch.addEventListener("click", () => {
                             self.stretch_views(false);
+                        });
+                    }
+
+                    if (self.reset) {
+                        self.reset.addEventListener("click", () => {
+                            self.reset_zoom();
                         });
                     }
                 });
