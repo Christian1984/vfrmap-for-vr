@@ -22,37 +22,32 @@ html, body {
 }
 
 #CustomPanel {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  /*border: 2px solid blue !important;*/
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /*border: 2px solid red !important;*/
 }
 
 #custom_panel_wrap {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     display: flex;
     flex-direction: column;
-    /*border: 2px solid red !important;*/
     overflow:hidden;
     flex: auto;
+    /*border: 2px solid red !important;*/
 }
 
-#toolbar {
+#custom_panel_toolbar {
     display: flex;
     justify-content: space-between;
 }
 
-#toolbar >span {
+#custom_panel_toolbar >span {
     display: flex;
 }
 
-#toolbar >span >span {
+#custom_panel_toolbar >span >span {
     padding: 0.5em;
     border: 1px solid black;
     background-color: white;
@@ -60,27 +55,23 @@ html, body {
     cursor: pointer;
 }
 
-#toolbar >span >span:hover {
+#custom_panel_toolbar >span >span:hover {
     background-color: lightblue;
 }
 
-#toolbar >span >span.active {
+#custom_panel_toolbar >span >span.active {
     border: none;
     background-color: blue;
     color: white;
 }
 
-#tools {
+#custom_panel_toolbar_tools {
     align-items: center;
-    margin-right: 0.25em;
 }
 
-#tools >span {
-    width: 1em;
-    height: 1em;
-    line-height: 1em;
+#custom_panel_toolbar_tools >span {
     text-align: center;
-    margin-left: 0.25em;
+    margin-right: 0.25em;
     border-radius: 5px;
 }
 
