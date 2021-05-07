@@ -170,6 +170,23 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                 self.switch_notepad.classList.add("active");
             }
 
+            this.save_zoom = function() {
+                localStorage.setItem("zoom", JSON.stringify(this.current_zoom));
+            }
+
+            this.load_zoom = function() {
+                const zoom = localStorage.getItem("zoom");
+
+                if (zoom != null) {
+                    try {
+                        this.current_zoom = JSON.parse(zoom);
+                    }
+                    catch(e) { /* ignore silently */ }
+
+                    this.apply_zoom();
+                }
+            }
+
             this.apply_zoom = function() {
                 console.log(this.content_div);
                 if (!this.content_div) return;
@@ -197,6 +214,7 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                 }
 
                 this.apply_zoom();
+                this.save_zoom();
             }
 
             this.stretch_views = function(stretch) {
@@ -208,6 +226,7 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                 }
 
                 this.apply_zoom();
+                this.save_zoom();
             }
 
             this.reset_zoom = function() {
@@ -215,12 +234,12 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                 this.current_zoom.y = 1;
 
                 this.apply_zoom();
+                this.save_zoom();
             }
-    
+
             if (this.ingameUi) {
-    
+
                 this.ingameUi.addEventListener("panelActive", (e) => {
-    
                     self.panelActive = true;
                     self.warning_message.classList.add("show");
                     if (self.iframe_map) {
@@ -230,10 +249,11 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                     if (self.iframe_charts) {
                         self.iframe_charts.src = 'http://localhost:9000/premium/charts.html';
                     }
+
                     if (self.iframe_notepad) {
                         self.iframe_notepad.src = 'http://localhost:9000/premium/notepad.html';
                     }
-    
+
                     if(self.switch_map) {
                         self.switch_map.addEventListener("click", () => {
                             self.switch_to_map();
@@ -281,6 +301,8 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                             self.reset_zoom();
                         });
                     }
+
+                    self.load_zoom();
                 });
     
                 this.ingameUi.addEventListener("panelInactive", (e) => {
