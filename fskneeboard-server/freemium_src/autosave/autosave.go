@@ -4,6 +4,6 @@ import (
 	"vfrmap-for-vr/simconnect"
 )
 
-func CreateAutosave(s *simconnect.SimConnect, verbose bool) {
+func CreateAutosave(s *simconnect.SimConnect, savesToKeep int, verbose bool) {
 	return
 }
