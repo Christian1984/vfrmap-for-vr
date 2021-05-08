@@ -149,16 +149,13 @@ Please remove **all files** from the server directory and `christian1984-ingamep
 
 # Usage
 
-- Simply start `fskneeboard.exe`! No other action is required. FSKneeboard will also try to launch Flight Simulator for you!
+- Depending on where you have purchased Microsoft Flight Simulator, you may use launch FSKneeboard's starting:
+    - `fskneeboard-autostart-windows-store.bat` for owners who have purchased via Windows Store (which simply calls `fskneeboard.exe --winstorefs`), or
+    - `fskneeboard-autostart-steam.bat` for owners who have purchased via Steam (which simply calls `fskneeboard.exe --steamfs`)
 
-- By default, FSKneeboard expects the Windows Store verstion of Flight Simulator to be installed. If you own the Steam version you're very likely to encounter an error when running FSKneeboard. Please run `fskneeboard.exe --steamfs` to automatically start the steam version. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--steamfs` to the end.)
+![FSKneeboard - Autostart Scripts](screenshots/fskneeboard-autostart-shortcuts.png)
 
-![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut-steamfs.png)
-
-- You can prevent FSKneeboard from starting Flight Simulator by calling it with option `--nofs`. Simply type `fskneeboard.exe --nofs` instead. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--nofs` to the end.)
-
-![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut.png)
-
+- If you encounter any errors or unexpected behaviour, simply run `fskneeboard.exe`. This has the autostart feature disabled by default. FSKneeboard will now wait until you have started Flight Simulator **manually**!
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.

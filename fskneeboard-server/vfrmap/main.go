@@ -175,7 +175,8 @@ func main() {
 			fmt.Println("IMPORTANT: If you have purchased MSFS on Steam, please run 'fskneeboard.exe --steamfs' as described in the manual under 'Usage'!")
 		}
 	} else {
-		fmt.Println("FSKneeboard started without autostart options --steamfs or --winstorefs. If you haven't already, please start Flight Simulator manually!")
+		fmt.Println("FSKneeboard started without autostart options --steamfs or --winstorefs.")
+		fmt.Println("If you haven't already, please start Flight Simulator manually!")
 	}
 
 	// wait for Flight Simulator
