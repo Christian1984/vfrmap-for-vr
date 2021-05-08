@@ -114,8 +114,8 @@ var productName string
 
 var disableTeleport bool
 var devMode bool
-var nofs bool
 var steamfs bool
+var winstorefs bool
 
 var verbose bool
 var httpListen string
@@ -125,8 +125,8 @@ func main() {
 	flag.StringVar(&httpListen, "listen", "0.0.0.0:9000", "http listen")
 	flag.BoolVar(&disableTeleport, "disable-teleport", false, "disable teleport")
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
-	flag.BoolVar(&nofs, "nofs", false, "prevent FSKneeboard from starting Flight Simulator")
 	flag.BoolVar(&steamfs, "steamfs", false, "start Flight Simulator via Steam")
+	flag.BoolVar(&winstorefs, "winstorefs", false, "start Flight Simulator via Windows Store")
 	flag.Parse()
 
 	bPro = pro == "true"
@@ -159,16 +159,14 @@ func main() {
 	}
 
 	// starting Flight Simulator
-	if nofs {
-		fmt.Println("FSKneeboard started with --nofs. If you haven't already, please start Flight Simulator manually!")
-	} else if steamfs {
+	if steamfs {
 		fmt.Println("Starting Flight Simulator via Steam... Just sit tight :-)")
 		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start steam://run/1250410")
 		fserr := cmd.Start()
 		if fserr != nil {
 			fmt.Println("Flight Simulator could not be started. Please start Flight Simulator manually! (" + fserr.Error() + ")")
 		}
-	} else {
+	} else if winstorefs {
 		fmt.Println("Starting Flight Simulator... Just sit tight :-)")
 		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App -FastLaunch")
 		fserr := cmd.Run()
@@ -176,6 +174,8 @@ func main() {
 			fmt.Println("WARNING: Flight Simulator could not be started. Please start Flight Simulator manually! (" + fserr.Error() + ")")
 			fmt.Println("IMPORTANT: If you have purchased MSFS on Steam, please run 'fskneeboard.exe --steamfs' as described in the manual under 'Usage'!")
 		}
+	} else {
+		fmt.Println("FSKneeboard started without autostart options --steamfs or --winstorefs. If you haven't already, please start Flight Simulator manually!")
 	}
 
 	// wait for Flight Simulator
