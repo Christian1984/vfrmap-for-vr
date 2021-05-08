@@ -19,6 +19,7 @@ import (
 	"time"
 	"unsafe"
 
+	"vfrmap-for-vr/_vendor/premium/autosave"
 	"vfrmap-for-vr/_vendor/premium/charts"
 	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/simconnect"
@@ -117,6 +118,8 @@ var devMode bool
 var steamfs bool
 var winstorefs bool
 
+var autosaveInterval int
+
 var verbose bool
 var httpListen string
 
@@ -127,6 +130,7 @@ func main() {
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.BoolVar(&steamfs, "steamfs", false, "start Flight Simulator via Steam")
 	flag.BoolVar(&winstorefs, "winstorefs", false, "start Flight Simulator via Windows Store")
+	flag.IntVar(&autosaveInterval, "autosave", 0, "set autosave interval in minutes")
 	flag.Parse()
 
 	bPro = pro == "true"
@@ -158,6 +162,19 @@ func main() {
 		fmt.Println("")
 	}
 
+	// autosave info
+	if autosaveInterval > 0 {
+		fmt.Printf("Autosave Interval set to %d minute(s)...\n", autosaveInterval)
+	} else {
+		fmt.Println("INFO: Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flight every 5 minutes...")
+	}
+
+	if !bPro {
+		fmt.Println("PLEASE NOTE: 'Autosave' is a feature available exclisively to FSKneeboard PRO supporters. Please consider supporting the development of FSKneeboard by purchasing a license at https://fskneeboard.com/buy-now/")
+	}
+
+	fmt.Println("")
+
 	// starting Flight Simulator
 	if steamfs {
 		fmt.Println("Starting Flight Simulator via Steam... Just sit tight :-)")
@@ -183,7 +200,7 @@ func main() {
 	var s *simconnect.SimConnect
 	var err error
 
-	fmt.Print("Connecting to Flight Simulator..")
+	fmt.Print("\nConnecting to Flight Simulator..")
 
 	for true {
 		fmt.Print(".")
@@ -327,27 +344,28 @@ func main() {
 		}
 	}()
 
-	//autosaveTick := time.NewTicker(5 * time.Minute)
+	var autosaveTick *time.Ticker
+
+	if autosaveInterval > 0 {
+		autosaveTick = time.NewTicker(time.Duration(autosaveInterval) * time.Minute)
+	} else {
+		autosaveTick = time.NewTicker(9999 * time.Minute)
+	}
+
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
 
 	for {
 		select {
-		/*case <-autosaveTick.C:
-		  if s == nil {
-		      continue
-		  }
+		case <-autosaveTick.C:
+			if s == nil {
+				continue
+			}
 
-		  pwd, err := os.Getwd()
-		  if err == nil {
-		      t := time.Now()
-		      ts := t.Format("2006-01-02T15-04-05")
-		      fn := pwd + "\\autosave\\" + ts + ".FLT"
-		      fmt.Println("Creating Autosave as " + fn)
-		      s.FlightSave(fn, "test", "test");
-		  }
-		*/
+			if bPro && autosaveInterval > 0 {
+				autosave.CreateAutosave(s, true)
+			}
 
 		case <-planePositionTick.C:
 			if s == nil {
