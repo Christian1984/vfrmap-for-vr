@@ -151,6 +151,10 @@ Please remove **all files** from the server directory and `christian1984-ingamep
 
 - Simply start `fskneeboard.exe`! No other action is required. FSKneeboard will also try to launch Flight Simulator for you!
 
+- By default, FSKneeboard expects the Windows Store verstion of Flight Simulator to be installed. If you own the Steam version you're very likely to encounter an error when running FSKneeboard. Please run `fskneeboard.exe --steamfs` to automatically start the steam version. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--steamfs` to the end.)
+
+![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut-steamfs.png)
+
 - You can prevent FSKneeboard from starting Flight Simulator by calling it with option `--nofs`. Simply type `fskneeboard.exe --nofs` instead. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--nofs` to the end.)
 
 ![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut.png)
