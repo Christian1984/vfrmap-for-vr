@@ -6,21 +6,6 @@ html, body {
     margin: 0;
 }
 
-#warning_message {
-  position: absolute;
-  top: 100px;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  opacity: 0;
-  text-align: center;
-  transition: all 1s linear;
-}
-
-#warning_message.show {
-  opacity: 1;
-}
-
 #CustomPanel {
   position: relative;
   width: 100%;
@@ -28,6 +13,23 @@ html, body {
   display: flex;
   flex-direction: column;
   /*border: 2px solid red !important;*/
+}
+
+#warning_message {
+    z-index: -100;
+    opacity: 0;
+    text-align: center;
+    transition: all 3s linear;
+    transition-delay: 3s;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#warning_message.show {
+  opacity: 1;
 }
 
 #custom_panel_wrap {
@@ -92,6 +94,7 @@ html, body {
     width: 100%;
     height: 100%; 
     border-top: 3px solid blue;
+    /* display: none; */
 }
 
 #content >iframe.hidden {
