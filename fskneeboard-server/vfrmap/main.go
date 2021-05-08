@@ -24,6 +24,7 @@ import (
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
+	"vfrmap-for-vr/vfrmap/html/maps"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/websockets"
 )
@@ -268,9 +269,16 @@ func main() {
 			}
 		}
 
-		vfrmap := func(w http.ResponseWriter, r *http.Request) {
+		index := func(w http.ResponseWriter, r *http.Request) {
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "index.html")
 			sendResponse(w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
+		}
+
+		maps := func(w http.ResponseWriter, r *http.Request) {
+			requestedResource := strings.TrimPrefix(r.URL.Path, "/maps/")
+			fmt.Println("requestedResource", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "maps", requestedResource)
+			sendResponse(w, r, filePath, requestedResource, maps.MustAsset(requestedResource))
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
@@ -290,12 +298,13 @@ func main() {
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
+		http.HandleFunc("/maps/", maps)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
 		http.Handle("/fontawesome/", http.StripPrefix("/fontawesome/", fontawesome.FS{}))
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
-		http.HandleFunc("/", vfrmap)
+		http.HandleFunc("/", index)
 
 		if devMode {
 			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/CustomPanel"))
