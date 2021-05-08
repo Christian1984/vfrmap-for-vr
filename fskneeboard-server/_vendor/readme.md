@@ -2,7 +2,7 @@
 
 ## Folder MSFS-SDK
 
-Must contain the MSFS SDK
+Must contain the MSFS SDK. Current SDK: 12.0
 
 ## Folder fontawesome
 
