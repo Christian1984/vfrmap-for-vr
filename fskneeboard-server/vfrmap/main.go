@@ -170,7 +170,7 @@ func main() {
 	}
 
 	if !bPro {
-		fmt.Println("PLEASE NOTE: 'Autosave' is a feature available exclisively to FSKneeboard PRO supporters. Please consider supporting the development of FSKneeboard by purchasing a license at https://fskneeboard.com/buy-now/")
+		fmt.Println("PLEASE NOTE: 'Autosave' is a feature available exclusively to FSKneeboard PRO supporters. Please consider supporting the development of FSKneeboard by purchasing a license at https://fskneeboard.com/buy-now/")
 	}
 
 	fmt.Println("")
