@@ -364,7 +364,7 @@ func main() {
 			}
 
 			if bPro && autosaveInterval > 0 {
-				autosave.CreateAutosave(s, 5, true)
+				autosave.CreateAutosave(s, 5, false)
 			}
 
 		case <-planePositionTick.C:

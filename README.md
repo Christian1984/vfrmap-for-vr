@@ -8,6 +8,8 @@ This project (formerly known as VFR Map For VR) adds a helpful ingame panel to y
 
 right into your cockpit! This is is especially helpful for those of us who like to fly in VR (and thus not being able to look on a physical kneeboard, tablet, or second screen).
 
+Additionally, FSKneeboard adds a very helpful fully automated and configurable Autosave Feature<sup>\*</sup>.
+
 I made this mod for myself and for now, it does exactly what I want. And since the latest release, it does even more stuff that you guys, the community, asked for!
 
 If you like it, please let me know and share it with other VR pilots :-)
@@ -197,6 +199,16 @@ Your charts folder should look like this:
 Notepad is another feature that FSKneeboard PRO users have access to. It allows you to take notes during your flight session by simply drawing on it with your mouse.
 
 ![Map Viewer](screenshots/fskneeboard-notepad-legend.png)
+
+## Autosave
+
+Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
+
+Simply run FSKneeboard with the flag `--autosave <int>` to create a snapshot every `<int>` minutes. For example, run `fskneeboard.exe --autosave 10` to crate one savegame every 10 minutes.
+
+FSKneeboard automatically deletes older snapshots and keep only the latest 5.
+
+If you need to restore a flight, you can find your autosaves inside your FSKneeboard-Server folder in the subdirectory `autosave`, e.g. `C:\Tools\fskneeboard\autosave`.
 
 ---
 
