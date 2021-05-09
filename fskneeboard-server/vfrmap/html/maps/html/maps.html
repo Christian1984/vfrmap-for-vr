@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FSKneeboard - Map</title>
+        <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+        <link rel="stylesheet" href="http://localhost:9000/leafletjs/leaflet.css" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="VFRMap">
+        <link rel="stylesheet" href="maps.css" />
+        <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css">
+        <script src="http://localhost:9000/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="http://localhost:9000/leafletjs/leaflet.js"></script>
+        <script src="http://localhost:9000/leafletjs/leaflet.rotatedMarker.js"></script>
+        <script src="http://localhost:9000/premium/waypoints.js"></script>
+        <script src="maps.js"></script>
+    </head>
+    <body>
+        <div id="map"></div>
+
+        <div style="display:none;">
+            <div id="plane-popup">
+                <p><h3 id="plane-popup-pos"></h3></p>
+                <p><button id="plane-popup-gmap" onclick="open_in_google_maps();">open in google maps</button></p>
+                <p><button id="plane-popup-follow" onclick="toggle_follow();"></button></p>
+            </div>
+
+            <div id="teleport-popup">
+                <p><label for="teleport-popup-gps">GPS:</label><input type="text" id="teleport-popup-gps"></p>
+                <p><label for="teleport-popup-alt">Altitude:</label><input type="text" id="teleport-popup-altitude"></p>
+                <p><button type="button" id="teleport-popup-submit" onclick="teleport_here();">teleport</button></p>
+            </div>
+        </div>
+
+        <div id="hud-controls">
+            <span><input type="checkbox" id="hud-controls-show-airplane" onchange="toggle_airplane_visibility(this);" checked /><label for="hud-controls-show-airplane"><svg style="transform: rotate(-45deg);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.25 249.84" width="1em" version="1.0"><metadata id="metadata9"/><path id="path5724" d="M 247.51404,152.40266 139.05781,71.800946 c 0.80268,-12.451845 1.32473,-40.256266 0.85468,-45.417599 -3.94034,-43.266462 -31.23018,-24.6301193 -31.48335,-5.320367 -0.0693,5.281361 -1.01502,32.598388 -1.10471,50.836622 L 0.2842717,154.37562 0,180.19575 l 110.50058,-50.48239 3.99332,80.29163 -32.042567,22.93816 -0.203845,16.89693 42.271772,-11.59566 0.008,0.1395 42.71311,10.91879 -0.50929,-16.88213 -32.45374,-22.39903 2.61132,-80.35205 111.35995,48.50611 -0.73494,-25.77295 z" fill-rule="evenodd" fill="__COLOR__"/></svg></label></span>
+            <span><button type="button" id="hud-controls-follow-airplane" onclick="center_airplane();"><svg style="margin-top: 0.1em;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 492.589 492.589" width="1em" version="1.1" ><g><path d="M468.467,222.168h-28.329c-9.712-89.679-80.46-161.18-169.71-172.258V24.135c0-13.338-10.791-24.134-24.134-24.134 c-13.311,0-24.117,10.796-24.117,24.134V49.91C132.924,60.988,62.177,132.488,52.482,222.168H24.153 C10.806,222.168,0,232.964,0,246.286c0,13.336,10.806,24.132,24.153,24.132h29.228c12.192,86.816,81.551,155.4,168.797,166.229 v31.804c0,13.336,10.806,24.135,24.117,24.135c13.343,0,24.134-10.799,24.134-24.135v-31.804 c87.228-10.829,156.607-79.413,168.775-166.229h29.264c13.33,0,24.122-10.796,24.122-24.132 C492.589,232.964,481.797,222.168,468.467,222.168z M246.294,398.093c-85.345,0-154.804-69.453-154.804-154.813 c0-85.363,69.459-154.813,154.804-154.813c85.376,0,154.823,69.45,154.823,154.813 C401.117,328.639,331.671,398.093,246.294,398.093z"/><path d="M246.294,176.93c-36.628,0-66.34,29.704-66.34,66.349c0,36.635,29.711,66.349,66.34,66.349 c36.66,0,66.34-29.713,66.34-66.349C312.634,206.635,282.955,176.93,246.294,176.93z"/></g></svg></button></span>
+        </div>
+
+        <div id="mode-controls">
+            <span class="selected"><i class="fas fa-map-marker-alt"></i></span>
+            <span><i class="fas fa-trash"></i></span>
+            |
+            <span id="mode-controls-teleport"><i class="fas fa-magic"></i></span>
+        </div>
+
+        <div id="premium-info" class="hidden">
+            <div id="premium-info-wrapper">
+                <a href="#" id="premium-info-close">[x]</a>
+                <h3><span class="highlight">Waypoints and Tracks</span> are advanced features that are part of <span class="highlight">FSKneeboard PRO</span>.</h3>
+                <h3>Learn more below or purchase your copy of <span class="highlight">FSKneeboard PRO</span> at <a href="https://fskneeboard.com/buy-now">https://fskneeboard.com/buy-now</a></h3>
+                <h3><span class="highlight">FSKneeboard PRO</span> comes with the fairest pricing model on the market: <span class="highlight">YOU PAY WHAT YOU WANT!</span></h3>
+                <iframe src="https://fskneeboard.com/maps-ingame/"></iframe>
+            </div>
+        </div>
+    </body>
+</html>

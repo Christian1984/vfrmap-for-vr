@@ -303,8 +303,8 @@ func main() {
 
 		maps := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/maps/")
-			fmt.Println("requestedResource", requestedResource)
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "maps", requestedResource)
+			//fmt.Println("requestedResource", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "maps", "html", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, maps.MustAsset(requestedResource))
 		}
 
