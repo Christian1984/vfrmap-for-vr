@@ -1,8 +1,6 @@
 let MyTemplateElement;
 let myCheckAutoload;
 
-const zoom_modification_factor = 1.05;
-
 try {
     MyTemplateElement = TemplateElement;
 }

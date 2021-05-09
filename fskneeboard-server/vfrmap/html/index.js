@@ -1,3 +1,5 @@
+const zoom_modification_factor = 1.05;
+
 const content_div = document.getElementById("content");
 
 const iframe_map = document.getElementById("iframe_map");
@@ -33,6 +35,7 @@ function switch_to_map() {
     unselect_all_buttons();
     iframe_map.classList.remove("hidden");
     switch_map.classList.add("active");
+    save_tab(0);
 }
 
 function switch_to_charts() {
@@ -40,6 +43,7 @@ function switch_to_charts() {
     unselect_all_buttons();
     iframe_charts.classList.remove("hidden");
     switch_charts.classList.add("active");
+    save_tab(1);
 }
 
 function switch_to_notepad() {
@@ -47,13 +51,18 @@ function switch_to_notepad() {
     unselect_all_buttons();
     iframe_notepad.classList.remove("hidden");
     switch_notepad.classList.add("active");
+    save_tab(2);
+}
+
+function save_tab(tab_id) {
+    localStorage.setItem("active_tab", tab_id);
 }
 
 function save_zoom() {
     localStorage.setItem("zoom", JSON.stringify(current_zoom));
 }
 
-function load_zoom() {
+function load_state() {
     const zoom = localStorage.getItem("zoom");
 
     if (zoom != null) {
@@ -63,6 +72,22 @@ function load_zoom() {
         catch(e) { /* ignore silently */ }
 
         apply_zoom();
+    }
+
+    const active_tab = localStorage.getItem("active_tab");
+
+    if (active_tab != null) {
+        switch(active_tab) {
+            case "1":
+                switch_to_charts();
+                break;
+            case "2":
+                switch_to_notepad();
+                break;
+            default:
+                switch_to_map();
+                break;
+        }
     }
 }
 
@@ -177,7 +202,7 @@ function init() {
         });
     }
 
-    load_zoom();
+    load_state();
 }
 
 init();
