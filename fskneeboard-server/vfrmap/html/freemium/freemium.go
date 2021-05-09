@@ -1,10 +1,10 @@
-package maps
+package freemium
 
 import (
 	"net/http"
 )
 
-//go:generate go-bindata -pkg maps -o bindata.go -modtime 1 -prefix "html" "html"
+//go:generate go-bindata -pkg freemium -o bindata.go -modtime 1 -prefix "maps" "maps"
 
 type FS struct {
 }

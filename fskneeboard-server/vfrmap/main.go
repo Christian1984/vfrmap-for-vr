@@ -24,8 +24,8 @@ import (
 	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
+	"vfrmap-for-vr/vfrmap/html/freemium"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
-	"vfrmap-for-vr/vfrmap/html/maps"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/websockets"
 )
@@ -297,15 +297,24 @@ func main() {
 		}
 
 		index := func(w http.ResponseWriter, r *http.Request) {
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "index.html")
-			sendResponse(w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
+			requestedResource := strings.TrimPrefix(r.URL.Path, "/")
+			fmt.Println("requestedResource", requestedResource)
+			//fmt.Println("requestedResource", requestedResource)
+			if requestedResource == "" {
+				requestedResource = "index.html"
+			} else if requestedResource == "favicon.ico" {
+				w.Write([]byte{})
+				return
+			}
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", requestedResource)
+			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
 		}
 
-		maps := func(w http.ResponseWriter, r *http.Request) {
-			requestedResource := strings.TrimPrefix(r.URL.Path, "/maps/")
+		freemium := func(w http.ResponseWriter, r *http.Request) {
+			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
 			//fmt.Println("requestedResource", requestedResource)
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "maps", "html", requestedResource)
-			sendResponse(w, r, filePath, requestedResource, maps.MustAsset(requestedResource))
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
+			sendResponse(w, r, filePath, requestedResource, freemium.MustAsset(requestedResource))
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
@@ -325,7 +334,7 @@ func main() {
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
-		http.HandleFunc("/maps/", maps)
+		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
