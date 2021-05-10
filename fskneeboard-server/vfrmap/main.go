@@ -166,7 +166,7 @@ func main() {
 	if autosaveInterval > 0 {
 		fmt.Printf("Autosave Interval set to %d minute(s)...\n", autosaveInterval)
 	} else {
-		fmt.Println("INFO: Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flight every 5 minutes...")
+		fmt.Println("INFO: Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flights every 5 minutes...")
 	}
 
 	if !bPro {
