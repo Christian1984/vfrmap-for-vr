@@ -14,6 +14,7 @@ request_data.exe
 SimConnect.dll
 push.sh
 bindata.go
+latestcheck.json
 *.lic
 *.pdf
 

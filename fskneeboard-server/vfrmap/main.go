@@ -21,6 +21,7 @@ import (
 
 	"vfrmap-for-vr/_vendor/premium/autosave"
 	"vfrmap-for-vr/_vendor/premium/charts"
+	"vfrmap-for-vr/_vendor/premium/common"
 	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
@@ -28,6 +29,8 @@ import (
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/websockets"
+
+	updatechecker "github.com/Christian1984/go-update-checker"
 )
 
 type Report struct {
@@ -117,6 +120,7 @@ var disableTeleport bool
 var devMode bool
 var steamfs bool
 var winstorefs bool
+var noupdatecheck bool
 
 var autosaveInterval int
 
@@ -130,6 +134,7 @@ func main() {
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.BoolVar(&steamfs, "steamfs", false, "start Flight Simulator via Steam")
 	flag.BoolVar(&winstorefs, "winstorefs", false, "start Flight Simulator via Windows Store")
+	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
 	flag.IntVar(&autosaveInterval, "autosave", 0, "set autosave interval in minutes")
 	flag.Parse()
 
@@ -160,6 +165,12 @@ func main() {
 		fmt.Println("Thanks for trying FSKneeboard FREE!")
 		fmt.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
 		fmt.Println("")
+	}
+
+	if !noupdatecheck {
+		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
+		uc.CheckForUpdate(buildVersion)
+		uc.PrintMessage()
 	}
 
 	// autosave info
