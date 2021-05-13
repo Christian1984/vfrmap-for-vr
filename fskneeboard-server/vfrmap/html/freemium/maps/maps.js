@@ -421,6 +421,8 @@ function registerHandlers() {
         });
     }
 
+    //const 
+
     const premium_info_close = document.querySelector("#premium-info-close");
     if (premium_info_close) {
         premium_info_close.addEventListener("click", (e) => {
