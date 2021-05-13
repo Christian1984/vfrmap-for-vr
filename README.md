@@ -264,9 +264,11 @@ This project uses forks of two amazing community projects. Without them, it woul
 
 Great work, guys! Thanks for sharing your work with us!!!
 
-Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
+Panel-Bar Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
 
-Icons provided by [FontAwesome](https://fontawesome.com/license/free).
+Helicopter Icon provided by [SVGRepo](https://www.svgrepo.com/svg/128811/helicopter-bottom-view-silhouette).
+
+Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
 
 ---
 

@@ -92,10 +92,7 @@ function load_state() {
 }
 
 function apply_zoom() {
-    console.log(content_div);
     if (!content_div) return;
-
-    console.log(current_zoom);
 
     const offX = 100 * 0.5 * (1 - 1 / current_zoom.x);
     const offY = 100 * 0.5 * (1 - 1 / current_zoom.y);
