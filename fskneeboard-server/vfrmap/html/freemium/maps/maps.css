@@ -59,16 +59,7 @@ body {
     left: 1em;
 }
 
-.map-controls > span {
-    border-radius: 5px;
-    margin: 0 0.5em;
-}
-
-.map-controls > input[type=checkbox] +label,
-.map-controls > input[type=radio] +label {
-    border-left: none;
-}
-
+.map-controls > span.left,
 .map-controls > input[type=checkbox].left +label,
 .map-controls > input[type=radio].left +label {
     border-left: 1px solid black;
@@ -76,16 +67,25 @@ body {
     margin-left: 0.5em;
 }
 
+.map-controls > span.right,
 .map-controls > input[type=checkbox].right +label,
 .map-controls > input[type=radio].right +label {
     border-radius: 0 5px 5px 0;
     margin-right: 0.5em;
 }
 
+.map-controls > span.left.right,
+.map-controls > input[type=checkbox].left.right +label,
+.map-controls > input[type=radio].left.right +label {
+    border-radius: 5px;
+    margin-right: 0 0.5em;
+}
+
 .map-controls > span,
 .map-controls > input[type=checkbox] +label,
 .map-controls > input[type=radio] +label {
     border: 1px solid black;
+    border-left: none;
     background-color: white;
     width: 2em;
     height: 2em;
