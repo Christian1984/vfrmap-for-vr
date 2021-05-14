@@ -319,7 +319,6 @@ func main() {
 
 		index := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/")
-			fmt.Println("requestedResource", requestedResource)
 			//fmt.Println("requestedResource", requestedResource)
 			if requestedResource == "" {
 				requestedResource = "index.html"
