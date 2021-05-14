@@ -25,7 +25,8 @@ html, body {
     display: flex;
 }
 
-#custom_panel_toolbar >span >span {
+#tab_switches >span,
+#custom_panel_toolbar_tools .toolgroup > span {
     padding: 0.5em;
     border: 1px solid black;
     background-color: white;
@@ -33,11 +34,12 @@ html, body {
     cursor: pointer;
 }
 
-#custom_panel_toolbar >span >span:hover {
+#tab_switches >span:hover,
+#custom_panel_toolbar_tools .toolgroup > span:hover {
     background-color: lightblue;
 }
 
-#custom_panel_toolbar >span >span.active {
+#tab_switches >span.active {
     border: none;
     background-color: blue;
     color: white;
@@ -47,9 +49,26 @@ html, body {
     align-items: center;
 }
 
-#custom_panel_toolbar_tools >span {
-    text-align: center;
+#custom_panel_toolbar_tools .toolgroup {
+    display: flex;
     margin-right: 0.25em;
+}
+
+#custom_panel_toolbar_tools .toolgroup >span {
+    text-align: center;
+    border-left: none;
+}
+
+#custom_panel_toolbar_tools .toolgroup >span:first-child {
+    border-left: 1px solid black;
+    border-radius: 5px 0 0 5px;
+}
+
+#custom_panel_toolbar_tools .toolgroup >span:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+#custom_panel_toolbar_tools .toolgroup >span:first-child:last-child {
     border-radius: 5px;
 }
 
