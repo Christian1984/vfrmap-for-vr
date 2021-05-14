@@ -152,6 +152,7 @@ func main() {
 	exePath, _ := os.Executable()
 
 	if bPro {
+		fmt.Println("=== INFO: License")
 		if !drm.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard-server.exe.")
@@ -162,6 +163,7 @@ func main() {
 			fmt.Println("")
 		}
 	} else {
+		fmt.Println("=== INFO: How to Support the Development FSKneeboard")
 		fmt.Println("Thanks for trying FSKneeboard FREE!")
 		fmt.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
 		fmt.Println("")
@@ -170,10 +172,16 @@ func main() {
 	if !noupdatecheck {
 		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
 		uc.CheckForUpdate(buildVersion)
-		uc.PrintMessage()
+
+		if uc.UpdateAvailable {
+			uc.PrintMessage()
+			fmt.Println("")
+		}
 	}
 
 	// autosave info
+	fmt.Println("=== INFO: Autosave")
+
 	if autosaveInterval > 0 {
 		fmt.Printf("Autosave Interval set to %d minute(s)...\n", autosaveInterval)
 	} else {
@@ -187,6 +195,8 @@ func main() {
 	fmt.Println("")
 
 	// starting Flight Simulator
+	fmt.Println("=== INFO: Flight Simulator Autostart")
+
 	if steamfs {
 		fmt.Println("Starting Flight Simulator via Steam... Just sit tight :-)")
 		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start steam://run/1250410")
