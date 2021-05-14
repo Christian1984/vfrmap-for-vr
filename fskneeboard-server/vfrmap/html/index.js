@@ -43,6 +43,11 @@ function switch_to_charts() {
     unselect_all_buttons();
     iframe_charts.classList.remove("hidden");
     switch_charts.classList.add("active");
+
+    setTimeout(() => {
+        iframe_charts.contentWindow.postMessage("load", "*");
+    }, 1000);
+
     save_tab(1);
 }
 
@@ -51,6 +56,11 @@ function switch_to_notepad() {
     unselect_all_buttons();
     iframe_notepad.classList.remove("hidden");
     switch_notepad.classList.add("active");
+
+    setTimeout(() => {
+        iframe_notepad.contentWindow.postMessage("load", "*");
+    }, 1000);
+    
     save_tab(2);
 }
 
