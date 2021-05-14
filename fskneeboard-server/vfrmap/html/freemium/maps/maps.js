@@ -564,11 +564,16 @@ function hide_premium_info(hide = true) {
     const infobox = document.querySelector("#premium-info");
     if (!infobox) return;
 
+    const infobox_iframe = infobox.querySelector("iframe");
+    if (!infobox_iframe) return;
+
     if (hide) {
         infobox.classList.add("hidden");
+        infobox_iframe.src = "";
     }
     else {
         infobox.classList.remove("hidden");
+        infobox_iframe.src = "https://fskneeboard.com/maps-ingame/";
     }
 }
 
