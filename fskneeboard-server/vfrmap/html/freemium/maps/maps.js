@@ -6,10 +6,9 @@ const MODES = {
     teleport: 2,
 }
 
-const AC_VISIBILITY = {
-    hidden: 0,
-    airplane: 1,
-    helicopter: 2,
+const AC_TYPE = {
+    airplane: 0,
+    helicopter: 1,
 }
 
 const AC_COLOR = {
@@ -30,7 +29,11 @@ let waypoints;
 let follow_plane = false;
 let plane_visible = true;
 let mode_options = { mode: MODES.add_track_markers };
-let ac_visibility_options = { ac_visibility: AC_VISIBILITY.airplane, ac_color: AC_COLOR.black };
+let ac_visibility_options = {
+    ac_visibility: true,
+    ac_type: AC_TYPE.airplane, 
+    ac_color: AC_COLOR.black
+};
 let last_report = {};
 const initial_pos = L.latLng(50.8694,7.1389);
 
@@ -129,7 +132,7 @@ ws.onmessage = function(e) {
 function updateIcon() {
     let iconType = icons.planes;
     
-    if (ac_visibility_options.ac_visibility === AC_VISIBILITY.helicopter) {
+    if (ac_visibility_options.ac_type === AC_TYPE.helicopter) {
         iconType = icons.helicopters;
     }
 
@@ -149,7 +152,7 @@ function updateIcon() {
 
     marker.setIcon(currentIcon);
 
-    set_airplane_marker_visibility(ac_visibility_options.ac_visibility !== AC_VISIBILITY.hidden);
+    set_airplane_marker_visibility(ac_visibility_options.ac_visibility);
 }
 
 function initMap() {
@@ -267,7 +270,7 @@ function initMap() {
         set_follow(false);
     });
 
-    map.on('dragend', function(e) {
+    map.on('moveend', function(e) {
         updateStoredCenter();
     });
 
@@ -299,6 +302,12 @@ function initMap() {
         }
 
         updateIcon();
+    });
+
+    map.whenReady(function() {
+        loadStoredState();
+        registerHandlers();
+        activate_default_mode();
     });
 }
 
@@ -346,6 +355,11 @@ function set_follow(follow) {
 
     follow_plane = follow;
     localStorage.setItem('b_follow', follow);
+
+    if (follow) {
+        ac_visibility_options.ac_visibility = follow
+        save_ac_visibility();
+    }
 }
 
 function toggle_follow() {
@@ -364,17 +378,27 @@ function set_airplane_marker_visibility(visible) {
     }
 
     waypoints.update_track();
+}
 
-    localStorage.setItem("b_show_airplane", visible);
+function update_visibility_buttons() {
+    let rb_hidden = document.querySelector("#ac-visibility-none");
+    let rb_plane = document.querySelector("#ac-visibility-plane");
+    let rb_helicopter = document.querySelector("#ac-visibility-helicopter");
+
+    if (ac_visibility_options.ac_visibility == false) {
+        if (rb_hidden) rb_hidden.click();
+    }
+    else {
+        if (ac_visibility_options.ac_type == AC_TYPE.helicopter) {
+            if (rb_helicopter) rb_helicopter.click();
+        }
+        else {
+            if (rb_plane) rb_plane.click();
+        }
+    }
 }
 
 function center_airplane() {
-    let rb = document.querySelector("#ac-visibility-plane");
-    if (rb) {
-        rb.click();
-    }
-
-    //set_airplane_marker_visibility(true);
     set_follow(true);
 
     let pos = initial_pos;
@@ -384,6 +408,7 @@ function center_airplane() {
     }
 
     map.panTo(pos);
+    update_visibility_buttons();
 }
 
 function updateStoredCenter() {
@@ -392,20 +417,25 @@ function updateStoredCenter() {
     localStorage.setItem("n_last_long", center.lng);
 }
 
-function loadStoredState() {
-    const show_airplane = localStorage.getItem('b_show_airplane');
-    if (show_airplane !== undefined && show_airplane !== null) {
-        set_airplane_marker_visibility(show_airplane == "true");
+function save_ac_visibility() {
+    localStorage.setItem("ac_visibility_options", JSON.stringify(ac_visibility_options));
+}
 
-        const cb = document.querySelector("#hud-controls-show-airplane");
-        if (cb) {
-            cb.checked = show_airplane == "true";
+function loadStoredState() {
+    const stored_vos = localStorage.getItem("ac_visibility_options");
+    if (stored_vos != null) {
+        try {
+            ac_visibility_options = JSON.parse(stored_vos);
+            updateIcon();
+        }
+        catch(e) {
+            /* ignore silently */
         }
     }
 
     const follow = localStorage.getItem('b_follow');
-    if (follow !== undefined && follow !== null) {
-            set_follow(follow == "true" && show_airplane == "true");
+    if (follow != null) {
+        set_follow(follow == "true" && ac_visibility_options.ac_visibility);
     }
     else {
         set_follow(true);
@@ -413,17 +443,18 @@ function loadStoredState() {
 
     const last_long = localStorage.getItem('n_last_long');
     const last_lat = localStorage.getItem('n_last_lat');
-    if (!follow_plane
-        && last_long !== undefined && last_long !== null
-        && last_lat !== undefined && last_lat !== null) {
-        map.panTo(L.latLng(last_lat, last_long));
+
+    if (!follow_plane && last_long != null && last_lat != null) {
+        setTimeout(() => {
+            map.panTo(L.latLng(last_lat, last_long));
+        }, 500);
     }
 
     const zoom = localStorage.getItem('n_zoom');
     if (zoom !== undefined && zoom !== null) {
         map.setZoom(zoom);
     }
-
+    
     const nav_data = localStorage.getItem('b_nav_data');
     if (nav_data !== undefined && nav_data !== null) {
         const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
@@ -438,6 +469,7 @@ function loadStoredState() {
         nav_data_rbs[active_map].click();
     }
 
+    update_visibility_buttons();
     waypoints.load_trackdata();
 }
 
@@ -485,18 +517,21 @@ function registerHandlers() {
     const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input");
     for (let i = 0; i < ac_visibility_control_btns.length; i++) {
         ac_visibility_control_btns[i].addEventListener("click", () => {
+            ac_visibility_options.ac_visibility = true;
+
             switch (ac_visibility_control_btns[i].value) {
                 case "none":
-                    ac_visibility_options.ac_visibility = AC_VISIBILITY.hidden;
+                    ac_visibility_options.ac_visibility = false;
                     break;
                 case "helicopter":
-                    ac_visibility_options.ac_visibility = AC_VISIBILITY.helicopter;
+                    ac_visibility_options.ac_type = AC_TYPE.helicopter;
                     break;
                 default:
-                    ac_visibility_options.ac_visibility = AC_VISIBILITY.airplane;
+                    ac_visibility_options.ac_type = AC_TYPE.airplane;
             }
 
-            updateIcon()
+            updateIcon();
+            save_ac_visibility();
         });
     }
 
@@ -538,7 +573,7 @@ function hide_premium_info(hide = true) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function() {
     plane_popup = {
         main: document.getElementById("plane-popup"),
         pos: document.getElementById("plane-popup-pos"),
@@ -553,7 +588,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
     };
 
     initMap();
-    loadStoredState();
-    registerHandlers();
-    activate_default_mode();
 });
