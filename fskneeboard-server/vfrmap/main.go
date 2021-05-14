@@ -19,13 +19,18 @@ import (
 	"time"
 	"unsafe"
 
+	"vfrmap-for-vr/_vendor/premium/autosave"
 	"vfrmap-for-vr/_vendor/premium/charts"
+	"vfrmap-for-vr/_vendor/premium/common"
 	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
+	"vfrmap-for-vr/vfrmap/html/freemium"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/websockets"
+
+	updatechecker "github.com/Christian1984/go-update-checker"
 )
 
 type Report struct {
@@ -113,7 +118,11 @@ var productName string
 
 var disableTeleport bool
 var devMode bool
-var nofs bool
+var steamfs bool
+var winstorefs bool
+var noupdatecheck bool
+
+var autosaveInterval int
 
 var verbose bool
 var httpListen string
@@ -123,7 +132,10 @@ func main() {
 	flag.StringVar(&httpListen, "listen", "0.0.0.0:9000", "http listen")
 	flag.BoolVar(&disableTeleport, "disable-teleport", false, "disable teleport")
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
-	flag.BoolVar(&nofs, "nofs", false, "prevent FSKneeboard from starting Flight Simulator")
+	flag.BoolVar(&steamfs, "steamfs", false, "start Flight Simulator via Steam")
+	flag.BoolVar(&winstorefs, "winstorefs", false, "start Flight Simulator via Windows Store")
+	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
+	flag.IntVar(&autosaveInterval, "autosave", 0, "set autosave interval in minutes")
 	flag.Parse()
 
 	bPro = pro == "true"
@@ -140,6 +152,7 @@ func main() {
 	exePath, _ := os.Executable()
 
 	if bPro {
+		fmt.Println("=== INFO: License")
 		if !drm.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard-server.exe.")
@@ -150,29 +163,65 @@ func main() {
 			fmt.Println("")
 		}
 	} else {
+		fmt.Println("=== INFO: How to Support the Development of FSKneeboard")
 		fmt.Println("Thanks for trying FSKneeboard FREE!")
 		fmt.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
 		fmt.Println("")
 	}
 
-	// starting Flight Simulator
-	if nofs {
-		fmt.Println("FSKneeboard started with --nofs. If you haven't already, please start Flight Simulator manually!")
+	if !noupdatecheck {
+		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
+		uc.CheckForUpdate(buildVersion)
+
+		if uc.UpdateAvailable {
+			uc.PrintMessage()
+			fmt.Println("")
+		}
+	}
+
+	// autosave info
+	fmt.Println("=== INFO: Autosave")
+
+	if autosaveInterval > 0 {
+		fmt.Printf("Autosave Interval set to %d minute(s)...\n", autosaveInterval)
 	} else {
-		fmt.Println("Starting Flight Simulator... Just sit tight :-)")
-		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App \"-FastLaunch\"")
+		fmt.Println("INFO: Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flights every 5 minutes...")
+	}
+
+	if !bPro {
+		fmt.Println("PLEASE NOTE: 'Autosave' is a feature available exclusively to FSKneeboard PRO supporters. Please consider supporting the development of FSKneeboard by purchasing a license at https://fskneeboard.com/buy-now/")
+	}
+
+	fmt.Println("")
+
+	// starting Flight Simulator
+	fmt.Println("=== INFO: Flight Simulator Autostart")
+
+	if steamfs {
+		fmt.Println("Starting Flight Simulator via Steam... Just sit tight :-)")
+		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start steam://run/1250410")
 		fserr := cmd.Start()
 		if fserr != nil {
-			fmt.Println("WARNING: Flight Simulator could not be started. Please start Flight Simulator manually!")
-			fmt.Println(fserr.Error())
+			fmt.Println("Flight Simulator could not be started. Please start Flight Simulator manually! (" + fserr.Error() + ")")
 		}
+	} else if winstorefs {
+		fmt.Println("Starting Flight Simulator... Just sit tight :-)")
+		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App -FastLaunch")
+		fserr := cmd.Run()
+		if fserr != nil {
+			fmt.Println("WARNING: Flight Simulator could not be started. Please start Flight Simulator manually! (" + fserr.Error() + ")")
+			fmt.Println("IMPORTANT: If you have purchased MSFS on Steam, please run 'fskneeboard.exe --steamfs' as described in the manual under 'Usage'!")
+		}
+	} else {
+		fmt.Println("FSKneeboard started without autostart options --steamfs or --winstorefs.")
+		fmt.Println("If you haven't already, please start Flight Simulator manually!")
 	}
 
 	// wait for Flight Simulator
 	var s *simconnect.SimConnect
 	var err error
 
-	fmt.Print("Connecting to Flight Simulator..")
+	fmt.Print("\nConnecting to Flight Simulator..")
 
 	for true {
 		fmt.Print(".")
@@ -268,9 +317,24 @@ func main() {
 			}
 		}
 
-		vfrmap := func(w http.ResponseWriter, r *http.Request) {
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "index.html")
-			sendResponse(w, r, filePath, "index.html", MustAsset(filepath.Base(filePath)))
+		index := func(w http.ResponseWriter, r *http.Request) {
+			requestedResource := strings.TrimPrefix(r.URL.Path, "/")
+			//fmt.Println("requestedResource", requestedResource)
+			if requestedResource == "" {
+				requestedResource = "index.html"
+			} else if requestedResource == "favicon.ico" {
+				w.Write([]byte{})
+				return
+			}
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", requestedResource)
+			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
+		}
+
+		freemium := func(w http.ResponseWriter, r *http.Request) {
+			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
+			//fmt.Println("requestedResource", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
+			sendResponse(w, r, filePath, requestedResource, freemium.MustAsset(requestedResource))
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
@@ -290,12 +354,18 @@ func main() {
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
+		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
 		http.Handle("/fontawesome/", http.StripPrefix("/fontawesome/", fontawesome.FS{}))
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
-		http.HandleFunc("/", vfrmap)
+		http.HandleFunc("/", index)
+
+		if devMode {
+			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/CustomPanel"))
+			http.Handle("/test/", http.StripPrefix("/test/", testServer))
+		}
 
 		err := http.ListenAndServe(httpListen, nil)
 		if err != nil {
@@ -303,27 +373,28 @@ func main() {
 		}
 	}()
 
-	//autosaveTick := time.NewTicker(5 * time.Minute)
+	var autosaveTick *time.Ticker
+
+	if autosaveInterval > 0 {
+		autosaveTick = time.NewTicker(time.Duration(autosaveInterval) * time.Minute)
+	} else {
+		autosaveTick = time.NewTicker(9999 * time.Minute)
+	}
+
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
 
 	for {
 		select {
-		/*case <-autosaveTick.C:
-		  if s == nil {
-		      continue
-		  }
+		case <-autosaveTick.C:
+			if s == nil {
+				continue
+			}
 
-		  pwd, err := os.Getwd()
-		  if err == nil {
-		      t := time.Now()
-		      ts := t.Format("2006-01-02T15-04-05")
-		      fn := pwd + "\\autosave\\" + ts + ".FLT"
-		      fmt.Println("Creating Autosave as " + fn)
-		      s.FlightSave(fn, "test", "test");
-		  }
-		*/
+			if bPro && autosaveInterval > 0 {
+				autosave.CreateAutosave(s, 5, false)
+			}
 
 		case <-planePositionTick.C:
 			if s == nil {

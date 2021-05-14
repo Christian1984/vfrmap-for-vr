@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/SCSS/common.css" />
     <link rel="stylesheet" href="CustomPanel.css" />
+    <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css">
 
     <script type="text/javascript" src="/JS/coherent.js"></script>
     <script type="text/javascript" src="/JS/common.js"></script>
@@ -19,6 +20,8 @@
     <link rel="import" href="/templates/ingameUiHeader/ingameUiHeader.html" />
     <link rel="import" href="/templates/NewListButton/NewListButton.html" />
 
+    <script src="http://localhost:9000/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
+
     <script type="text/javascript" src="/JS/debug.js"></script>
     <script type="text/javascript" src="CustomPanel.js"></script>
 </head>
@@ -26,27 +29,11 @@
 <body class="border-box">
     <ingamepanel-custom>
         <ingame-ui id="CustomPanel" panel-id="PANEL_CUSTOM_PANEL" title="" class="ingameUiFrame panelInvisible" content-fit="true" min-width="160" min-height="90">
-
-            <div id="CustomPanelWrap">
-                <div>
-                    <span id="switch_map" class="active">Map</span>
-                    <span id="switch_charts">Charts</span>
-                    <span id="switch_notepad">Notepad</span>
-                </div>
-                <iframe id="iframe_map" src=""></iframe>
-                <iframe class="hidden" id="iframe_charts" src=""></iframe>
-                <iframe class="hidden" id="iframe_notepad" src=""></iframe>
+            <iframe id="content_iframe"></iframe>
+            <div id="warning_message">
+                <h1>Not connected to FSKneeboard!</h1>
+                <p>Please make sure that <i>fskneeboard.exe</i> is running.</p>
             </div>
-            <div id="WarningMessage">
-                <h1>Can't Load Map</h1>
-                <p>Please make sure that vfrmap.exe is running.</p>
-            </div>
-            <section id="MainDisplay">
-                header
-            </section>
-            <section id="Footer">
-                footer
-            </section>
         </ingame-ui>
     </ingamepanel-custom>
 </body>

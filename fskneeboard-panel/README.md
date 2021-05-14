@@ -10,6 +10,6 @@ To build the SPB if you have changed UI panel template definition run `build.bat
 
 `SDK\Tools\bin\fspackagetool.exe christian1984-ingamepanel-fskneeboard\Build\christian1984-ingamepanel-fskneeboard.xml -nomirroring`
 
-It will generate the SPB at `christian1984\Build\Packages\christian1984\Build` copy the SPB to `christian1984\InGamePanels`.
+It will generate the SPB at `christian1984-ingamepanel-fskneeboard\Build\Packages\christian1984\Build` copy the SPB to `christian1984-ingamepanel-fskneeboard\InGamePanels`.
 
-Copy the package to community folder BUT DO NOT COPY the `christian1984\Build` directory.
+Copy the package to community folder BUT DO NOT COPY the `christian1984-ingamepanel-fskneeboard\Build` directory.
