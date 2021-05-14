@@ -8,8 +8,6 @@ This project (formerly known as VFR Map For VR) adds a helpful ingame panel to y
 
 right into your cockpit! This is is especially helpful for those of us who like to fly in VR (and thus not being able to look on a physical kneeboard, tablet, or second screen).
 
-Additionally, FSKneeboard adds a very helpful fully automated and configurable Autosave Feature<sup>\*</sup>.
-
 I made this mod for myself and for now, it does exactly what I want. And since the latest release, it does even more stuff that you guys, the community, asked for!
 
 If you like it, please let me know and share it with other VR pilots :-)
@@ -28,7 +26,7 @@ If you like it, please let me know and share it with other VR pilots :-)
 6. [Components](#components)
 7. [Installation](#installation)
 8. [Usage](#usage)
-9. [Advanced Usage](#advanced-usage)
+9. [Advanced Configuration](#advanced-configuration)
 10. [Troubleshooting](#troubleshooting)
 11. [Roadmap](#roadmap)
 12. [Attribution](#attribution)
@@ -84,7 +82,6 @@ Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's rea
 - Add, remove and modify waypoints and tracks on the map<sup>\*</sup>
 - Watch charts and checklists inside the integrated charts viewer<sup>\*</sup>
 - Take notes inflight with your mouse on the integrated notepad<sup>\*</sup>
-- Automatically create snapshots/savegames from your flights every few minutes so you're able to recover Flight Simulator instabilities and crashes (fully configurable, see [Advanced Usage Section](#advanced-usage) for details)<sup>\*</sup>
 
 *(\*) indicates "premium"-features that are available in FSKneeboard PRO, which is available for a Pay-What-You-Want-Price at https://fskneeboard.com/buy-now*
 
@@ -152,13 +149,12 @@ Please remove **all files** from the server directory and `christian1984-ingamep
 
 # Usage
 
-- Depending on where you have purchased Microsoft Flight Simulator, you may use launch FSKneeboard's starting:
-    - `fskneeboard-autostart-windows-store.bat` for owners who have purchased via Windows Store (which simply calls `fskneeboard.exe --winstorefs`), or
-    - `fskneeboard-autostart-steam.bat` for owners who have purchased via Steam (which simply calls `fskneeboard.exe --steamfs`)
+- Simply start `fskneeboard.exe`! No other action is required. FSKneeboard will also try to launch Flight Simulator for you!
 
-![FSKneeboard - Autostart Scripts](screenshots/fskneeboard-autostart-shortcuts.png)
+- You can prevent FSKneeboard from starting Flight Simulator by calling it with option `--nofs`. Simply type `fskneeboard.exe --nofs` instead. (Alternatively, create a shortcut to `fskneeboard.exe` on your desktop, go to Properties and modify the field labeled "target" by adding `--nofs` to the end.)
 
-- If you encounter any errors or unexpected behaviour, simply run `fskneeboard.exe`. This has the autostart feature disabled by default. FSKneeboard will now wait until you have started Flight Simulator **manually**!
+![FSKneeboard - Shortcut with --nofs](screenshots/fskneeboard-shortcut.png)
+
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
 - Place conveniently in your VR space
 - Click "Center Airplane" to initially center the map on your airplane.
@@ -201,28 +197,17 @@ Notepad is another feature that FSKneeboard PRO users have access to. It allows 
 
 ![Map Viewer](screenshots/fskneeboard-notepad-legend.png)
 
-## Autosave
-
-Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
-
-Simply run FSKneeboard with the flag `--autosave <int>` to create a snapshot every `<int>` minutes. For example, run `fskneeboard.exe --autosave 10` to create one savegame every 10 minutes.
-
-FSKneeboard automatically deletes older snapshots and keep only the latest 5.
-
-If you need to restore a flight, you can find your autosaves inside your FSKneeboard-Server folder in the subdirectory `autosave`, e.g. `C:\Tools\fskneeboard\autosave`.
-
 ---
 
 <div style="page-break-after: always;"></div>
 
-# Advanced Usage
+# Advanced Configuration
 
-The FSKneeboard server can be started with several commandline arguments to further customize its behaviour. In general, all you need to do is add them behind your "fskneeboard.exe" shortcut.
+If the text on the map is too large or too small for you to read, copy `vfrmap/html/index.html` (from the github repository) to [your server-directory]\vfrmap\html and scroll to line 266. Set one of the following values:
 
-- `--winstorefs`: Start FSKneeboard together with your Flight Simulator purchased via Windows Store.
-- `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
-- `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
-- `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
+- `let map_resolution = map_resolutions.low;`: Large text on map, low resolution
+- `let map_resolution = map_resolutions.medium;`: Medium sized text on map, medium resolution (recommended for VR usage)
+- `let map_resolution = map_resolutions.high;`: Small text on map, but high resolution (recommended for non-VR usage)
 
 ---
 
@@ -264,11 +249,9 @@ This project uses forks of two amazing community projects. Without them, it woul
 
 Great work, guys! Thanks for sharing your work with us!!!
 
-Panel-Bar Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
+Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
 
-Helicopter Icon provided by [SVGRepo](https://www.svgrepo.com/svg/128811/helicopter-bottom-view-silhouette).
-
-Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
+Icons provided by [FontAwesome](https://fontawesome.com/license/free).
 
 ---
 
