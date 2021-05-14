@@ -163,7 +163,7 @@ func main() {
 			fmt.Println("")
 		}
 	} else {
-		fmt.Println("=== INFO: How to Support the Development FSKneeboard")
+		fmt.Println("=== INFO: How to Support the Development of FSKneeboard")
 		fmt.Println("Thanks for trying FSKneeboard FREE!")
 		fmt.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
 		fmt.Println("")
