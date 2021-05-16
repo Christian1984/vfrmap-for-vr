@@ -205,7 +205,9 @@ Notepad is another feature that FSKneeboard PRO users have access to. It allows 
 
 Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
 
-Simply run FSKneeboard with the flag `--autosave <int>` to create a snapshot every `<int>` minutes. For example, run `fskneeboard.exe --autosave 10` to create one savegame every 10 minutes.
+Simply run FSKneeboard with the flag `--autosave <int>` to create a snapshot every `<int>` minutes. For example, run `fskneeboard.exe --autosave 5` to create one savegame every 5 minutes.
+
+![Autosave Shortcut](screenshots/fskneeboard-autosave.png)
 
 FSKneeboard automatically deletes older snapshots and keep only the latest 5.
 
