@@ -245,7 +245,6 @@ Here's a list of features that I've planned to implement in the foreseeable futu
 - Automatically generate waypoints from Flight Simulator's flight plan
 - Take notes via iPads and then have them synced to your in-sim notepad
 - Allow for multiple notes to be taken, instead of having only one "sheet"
-- Dynamic "in-sim" resolution controls for the map component to mitigate issues with different headsets and allow for better accessibility
 - Embed Twitch Chat / Discord / YouTube(?)
 - (... This could be your wish :-) ...)
 
