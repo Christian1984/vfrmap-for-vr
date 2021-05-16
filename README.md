@@ -304,7 +304,7 @@ Personal statement:
 >
 > At the end of the day, it is your call. If you don't trust me and a binary that is flagged by a virus scanner, I do respect that. It's common sense, and I am not happy with the entire false-positive situation either. That is why in the mid-term I am planning to migrate the entire server component from GO to .NET, which should hopefully help to mitigate the issue.
 
-However, here's a virus [report from virustotal for the binaries of Version 1.2.0](https://www.virustotal.com/gui/file/4f2347052fd7884b808abc42a6367123e81feb6a9b057207bb72269629d7c2fc/detection). Please note how many virus scanners do NOT flag the server as a positive. Please upload your own copy of FSKneeboard to virustotal to see the results of the latest version for yourself.
+However, here's a virus [report from virustotal for the binaries of Version 1.2.0](https://www.virustotal.com/gui/file/7894db6a6b5b70c3430c406c664695623a13a8fe502af3af10972b8727ba7a65/detection). Please note how many virus scanners do NOT flag the server as a positive. Please upload your own copy of FSKneeboard to virustotal to see the results of the latest version for yourself.
 
 ![Virustotal Report of Version 1.2.0](screenshots/virus-total-1-2-0.png)
 
