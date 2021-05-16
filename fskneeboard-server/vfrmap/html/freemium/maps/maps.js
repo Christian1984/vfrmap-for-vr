@@ -217,7 +217,7 @@ function initMap() {
     });
 
     map = new L.Map("map", {
-        layers: [ osm, openaip_cached_basemap ],
+        layers: [ osm ],
         center: pos,
         zoom: 10,
         attributionControl: false,
@@ -459,7 +459,7 @@ function loadStoredState() {
     const nav_data = localStorage.getItem('b_nav_data');
     if (nav_data !== undefined && nav_data !== null) {
         const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
-        if (nav_data_cb && nav_data == "false") {
+        if (nav_data_cb && nav_data == "true") {
             nav_data_cb.click();
         }
     }
