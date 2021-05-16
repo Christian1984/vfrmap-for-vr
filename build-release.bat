@@ -46,6 +46,10 @@ echo Copying README.pdf...
 robocopy ..\ ..\dist\free\ README.pdf /NFL /NDL /NJH /NJS /nc /ns /np
 robocopy ..\ ..\dist\pro\ README.pdf /NFL /NDL /NJH /NJS /nc /ns /np
 
+echo Copying CHANGELOG.md...
+robocopy ..\ ..\dist\free\ CHANGELOG.md /NFL /NDL /NJH /NJS /nc /ns /np
+robocopy ..\ ..\dist\pro\ CHANGELOG.md /NFL /NDL /NJH /NJS /nc /ns /np
+
 echo Zipping...
 cd ..\dist
 powershell -Command "Compress-Archive .\free\* .\fskneeboard-free"

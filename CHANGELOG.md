@@ -1,8 +1,8 @@
-REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
+> REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
-v1.2.0
+# v1.2.0
 
-MAJOR:
+## MAJOR:
 
 - added autosave feature to recover and continue your flights from system instabilities and Flight Simulator crashes (*)
 - added session persistence to the charts viewer, i.e. the active chart and viewer state will be saved when the panel is closed and reopened during a flight (*)
@@ -10,7 +10,7 @@ MAJOR:
 - added a helicopter icon for the chopper pilots out there
 - added automatic update checker 
 
-MINOR:
+## MINOR:
 
 - added separate autostart options for Flight Simulator versions purchased via Windows Store and Steam (`--winstorefs` and `--steamfs`)
 - fixed map-behaviour when clicking on a track line while the teleport tool is selected
@@ -20,17 +20,44 @@ MINOR:
 - load "freemium-info"-iframe content only when required
 - MSFS SDK updated to v0.12.0
 
-v1.1.0
+---
 
-MAJOR:
+# v1.1.0
 
-- "VFR Map For VR" was renamed to FSKneeboard to reflect the new scope of the extension
+## MAJOR:
+
+- "VFR Map For VR" was renamed to "FSKneeboard" to reflect the new scope of the extension
 - Added ALL NEW Waypoints and Track, Charts Viewer, and Notepad for FSKneeboard PRO supporters
 - FSKneeboard can now start MSFS in one go and then wait for MSFS to be ready. You do not have to tab out and start MSFS and FSKneeboard separately
 - Entire project structure got a big overhaul under the hood
 
-MINOR:
+## MINOR:
 
 - Added Font Awesome icons
 - Reworked README
 - Fixed NavData overlay persistence
+
+---
+
+# v1.0.3
+
+## MAJOR:
+
+- Fixed scaling issues introduced with MSFS world update 3
+- Reworked "Center on Airplane" and "Show Airplane" UI elements
+
+---
+
+# v1.0.2
+
+## MAJOR:
+
+- show a warning message if the server isn't running
+
+---
+
+# v1.0.1
+
+## MAJOR:
+
+- first version of VFR Map For VR. minimum viable product
