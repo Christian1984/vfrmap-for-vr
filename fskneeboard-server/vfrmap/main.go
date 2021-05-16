@@ -155,7 +155,7 @@ func main() {
 		fmt.Println("=== INFO: License")
 		if !drm.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
-			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard-server.exe.")
+			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
 			shutdownWithPromt()
 		} else {
 			fmt.Println("Valid license found!")
@@ -269,9 +269,6 @@ func main() {
 		}
 
 		eventSimStartID = s.GetEventID()
-		//s.SubscribeToSystemEvent(eventSimStartID, "SimStart")
-		//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_AIRPORT, s.GetDefineID(&simconnect.DataFacilityAirport{}))
-		//s.SubscribeToFacilities(simconnect.FACILITY_LIST_TYPE_WAYPOINT, s.GetDefineID(&simconnect.DataFacilityWaypoint{}))
 
 		startupTextEventID = s.GetEventID()
 		s.ShowText(simconnect.TEXT_TYPE_PRINT_WHITE, 15, startupTextEventID, ">> FSKneeboard connected <<")
@@ -309,17 +306,14 @@ func main() {
 			setHeaders(contentType, w)
 
 			if _, err = os.Stat(filePath); os.IsNotExist(err) {
-				//fmt.Println("use embedded", requestedResource)
 				w.Write(asset)
 			} else {
-				//fmt.Println("use local", filePath)
 				http.ServeFile(w, r, filePath)
 			}
 		}
 
 		index := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/")
-			//fmt.Println("requestedResource", requestedResource)
 			if requestedResource == "" {
 				requestedResource = "index.html"
 			} else if requestedResource == "favicon.ico" {
@@ -332,21 +326,17 @@ func main() {
 
 		freemium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
-			//fmt.Println("requestedResource", requestedResource)
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, freemium.MustAsset(requestedResource))
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/")
-			//fmt.Println("requestedResource", requestedResource)
 			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
 		}
 
 		chartsIndex := func(w http.ResponseWriter, r *http.Request) {
-			//requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/chartsIndex/")
-			//fmt.Println("requestedResource", requestedResource)
 			setHeaders("application/json", w)
 			charts.Json(w, r)
 		}
@@ -508,9 +498,6 @@ func main() {
 			fmt.Println("Exiting...")
 			if s != nil {
 				s.Close()
-				/*if err != nil {
-					panic(err)
-				}*/
 			}
 			os.Exit(0)
 
