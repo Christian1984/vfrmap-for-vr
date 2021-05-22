@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<SimBase.Document Type="AceXML" version="1,0">
+    <Descr>AceXML Document</Descr>
+    <FlightPlan.FlightPlan>
+        <Title>Cologne-Bonn to Wiesbaden AAF</Title>
+        <FPType>VFR</FPType>
+        <RouteType>VOR</RouteType>
+        <CruisingAlt>5500.000</CruisingAlt>
+        <DepartureID>EDDK</DepartureID>
+        <DepartureLLA>N50° 51' 57.30",E7° 8' 33.88",+000252.50</DepartureLLA>
+        <DestinationID>ETOU</DestinationID>
+        <DestinationLLA>N50° 2' 59.40",E8° 19' 31.80",+000456.50</DestinationLLA>
+        <Descr>Cologne-Bonn to Wiesbaden AAF</Descr>
+        <DepartureName>Cologne-Bonn</DepartureName>
+        <DestinationName>Wiesbaden AAF</DestinationName>
+        <AppVersion>
+            <AppVersionMajor>11</AppVersionMajor>
+            <AppVersionBuild>282174</AppVersionBuild>
+        </AppVersion>
+        <ATCWaypoint id="EDDK">
+            <ATCWaypointType>Airport</ATCWaypointType>
+            <WorldPosition>N50° 51' 57.30",E7° 8' 33.88",+000252.50</WorldPosition>
+            <SpeedMaxFP>-1</SpeedMaxFP>
+            <ICAO>
+                <ICAOIdent>EDDK</ICAOIdent>
+            </ICAO>
+        </ATCWaypoint>
+        <ATCWaypoint id="TIMECRUIS">
+            <ATCWaypointType>User</ATCWaypointType>
+            <WorldPosition>N50° 33' 24.33",E7° 39' 36.64",+005500.00</WorldPosition>
+            <SpeedMaxFP>-1</SpeedMaxFP>
+        </ATCWaypoint>
+        <ATCWaypoint id="TIMEDSCNT">
+            <ATCWaypointType>User</ATCWaypointType>
+            <WorldPosition>N50° 24' 4.79",E7° 54' 58.86",+005500.00</WorldPosition>
+            <SpeedMaxFP>-1</SpeedMaxFP>
+        </ATCWaypoint>
+        <ATCWaypoint id="TAU">
+            <ATCWaypointType>VOR</ATCWaypointType>
+            <WorldPosition>N50° 15' 1.67",E8° 9' 45.09",+003250.00</WorldPosition>
+            <SpeedMaxFP>-1</SpeedMaxFP>
+            <ICAO>
+                <ICAORegion>ED</ICAORegion>
+                <ICAOIdent>TAU</ICAOIdent>
+            </ICAO>
+        </ATCWaypoint>
+        <ATCWaypoint id="WIB">
+            <ATCWaypointType>VOR</ATCWaypointType>
+            <WorldPosition>N50° 2' 48.00",E8° 18' 42.00",+000550.00</WorldPosition>
+            <SpeedMaxFP>-1</SpeedMaxFP>
+            <ICAO>
+                <ICAORegion>ED</ICAORegion>
+                <ICAOIdent>WIB</ICAOIdent>
+            </ICAO>
+        </ATCWaypoint>
+        <ATCWaypoint id="ETOU">
+            <ATCWaypointType>Airport</ATCWaypointType>
+            <WorldPosition>N50° 2' 59.40",E8° 19' 31.80",+000450.00</WorldPosition>
+            <SpeedMaxFP>-1</SpeedMaxFP>
+            <ICAO>
+                <ICAOIdent>ETOU</ICAOIdent>
+            </ICAO>
+        </ATCWaypoint>
+    </FlightPlan.FlightPlan>
+</SimBase.Document>

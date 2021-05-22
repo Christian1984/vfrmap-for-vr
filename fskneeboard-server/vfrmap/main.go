@@ -374,9 +374,18 @@ func main() {
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
+	systemStateTick := time.NewTicker(5 * time.Second)
 
 	for {
 		select {
+		case <-systemStateTick.C:
+			if s == nil {
+				continue
+			}
+
+			fmt.Println("Sending RequestSystemState...")
+			s.RequestSystemState(1377, "FlightPlan")
+
 		case <-autosaveTick.C:
 			if s == nil {
 				continue
@@ -485,6 +494,11 @@ func main() {
 					trafficReport = (*TrafficReport)(ppData)
 					fmt.Printf("TRAFFIC REPORT: %s\n", trafficReport.Inspect())
 				}
+
+			case simconnect.RECV_ID_SYSTEM_STATE:
+				recvData := *(*simconnect.RecvSystemState)(ppData)
+				fmt.Println("Received System State...")
+				fmt.Println(string(recvData.String[:]))
 
 			case simconnect.RECV_ID_QUIT:
 				fmt.Println("Flight Simulator was shut down. Exiting...")
