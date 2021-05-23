@@ -36,6 +36,7 @@ let ac_visibility_options = {
 };
 let last_report = {};
 const initial_pos = L.latLng(50.8694,7.1389);
+const autoremoval_proximity_threshold = 0.5; //miles
 
 const map_resolutions = {
     high: {
@@ -265,7 +266,7 @@ function initMap() {
     set_teleport_marker(markerPos);
     hide_teleport_marker();
 
-    waypoints = new Waypoints(map, pos, mode_options);
+    waypoints = new Waypoints(map, pos, mode_options, autoremoval_proximity_threshold);
 
     map.on('dragstart', function(e) {
         set_follow(false);
