@@ -1,9 +1,12 @@
 @echo off
+IF %1.==dev. GOTO build
+
 echo copy freemium modules...
 del /s /q _vendor\premium\*.* >nul 2>&1
 rmdir /s /q _vendor\premium\ >nul 2>&1
 robocopy freemium_src _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
 
+:build
 echo generate bindata...
 go generate -v .\vfrmap\
 go generate -v .\vfrmap\html\fontawesome
