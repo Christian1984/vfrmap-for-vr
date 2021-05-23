@@ -374,18 +374,18 @@ func main() {
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
-	systemStateTick := time.NewTicker(5 * time.Second)
+	//systemStateTick := time.NewTicker(5 * time.Minute)
 
 	for {
 		select {
-		case <-systemStateTick.C:
-			if s == nil {
-				continue
-			}
+		/*case <-systemStateTick.C:
+		if s == nil {
+			continue
+		}
 
-			fmt.Println("Sending RequestSystemState...")
-			s.RequestSystemState(1377, "FlightPlan")
-
+		fmt.Println("Sending RequestSystemState...")
+		s.RequestSystemState(1377, "FlightPlan")
+		*/
 		case <-autosaveTick.C:
 			if s == nil {
 				continue
