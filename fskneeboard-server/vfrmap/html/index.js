@@ -10,6 +10,8 @@ const switch_map = document.getElementById("switch_map");
 const switch_charts = document.getElementById("switch_charts");
 const switch_notepad = document.getElementById("switch_notepad");
 
+const temp = document.getElementById("temp");
+
 const zoom_in = document.getElementById("zoom_in");
 const zoom_out = document.getElementById("zoom_out");
 const stretch = document.getElementById("stretch");
@@ -17,6 +19,25 @@ const unstretch = document.getElementById("unstretch");
 const reset = document.getElementById("reset");
 
 const current_zoom = { x: 1, y: 1 };
+
+function dispatch_keyevent(event) {
+    let dispatch_event = new KeyboardEvent("keydown", {
+        keyCode: 70
+    });
+
+    if (event.type instanceof KeyboardEvent) {
+        dispatch_event = new KeyboardEvent(event.type, event);
+    }
+
+    const msg = "dispatch_keyevent() => " + dispatch_event.type + ", " + dispatch_event.keyCode;
+
+    const tmp = document.querySelector("#content");
+    if (tmp) {
+        tmp.innerHTML = tmp.innerHTML + "<p>" + msg + "</p>";
+    }
+
+    window.parent.window.document.dispatchEvent(dispatch_event);
+}
 
 function hide_all_iframes() {
     iframe_map.classList.add("hidden");
@@ -179,6 +200,12 @@ function init() {
         });
     }
 
+    if (temp) {
+        temp.addEventListener("click", (e) => {
+            dispatch_keyevent(e);
+        });
+    }
+
     if (zoom_in) {
         zoom_in.addEventListener("click", () => {
             zoom_views(true);
@@ -208,6 +235,11 @@ function init() {
             reset_zoom();
         });
     }
+
+    window.document.addEventListener("keydown", (e) => {
+        console.log("keydown in iframe: ", e.key);
+        dispatch_keyevent(e);
+    });
 
     load_state();
 }

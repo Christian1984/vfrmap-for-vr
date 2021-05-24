@@ -6,6 +6,10 @@ html, body {
     margin: 0;
 }
 
+.collapsed {
+    display: none;
+}
+
 #CustomPanel {
   position: relative;
   width: 100%;
