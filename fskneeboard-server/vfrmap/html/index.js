@@ -21,6 +21,7 @@ const reset = document.getElementById("reset");
 const current_zoom = { x: 1, y: 1 };
 
 function dispatch_keyevent(event) {
+    //TODO
     let dispatch_event = new KeyboardEvent("keydown", {
         keyCode: 70
     });
@@ -29,14 +30,9 @@ function dispatch_keyevent(event) {
         dispatch_event = new KeyboardEvent(event.type, event);
     }
 
-    const msg = "dispatch_keyevent() => " + dispatch_event.type + ", " + dispatch_event.keyCode;
+    //const msg = "dispatch_keyevent() => " + dispatch_event.type + ", " + dispatch_event.keyCode;
 
-    const tmp = document.querySelector("#content");
-    if (tmp) {
-        tmp.innerHTML = tmp.innerHTML + "<p>" + msg + "</p>";
-    }
-
-    window.parent.window.document.dispatchEvent(dispatch_event);
+    window.parent.window.postMessage("toggle_collapse" , "*")
 }
 
 function hide_all_iframes() {

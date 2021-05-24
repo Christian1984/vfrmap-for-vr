@@ -110,10 +110,34 @@ class IngamePanelCustomPanel extends MyTemplateElement {
         }
     }
 
+    log(msg) {
+        const tmp = document.querySelector("#warning_message");
+        if (tmp) {
+            tmp.innerHTML = tmp.innerHTML + "<p>" + msg + "</p>";
+        }
+    }
+
+    toggle_collapse() {
+        if (this.collapsed) {
+            this.classList.remove("collapsed");
+        }
+        else {
+            this.classList.add("collapsed");
+        }
+
+        this.collapsed = !this.collapsed;
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
         var self = this;
+
+        window.addEventListener("message", (e) => {
+            if (e.data == "toggle_collapse") {
+                self.toggle_collapse();
+            }
+        });
 
         setTimeout(() => {
             this.ingameUi = this.querySelector("ingame-ui");
@@ -131,18 +155,6 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                     if (self.content_iframe) {
                         self.content_iframe.src = 'http://localhost:9000/index.html';
                     }
-
-                    window.document.addEventListener("keydown", (e) => {
-                        const msg = "received event() => " + e.type + ", " + e.keyCode;
-                        const tmp = document.querySelector("#warning_message");
-                        if (tmp) {
-                            tmp.innerHTML = tmp.innerHTML + "<p>" + msg + "</p>";
-                        }
-
-                        if (e.keyCode == self.collapse_hotkey) {
-                            //self.toggle_collapse();
-                        }
-                    });
                 });
     
                 this.ingameUi.addEventListener("panelInactive", (e) => {
@@ -155,20 +167,6 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                 });
             }
         } , 0);
-    }
-
-    toggle_collapse() {
-        if (this.collapsed) {
-            console.log("un-collapsing");
-            this.classList.remove("collapsed");
-        }
-        else {
-            console.log("collapsing");
-            this.classList.add("collapsed");
-        }
-
-        console.log(this);
-        this.collapsed = !this.collapsed;
     }
 
     initialize() {
