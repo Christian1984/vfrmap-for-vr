@@ -21,18 +21,18 @@ const reset = document.getElementById("reset");
 const current_zoom = { x: 1, y: 1 };
 
 function dispatch_keyevent(event) {
-    //TODO
-    let dispatch_event = new KeyboardEvent("keydown", {
-        keyCode: 70
-    });
-
-    if (event.type instanceof KeyboardEvent) {
-        dispatch_event = new KeyboardEvent(event.type, event);
+    if (event instanceof KeyboardEvent) {
+        const msg = JSON.stringify({
+            type: "KeyboardEvent",
+            data: {
+                type: event.type,
+                keyCode: event.keyCode,
+                alt: event.altKey
+            }
+        });
+        
+        window.parent.window.postMessage(msg , "*")
     }
-
-    //const msg = "dispatch_keyevent() => " + dispatch_event.type + ", " + dispatch_event.keyCode;
-
-    window.parent.window.postMessage("toggle_collapse" , "*")
 }
 
 function hide_all_iframes() {
@@ -196,12 +196,6 @@ function init() {
         });
     }
 
-    if (temp) {
-        temp.addEventListener("click", (e) => {
-            dispatch_keyevent(e);
-        });
-    }
-
     if (zoom_in) {
         zoom_in.addEventListener("click", () => {
             zoom_views(true);
@@ -233,7 +227,6 @@ function init() {
     }
 
     window.document.addEventListener("keydown", (e) => {
-        console.log("keydown in iframe: ", e.key);
         dispatch_keyevent(e);
     });
 

@@ -138,8 +138,16 @@ class IngamePanelCustomPanel extends MyTemplateElement {
         var self = this;
 
         window.addEventListener("message", (e) => {
-            if (e.data == "toggle_collapse") {
-                self.toggle_collapse();
+            try {
+                const data = JSON.parse(e.data);
+                if (data.type == "KeyboardEvent" && data.data != null) {
+                    if (data.data.type == "keydown" && data.data.keyCode == self.collapse_hotkey) {
+                        self.toggle_collapse();
+                    }
+                }
+            }
+            catch (e) {
+                /* ignore silently */
             }
         });
 
