@@ -117,15 +117,19 @@ class IngamePanelCustomPanel extends MyTemplateElement {
         }
     }
 
-    toggle_collapse() {
-        if (this.collapsed) {
-            this.classList.remove("collapsed");
-        }
-        else {
+    collapse(collapsed) {
+        if (collapsed) {
             this.classList.add("collapsed");
         }
+        else {
+            this.classList.remove("collapsed");
+        }
 
-        this.collapsed = !this.collapsed;
+        this.collapsed = collapsed;
+    }
+
+    toggle_collapse() {
+        this.collapse(!this.collapsed);
     }
 
     connectedCallback() {
@@ -139,6 +143,12 @@ class IngamePanelCustomPanel extends MyTemplateElement {
             }
         });
 
+        window.addEventListener("keydown", (e) => {
+            if (e.keyCode == self.collapse_hotkey) {
+                self.toggle_collapse();
+            }
+        });
+
         setTimeout(() => {
             this.ingameUi = this.querySelector("ingame-ui");
 
@@ -147,7 +157,6 @@ class IngamePanelCustomPanel extends MyTemplateElement {
             this.warning_message = document.getElementById("warning_message");
 
             if (this.ingameUi) {
-
                 this.ingameUi.addEventListener("panelActive", (e) => {
                     self.panelActive = true;
                     self.warning_message.classList.add("show");
@@ -155,6 +164,8 @@ class IngamePanelCustomPanel extends MyTemplateElement {
                     if (self.content_iframe) {
                         self.content_iframe.src = 'http://localhost:9000/index.html';
                     }
+
+                    self.collapse(false);
                 });
     
                 this.ingameUi.addEventListener("panelInactive", (e) => {
