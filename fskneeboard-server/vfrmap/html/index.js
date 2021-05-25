@@ -27,7 +27,7 @@ function dispatch_keyevent(event) {
             data: {
                 type: event.type,
                 keyCode: event.keyCode,
-                alt: event.altKey
+                altKey: event.altKey
             }
         });
         

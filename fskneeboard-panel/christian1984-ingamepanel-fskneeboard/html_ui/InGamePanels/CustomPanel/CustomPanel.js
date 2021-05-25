@@ -141,7 +141,7 @@ class IngamePanelCustomPanel extends MyTemplateElement {
             try {
                 const data = JSON.parse(e.data);
                 if (data.type == "KeyboardEvent" && data.data != null) {
-                    if (data.data.type == "keydown" && data.data.keyCode == self.collapse_hotkey) {
+                    if (data.data.type == "keydown" && data.data.keyCode == self.collapse_hotkey && data.data.altKey) {
                         self.toggle_collapse();
                     }
                 }
@@ -152,7 +152,8 @@ class IngamePanelCustomPanel extends MyTemplateElement {
         });
 
         window.addEventListener("keydown", (e) => {
-            if (e.keyCode == self.collapse_hotkey) {
+            self.log("e.altKey" + e.altKey);
+            if (e.keyCode == self.collapse_hotkey && e.altKey) {
                 self.toggle_collapse();
             }
         });
