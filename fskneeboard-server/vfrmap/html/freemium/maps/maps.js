@@ -579,7 +579,6 @@ function hide_premium_info(hide = true) {
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", function() {
     plane_popup = {
         main: document.getElementById("plane-popup"),
@@ -587,12 +586,17 @@ document.addEventListener("DOMContentLoaded", function() {
         gmap: document.getElementById("plane-popup-gmap"),
         follow: document.getElementById("plane-popup-follow"),
     };
+
     teleport_popup = {
         main: document.getElementById("teleport-popup"),
         submit: document.getElementById("teleport-popup-submit"),
         gps: document.getElementById("teleport-popup-gps"),
         altitude: document.getElementById("teleport-popup-altitude"),
     };
+
+    window.document.addEventListener("keydown", (e) => {
+        dispatch_keyevent(e);
+    });
 
     initMap();
 });

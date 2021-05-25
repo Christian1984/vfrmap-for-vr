@@ -21,18 +21,16 @@ const reset = document.getElementById("reset");
 const current_zoom = { x: 1, y: 1 };
 
 function dispatch_keyevent(event) {
-    if (event instanceof KeyboardEvent) {
-        const msg = JSON.stringify({
-            type: "KeyboardEvent",
-            data: {
-                type: event.type,
-                keyCode: event.keyCode,
-                altKey: event.altKey
-            }
-        });
-        
-        window.parent.window.postMessage(msg , "*")
-    }
+    const msg = JSON.stringify({
+        type: "KeyboardEvent",
+        data: {
+            type: event.type,
+            keyCode: event.keyCode,
+            altKey: event.altKey
+        }
+    });
+    
+    window.parent.window.postMessage(msg , "*");
 }
 
 function hide_all_iframes() {
