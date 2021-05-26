@@ -4,6 +4,6 @@ import (
 	"net/http"
 )
 
-func GetFlightplan(w http.ResponseWriter, r *http.Request) {
+func GetFlightplan(w http.ResponseWriter, r *http.Request, filepath string) {
 	w.Write([]byte("{}"))
 }

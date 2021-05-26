@@ -344,7 +344,7 @@ func main() {
 
 		flightplan := func(w http.ResponseWriter, r *http.Request) {
 			setHeaders("application/json", w)
-			waypoints.GetFlightplan(w, r)
+			waypoints.GetFlightplan(w, r, "CUSTOMFLIGHT.PLN")
 		}
 
 		chartServer := http.FileServer(http.Dir("./charts"))
