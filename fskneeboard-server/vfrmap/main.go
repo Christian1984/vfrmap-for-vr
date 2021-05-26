@@ -23,6 +23,7 @@ import (
 	"vfrmap-for-vr/_vendor/premium/charts"
 	"vfrmap-for-vr/_vendor/premium/common"
 	"vfrmap-for-vr/_vendor/premium/drm"
+	"vfrmap-for-vr/_vendor/premium/waypoints"
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
 	"vfrmap-for-vr/vfrmap/html/freemium"
@@ -341,12 +342,18 @@ func main() {
 			charts.Json(w, r)
 		}
 
+		flightplan := func(w http.ResponseWriter, r *http.Request) {
+			setHeaders("application/json", w)
+			waypoints.GetFlightplan(w, r)
+		}
+
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
+		http.HandleFunc("/premium/flightplan", flightplan)
 		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
 		http.Handle("/fontawesome/", http.StripPrefix("/fontawesome/", fontawesome.FS{}))
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))

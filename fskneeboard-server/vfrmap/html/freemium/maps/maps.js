@@ -490,6 +490,19 @@ function registerHandlers() {
         });
     }
 
+    const load_flightplan_btn = document.querySelector("#load-waypoints");
+    if (load_flightplan_btn) {
+        load_flightplan_btn.addEventListener("click", () => {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+                activate_default_mode();
+            }
+            else {
+                waypoints.load_flightplan();
+            }
+        });
+    }
+
     const mode_control_btns = document.querySelectorAll("#mode-controls > input");
     for (let i = 0; i < mode_control_btns.length; i++) {
         mode_control_btns[i].addEventListener("click", () => {
