@@ -1,17 +1,17 @@
 {
   "content": [
     {
-      "path": "html_ui/InGamePanels/CustomPanel/CustomPanel.css",
+      "path": "html_ui/InGamePanels/FSKneeboardPanel/FSKneeboardPanel.css",
       "size": 1009,
       "date": 132441482909180874
     },
     {
-      "path": "html_ui/InGamePanels/CustomPanel/CustomPanel.html",
+      "path": "html_ui/InGamePanels/FSKneeboardPanel/FSKneeboardPanel.html",
       "size": 3119,
       "date": 132440507097241168
     },
     {
-      "path": "html_ui/InGamePanels/CustomPanel/CustomPanel.js",
+      "path": "html_ui/InGamePanels/FSKneeboardPanel/FSKneeboardPanel.js",
       "size": 5517,
       "date": 132442481411972180
     },
