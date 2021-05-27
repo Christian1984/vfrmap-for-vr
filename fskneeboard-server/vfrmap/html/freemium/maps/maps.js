@@ -498,8 +498,25 @@ function registerHandlers() {
                 activate_default_mode();
             }
             else {
+                hide_waypoint_confirm_dialog(false);
+            }
+        });
+    }
+
+    const confirm_load_flightplan_btn = document.querySelector("#waypoint-confirm-dialog-yes");
+    if (confirm_load_flightplan_btn) {
+        confirm_load_flightplan_btn.addEventListener("click", () => {
+            if (waypoints.is_mode_available()) {
                 waypoints.load_flightplan();
             }
+            hide_waypoint_confirm_dialog();
+        });
+    }
+
+    const cancel_load_flightplan_btn = document.querySelector("#waypoint-confirm-dialog-no");
+    if (cancel_load_flightplan_btn) {
+        cancel_load_flightplan_btn.addEventListener("click", () => {
+            hide_waypoint_confirm_dialog();
         });
     }
 
@@ -572,6 +589,18 @@ function activate_default_mode() {
         if (teleport) {
             teleport.click();
         }
+    }
+}
+
+function hide_waypoint_confirm_dialog(hide = true) {
+    const waypoint_confirm_dialog_wrapper = document.querySelector("#waypoint-confirm-dialog-wrapper");
+    if (!waypoint_confirm_dialog_wrapper) return;
+
+    if (hide) {
+        waypoint_confirm_dialog_wrapper.classList.add("hidden");
+    }
+    else {
+        waypoint_confirm_dialog_wrapper.classList.remove("hidden");
     }
 }
 

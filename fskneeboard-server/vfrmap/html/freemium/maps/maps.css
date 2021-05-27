@@ -58,7 +58,6 @@ body {
 #mode-controls {
     left: 1em;
 }
-
 .map-controls > span.left,
 .map-controls > input[type=checkbox].left +label,
 .map-controls > input[type=radio].left +label {
@@ -184,6 +183,17 @@ input[type=radio] {
     background-color: white;
 }
 
+.dialog-buttons > span {
+    background-color: lightgray;
+    padding: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.dialog-buttons > span:hover {
+    background-color: lightblue;
+}
+
 #premium-info {
     top:1em;
     right: 1em;
@@ -234,6 +244,33 @@ input[type=radio] {
     font-weight: bold;
 }
 
-#premium-info.hidden {
+#waypoint-confirm-dialog-wrapper {
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    z-index: 10001;
+    overflow: hidden;
+}
+
+#waypoint-confirm-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: black;
+}
+
+#waypoint-confirm-dialog > div,
+#waypoint-confirm-dialog > h3 {
+    margin: 1em;
+    text-align: center;
+}
+
+#premium-info.hidden,
+#waypoint-confirm-dialog-wrapper.hidden {
     display: none;
 }
