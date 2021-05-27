@@ -31,7 +31,7 @@ catch (e) {
     }
 }
 
-class IngamePanelCustomPanel extends MyTemplateElement {
+class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     constructor() {
         super(...arguments);
 
@@ -205,7 +205,7 @@ class IngamePanelCustomPanel extends MyTemplateElement {
     }
 }
 
-window.customElements.define("ingamepanel-custom", IngamePanelCustomPanel);
+window.customElements.define("ingamepanel-custom", IngamePanelFSKneeboardPanel);
 myCheckAutoload();
 
 if (parent && parent.window && parent.window.test_environment) {

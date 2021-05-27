@@ -382,7 +382,7 @@ func main() {
 		http.HandleFunc("/", index)
 
 		if devMode {
-			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/CustomPanel"))
+			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/FSKneeboardPanel"))
 			http.Handle("/test/", http.StripPrefix("/test/", testServer))
 		}
 

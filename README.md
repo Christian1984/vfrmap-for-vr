@@ -231,7 +231,6 @@ The FSKneeboard server can be started with several commandline arguments to furt
 # Troubleshooting
 
 - "I get errors when I try to start the server!" => This can happen if, for whatever reason, `fskneeboard.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `fskneeboard.exe` is located!
-- "MSFS crashes when I use your mod!" => I've noticed that this can happen when you have multiple extensions running that each add an additional panel/"window" to your flight simulator environment. In that case, you will probably have to pick one mod and remove the other. Sorry! I haven't found a way around that limitation, yet.
 - "Windows says FSKneeboard contains a virus!" => That is a false positive and a well-known problem with software written in GO. Please make sure to read the section [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) below.
 - "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!" => Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. There is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
 
@@ -242,7 +241,7 @@ The FSKneeboard server can be started with several commandline arguments to furt
 Here's a list of features that I've planned to implement in the foreseeable future: 
 
 - Migrate the entire server component from GO to .NET to mitigate false virus alerts
-- Automatically generate waypoints from Flight Simulator's flight plan
+- Integrate Navigraph and Little Nav Map (if feasible)
 - Take notes via iPads and then have them synced to your in-sim notepad
 - Allow for multiple notes to be taken, instead of having only one "sheet"
 - Embed Twitch Chat / Discord / YouTube(?)
@@ -250,7 +249,6 @@ Here's a list of features that I've planned to implement in the foreseeable futu
 
 And here are some wishes from the community that I have to check for feasibility as soon as I get to it:
 
-- Is it possible to add navigation data from Navigraph?
 - Is it possible to add frequencies (such as VOR/DME/Comm)?
 - Is it possible to change airport elevation data from [m] to [ft]?
 
