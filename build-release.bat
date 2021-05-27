@@ -1,5 +1,7 @@
 
 @echo off
+IF %1.==. GOTO err
+
 echo BUILD README.pdf MANUALLY!!!
 echo ============================
 echo Preparing...
@@ -52,10 +54,16 @@ robocopy ..\ ..\dist\pro\ CHANGELOG.md /NFL /NDL /NJH /NJS /nc /ns /np
 
 echo Zipping...
 cd ..\dist
-powershell -Command "Compress-Archive .\free\* .\fskneeboard-free"
-powershell -Command "Compress-Archive .\pro\* .\fskneeboard-pro"
+powershell -Command "Compress-Archive .\free\* .\fskneeboard-free-v%1.zip"
+powershell -Command "Compress-Archive .\pro\* .\fskneeboard-pro-v%1.zip"
 
 cd ..
 
 echo BUILD FINISHED!
+goto fin
+
+:err
+echo Please provide a version number for the build!
+
+:fin
 
