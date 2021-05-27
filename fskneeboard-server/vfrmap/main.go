@@ -6,6 +6,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -343,10 +344,29 @@ func main() {
 		}
 
 		flightplan := func(w http.ResponseWriter, r *http.Request) {
-			waypoints.LocateCurrentFlightplan(s, w, r)
+			notifier, ok := w.(http.CloseNotifier)
+			if !ok {
+				fmt.Println("Expected http.ResponseWriter to be an http.CloseNotifier")
+				http.Error(w, "Expected http.ResponseWriter to be an http.CloseNotifier", http.StatusInternalServerError)
+				return
+			}
 
-			//TODO: this is just a nasty workaround
-			time.Sleep(2 * time.Second)
+			ctx, cancel := context.WithCancel((context.Background()))
+			ch := make(chan string)
+
+			go waypoints.LocateCurrentFlightplan(s, w, r, ctx, ch)
+
+			select {
+			case <-ch:
+				cancel()
+				return
+			case <-time.After(time.Second * 10):
+				http.Error(w, "Server busy", http.StatusInternalServerError)
+			case <-notifier.CloseNotify():
+				fmt.Println("Client has disconnected.")
+			}
+			cancel()
+			<-ch
 		}
 
 		chartServer := http.FileServer(http.Dir("./charts"))
@@ -496,7 +516,6 @@ func main() {
 				}
 
 			case simconnect.RECV_ID_SYSTEM_STATE:
-				fmt.Println("Received System State...")
 				recvData := *(*simconnect.RecvSystemState)(ppData)
 
 				// identify and ignore trailing zeros from byte array
