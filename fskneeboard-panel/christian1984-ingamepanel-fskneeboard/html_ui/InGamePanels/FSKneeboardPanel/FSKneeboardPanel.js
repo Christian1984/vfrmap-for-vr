@@ -155,7 +155,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     }
 }
 
-window.customElements.define("ingamepanel-custom-2", IngamePanelFSKneeboardPanel);
+window.customElements.define("ingamepanel-custom", IngamePanelFSKneeboardPanel);
 myCheckAutoload();
 
 if (parent && parent.window && parent.window.test_environment) {
