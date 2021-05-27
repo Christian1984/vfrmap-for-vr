@@ -343,8 +343,10 @@ func main() {
 		}
 
 		flightplan := func(w http.ResponseWriter, r *http.Request) {
-			setHeaders("application/json", w)
-			waypoints.GetFlightplan(w, r, "CUSTOMFLIGHT.PLN")
+			waypoints.LocateCurrentFlightplan(s, w, r)
+
+			//TODO: this is just a nasty workaround
+			time.Sleep(2 * time.Second)
 		}
 
 		chartServer := http.FileServer(http.Dir("./charts"))
@@ -381,18 +383,9 @@ func main() {
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
-	//systemStateTick := time.NewTicker(5 * time.Minute)
 
 	for {
 		select {
-		/*case <-systemStateTick.C:
-		if s == nil {
-			continue
-		}
-
-		fmt.Println("Sending RequestSystemState...")
-		s.RequestSystemState(1377, "FlightPlan")
-		*/
 		case <-autosaveTick.C:
 			if s == nil {
 				continue
@@ -503,9 +496,22 @@ func main() {
 				}
 
 			case simconnect.RECV_ID_SYSTEM_STATE:
-				recvData := *(*simconnect.RecvSystemState)(ppData)
 				fmt.Println("Received System State...")
-				fmt.Println(string(recvData.String[:]))
+				recvData := *(*simconnect.RecvSystemState)(ppData)
+
+				// identify and ignore trailing zeros from byte array
+				length := len(recvData.String)
+
+				for i := len(recvData.String) - 1; i > 0; i-- {
+					char := recvData.String[i]
+					if char != byte(0) {
+						length = i + 1
+						break
+					}
+				}
+
+				filepath := string(recvData.String[:length])
+				waypoints.SendFlightplanResponse(filepath)
 
 			case simconnect.RECV_ID_QUIT:
 				fmt.Println("Flight Simulator was shut down. Exiting...")
