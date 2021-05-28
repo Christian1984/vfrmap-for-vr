@@ -3,10 +3,12 @@ const zoom_modification_factor = 1.05;
 const content_div = document.getElementById("content");
 
 const iframe_map = document.getElementById("iframe_map");
+const iframe_lnm = document.getElementById("iframe_lnm");
 const iframe_charts = document.getElementById("iframe_charts");
 const iframe_notepad = document.getElementById("iframe_notepad");
 
 const switch_map = document.getElementById("switch_map");
+const switch_lnm = document.getElementById("switch_lnm");
 const switch_charts = document.getElementById("switch_charts");
 const switch_notepad = document.getElementById("switch_notepad");
 
@@ -35,12 +37,14 @@ function dispatch_keyevent(event) {
 
 function hide_all_iframes() {
     iframe_map.classList.add("hidden");
+    iframe_lnm.classList.add("hidden");
     iframe_charts.classList.add("hidden");
     iframe_notepad.classList.add("hidden");
 }
 
 function unselect_all_buttons() {
     switch_map.classList.remove("active");
+    switch_lnm.classList.remove("active");
     switch_charts.classList.remove("active");
     switch_notepad.classList.remove("active");
 }
@@ -53,6 +57,15 @@ function switch_to_map() {
     save_tab(0);
 }
 
+function switch_to_lnm() {
+    console.log("")
+    hide_all_iframes();
+    unselect_all_buttons();
+    iframe_lnm.classList.remove("hidden");
+    switch_lnm.classList.add("active");
+    save_tab(1);
+}
+
 function switch_to_charts() {
     hide_all_iframes();
     unselect_all_buttons();
@@ -63,7 +76,7 @@ function switch_to_charts() {
         iframe_charts.contentWindow.postMessage("load", "*");
     }, 1000);
 
-    save_tab(1);
+    save_tab(2);
 }
 
 function switch_to_notepad() {
@@ -76,7 +89,7 @@ function switch_to_notepad() {
         iframe_notepad.contentWindow.postMessage("load", "*");
     }, 1000);
     
-    save_tab(2);
+    save_tab(3);
 }
 
 function save_tab(tab_id) {
@@ -104,9 +117,12 @@ function load_state() {
     if (active_tab != null) {
         switch(active_tab) {
             case "1":
-                switch_to_charts();
+                switch_to_lnm();
                 break;
             case "2":
+                switch_to_charts();
+                break;
+            case "3":
                 switch_to_notepad();
                 break;
             default:
@@ -168,6 +184,10 @@ function init() {
         iframe_map.src = 'http://localhost:9000/freemium/maps.html';
     }
 
+    if (iframe_lnm) {
+        iframe_lnm.src = 'http://localhost:9000/premium/lnm.html';
+    }
+
     if (iframe_charts) {
         iframe_charts.src = 'http://localhost:9000/premium/charts.html';
     }
@@ -179,6 +199,12 @@ function init() {
     if(switch_map) {
         switch_map.addEventListener("click", () => {
             switch_to_map();
+        });
+    }
+
+    if(switch_lnm) {
+        switch_lnm.addEventListener("click", () => {
+            switch_to_lnm();
         });
     }
 
