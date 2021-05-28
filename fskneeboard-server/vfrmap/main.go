@@ -518,18 +518,9 @@ func main() {
 			case simconnect.RECV_ID_SYSTEM_STATE:
 				recvData := *(*simconnect.RecvSystemState)(ppData)
 
-				// identify and ignore trailing zeros from byte array
-				length := len(recvData.String)
-
-				for i := len(recvData.String) - 1; i > 0; i-- {
-					char := recvData.String[i]
-					if char != byte(0) {
-						length = i + 1
-						break
-					}
-				}
-
-				filepath := string(recvData.String[:length])
+				filepathRaw := string(recvData.String[:])
+				filepathReplace := strings.ReplaceAll(filepathRaw, string([]byte{0}), " ")
+				filepath := strings.TrimSpace(filepathReplace)
 				waypoints.SendFlightplanResponse(filepath)
 
 			case simconnect.RECV_ID_QUIT:
