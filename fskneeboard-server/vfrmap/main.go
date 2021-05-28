@@ -103,10 +103,12 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 	s.SetDataOnSimObject(defineID, simconnect.OBJECT_ID_USER, 0, 0, size, unsafe.Pointer(&buf[0]))
 }
 
-func shutdownWithPromt() {
-	buf := bufio.NewReader(os.Stdin)
-	fmt.Print("\nPress ENTER to continue...")
-	buf.ReadBytes('\n')
+func shutdownWithPrompt() {
+	if !quietshutdown {
+		buf := bufio.NewReader(os.Stdin)
+		fmt.Print("\nPress ENTER to continue...")
+		buf.ReadBytes('\n')
+	}
 
 	os.Exit(0)
 }
@@ -123,6 +125,7 @@ var devMode bool
 var steamfs bool
 var winstorefs bool
 var noupdatecheck bool
+var quietshutdown bool
 
 var autosaveInterval int
 
@@ -137,6 +140,7 @@ func main() {
 	flag.BoolVar(&steamfs, "steamfs", false, "start Flight Simulator via Steam")
 	flag.BoolVar(&winstorefs, "winstorefs", false, "start Flight Simulator via Windows Store")
 	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
+	flag.BoolVar(&quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
 	flag.IntVar(&autosaveInterval, "autosave", 0, "set autosave interval in minutes")
 	flag.Parse()
 
@@ -158,7 +162,7 @@ func main() {
 		if !drm.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
-			shutdownWithPromt()
+			shutdownWithPrompt()
 		} else {
 			fmt.Println("Valid license found!")
 			fmt.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
@@ -525,7 +529,7 @@ func main() {
 
 			case simconnect.RECV_ID_QUIT:
 				fmt.Println("Flight Simulator was shut down. Exiting...")
-				shutdownWithPromt()
+				shutdownWithPrompt()
 
 			default:
 				fmt.Println("recvInfo.ID unknown", recvInfo.ID)

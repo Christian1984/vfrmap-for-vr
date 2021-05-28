@@ -221,10 +221,11 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 
 The FSKneeboard server can be started with several commandline arguments to further customize its behaviour. In general, all you need to do is add them behind your "fskneeboard.exe" shortcut.
 
+- `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
 - `--winstorefs`: Start FSKneeboard together with your Flight Simulator purchased via Windows Store.
 - `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
-- `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
+- `--quietshutdown`: Prevent FSKneeboard from showing a "Press ENTER to continue..." prompt after disconnecting from MSFS
 
 ---
 
