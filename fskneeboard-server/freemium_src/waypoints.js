@@ -23,7 +23,15 @@ class Waypoints {
         //intentionally left empty
     }
 
+    has_waypoints() {
+        return false;
+    }
+
     update_track() {
+        //intentionally left empty
+    }
+    
+    load_flightplan() {
         //intentionally left empty
     }
 }

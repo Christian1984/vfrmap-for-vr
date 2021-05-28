@@ -498,7 +498,12 @@ function registerHandlers() {
                 activate_default_mode();
             }
             else {
-                hide_waypoint_confirm_dialog(false);
+                if (waypoints.has_waypoints()) {
+                    hide_waypoint_confirm_dialog(false);
+                }
+                else {
+                    waypoints.load_flightplan();
+                }
             }
         });
     }
