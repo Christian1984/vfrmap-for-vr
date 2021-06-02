@@ -81,7 +81,9 @@ Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's rea
 - Toggle to show and automatically follow your airplane on the map for a more "GPS"-ish style of navigation
 - Five different map types
 - Navigation data overlay
+- Configurable a hotkey to show/hide the FSKneeboard panel while ingame.
 - Add, remove and modify waypoints and tracks on the map<sup>\*</sup>
+- Pull the currently loaded flightplan from MSFS into your kneeboard map<sup>\*</sup>
 - Watch charts and checklists inside the integrated charts viewer<sup>\*</sup>
 - Take notes inflight with your mouse on the integrated notepad<sup>\*</sup>
 - Automatically create snapshots/savegames from your flights every few minutes so you're able to recover Flight Simulator instabilities and crashes (fully configurable, see [Advanced Usage Section](#advanced-usage) for details)<sup>\*</sup>
@@ -169,7 +171,15 @@ Please remove **all files** from the server directory and `christian1984-ingamep
 
 The map is the core component of FSKneeboard and available to FREE and PRO users alike. It contains several map modes as well as a representation of your own aircraft that you may also turn off so that you can "navigate by hand" on bush trips and the likes.
 
-Owners of FSKneeboard PRO can also access the waypoint feature, which allows you to manually place waypoints on the map. A track will be automatically added between waypoints and flags will show you information about the distance to that waypoint and the heading.
+Owners of FSKneeboard PRO can also access the waypoint feature, which allows you to manually place waypoints on the map:
+
+- A track will be automatically added between waypoints and a flag will show you information about the distance to the final waypoint and the heading of your track.
+- You can click any given waypoint you have placed to toggle the visibility of its particular info-flag. The info-flag of the last waypoint of your track is always visible.
+- If you get in the proximity of less than 0.5 NM of any given waypoint it will automatically be removed from the map. The last waypoint on your track will not be removed automatically, however, so you can use it to find a mission target or destination.
+
+PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
+
+> PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
@@ -213,6 +223,20 @@ FSKneeboard automatically deletes older snapshots and keep only the latest 5.
 
 If you need to restore a flight, you can find your autosaves inside your FSKneeboard-Server folder in the subdirectory `autosave`, e.g. `C:\Tools\fskneeboard\autosave`.
 
+## Hotkey
+
+You can define one of three hotkeys to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured by starting FSKneeboard with the `--hotkey [number]` with `[number]` having the following meaning:
+
+- `--hotkey 0` => `Alt+F`
+- `--hotkey 1` => `Alt+K`
+- `--hotkey 2` => `Alt+T`
+
+For example, launch `fskneeboard.exe --hotkey 0` to setup 'ALT+F` as your FSKneeboard hotkey.
+
+When ingame, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
+
+If you like, you can use your HOTAS configuration software to map this hotkey/shortcut to any button on your HOTAS.
+
 ---
 
 <div style="page-break-after: always;"></div>
@@ -222,6 +246,7 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 The FSKneeboard server can be started with several commandline arguments to further customize its behaviour. In general, all you need to do is add them behind your "fskneeboard.exe" shortcut.
 
 - `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
+- `--hotkey [number]`: Enable the hotkey feature and set it to Alt+F `[number] = 0`, Alt+K `[number] = 1` or Alt+T `[number] = 2`.
 - `--winstorefs`: Start FSKneeboard together with your Flight Simulator purchased via Windows Store.
 - `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
