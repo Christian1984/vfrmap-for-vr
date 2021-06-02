@@ -12,7 +12,7 @@ Additionally, FSKneeboard adds a very helpful fully automated and configurable A
 
 I made this mod for myself and for now, it does exactly what I want. And since the latest release, it does even more stuff that you guys, the community, asked for!
 
-If you like it, please let me know and share it with other VR pilots :-)
+If you like it, please let me know and share it with other VR pilots :-) Also, consider yourself invited to join me and the community on the [FSKneeboard Discord Server](https://discord.fskneeboard.com) at https://discord.fskneeboard.com
 
 *(\*) indicates "premium"-features that are available in FSKneeboard PRO, which is available for a Pay-What-You-Want-Price at https://fskneeboard.com/buy-now*
 
