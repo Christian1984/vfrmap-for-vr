@@ -48,6 +48,8 @@ type Report struct {
 	Flaps         float64   `name:"TRAILING EDGE FLAPS LEFT ANGLE" unit:"degrees"`
 	Trim          float64   `name:"ELEVATOR TRIM PCT" unit:"percent"`
 	RudderTrim    float64   `name:"RUDDER TRIM PCT" unit:"percent"`
+	WindDirection float64   `name:"AMBIENT WIND DIRECTION" unit:"degrees"`
+	WindVelocity  float64   `name:"AMBIENT WIND VELOCITY" unit:"knots"`
 }
 
 func (r *Report) RequestData(s *simconnect.SimConnect) {
@@ -512,6 +514,8 @@ func main() {
 						"flaps":          fmt.Sprintf("%.0f", report.Flaps),
 						"trim":           fmt.Sprintf("%.1f", report.Trim),
 						"rudder_trim":    fmt.Sprintf("%.1f", report.RudderTrim),
+						"wind_direction": fmt.Sprintf("%.0f", report.WindDirection),
+						"wind_velocity":  fmt.Sprintf("%.0f", report.WindVelocity),
 					})
 
 				case s.DefineMap["TrafficReport"]:

@@ -40,15 +40,33 @@ body {
     padding-right: 0.2em;
 }
 
+#wind-indicator,
 .map-controls {
     position: absolute;
-    bottom: 1em;
     z-index: 1000;
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid black;
     padding: 0.5em;
     display: flex;
     align-items: center;
+}
+
+.map-controls {
+    bottom: 1em;
+}
+
+#wind-indicator {
+    left: 1em;
+    top: 1em;
+    flex-direction: column;
+}
+
+#wind-indicator-arrow-wrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #hud-controls {
@@ -58,6 +76,7 @@ body {
 #mode-controls {
     left: 1em;
 }
+
 .map-controls > span.left,
 .map-controls > input[type=checkbox].left +label,
 .map-controls > input[type=radio].left +label {
@@ -270,7 +289,6 @@ input[type=radio] {
     text-align: center;
 }
 
-#premium-info.hidden,
-#waypoint-confirm-dialog-wrapper.hidden {
+.hidden {
     display: none;
 }

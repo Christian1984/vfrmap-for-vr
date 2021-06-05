@@ -3,6 +3,7 @@
 **/autosave/*.FLT
 **/autosave/*.FSSAVE
 **/autosave/*.SPB
+**/autosave/*.WPR
 /dist
 fskneeboard-server/charts/*.PNG
 .env
