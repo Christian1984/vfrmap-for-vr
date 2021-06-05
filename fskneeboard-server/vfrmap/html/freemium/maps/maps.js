@@ -102,7 +102,7 @@ let currentIcon = currentIconGroup.black;
 
 function open_in_google_maps() {
     var url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
-    window.open(url,'_blank');
+    window.open(url,"_blank");
 }
 
 function hide_wind_indicator(hide = true) {
@@ -118,15 +118,22 @@ function hide_wind_indicator(hide = true) {
 
 function update_wind_indicator(dir, vel) {
     if (dir == null || vel == null) {
-        hide_wind_indicator();
+        if (wind_indicator_arrow != null) {
+            wind_indicator_arrow.classList.add("hidden");
+        }
+
+        if (wind_indicator_direction != null) {
+            wind_indicator_direction.innerText = "N/A";
+        }
+
+        if (wind_indicator_velocity != null) {
+            wind_indicator_velocity.innerText = "N/A";
+        }
     }
     else {
-        hide_wind_indicator(false);
-
         if (wind_indicator_arrow != null) {
-            let style = "rotate(" + dir + "deg)";
-            console.log(style);
-            wind_indicator_arrow.style.transform = style;
+            wind_indicator_arrow.classList.remove("hidden");
+            wind_indicator_arrow.style.transform = "rotate(" + dir + "deg)";
         }
 
         if (wind_indicator_direction != null) {
@@ -166,7 +173,7 @@ ws.onmessage = function(e) {
     var msg = JSON.parse(e.data);
     last_report = msg;
 
-    if (map !== undefined) {
+    if (map != null) {
         updateMap(msg);
     }
 };
@@ -308,20 +315,20 @@ function initMap() {
 
     waypoints = new Waypoints(map, pos, mode_options, autoremoval_proximity_threshold);
 
-    map.on('dragstart', function(e) {
+    map.on("dragstart", function(e) {
         set_follow(false);
     });
 
-    map.on('moveend', function(e) {
+    map.on("moveend", function(e) {
         updateStoredCenter();
     });
 
-    map.on('zoomend', function(e) {
+    map.on("zoomend", function(e) {
         updateStoredCenter();
         localStorage.setItem("n_zoom", map.getZoom());
     });
 
-    map.on('click', function(e) {
+    map.on("click", function(e) {
         switch(mode_options.mode) {
             case MODES.add_track_markers:
                 waypoints.add_marker(e.latlng);
@@ -332,7 +339,7 @@ function initMap() {
         }
     });
 
-    map.on('baselayerchange', function(e) {
+    map.on("baselayerchange", function(e) {
         if (e.name == "Carto Dark (Night Mode)") {
             ac_visibility_options.ac_color = AC_COLOR.white;
         }
@@ -347,8 +354,8 @@ function initMap() {
     });
 
     map.whenReady(function() {
-        loadStoredState();
         registerHandlers();
+        loadStoredState();
         activate_default_mode();
     });
 }
@@ -396,7 +403,7 @@ function set_follow(follow) {
     }
 
     follow_plane = follow;
-    localStorage.setItem('b_follow', follow);
+    localStorage.setItem("b_follow", follow);
 
     if (follow) {
         ac_visibility_options.ac_visibility = follow
@@ -475,7 +482,7 @@ function loadStoredState() {
         }
     }
 
-    const follow = localStorage.getItem('b_follow');
+    const follow = localStorage.getItem("b_follow");
     if (follow != null) {
         set_follow(follow == "true" && ac_visibility_options.ac_visibility);
     }
@@ -483,8 +490,8 @@ function loadStoredState() {
         set_follow(true);
     }
 
-    const last_long = localStorage.getItem('n_last_long');
-    const last_lat = localStorage.getItem('n_last_lat');
+    const last_long = localStorage.getItem("n_last_long");
+    const last_lat = localStorage.getItem("n_last_lat");
 
     if (!follow_plane && last_long != null && last_lat != null) {
         setTimeout(() => {
@@ -492,23 +499,29 @@ function loadStoredState() {
         }, 500);
     }
 
-    const zoom = localStorage.getItem('n_zoom');
-    if (zoom !== undefined && zoom !== null) {
+    const zoom = localStorage.getItem("n_zoom");
+    if (zoom != null) {
         map.setZoom(zoom);
     }
     
-    const nav_data = localStorage.getItem('b_nav_data');
-    if (nav_data !== undefined && nav_data !== null) {
+    const nav_data = localStorage.getItem("b_nav_data");
+    if (nav_data != null) {
         const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
         if (nav_data_cb && nav_data == "true") {
             nav_data_cb.click();
         }
     }
 
-    const active_map = localStorage.getItem('n_active_map');
+    const active_map = localStorage.getItem("n_active_map");
     const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
-    if (active_map !== undefined && active_map !== null && nav_data_rbs.length > 0 && active_map < nav_data_rbs.length) {
+    if (active_map != null && nav_data_rbs.length > 0 && active_map < nav_data_rbs.length) {
         nav_data_rbs[active_map].click();
+    }
+
+    const wind_indicator_visibility = localStorage.getItem("wind_indicator_visibility");
+    const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
+    if (wind_indicator_visibility != null && wind_indicator_visibility == "false" && wind_indicator_toggle != null) {
+        wind_indicator_toggle.click();
     }
 
     update_visibility_buttons();
@@ -591,7 +604,7 @@ function registerHandlers() {
         });
     }
 
-    const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input");
+    const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input.ac-visibility");
     for (let i = 0; i < ac_visibility_control_btns.length; i++) {
         ac_visibility_control_btns[i].addEventListener("click", () => {
             ac_visibility_options.ac_visibility = true;
@@ -610,6 +623,15 @@ function registerHandlers() {
             updateIcon();
             save_ac_visibility();
         });
+    }
+
+    const wind_indicator_btn = document.querySelector("#wind-indicator-toggle");
+    if (wind_indicator_btn) {
+        wind_indicator_btn.addEventListener("change", () => {
+            console.log(wind_indicator_btn.checked);
+            hide_wind_indicator(!wind_indicator_btn.checked);
+            localStorage.setItem("wind_indicator_visibility", wind_indicator_btn.checked);
+        })
     }
 
     const center_ac_btn = document.querySelector("#ac-toggle-follow");

@@ -34,9 +34,10 @@
         </div>
 
         <div id="hud-controls" class="map-controls">
-            <input class="left" type="radio" id="ac-visibility-none" name="ac-visibility" value="none"><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label>
-            <input type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label>
-            <input class="right" type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter"><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label>
+            <input class="left right" type="checkbox" id="wind-indicator-toggle" checked><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label>
+            <input class="ac-visibility left" type="radio" id="ac-visibility-none" name="ac-visibility" value="none"><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label>
+            <input class="ac-visibility" type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label>
+            <input class="ac-visibility right" type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter"><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label>
             <span class="left right" id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span>
         </div>
 
@@ -50,14 +51,14 @@
         <div id="wind-indicator">
             <span><i class="fas fa-wind"></i> Wind</span>
             <span id="wind-indicator-arrow-wrapper">
-                <span id="wind-indicator-arrow" ><i class="fas fa-3x fa-long-arrow-alt-down"></i>
+                <span id="wind-indicator-arrow" class="hidden"><i class="fas fa-3x fa-long-arrow-alt-down"></i>
                 </span>
             </span>
             <span>
-                <span id="wind-indicator-direction">180</span><sup>o</sup>
+                <span id="wind-indicator-direction">-</span><sup>o</sup>
             </span>
             <span>
-                <span id="wind-indicator-velocity">7</span>kts
+                <span id="wind-indicator-velocity">-</span>kts
             </span>
         </div>
 
