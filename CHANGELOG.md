@@ -4,9 +4,10 @@
 
 ## MAJOR:
 
-- added access Flight Simulator's ingame flightplan from FSKneeboard and load it onto your kneeboard's map
+- added access Flight Simulator's ingame flightplan from FSKneeboard and load it onto your kneeboard's map (*)
+- added autoremoval for waypoints (except the last one) when getting within an 0.5 NM range (*)
 - added a configurable hotkey to toggle the ingame panel's visibility from your keyboard and HOTAS (requires mapping of keyboard macros to your HOTAS buttons)
-- added autoremoval for waypoints (except the last one) when getting within an 0.5 NM range
+- added a wind direction and velocity indicator
 
 ## MINOR:
 
