@@ -163,6 +163,31 @@ function reset_zoom() {
     save_zoom();
 }
 
+function request_hotkey() {
+    var xhr = new XMLHttpRequest();
+    var url = "/hotkey";
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                if (json && json.keycode != null) {
+                    const msg = JSON.stringify({
+                        type: "HotkeyConfiguration",
+                        data: {
+                            keyCode: json.keycode
+                        }
+                    });
+                    
+                    window.parent.window.postMessage(msg , "*");
+                }
+            }
+        }
+    };
+    xhr.send();
+}
+
 function init() {
     if (iframe_map) {
         iframe_map.src = 'http://localhost:9000/freemium/maps.html';
@@ -223,6 +248,8 @@ function init() {
             reset_zoom();
         });
     }
+
+    request_hotkey();
 
     window.document.addEventListener("keydown", (e) => {
         dispatch_keyevent(e);

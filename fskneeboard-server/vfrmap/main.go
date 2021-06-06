@@ -214,19 +214,21 @@ func main() {
 	fmt.Println("=== INFO: Hotkey")
 
 	if hotkey != 0 {
-		var key := "F"
+		key := "F"
 
-		switch (hotkey) {
+		switch hotkey {
 		case 2:
 			key = "K"
 		case 3:
 			key = "T"
 		}
 
-		fmt.Println("Hotkey set to ALT+" + hotkey)
+		fmt.Println("Hotkey set to [ALT+" + key + "]")
 	} else {
 		fmt.Println("INFO: Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable ALT+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
 	}
+
+	fmt.Println("")
 
 	// starting Flight Simulator
 	fmt.Println("=== INFO: Flight Simulator Autostart")
