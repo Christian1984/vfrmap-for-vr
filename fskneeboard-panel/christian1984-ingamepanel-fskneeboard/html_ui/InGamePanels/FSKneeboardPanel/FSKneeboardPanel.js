@@ -42,7 +42,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         this.debugEnabled = false;
 
         this.collapsed = false;
-        this.collapse_hotkey = 70;
+        this.collapse_hotkey = -1;
 
         if (this.debugEnabled) {
             var self = this;
@@ -132,12 +132,34 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         this.collapse(!this.collapsed);
     }
 
+    request_hotkey() {
+        const self = this;
+
+        var xhr = new XMLHttpRequest();
+        var url = "/hotkey";
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    if (json && json.keycode != null) {
+                        self.collapse_hotkey = json.keycode;
+                    }
+                }
+            }
+        };
+        xhr.send();
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
         var self = this;
 
         window.addEventListener("message", (e) => {
+            if (self.collapse_hotkey == -1) return;
+
             try {
                 const data = JSON.parse(e.data);
                 if (data.type == "KeyboardEvent" && data.data != null) {
@@ -152,7 +174,8 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         });
 
         window.addEventListener("keydown", (e) => {
-            self.log("e.altKey" + e.altKey);
+            if (self.collapse_hotkey == -1) return;
+
             if (e.keyCode == self.collapse_hotkey && e.altKey) {
                 self.toggle_collapse();
             }
@@ -169,6 +192,8 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                 this.ingameUi.addEventListener("panelActive", (e) => {
                     self.panelActive = true;
                     self.warning_message.classList.add("show");
+
+                    self.request_hotkey();
 
                     if (self.content_iframe) {
                         self.content_iframe.src = 'http://localhost:9000/index.html';

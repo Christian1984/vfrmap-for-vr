@@ -227,11 +227,11 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 
 You can define one of three hotkeys to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured by starting FSKneeboard with the `--hotkey [number]` with `[number]` having the following meaning:
 
-- `--hotkey 0` => `Alt+F`
-- `--hotkey 1` => `Alt+K`
-- `--hotkey 2` => `Alt+T`
+- `--hotkey 1` => `Alt+F`
+- `--hotkey 2` => `Alt+K`
+- `--hotkey 3` => `Alt+T`
 
-For example, launch `fskneeboard.exe --hotkey 0` to setup 'ALT+F` as your FSKneeboard hotkey.
+For example, launch `fskneeboard.exe --hotkey 1` to setup `ALT+F` as your FSKneeboard hotkey.
 
 When ingame, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
 
@@ -246,7 +246,7 @@ If you like, you can use your HOTAS configuration software to map this hotkey/sh
 The FSKneeboard server can be started with several commandline arguments to further customize its behaviour. In general, all you need to do is add them behind your "fskneeboard.exe" shortcut.
 
 - `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
-- `--hotkey [number]`: Enable the hotkey feature and set it to Alt+F `[number] = 0`, Alt+K `[number] = 1` or Alt+T `[number] = 2`.
+- `--hotkey [number]`: Enable the hotkey feature and set it to Alt+F `[number] = 1`, Alt+K `[number] = 2` or Alt+T `[number] = 3`.
 - `--winstorefs`: Start FSKneeboard together with your Flight Simulator purchased via Windows Store.
 - `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.

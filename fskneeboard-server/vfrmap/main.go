@@ -68,6 +68,10 @@ type TrafficReport struct {
 	Heading         float64  `name:"PLANE HEADING DEGREES TRUE" unit:"degrees"`
 }
 
+type Hotkey struct {
+	KeyCode int `json:"keycode"`
+}
+
 func (r *TrafficReport) RequestData(s *simconnect.SimConnect) {
 	defineID := s.GetDefineID(r)
 	requestID := defineID
@@ -130,6 +134,7 @@ var noupdatecheck bool
 var quietshutdown bool
 
 var autosaveInterval int
+var hotkey int
 
 var verbose bool
 var httpListen string
@@ -143,7 +148,10 @@ func main() {
 	flag.BoolVar(&winstorefs, "winstorefs", false, "start Flight Simulator via Windows Store")
 	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
 	flag.BoolVar(&quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
+
 	flag.IntVar(&autosaveInterval, "autosave", 0, "set autosave interval in minutes")
+	flag.IntVar(&hotkey, "hotkey", 0, "select a hotkey to toggle the ingame panel's visibility. 1 => ALT+F, 2 => ALT+K, 3 => ALT+T")
+
 	flag.Parse()
 
 	bPro = pro == "true"
@@ -201,6 +209,24 @@ func main() {
 	}
 
 	fmt.Println("")
+
+	// hotkey info
+	fmt.Println("=== INFO: Hotkey")
+
+	if hotkey != 0 {
+		var key := "F"
+
+		switch (hotkey) {
+		case 2:
+			key = "K"
+		case 3:
+			key = "T"
+		}
+
+		fmt.Println("Hotkey set to ALT+" + hotkey)
+	} else {
+		fmt.Println("INFO: Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable ALT+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
+	}
 
 	// starting Flight Simulator
 	fmt.Println("=== INFO: Flight Simulator Autostart")
@@ -332,6 +358,35 @@ func main() {
 			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
 		}
 
+		hotkey := func(w http.ResponseWriter, r *http.Request) {
+			keycode := -1
+
+			switch hotkey {
+			case 1:
+				keycode = 70
+			case 2:
+				keycode = 75
+			case 3:
+				keycode = 84
+			}
+
+			hotkey := Hotkey{keycode}
+			responseJson, jsonErr := json.Marshal(hotkey)
+
+			if jsonErr != nil {
+				fmt.Println(jsonErr.Error())
+				http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(responseJson))
+		}
+
 		freemium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
@@ -378,6 +433,7 @@ func main() {
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
+		http.HandleFunc("/hotkey/", hotkey)
 		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
