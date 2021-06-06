@@ -177,11 +177,11 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 - You can click any given waypoint you have placed to toggle the visibility of its particular info-flag. The info-flag of the last waypoint of your track is always visible.
 - If you get in the proximity of less than 0.5 NM of any given waypoint it will automatically be removed from the map. The last waypoint on your track will not be removed automatically, however, so you can use it to find a mission target or destination.
 
+![Map Viewer](screenshots/fskneeboard-map-legend.png)
+
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
 
 > PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
-
-![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
 <div style="page-break-after: always;"></div>
 
@@ -215,7 +215,7 @@ Notepad is another feature that FSKneeboard PRO users have access to. It allows 
 
 Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
 
-Simply run FSKneeboard with the flag `--autosave <int>` to create a snapshot every `<int>` minutes. For example, run `fskneeboard.exe --autosave 5` to create one savegame every 5 minutes.
+Simply run FSKneeboard with the flag `--autosave [number]` to create a snapshot every `[number]` minutes. For example, run `fskneeboard.exe --autosave 5` to create one savegame every 5 minutes.
 
 ![Autosave Shortcut](screenshots/fskneeboard-autosave.png)
 
@@ -223,7 +223,9 @@ FSKneeboard automatically deletes older snapshots and keep only the latest 5.
 
 If you need to restore a flight, you can find your autosaves inside your FSKneeboard-Server folder in the subdirectory `autosave`, e.g. `C:\Tools\fskneeboard\autosave`.
 
-## Hotkey
+## Hotkey (Experimental)
+
+> REMARKS: This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
 
 You can define one of three hotkeys to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured by starting FSKneeboard with the `--hotkey [number]` with `[number]` having the following meaning:
 

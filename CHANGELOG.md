@@ -2,17 +2,20 @@
 
 # v1.3.0
 
+## EXPERIMENTAL:
+
+- added a configurable hotkey to toggle the ingame panel's visibility from your keyboard and HOTAS (requires mapping of keyboard macros to your HOTAS buttons)
+
 ## MAJOR:
 
 - added access Flight Simulator's ingame flightplan from FSKneeboard and load it onto your kneeboard's map (*)
 - added autoremoval for waypoints (except the last one) when getting within an 0.5 NM range (*)
-- added a configurable hotkey to toggle the ingame panel's visibility from your keyboard and HOTAS (requires mapping of keyboard macros to your HOTAS buttons)
 - added a wind direction and velocity indicator
 
 ## MINOR:
 
 - improved overview, performance and stability of the waypoints feature by disabling visibility of info-flags of individual waypoints (except the last one) by default. Individual info-flags can be toggled by clicking on the particular waypoint.
-- added option `--quietshutdown` to prevent FSKneeboard from showing a "Press ENTER to continue..." prompt after disconnecting from MSFS
+- added option `--quietshutdown` to prevent FSKneeboard from showing a `Press ENTER to continue...` prompt after disconnecting from MSFS
 - added link to the FSKneeboard Discord server (https://discord.fskneeboard.com) to the server's startup message
 
 ---
