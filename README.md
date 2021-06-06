@@ -233,6 +233,8 @@ You can define one of three hotkeys to toggle the visibility of the FSKneeboard 
 
 For example, launch `fskneeboard.exe --hotkey 1` to setup `ALT+F` as your FSKneeboard hotkey.
 
+![Hotkey Shortcut](screenshots/fskneeboard-hotkey.png)
+
 When ingame, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
 
 If you like, you can use your HOTAS configuration software to map this hotkey/shortcut to any button on your HOTAS.
@@ -251,6 +253,8 @@ The FSKneeboard server can be started with several commandline arguments to furt
 - `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
 - `--quietshutdown`: Prevent FSKneeboard from showing a "Press ENTER to continue..." prompt after disconnecting from MSFS
+
+![Quietshutdown Shortcut](screenshots/fskneeboard-quietshutdown.png)
 
 ---
 
