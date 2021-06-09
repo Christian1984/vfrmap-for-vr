@@ -154,6 +154,11 @@ function brightness_decrease() {
     save_brightness();
 }
 
+function reset_brightness() {
+    set_brightness(100);
+    save_brightness();
+}
+
 function apply_zoom() {
     if (!content_div) return;
 
@@ -295,6 +300,7 @@ function init() {
 
     if (reset) {
         reset.addEventListener("click", () => {
+            reset_brightness();
             reset_zoom();
         });
     }
