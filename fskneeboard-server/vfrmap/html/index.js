@@ -168,8 +168,8 @@ function set_brightness(brightness) {
         current_brightness = brightness_modification;
     }
 
-    const body = document.querySelector("body");
-    body.style.filter = "brightness(" + current_brightness + "%)";
+    const body = document.querySelector("#overlay_brightness");
+    body.style.filter = "opacity(" + (100 - current_brightness) + "%)";
 }
 
 function brightness_increase() {
