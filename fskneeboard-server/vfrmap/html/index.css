@@ -5,11 +5,11 @@ html, body {
     height: 100%;
 }
 
-body.redout #overlay {
+body.red #overlay {
     display: unset;
 }
 
-body.redout #custom_panel_wrap {
+body.red #custom_panel_wrap {
     filter: saturate(0);
 }
 
@@ -20,7 +20,7 @@ body.redout #custom_panel_wrap {
     bottom: 0;
     left: 0;
     background-color: darkred;
-    opacity: 50%;
+    opacity: 75%;
     pointer-events: none;
     display: none;
 }
@@ -46,6 +46,7 @@ body.redout #custom_panel_wrap {
 }
 
 #tab_switches >span,
+#custom_panel_toolbar_tools .toolgroup > label,
 #custom_panel_toolbar_tools .toolgroup > span {
     padding: 0.5em;
     border: 1px solid black;
@@ -55,12 +56,14 @@ body.redout #custom_panel_wrap {
 }
 
 #tab_switches >span:hover,
+#custom_panel_toolbar_tools .toolgroup > label:hover,
 #custom_panel_toolbar_tools .toolgroup > span:hover {
     background-color: lightblue;
 }
 
-#tab_switches >span.active {
-    border: none;
+#tab_switches >span.active,
+#custom_panel_toolbar_tools .toolgroup > input:checked + label {
+    border-color: blue;
     background-color: blue;
     color: white;
 }
@@ -74,7 +77,12 @@ body.redout #custom_panel_wrap {
     margin-right: 0.25em;
 }
 
-#custom_panel_toolbar_tools .toolgroup >span {
+#custom_panel_toolbar_tools .toolgroup > input {
+    display: none;
+}
+
+#custom_panel_toolbar_tools .toolgroup > label
+#custom_panel_toolbar_tools .toolgroup > span {
     text-align: center;
     border-left: none;
 }

@@ -14,6 +14,7 @@ const switch_notepad = document.getElementById("switch_notepad");
 const temp = document.getElementById("temp");
 
 const brightness_down = document.getElementById("brightness_down");
+const red_light = document.getElementById("red_light");
 const brightness_up = document.getElementById("brightness_up");
 const zoom_in = document.getElementById("zoom_in");
 const zoom_out = document.getElementById("zoom_out");
@@ -87,6 +88,11 @@ function save_tab(tab_id) {
     localStorage.setItem("active_tab", tab_id);
 }
 
+function save_red(red) {
+    if (red == null) return;
+    localStorage.setItem("red", red);
+}
+
 function save_brightness() {
     localStorage.setItem("brightness", current_brightness);
 }
@@ -97,7 +103,6 @@ function save_zoom() {
 
 function load_state() {
     const zoom = localStorage.getItem("zoom");
-
     if (zoom != null) {
         try {
             current_zoom = JSON.parse(zoom);
@@ -107,14 +112,18 @@ function load_state() {
         apply_zoom();
     }
 
-    const brightness = localStorage.getItem("brightness");
+    const red = localStorage.getItem("red");
+    if (red != null) {
+        set_red_light(red == "true");
+        red_light.checked = red == "true";
+    }
 
+    const brightness = localStorage.getItem("brightness");
     if (brightness != null) {
         set_brightness(brightness);
     }
 
     const active_tab = localStorage.getItem("active_tab");
-
     if (active_tab != null) {
         switch(active_tab) {
             case "1":
@@ -128,6 +137,25 @@ function load_state() {
                 break;
         }
     }
+}
+
+function set_red_light(red) {
+    const body = document.querySelector("body");
+
+    if (body) {
+        if (red) {
+            body.classList.add("red");
+        }
+        else {
+            body.classList.remove("red");
+        }
+    }
+}
+
+function reset_red_light() {
+    red_light.checked = false;
+    set_red_light(false);
+    save_red(false);
 }
 
 function set_brightness(brightness) {
@@ -268,6 +296,13 @@ function init() {
         });
     }
 
+    if (red_light) {
+        red_light.addEventListener("change", () => {
+            set_red_light(red_light.checked);
+            save_red(red_light.checked);
+        });
+    }
+
     if (brightness_up) {
         brightness_up.addEventListener("click", () => {
             brightness_increase();
@@ -302,6 +337,7 @@ function init() {
         reset.addEventListener("click", () => {
             reset_brightness();
             reset_zoom();
+            reset_red_light();
         });
     }
 
