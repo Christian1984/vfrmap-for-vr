@@ -1,4 +1,5 @@
 const zoom_modification_factor = 1.05;
+const brightness_modification = 10;
 
 const content_div = document.getElementById("content");
 
@@ -12,6 +13,8 @@ const switch_notepad = document.getElementById("switch_notepad");
 
 const temp = document.getElementById("temp");
 
+const brightness_down = document.getElementById("brightness_down");
+const brightness_up = document.getElementById("brightness_up");
 const zoom_in = document.getElementById("zoom_in");
 const zoom_out = document.getElementById("zoom_out");
 const stretch = document.getElementById("stretch");
@@ -19,6 +22,7 @@ const unstretch = document.getElementById("unstretch");
 const reset = document.getElementById("reset");
 
 const current_zoom = { x: 1, y: 1 };
+let current_brightness = 100;
 
 function dispatch_keyevent(event) {
     const msg = JSON.stringify({
@@ -83,6 +87,10 @@ function save_tab(tab_id) {
     localStorage.setItem("active_tab", tab_id);
 }
 
+function save_brightness() {
+    localStorage.setItem("brightness", current_brightness);
+}
+
 function save_zoom() {
     localStorage.setItem("zoom", JSON.stringify(current_zoom));
 }
@@ -97,6 +105,12 @@ function load_state() {
         catch(e) { /* ignore silently */ }
 
         apply_zoom();
+    }
+
+    const brightness = localStorage.getItem("brightness");
+
+    if (brightness != null) {
+        set_brightness(brightness);
     }
 
     const active_tab = localStorage.getItem("active_tab");
@@ -114,6 +128,30 @@ function load_state() {
                 break;
         }
     }
+}
+
+function set_brightness(brightness) {
+    current_brightness = brightness;
+
+    if (current_brightness > 100) {
+        current_brightness = 100;
+    }
+    else if (current_brightness <= 0) {
+        current_brightness = brightness_modification;
+    }
+
+    const body = document.querySelector("body");
+    body.style.filter = "brightness(" + current_brightness + "%)";
+}
+
+function brightness_increase() {
+    set_brightness(current_brightness + brightness_modification);
+    save_brightness();
+}
+
+function brightness_decrease() {
+    set_brightness(current_brightness - brightness_modification);
+    save_brightness();
 }
 
 function apply_zoom() {
@@ -216,6 +254,18 @@ function init() {
     if(switch_notepad) {
         switch_notepad.addEventListener("click", () => {
             switch_to_notepad();
+        });
+    }
+
+    if (brightness_down) {
+        brightness_down.addEventListener("click", () => {
+            brightness_decrease();
+        });
+    }
+
+    if (brightness_up) {
+        brightness_up.addEventListener("click", () => {
+            brightness_increase();
         });
     }
 
