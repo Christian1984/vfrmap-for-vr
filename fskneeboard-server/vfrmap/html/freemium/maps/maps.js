@@ -216,6 +216,16 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
+    const airac = "2105";
+
+    const ofm = new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=" + airac + "/aero/latest", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png"
+    });
+
     const openaip_cached_basemap = new L.TileLayer("http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", {
         maxZoom: 14,
         minZoom: 4,
@@ -277,11 +287,12 @@ function initMap() {
         "Stamen Terrain": stamen_terrain,
         "Stamen Toner": stamen_black_white,
         "Stamen Water": stamen_water,
-        "Carto Dark (Night Mode)": carto_dark,
+        "Carto Dark (Night Mode)": carto_dark
     };
 
     const overlayMaps = {
-        "Navigational Data": openaip_cached_basemap,
+        "openAIP (worldwide)": openaip_cached_basemap,
+        "open flightmaps (Europe)": ofm
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
