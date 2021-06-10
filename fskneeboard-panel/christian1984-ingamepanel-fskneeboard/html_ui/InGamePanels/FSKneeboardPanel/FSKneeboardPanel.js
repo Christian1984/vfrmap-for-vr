@@ -131,7 +131,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     }
 
     set_red_light(red) {
-        console.log("red", red);
         const panel = document.querySelector("#FSKneeboardPanel");
 
         if (panel) {
