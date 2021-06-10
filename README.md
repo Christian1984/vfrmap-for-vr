@@ -301,6 +301,13 @@ Helicopter Icon provided by [SVGRepo](https://www.svgrepo.com/svg/128811/helicop
 
 Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
 
+Maps and APIs:
+
+- [OpenStreetMap](https://www.openstreetmap.org/copyright)
+- [openAIP](https://www.openaip.net)
+- [Stamen](http://maps.stamen.com)
+- [Carto](https://carto.com/)
+
 ---
 
 # Releases and Downloads

@@ -101,7 +101,7 @@ let currentIconGroup = icons.planes;
 let currentIcon = currentIconGroup.black;
 
 function open_in_google_maps() {
-    var url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
+    const url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
     window.open(url,"_blank");
 }
 
@@ -147,7 +147,7 @@ function update_wind_indicator(dir, vel) {
 }
 
 function updateMap(msg) {
-    var pos = L.latLng(msg.latitude, msg.longitude);
+    const pos = L.latLng(msg.latitude, msg.longitude);
     marker.setLatLng(pos);
     marker.setRotationAngle(msg.heading);
 
@@ -170,7 +170,7 @@ ws.onclose = function() {
     //console.log("ws close");
 };
 ws.onmessage = function(e) {
-    var msg = JSON.parse(e.data);
+    const msg = JSON.parse(e.data);
     last_report = msg;
 
     if (map != null) {
@@ -205,9 +205,9 @@ function updateIcon() {
 }
 
 function initMap() {
-    var pos = initial_pos;
+    let pos = initial_pos;
 
-    var osm = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    const osm = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -216,7 +216,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    var openaip_cached_basemap = new L.TileLayer("http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", {
+    const openaip_cached_basemap = new L.TileLayer("http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", {
         maxZoom: 14,
         minZoom: 4,
         tileSize: map_resolution.tile_size,
@@ -228,7 +228,7 @@ function initMap() {
         transparent: true
     });
 
-    var stamen_black_white = new L.TileLayer("http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", {
+    const stamen_black_white = new L.TileLayer("http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -237,7 +237,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    var stamen_terrain = new L.TileLayer("http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", {
+    const stamen_terrain = new L.TileLayer("http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -246,7 +246,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    var stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
+    const stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -255,7 +255,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    var carto_dark = new L.TileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", {
+    const carto_dark = new L.TileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -272,18 +272,7 @@ function initMap() {
         zoomControl: false
     });
 
-    var attrib = L.control.attribution({position: "bottomleft"});
-    attrib.addAttribution("<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" style=\"\">OpenStreetMap</a>");
-    attrib.addAttribution("<a href=\"https://www.openaip.net\" target=\"_blank\" style=\"\">openAIP</a>");
-    attrib.addAttribution("<a href=\"http://maps.stamen.com\" target=\"_blank\" style=\"\">Stamen</a>");
-    attrib.addAttribution("<a href=\"https://carto.com/\" target=\"_blank\" style=\"\">Carto</a>");
-    attrib.addAttribution("<a href=\"https://github.com/lian/msfs2020-go\" target=\"_blank\" style=\"\">lian</a>");
-    attrib.addAttribution("<a href=\"https://github.com/bymaximus/msfs2020-toolbar-window-template\" target=\"_blank\" style=\"\">bymaximus</a>");
-    attrib.addAttribution("<a href=\"https://github.com/Christian1984/msfs2020-go\" target=\"_blank\" style=\"\">Christian1984</a>");
-
-    attrib.addTo(map);
-
-    var baseMaps = {
+    const baseMaps = {
         "OpenStreetMap": osm,
         "Stamen Terrain": stamen_terrain,
         "Stamen Toner": stamen_black_white,
@@ -291,7 +280,7 @@ function initMap() {
         "Carto Dark (Night Mode)": carto_dark,
     };
 
-    var overlayMaps = {
+    const overlayMaps = {
         "Navigational Data": openaip_cached_basemap,
     };
 
@@ -306,7 +295,7 @@ function initMap() {
     marker.addTo(map);
     //marker.bindPopup(L.popup({autoPan: false}).setLatLng(pos).setContent(plane_popup.main));
 
-    var markerPos = L.latLng(0,0);
+    let markerPos = L.latLng(0,0);
     markerTeleport = L.marker(markerPos, {});
     markerTeleport.addTo(map);
     markerTeleport.bindPopup(L.popup({autoPan: false}).setContent(teleport_popup.main));
@@ -382,7 +371,7 @@ function hide_teleport_marker() {
 }
 
 function teleport_here() {
-    var msg = JSON.stringify(
+    const msg = JSON.stringify(
         {
             "type": "teleport",
             "lat": parseFloat(teleport_popup.gps.value.split(",")[0]),
