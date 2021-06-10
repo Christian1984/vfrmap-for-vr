@@ -205,7 +205,31 @@ function updateIcon() {
 }
 
 function calculate_airac_cycle() {
-    return "2105"
+    const date = new Date();
+    let c_date = new Date(2003, 0, 23);
+    let counter = 0;
+    let last_count = 0;
+    let year = date.getFullYear();
+
+    while (c_date.getTime() < date.getTime()) {
+        if (c_date.getFullYear() === date.getFullYear()-1) {
+            last_count++;
+        }
+
+        if (c_date.getFullYear() === date.getFullYear()) {
+            counter++;
+        }
+
+        c_date.setDate(c_date.getDate() + 28);
+    };
+
+    if (counter == 0) {
+        year -= 1;
+        counter = last_count;
+    }
+
+    const airac_id = (parseFloat(year.toString().substring(2, 4)) * 100) + counter;
+    return airac_id.toString();
 }
 
 function initMap() {

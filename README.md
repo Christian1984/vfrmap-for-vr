@@ -304,9 +304,10 @@ Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
 Maps and APIs:
 
 - [OpenStreetMap](https://www.openstreetmap.org/copyright)
-- [openAIP](https://www.openaip.net)
 - [Stamen](http://maps.stamen.com)
 - [Carto](https://carto.com/)
+- [openAIP](https://www.openaip.net)
+- [open flightmaps](https://www.openflightmaps.org/)
 
 ---
 
