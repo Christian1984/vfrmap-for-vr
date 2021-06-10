@@ -204,6 +204,10 @@ function updateIcon() {
     set_airplane_marker_visibility(ac_visibility_options.ac_visibility);
 }
 
+function calculate_airac_cycle() {
+    return "2105"
+}
+
 function initMap() {
     let pos = initial_pos;
 
@@ -216,7 +220,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const airac = "2105";
+    const airac = calculate_airac_cycle();
 
     const ofm = new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=" + airac + "/aero/latest", {
         maxZoom: 18,
@@ -503,12 +507,12 @@ function loadStoredState() {
     if (zoom != null) {
         map.setZoom(zoom);
     }
-    
-    const nav_data = localStorage.getItem("b_nav_data");
-    if (nav_data != null) {
-        const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
-        if (nav_data_cb && nav_data == "true") {
-            nav_data_cb.click();
+
+    const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
+    for (let i = 0; i < nav_data_cbs.length; i++) {
+        const active = localStorage.getItem("b_nav_data_" + i);
+        if (active != null && active == "true") {
+            nav_data_cbs[i].click();
         }
     }
 
@@ -529,10 +533,10 @@ function loadStoredState() {
 }
 
 function registerHandlers() {
-    const nav_data_cb = document.querySelector(".leaflet-control-layers-selector[type='checkbox']");
-    if (nav_data_cb) {
-        nav_data_cb.addEventListener("change", () => {
-            localStorage.setItem("b_nav_data", nav_data_cb.checked)
+    const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
+    for (let i = 0; i < nav_data_cbs.length; i++) {
+        nav_data_cbs[i].addEventListener("change", () => {
+            localStorage.setItem("b_nav_data_" + i, nav_data_cbs[i].checked)
         });
     }
 
