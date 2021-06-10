@@ -125,6 +125,25 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         this.collapse(!this.collapsed);
     }
 
+    set_brightness(brightness) {
+        const overlay_brightness = document.querySelector("#overlay_brightness");
+        overlay_brightness.style.opacity = (100 - brightness) / 100;
+    }
+
+    set_red_light(red) {
+        console.log("red", red);
+        const panel = document.querySelector("#FSKneeboardPanel");
+
+        if (panel) {
+            if (red) {
+                panel.classList.add("red");
+            }
+            else {
+                panel.classList.remove("red");
+            }
+        }
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -134,15 +153,30 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
             try {
                 const data = JSON.parse(e.data);
 
-                if (data.type == "KeyboardEvent" && data.data != null) {
-                    if (self.collapse_hotkey == -1) return;
+                switch (data.type) {
+                    case "KeyboardEvent":
+                        if (self.collapse_hotkey == -1) return;
+    
+                        if (data.data.type == "keydown" && data.data.keyCode == self.collapse_hotkey && data.data.altKey) {
+                            self.toggle_collapse();
+                        }
 
-                    if (data.data.type == "keydown" && data.data.keyCode == self.collapse_hotkey && data.data.altKey) {
-                        self.toggle_collapse();
-                    }
+                        break;
+
+                    case "HotkeyConfiguration":
+                        self.collapse_hotkey = data.data.keyCode;
+                        break;
+
+                    case "SetBrighness":
+                        self.set_brightness(data.data.brightness);
+                        break;
+                        
+                    case "SetRedLight":
+                        self.set_red_light(data.data.red);
+                        break;
                 }
-                else if (data.type == "HotkeyConfiguration" && data.data != null && data.data.keyCode != null) {
-                    self.collapse_hotkey = data.data.keyCode;
+
+                if (data.type == "KeyboardEvent" && data.data != null) {
                 }
             }
             catch (e) {

@@ -5,34 +5,6 @@ html, body {
     height: 100%;
 }
 
-body.red #overlay_red {
-    display: unset;
-}
-
-body.red #custom_panel_wrap {
-    filter: saturate(0);
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    pointer-events: none;
-}
-
-#overlay_brightness {
-    background-color: black;
-    filter: opacity(50%);
-}
-
-#overlay_red {
-    background-color: darkred;
-    filter: opacity(60%);
-    display: none;
-}
-
 #custom_panel_wrap {
     display: flex;
     flex-direction: column;

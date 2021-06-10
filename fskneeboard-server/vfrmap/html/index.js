@@ -140,16 +140,14 @@ function load_state() {
 }
 
 function set_red_light(red) {
-    const body = document.querySelector("body");
-
-    if (body) {
-        if (red) {
-            body.classList.add("red");
+    const msg = JSON.stringify({
+        type: "SetRedLight",
+        data: {
+            red: red
         }
-        else {
-            body.classList.remove("red");
-        }
-    }
+    });
+    
+    window.parent.window.postMessage(msg , "*");
 }
 
 function reset_red_light() {
@@ -168,8 +166,15 @@ function set_brightness(brightness) {
         current_brightness = brightness_modification;
     }
 
-    const body = document.querySelector("#overlay_brightness");
-    body.style.filter = "opacity(" + (100 - current_brightness) + "%)";
+    const msg = JSON.stringify({
+        type: "SetBrighness",
+        data: {
+            brightness: current_brightness
+        }
+    });
+    
+    window.parent.window.postMessage(msg , "*");
+
 }
 
 function brightness_increase() {
