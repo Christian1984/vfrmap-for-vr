@@ -66,6 +66,10 @@ html, body {
     display: unset;
 }
 
+#FSKneeboardPanel.red #overlay_brightness {
+    display: none;
+}
+
 #FSKneeboardPanel.red #content_iframe {
     filter: saturate(0) !important;
 }

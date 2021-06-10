@@ -128,6 +128,10 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     set_brightness(brightness) {
         const overlay_brightness = document.querySelector("#overlay_brightness");
         overlay_brightness.style.opacity = (100 - brightness) / 100;
+        
+        const overlay_red = document.querySelector("#overlay_red");
+        overlay_red.style.filter = "brightness(" + brightness + "%)";
+        overlay_red.style.opacity = - 3 / 1000 * brightness + 1;
     }
 
     set_red_light(red) {
