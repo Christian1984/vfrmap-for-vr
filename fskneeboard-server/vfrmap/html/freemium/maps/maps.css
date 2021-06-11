@@ -289,6 +289,13 @@ input[type=radio] {
     text-align: center;
 }
 
+.icao_ident {
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+    display: block;
+}
+
 .hidden {
     display: none !important;
 }
