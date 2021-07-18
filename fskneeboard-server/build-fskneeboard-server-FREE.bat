@@ -23,6 +23,11 @@ git describe --tags>versionstr.txt
 set /p versionstr=<versionstr.txt
 del versionstr.txt
 
+echo create winres meta data...
+cd vfrmap
+go-winres make --product-version=git-tag --file-version=git-tag
+cd ..
+
 echo build project...
 go build -o fskneeboard.exe -ldflags "-s -w -X main.buildVersion=%versionstr% -X main.buildTime=%datestr% -X main.pro=false" -v .\vfrmap\
 

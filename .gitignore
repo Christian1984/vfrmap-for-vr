@@ -18,5 +18,6 @@ bindata.go
 latestcheck.json
 *.lic
 *.pdf
+*.syso
 
 !fskneeboard-server/charts/traffic-pattern.png
