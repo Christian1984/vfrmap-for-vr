@@ -80,10 +80,10 @@ Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's rea
 - Hide your own airplane on the map for a fully-fledged "paper map on kneeboard"-VFR navigation feeling
 - Toggle to show and automatically follow your airplane on the map for a more "GPS"-ish style of navigation
 - Five different map types
-- Navigation data overlay
+- Several navigation data overlays, including open flightmaps and openAIP
 - Configurable a hotkey to show/hide the FSKneeboard panel while ingame.
 - Add, remove and modify waypoints and tracks on the map<sup>\*</sup>
-- Pull the currently loaded flightplan from MSFS into your kneeboard map<sup>\*</sup>
+- Pull the currently loaded flightplan from MSFS into your kneeboard map, including ICAO identifiers<sup>\*</sup>
 - Watch charts and checklists inside the integrated charts viewer<sup>\*</sup>
 - Take notes inflight with your mouse on the integrated notepad<sup>\*</sup>
 - Automatically create snapshots/savegames from your flights every few minutes so you're able to recover Flight Simulator instabilities and crashes (fully configurable, see [Advanced Usage Section](#advanced-usage) for details)<sup>\*</sup>

@@ -319,7 +319,7 @@ function initMap() {
     };
 
     const overlayMaps = {
-        "openAIP (worldwide)": openaip_cached_basemap,
+        "openAIP (Worldwide)": openaip_cached_basemap,
         "open flightmaps (Europe)": ofm
     };
 
