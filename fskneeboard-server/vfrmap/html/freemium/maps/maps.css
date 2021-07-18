@@ -30,14 +30,24 @@ body {
     flex-grow: 1;
 }
 
-#teleport-popup p {
-    padding:0.2em;
-    margin: 0;
-    text-align: center;
+#teleport-popup table {
+    width: 100%;
 }
 
-#teleport-popup p label {
+#teleport-popup td {
+    padding:0.2em;
+    margin: 0;
+    /*text-align: center;*/
+}
+
+#teleport-popup td label {
     padding-right: 0.2em;
+}
+
+#teleport-popup td input,
+#teleport-popup td button {
+    box-sizing: border-box;
+    width: 100%;
 }
 
 #wind-indicator,

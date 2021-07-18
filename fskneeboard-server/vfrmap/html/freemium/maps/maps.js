@@ -337,7 +337,7 @@ function initMap() {
     let markerPos = L.latLng(0,0);
     markerTeleport = L.marker(markerPos, {});
     markerTeleport.addTo(map);
-    markerTeleport.bindPopup(L.popup({autoPan: false}).setContent(teleport_popup.main));
+    markerTeleport.bindPopup(L.popup({autoPan: false, closeButton: false}).setContent(teleport_popup.main));
     set_teleport_marker(markerPos);
     hide_teleport_marker();
 
@@ -396,10 +396,13 @@ function set_teleport_marker(latlng) {
 
     if (last_report.altitude) {
         teleport_popup.altitude.value = last_report.altitude;
+        teleport_popup.altitude_slider.value = last_report.altitude;
     }
 
     markerTeleport._icon.style.display = "block";
     markerTeleport._shadow.style.display = "block";
+
+    markerTeleport.openPopup();
 }
 
 function hide_teleport_marker() {
@@ -407,6 +410,8 @@ function hide_teleport_marker() {
 
     markerTeleport._icon.style.display = "none";
     markerTeleport._shadow.style.display = "none";
+
+    markerTeleport.closePopup();
 }
 
 function teleport_here() {
@@ -729,7 +734,12 @@ document.addEventListener("DOMContentLoaded", function() {
         submit: document.getElementById("teleport-popup-submit"),
         gps: document.getElementById("teleport-popup-gps"),
         altitude: document.getElementById("teleport-popup-altitude"),
+        altitude_slider: document.getElementById("teleport-popup-altitude-slider"),
     };
+
+    teleport_popup.altitude_slider.addEventListener("input", () => {
+        teleport_popup.altitude.value = teleport_popup.altitude_slider.value;
+    });
 
     wind_indicator = document.getElementById("wind-indicator");
     wind_indicator_arrow = document.getElementById("wind-indicator-arrow");

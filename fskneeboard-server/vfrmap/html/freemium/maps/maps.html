@@ -27,9 +27,20 @@
             </div>
 
             <div id="teleport-popup">
-                <p><label for="teleport-popup-gps">GPS:</label><input type="text" id="teleport-popup-gps"></p>
-                <p><label for="teleport-popup-alt">Altitude:</label><input type="text" id="teleport-popup-altitude"></p>
-                <p><button type="button" id="teleport-popup-submit" onclick="teleport_here();">teleport</button></p>
+                <table>
+                    <tr class="border-bottom">
+                        <td><label for="teleport-popup-gps">GPS:</label></td><td><input type="text" id="teleport-popup-gps"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="teleport-popup-alt">Altitude:</label></td><td><input type="number" id="teleport-popup-altitude"></td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td></td><td><input type="range" id="teleport-popup-altitude-slider" min="-1000" max="50000" step="100"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button type="button" id="teleport-popup-submit" onclick="teleport_here();"><i class="fas fa-magic"></i> Teleport here!</button></td>
+                    </tr>
+                </table>
             </div>
         </div>
 
