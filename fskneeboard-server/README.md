@@ -8,6 +8,7 @@ cross-compiles from macos/linux, no other dependencies required. produces a sing
 
 - install go version 1.14.14
 - install https://github.com/jteeuwen/go-bindata globally
+- install https://github.com/tc-hib/go-winres globally (go get https://github.com/tc-hib/go-winres)
 - copy required stuff to folder _vendor (see README.md there)
 - run build-fskneeboard-server.bat
 
