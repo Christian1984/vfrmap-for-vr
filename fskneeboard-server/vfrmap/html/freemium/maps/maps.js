@@ -151,7 +151,8 @@ function updateMap(msg) {
     marker.setLatLng(pos);
     marker.setRotationAngle(msg.heading);
 
-    waypoints.update_planepos(plane_visible, pos);
+    waypoints.set_plane_visibility(plane_visible);
+    waypoints.update_planepos(pos);
 
     plane_popup.pos.innerText = Number(pos.lat).toFixed(6) + "," + Number(pos.lng).toFixed(6);
 
@@ -341,7 +342,7 @@ function initMap() {
     set_teleport_marker(markerPos);
     hide_teleport_marker();
 
-    waypoints = new Waypoints(map, pos, mode_options, autoremoval_proximity_threshold);
+    waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold);
 
     map.on("dragstart", function(e) {
         set_follow(false);
@@ -459,6 +460,7 @@ function set_airplane_marker_visibility(visible) {
         set_follow(false);
     }
 
+    waypoints.set_plane_visibility(visible);
     waypoints.update_track();
 }
 
