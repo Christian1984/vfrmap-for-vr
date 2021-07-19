@@ -43,6 +43,9 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
 
         this.collapsed = false;
         this.collapse_hotkey = -1;
+        this.collapse_altKey = false;
+        this.collapse_ctrlKey = false;
+        this.collapse_shiftKey = false;
 
         if (this.debugEnabled) {
             var self = this;
@@ -122,6 +125,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     }
 
     toggle_collapse() {
+        console.log("toggle_collapse");
         this.collapse(!this.collapsed);
     }
 
@@ -155,12 +159,21 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         window.addEventListener("message", (e) => {
             try {
                 const data = JSON.parse(e.data);
+                console.log("message", data);
 
                 switch (data.type) {
                     case "KeyboardEvent":
                         if (self.collapse_hotkey == -1) return;
-    
-                        if (data.data.type == "keydown" && data.data.keyCode == self.collapse_hotkey && data.data.altKey) {
+
+                        console.log(data.data);
+                        console.log(self.collapse_hotkey, self.collapse_altKey, self.collapse_ctrlKey, self.collapse_shiftKey);
+                        
+                        if (data.data.type == "keydown"
+                        && data.data.keyCode == self.collapse_hotkey
+                        && data.data.altKey == self.collapse_altKey
+                        && data.data.ctrlKey == self.collapse_ctrlKey
+                        && data.data.shiftKey == self.collapse_shiftKey
+                        ) {
                             self.toggle_collapse();
                         }
 
@@ -168,6 +181,9 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
 
                     case "HotkeyConfiguration":
                         self.collapse_hotkey = data.data.keyCode;
+                        self.collapse_altKey = data.data.altKey;
+                        self.collapse_ctrlKey = data.data.ctrlKey;
+                        self.collapse_shiftKey = data.data.shiftKey;
                         break;
 
                     case "SetBrighness":
@@ -188,9 +204,15 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         });
 
         window.addEventListener("keydown", (e) => {
+            console.log("keydown", e);
+            
             if (self.collapse_hotkey == -1) return;
 
-            if (e.keyCode == self.collapse_hotkey && e.altKey) {
+            if (e.keyCode == self.collapse_hotkey
+                && e.altKey == self.collapse_altKey
+                && e.ctrlKey == self.collapse_ctrlKey
+                && e.shiftKey == self.collapse_shiftKey
+                ) {
                 self.toggle_collapse();
             }
         });

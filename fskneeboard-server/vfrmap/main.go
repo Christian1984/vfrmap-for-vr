@@ -69,7 +69,10 @@ type TrafficReport struct {
 }
 
 type Hotkey struct {
-	KeyCode int `json:"keycode"`
+	AltKey   bool `json:"altkey"`
+	CtrlKey  bool `json:"ctrlkey"`
+	ShiftKey bool `json:"shiftkey"`
+	KeyCode  int  `json:"keycode"`
 }
 
 func (r *TrafficReport) RequestData(s *simconnect.SimConnect) {
@@ -150,7 +153,7 @@ func main() {
 	flag.BoolVar(&quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
 
 	flag.IntVar(&autosaveInterval, "autosave", 0, "set autosave interval in minutes")
-	flag.IntVar(&hotkey, "hotkey", 0, "select a hotkey to toggle the ingame panel's visibility. 1 => ALT+F, 2 => ALT+K, 3 => ALT+T")
+	flag.IntVar(&hotkey, "hotkey", 0, "select a hotkey to toggle the ingame panel's visibility. 1 => [ALT]+F, 2 => [ALT]+K, 3 => [ALT]+T, 4 => [CTRL]+[SHIFT]+F, 5 => [CTRL]+[SHIFT]+K, 6 => [CTRL]+[SHIFT]+T")
 
 	flag.Parse()
 
@@ -215,17 +218,27 @@ func main() {
 
 	if hotkey != 0 {
 		key := "F"
+		mod := "[ALT]"
 
 		switch hotkey {
 		case 2:
 			key = "K"
 		case 3:
 			key = "T"
+		case 4:
+			key = "F"
+			mod = "[CTRL]+[SHIFT]"
+		case 5:
+			key = "K"
+			mod = "[CTRL]+[SHIFT]"
+		case 6:
+			key = "T"
+			mod = "[CTRL]+[SHIFT]"
 		}
 
-		fmt.Println("Hotkey set to [ALT+" + key + "]")
+		fmt.Println("Hotkey set to " + mod + "+" + key)
 	} else {
-		fmt.Println("INFO: Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable ALT+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
+		fmt.Println("INFO: Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable [ALT]+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
 	}
 
 	fmt.Println("")
@@ -362,17 +375,35 @@ func main() {
 
 		hotkey := func(w http.ResponseWriter, r *http.Request) {
 			keycode := -1
+			altkey := false
+			shiftkey := false
+			ctrlkey := false
 
 			switch hotkey {
 			case 1:
+				altkey = true
 				keycode = 70
 			case 2:
+				altkey = true
 				keycode = 75
 			case 3:
+				altkey = true
+				keycode = 84
+			case 4:
+				shiftkey = true
+				ctrlkey = true
+				keycode = 70
+			case 5:
+				shiftkey = true
+				ctrlkey = true
+				keycode = 75
+			case 6:
+				shiftkey = true
+				ctrlkey = true
 				keycode = 84
 			}
 
-			hotkey := Hotkey{keycode}
+			hotkey := Hotkey{altkey, shiftkey, ctrlkey, keycode}
 			responseJson, jsonErr := json.Marshal(hotkey)
 
 			if jsonErr != nil {

@@ -225,15 +225,20 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 
 ## Hotkey (Experimental)
 
-> REMARKS: This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
+> REMARKS:
+> - This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
+> - When the panel is hidden via the hotkey it is technically still there in your 3D space. Any attempt to control cockpit instrumentation that is hidden "behind" your invisible kneeboard will not work. The panel still intercepts your 3D cursor. Please make sure to position your kneeboard panel in a way that would allow you to interact with your cockpit instrumentation all the time, not matter if the panel is hidden or not!
 
 You can define one of three hotkeys to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured by starting FSKneeboard with the `--hotkey [number]` with `[number]` having the following meaning:
 
-- `--hotkey 1` => `Alt+F`
-- `--hotkey 2` => `Alt+K`
-- `--hotkey 3` => `Alt+T`
+- `--hotkey 1` => `[Alt]+F`
+- `--hotkey 2` => `[Alt]+K`
+- `--hotkey 3` => `[Alt]+T`
+- `--hotkey 4` => `[Ctrl]+[Shift]+F`
+- `--hotkey 5` => `[Ctrl]+[Shift]+K`
+- `--hotkey 6` => `[Ctrl]+[Shift]+T`
 
-For example, launch `fskneeboard.exe --hotkey 1` to setup `ALT+F` as your FSKneeboard hotkey.
+For example, launch `fskneeboard.exe --hotkey 1` to setup `[ALT]+F` as your FSKneeboard hotkey.
 
 ![Hotkey Shortcut](screenshots/fskneeboard-hotkey.png)
 

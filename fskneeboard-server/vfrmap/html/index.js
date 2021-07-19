@@ -26,12 +26,15 @@ let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;
 
 function dispatch_keyevent(event) {
+    console.log(event);
     const msg = JSON.stringify({
         type: "KeyboardEvent",
         data: {
             type: event.type,
             keyCode: event.keyCode,
-            altKey: event.altKey
+            altKey: event.altKey,
+            shiftKey: event.shiftKey,
+            ctrlKey: event.ctrlKey
         }
     });
     
@@ -252,7 +255,10 @@ function request_hotkey() {
                     const msg = JSON.stringify({
                         type: "HotkeyConfiguration",
                         data: {
-                            keyCode: json.keycode
+                            keyCode: json.keycode,
+                            altKey: json.altkey,
+                            ctrlKey: json.ctrlkey,
+                            shiftKey: json.shiftkey
                         }
                     });
                     
