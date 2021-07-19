@@ -26,7 +26,6 @@ let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;
 
 function dispatch_keyevent(event) {
-    console.log(event);
     const msg = JSON.stringify({
         type: "KeyboardEvent",
         data: {

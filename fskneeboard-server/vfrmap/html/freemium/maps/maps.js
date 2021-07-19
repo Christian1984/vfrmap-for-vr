@@ -663,7 +663,6 @@ function registerHandlers() {
     const wind_indicator_btn = document.querySelector("#wind-indicator-toggle");
     if (wind_indicator_btn) {
         wind_indicator_btn.addEventListener("change", () => {
-            console.log(wind_indicator_btn.checked);
             hide_wind_indicator(!wind_indicator_btn.checked);
             localStorage.setItem("wind_indicator_visibility", wind_indicator_btn.checked);
         })

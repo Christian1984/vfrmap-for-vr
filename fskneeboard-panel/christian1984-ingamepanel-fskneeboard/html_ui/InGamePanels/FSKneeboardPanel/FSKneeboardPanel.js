@@ -125,7 +125,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     }
 
     toggle_collapse() {
-        console.log("toggle_collapse");
         this.collapse(!this.collapsed);
     }
 
@@ -159,15 +158,11 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         window.addEventListener("message", (e) => {
             try {
                 const data = JSON.parse(e.data);
-                console.log("message", data);
 
                 switch (data.type) {
                     case "KeyboardEvent":
                         if (self.collapse_hotkey == -1) return;
 
-                        console.log(data.data);
-                        console.log(self.collapse_hotkey, self.collapse_altKey, self.collapse_ctrlKey, self.collapse_shiftKey);
-                        
                         if (data.data.type == "keydown"
                         && data.data.keyCode == self.collapse_hotkey
                         && data.data.altKey == self.collapse_altKey
@@ -204,8 +199,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         });
 
         window.addEventListener("keydown", (e) => {
-            console.log("keydown", e);
-            
             if (self.collapse_hotkey == -1) return;
 
             if (e.keyCode == self.collapse_hotkey
