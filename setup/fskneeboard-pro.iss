@@ -157,6 +157,12 @@ begin
   end else if CurrPageID = LicenseFileWizardPage.ID then begin
     LicenseFile := LicenseFileWizardPage.Values[0];
     Log('LicenseFile is: ' + LicenseFile);
+
+    if not FileExists(LicenseFile) then begin
+        MsgBox('The License File ' + LicenseFile + ' does not exists. Please select your license file!'#13#10#13#10 + 'If you do not have a license file yet, please purchase a copy of FSKneeboard at https://fskneeboard.com/buy-now', mbError, MB_OK);
+        Result := False
+        Exit;
+    end;
   end;
   Result := True;
 end;
