@@ -39,7 +39,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "..\dist\pro\fskneeboard-server\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\README.pdf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\pro\README.pdf"; DestDir: "{app}"; Flags: ignoreversion isreadme
 Source: "..\dist\pro\fskneeboard-server\copy-your-license-file-here.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\fskneeboard.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-steam.bat"; DestDir: "{app}"; Flags: ignoreversion
@@ -60,7 +60,15 @@ Source: "{code:GetLicenseFile}"; DestDir: "{app}"; Flags: external
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autoprograms}\FSKneeboard\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppExeName}"
+Name: "{autoprograms}\FSKneeboard\{#MyAppName} + MSFS (Windows Store)"; Filename: "{app}\fskneeboard-autostart-windows-store.bat"; IconFilename: "{app}\{#MyAppExeName}"
+Name: "{autoprograms}\FSKneeboard\{#MyAppName} + MSFS (Steam)"; Filename: "{app}\fskneeboard-autostart-steam.bat"; IconFilename: "{app}\{#MyAppExeName}"
+Name: "{autoprograms}\FSKneeboard\Docs - Readme"; Filename: "{app}\README.pdf"
+Name: "{autoprograms}\FSKneeboard\Docs - Changelog"; Filename: "{app}\CHANGELOG.md"
+Name: "{autoprograms}\FSKneeboard\Charts-Folder"; Filename: "{app}\charts"
+Name: "{autoprograms}\FSKneeboard\Autosave-Folder"; Filename: "{app}\autosave"
+Name: "{autoprograms}\FSKneeboard\Web - Join us on Discord"; Filename: "https://discord.fskneeboard.com"
+; Name: "{autoprograms}\FSKneeboard\Web - Upgrade to PRO"; Filename: "https://fskneeboard.com/buy-now"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
