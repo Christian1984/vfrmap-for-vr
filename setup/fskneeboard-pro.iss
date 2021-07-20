@@ -56,7 +56,7 @@ Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\htm
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.html"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 
-Source: "{code:GetLicenseFile}"; DestDir: "{app}"; Flags: external
+Source: "{code:GetLicenseFile}"; DestDir: "{app}"; DestName: "fskneeboard.lic"; Flags: external
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -165,4 +165,24 @@ begin
     end;
   end;
   Result := True;
+end;
+
+function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
+  MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
+var
+  S: String;
+begin
+  S := 'FSKneeboard is Ready for Installation!' + NewLine;
+  S := S + NewLine;
+  S := S + 'FSKneeboard Server Component will be installed to:' + NewLine;
+  S := S + Space + ExpandConstant('{app}') + NewLine;
+  S := S + NewLine;
+  S := S + 'FSKneeboard Ingame Panel will be installed to:' + NewLine;
+  S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
+  S := S + NewLine;
+  S := S + 'FSKneeboard License File will be copied from:' + NewLine;
+  S := S + Space + LicenseFile + NewLine;
+  S := S + 'to:' + NewLine;
+  S := S + Space + ExpandConstant('{app}\fskneeboard.lic') + NewLine;
+  Result := S;
 end;
