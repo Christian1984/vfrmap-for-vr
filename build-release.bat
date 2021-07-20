@@ -11,7 +11,7 @@ rmdir /s /q dist\ >nul 2>&1
 echo Build Ingame Panel...
 cd fskneeboard-panel\
 
-call build.bat
+rem call build.bat
 
 echo Build FSKneeboard FREE...
 cd ..\fskneeboard-server\
@@ -59,7 +59,7 @@ powershell -Command "Compress-Archive .\pro\* .\fskneeboard-pro-v%1.zip"
 
 echo Build Installers...
 cd ..\setup
-rem "%programfiles(x86)%\Inno Setup 6\ISCC.exe" /Q[p] "fskneeboard-free.iss" /DApplicationVersion=%1
+"%programfiles(x86)%\Inno Setup 6\ISCC.exe" /Q[p] "fskneeboard-free.iss" /DApplicationVersion=%1
 "%programfiles(x86)%\Inno Setup 6\ISCC.exe" /Q[p] "fskneeboard-pro.iss" /DApplicationVersion=%1
 
 cd ..
