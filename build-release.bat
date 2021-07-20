@@ -57,6 +57,11 @@ cd ..\dist
 powershell -Command "Compress-Archive .\free\* .\fskneeboard-free-v%1.zip"
 powershell -Command "Compress-Archive .\pro\* .\fskneeboard-pro-v%1.zip"
 
+echo Build Installers...
+cd ..\setup
+rem "%programfiles(x86)%\Inno Setup 6\ISCC.exe" /Q[p] "fskneeboard-free.iss" /DApplicationVersion=%1
+"%programfiles(x86)%\Inno Setup 6\ISCC.exe" /Q[p] "fskneeboard-pro.iss" /DApplicationVersion=%1
+
 cd ..
 
 echo BUILD FINISHED!
