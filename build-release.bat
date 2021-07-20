@@ -11,7 +11,7 @@ rmdir /s /q dist\ >nul 2>&1
 echo Build Ingame Panel...
 cd fskneeboard-panel\
 
-rem call build.bat
+call build.bat
 
 echo Build FSKneeboard FREE...
 cd ..\fskneeboard-server\
