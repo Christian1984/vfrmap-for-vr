@@ -13,7 +13,7 @@
 AppId={{85F960AA-B1FF-4C01-BEF0-74D87689AE8E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} v{#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -44,16 +44,19 @@ Source: "..\dist\pro\fskneeboard-server\copy-your-license-file-here.txt"; DestDi
 Source: "..\dist\pro\fskneeboard-server\fskneeboard.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-steam.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-windows-store.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-server\charts\copy-your-charts-here.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-server\charts\traffic-pattern.png"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-server\autosave\autosaves-will-go-here.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\layout.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\manifest.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\InGamePanels\christian1984-ingamepanel-fskneeboard.spb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\Textures\Menu\toolbar\ICON_TOOLBAR_CHRISTIAN1984_INGAMEPANEL_VFRMAPFORVR.svg"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.css"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.html"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\copy-your-charts-here.txt"; DestDir: "{app}\charts"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\traffic-pattern.png"; DestDir: "{app}\charts"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\autosave\autosaves-will-go-here.txt"; DestDir: "{app}\autosave"; Flags: ignoreversion
+
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\layout.json"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\manifest.json"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\InGamePanels\christian1984-ingamepanel-fskneeboard.spb"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\InGamePanels"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\Textures\Menu\toolbar\ICON_TOOLBAR_CHRISTIAN1984_INGAMEPANEL_VFRMAPFORVR.svg"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\Textures\Menu\toolbar"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.css"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.html"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
+
+Source: "{code:GetLicenseFile}"; DestDir: "{app}"; Flags: external
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -63,3 +66,66 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[UninstallDelete]
+;This works if it is installed in custom location
+Type: files; Name: "{app}\*"; 
+Type: filesandordirs; Name: "{app}"
+
+[Code]
+var
+  CommunityFolderDirWizardPage: TInputDirWizardPage;
+  CommunityFolderDir: String;
+  LicenseFileWizardPage: TInputFileWizardPage;
+  LicenseFile: String;
+
+function GetCommunityFolderDir(Value: string): string;
+begin
+    Result := CommunityFolderDir;
+end;
+
+function GetLicenseFile(Value: string): string;
+begin
+    Result := LicenseFile;
+end;
+
+procedure InitializeWizard;
+var
+  AfterID: Integer;
+
+begin
+  AfterID := wpSelectDir;
+
+  CommunityFolderDirWizardPage := CreateInputDirPage(
+        AfterID,
+        'Select Community Folder Location',
+        'Please tell us where your Flight Simulator Community Folder is located!',
+        '- WINDOWS STORE USERS: If you have purchased MSFS through the Windows Store, you will typically find it under'#13#10#13#10 + 'C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\ '#13#10 + 'LocalCache\Packages\Community'#13#10#13#10
+        + '- STEAM USERS: If you have purchased MSFS through Steam, the default path for your Community Folder would typically be'#13#10#13#10 + 'C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\ '#13#10 + 'LocalCache\Packages\Community'#13#10#13#10
+        + 'PLEASE NOTE: If the FSKneeboard-Ingame-Panel does NOT appear inside the game, then double-check that you have this directory right!',
+        False, '');
+  CommunityFolderDirWizardPage.Add('&Microsoft Flight Simulator Community Folder:');
+  CommunityFolderDirWizardPage.Values[0] := ExpandConstant('{localappdata}\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community');
+  AfterID := CommunityFolderDirWizardPage.ID;
+  CommunityFolderDir := CommunityFolderDirWizardPage.Values[0];
+
+  LicenseFileWizardPage := CreateInputFilePage(
+      AfterID,
+      'Select License File',
+      'Please tell us where we can find your license file...'#13#10
+      + '(Typically that would be something like C:\Users\[username]\Downloads)', '');
+  LicenseFileWizardPage.Add('&License File:', 'FSKneeboard License Files|*.lic', '.lic');
+  LicenseFileWizardPage.Values[0] := ExpandConstant('{%USERPROFILE}\Downloads\fskneeboard.lic');
+  AfterID := LicenseFileWizardPage.ID;
+end;
+
+function NextButtonClick(CurrPageID: Integer): Boolean;
+begin
+  if CurrPageID = CommunityFolderDirWizardPage.ID then begin
+    CommunityFolderDir := CommunityFolderDirWizardPage.Values[0];
+    Log('CommunityFolderDir is: ' + CommunityFolderDir);
+  end else if CurrPageID = LicenseFileWizardPage.ID then begin
+    LicenseFile := LicenseFileWizardPage.Values[0];
+    Log('LicenseFile is: ' + LicenseFile);
+  end;
+  Result := True;
+end;
