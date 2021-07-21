@@ -58,7 +58,7 @@ Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\htm
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.html"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 
-Source: "{code:GetLicenseFile}"; DestDir: "{app}"; DestName: "fskneeboard.lic"; Flags: external
+Source: "{code:GetLicenseFile}"; DestDir: "{app}"; DestName: "fskneeboard.lic"; Flags: external uninsneveruninstall
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
