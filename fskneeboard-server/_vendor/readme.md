@@ -4,6 +4,10 @@
 
 Must contain the MSFS SDK. Current SDK: 0.12.0
 
+## Folder MSFS-JS-sources
+
+Contains Javascript code from C:\Program Files\WindowsApps\Microsoft.FlightSimulator_1.17.3.0_x64__8wekyb3d8bbwe\Packages\fs-base-ui
+
 ## Folder fontawesome
 
 - Must contain folder css with all.min.css
