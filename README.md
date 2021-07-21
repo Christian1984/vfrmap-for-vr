@@ -50,7 +50,7 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 
 *Navigational Data Enabled*
 
-![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints.png)
+![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints-icao.png)
 
 *Waypoints with ICAO Identifiers*
 
@@ -62,15 +62,15 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 
 *Notepad*
 
-![Teleport UI](screenshots/fskneeboard-teleport.png)
+![Teleport UI](screenshots/fskneeboard-teleport-ui.png)
 
 *Teleport UI*
 
-![Dark Mode](screenshots/fskneeboard-nightmode.png)
+![Dark Mode](screenshots/fskneeboard-darkmode.png)
 
 *Dark Mode*
 
-![Dark Mode (Red Flashlight)](screenshots/fskneeboard-nightmode-red.png)
+![Dark Mode (Red Flashlight)](screenshots/fskneeboard-darkmode-red.png)
 
 *Dark Mode (Red Flashlight)*
 
@@ -157,7 +157,7 @@ Once the download is finished, run the installer from the download directory. Ad
 
 Select a directory where you want to install the FSKneeboard server. The suggested default location is in `%LOCALAPPDATA%\Programs\FSKneeboard`, but you can change it to whatever you deem fit (like `C:\Tools\fskneeboard\` for example). Click `Next`!
 
-![Select a Server Directory](screenshots/fskneeboard-installer-1.png)
+![Select a Server Directory](screenshots/fskneeboard-windows-installer-1.png)
 
 *Select a Server Directory*
 
@@ -169,7 +169,7 @@ Next, the FSKneeboard Installer tries to locate your MSFS Community Folder, wher
 
 IMPORTANT: Just pick the community folder! Do not add any subfolders. Otherwise the panel will NOT work!
 
-![Locate your MSFS Community Folder](screenshots/fskneeboard-installer-2.png)
+![Locate your MSFS Community Folder](screenshots/fskneeboard-windows-installer-2.png)
 
 *Locate your MSFS Community Folder*
 
@@ -179,7 +179,7 @@ IMPORTANT: Just pick the community folder! Do not add any subfolders. Otherwise 
 
 At that stage, PRO supporters should have their license ready (usually somewhere in your Downloads folder). Click Browse and select it. Then click `Next`!
 
-![Locate your FSKneeboard PRO license file](screenshots/fskneeboard-installer-3.png)
+![Locate your FSKneeboard PRO license file](screenshots/fskneeboard-windows-installer-3.png)
 
 *Locate your FSKneeboard PRO license file*
 
@@ -189,7 +189,7 @@ At that stage, PRO supporters should have their license ready (usually somewhere
 
 You should now see a summary of what the installer will copy to what folders. Click `Next` and the installation will begin. At the end, you will find everything you need to start FSKneeboard in your windows start menu.
 
-![FSKneeboard Start Menu Items](screenshots/fskneeboard-installer-4.png)
+![FSKneeboard Start Menu Items](screenshots/fskneeboard-windows-installer-4.png)
 
 *FSKneeboard Start Menu Items*
 
