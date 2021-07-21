@@ -56,7 +56,7 @@ Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\InG
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\Textures\Menu\toolbar\ICON_TOOLBAR_CHRISTIAN1984_INGAMEPANEL_VFRMAPFORVR.svg"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\Textures\Menu\toolbar"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.css"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.html"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
-Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 
 Source: "{code:GetLicenseFile}"; DestDir: "{app}"; DestName: "fskneeboard.lic"; Flags: external
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
