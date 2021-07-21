@@ -43,9 +43,36 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 # Screenshots
 
 ![Toolbar Icon](screenshots/fskneeboard-1.png)
+
+*Toolbar Icon*
+
 ![Navigational Data Enabled](screenshots/fskneeboard-2.jpg)
+
+*Navigational Data Enabled*
+
+![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints.png)
+
+*Waypoints with ICAO Identifiers*
+
 ![Charts Viewer](screenshots/fskneeboard-3.jpg)
+
+*Charts Viewer*
+
 ![Notepad](screenshots/fskneeboard-4.jpg)
+
+*Notepad*
+
+![Teleport UI](screenshots/fskneeboard-teleport.png)
+
+*Teleport UI*
+
+![Dark Mode](screenshots/fskneeboard-nightmode.png)
+
+*Dark Mode*
+
+![Dark Mode (Red Flashlight)](screenshots/fskneeboard-nightmode-red.png)
+
+*Dark Mode (Red Flashlight)*
 
 # TL;DR
 
@@ -59,6 +86,8 @@ It's dead simple! But if you only install the panel to the community folder and 
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 # Support Your Modders :-)
 
 If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section. It allows us to keep developing addons and mods like these ones and making them available for free. Any amount is welcome! Thank you.
@@ -71,17 +100,17 @@ Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's rea
 
 ---
 
-<div style="page-break-after: always;"></div>
-
 # Features
 
 - The VFR-Map is a separate panel inside the sim: No fiddling around with virtual desktop browser windows etc.
-- Map resolution etc. is optimized for VR use.
+- Map resolution etc. is optimized for VR use, and fully customizable while ingame
 - Hide your own airplane on the map for a fully-fledged "paper map on kneeboard"-VFR navigation feeling
 - Toggle to show and automatically follow your airplane on the map for a more "GPS"-ish style of navigation
 - Five different map types
-- Several navigation data overlays, including open flightmaps and openAIP
-- Configurable a hotkey to show/hide the FSKneeboard panel while ingame.
+- Several different navigation data overlays, including open flightmaps and openAIP
+- Dark Mode (adjustable brightness + "red flashlight mode")
+- Configurable hotkey to show/hide the FSKneeboard panel while ingame
+- Windows Installer for simple installation and configuration
 - Add, remove and modify waypoints and tracks on the map<sup>\*</sup>
 - Pull the currently loaded flightplan from MSFS into your kneeboard map, including ICAO identifiers<sup>\*</sup>
 - Watch charts and checklists inside the integrated charts viewer<sup>\*</sup>
@@ -91,6 +120,8 @@ Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's rea
 *(\*) indicates "premium"-features that are available in FSKneeboard PRO, which is available for a Pay-What-You-Want-Price at https://fskneeboard.com/buy-now*
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 # Components
 
@@ -106,17 +137,81 @@ The mod project consists of two components:
 
 ---
 
+# Installation
+
+There are two ways to install FSKneeboard on your system: With a fully automated installer (recommended) or doing everything manually...
+
+## Windows Installer (Recommended)
+
+Download the Installer-Executable (`Install-FSKneeboard-FREE-v1.4.0.exe`) from [the release section](https://github.com/Christian1984/vfrmap-for-vr/releases).
+
+PRO users will receive a separate download link upon purchasing their license to download the PRO-Version Installer! 
+
+### Step 1: Launch the Installer
+
+Once the download is finished, run the installer from the download directory. Administrator privileges are NOT required!!!
+
 <div style="page-break-after: always;"></div>
 
-# Installation
+### Step 2: Pick a Server Directory
+
+Select a directory where you want to install the FSKneeboard server. The suggested default location is in `%LOCALAPPDATA%\Programs\FSKneeboard`, but you can change it to whatever you deem fit (like `C:\Tools\fskneeboard\` for example). Click `Next`!
+
+![Select a Server Directory](screenshots/fskneeboard-installer-1.png)
+
+*Select a Server Directory*
+
+<div style="page-break-after: always;"></div>
+
+### Step 3: Select your MSFS Community Folder
+
+Next, the FSKneeboard Installer tries to locate your MSFS Community Folder, where the ingame panel must be installed to. The automatic location mechanism "should work" (TM) for both the Windows Store as well as the Steam versions of the game and the installer will tell you if it did succeed. Otherwise you will have to locate your Community Folder by hand. Then click `Next`!
+
+IMPORTANT: Just pick the community folder! Do not add any subfolders. Otherwise the panel will NOT work!
+
+![Locate your MSFS Community Folder](screenshots/fskneeboard-installer-2.png)
+
+*Locate your MSFS Community Folder*
+
+<div style="page-break-after: always;"></div>
+
+### Step 4: PRO-Users only!!! Download your license and tell the Installer where to find it
+
+At that stage, PRO supporters should have their license ready (usually somewhere in your Downloads folder). Click Browse and select it. Then click `Next`!
+
+![Locate your FSKneeboard PRO license file](screenshots/fskneeboard-installer-3.png)
+
+*Locate your FSKneeboard PRO license file*
+
+<div style="page-break-after: always;"></div>
+
+### Step 5: Go for it
+
+You should now see a summary of what the installer will copy to what folders. Click `Next` and the installation will begin. At the end, you will find everything you need to start FSKneeboard in your windows start menu.
+
+![FSKneeboard Start Menu Items](screenshots/fskneeboard-installer-4.png)
+
+*FSKneeboard Start Menu Items*
+
+### Upgrading to a New Version
+
+When upgrading to a new version, you should unistall the old one. You are free to try to simply "update" what you already have, but I don't recommend it. Old files may interfere with new ones and break the mod. Therefore, in case you encounter bugs after upgrading, properly uninstall FSKneeboard and go for a fresh install!
+
+Make sure to backup your license file and your charts folder, though, just to be save :-) 
+
+<div style="page-break-after: always;"></div>
+
+## Manual Installation (For those who don't trust the installer or need a "portable" version...)
 
 Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/releases)
 
-## Server
+### Manually Installing the Server Component
 
 Place the contents of `fskneeboard-server` file somewhere convenient (like `C:\Tools\fskneeboard\`).
 
 ![Server Installation](screenshots/fskneeboard-install-server-1.png)
+
+*Server Installation*
 
 <div style="page-break-after: always;"></div>
 
@@ -124,19 +219,25 @@ Afterward, your `fskneeboard-server` folder should look like this:
 
 ![Server Installation - Done](screenshots/fskneeboard-install-server-2.png)
 
+*Server Installation - Done*
+
 <div style="page-break-after: always;"></div>
 
 If you have purchased FSKneeboard PRO make sure to also place your fskneeboard.lic-License file here! Your finished PRO-installation should look like this:
 
 ![Server Installation - FSKneeboard PRO - Done](screenshots/fskneeboard-pro-install-server-2.png)
 
+*Server Installation - FSKneeboard PRO - Done*
+
 <div style="page-break-after: always;"></div>
 
-## Client
+### Manually Installing the Client Component
 
 Place the folder `christian1984-ingamepanel-fskneeboard` in your MSFS community folder (typically `C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community`)
 
 ![Panel Installation](screenshots/fskneeboard-install-panel-1.png)
+
+*Panel Installation*
 
 <div style="page-break-after: always;"></div>
 
@@ -144,7 +245,9 @@ When finished, your Community folder should look like this (though there may be 
 
 ![Panel Installation - Done](screenshots/fskneeboard-install-panel-2.png)
 
-## Upgrading to a New Version
+*Panel Installation - Done*
+
+### Manually Upgrading to a New Version
 
 Please remove **all files** from the server directory and `christian1984-ingamepanel-fskneeboard` from your community folder, before installing a new version. Do not "copy over". No excuses! Old files may interfere with new ones and break the mod. Just do it, but keep your license file :-)
 
@@ -159,6 +262,8 @@ Please remove **all files** from the server directory and `christian1984-ingamep
     - `fskneeboard-autostart-steam.bat` for owners who have purchased via Steam (which simply calls `fskneeboard.exe --steamfs`)
 
 ![FSKneeboard - Autostart Scripts](screenshots/fskneeboard-autostart-shortcuts.png)
+
+*FSKneeboard - Autostart Scripts*
 
 - If you encounter any errors or unexpected behaviour, simply run `fskneeboard.exe`. This has the autostart feature disabled by default. FSKneeboard will now wait until you have started Flight Simulator **manually**!
 - Open up the ingame panel once inside the sim (like you would do for ATC etc.)
@@ -179,11 +284,11 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
+*Map Viewer*
+
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
 
 > PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
-
-<div style="page-break-after: always;"></div>
 
 ## Charts Viewer
 
@@ -191,11 +296,15 @@ FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format.
 
 ![Charts Viewer](screenshots/fskneeboard-charts-legend.png)
 
+*Charts Viewer*
+
 <div style="page-break-after: always;"></div>
 
 Make sure to place your charts inside the `charts` folder inside the server directory.
 
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
+
+*Charts Folder*
 
 <div style="page-break-after: always;"></div>
 
@@ -203,21 +312,31 @@ Your charts folder should look like this:
 
 ![Inside Your Charts Folder](screenshots/fskneeboard-pro-charts-2.png)
 
+*Inside Your Charts Folder*
+
 <div style="page-break-after: always;"></div>
 
 ## Notepad
 
 Notepad is another feature that FSKneeboard PRO users have access to. It allows you to take notes during your flight session by simply drawing on it with your mouse.
 
-![Map Viewer](screenshots/fskneeboard-notepad-legend.png)
+![Notepad](screenshots/fskneeboard-notepad-legend.png)
+
+*Notepad*
 
 ## Autosave
+
+> REMARKS:
+> Please make sure to NOT launch fskneeboard with the --autosave option when you are planning to go on a bush trip! It seems that once a flight is saved via SimConnect (which is the interface that FSKneeboard uses internally to communicate with MSFS), Flight Simulator falls flat on its face when trying to properly save the Bush Trip progress. Both MSFS and FSKneeboard will in fact continue to save the flight; but unfortunately as a free flight, not as a bush trip flight, which leads to conflicts when trying to load the flight back up... 
+> MSFS does automatically save your bush trip progress automatically, anyway, so you don't need FSKneeboard's autosave in that particular scenario!
 
 Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
 
 Simply run FSKneeboard with the flag `--autosave [number]` to create a snapshot every `[number]` minutes. For example, run `fskneeboard.exe --autosave 5` to create one savegame every 5 minutes.
 
 ![Autosave Shortcut](screenshots/fskneeboard-autosave.png)
+
+*Autosave Shortcut*
 
 FSKneeboard automatically deletes older snapshots and keep only the latest 5.
 
@@ -227,7 +346,7 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 
 > REMARKS:
 > - This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
-> - When the panel is hidden via the hotkey it is technically still there in your 3D space. Any attempt to control cockpit instrumentation that is hidden "behind" your invisible kneeboard will not work. The panel still intercepts your 3D cursor. Please make sure to position your kneeboard panel in a way that would allow you to interact with your cockpit instrumentation all the time, not matter if the panel is hidden or not!
+> - When the panel is hidden via the hotkey it is technically still there in your 3D space. Any attempt to control cockpit instrumentation that is hidden "behind" your invisible kneeboard will not work. The panel still intercepts your 3D cursor. Please make sure to position your kneeboard panel in a way that would allow you to interact with your cockpit instrumentation all the time, no matter if the panel is hidden or not!
 
 You can define one of three hotkeys to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured by starting FSKneeboard with the `--hotkey [number]` with `[number]` having the following meaning:
 
@@ -241,6 +360,8 @@ You can define one of three hotkeys to toggle the visibility of the FSKneeboard 
 For example, launch `fskneeboard.exe --hotkey 1` to setup `[ALT]+F` as your FSKneeboard hotkey.
 
 ![Hotkey Shortcut](screenshots/fskneeboard-hotkey.png)
+
+*Hotkey Shortcut*
 
 When ingame, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
 
@@ -262,6 +383,8 @@ The FSKneeboard server can be started with several commandline arguments to furt
 - `--quietshutdown`: Prevent FSKneeboard from showing a "Press ENTER to continue..." prompt after disconnecting from MSFS
 
 ![Quietshutdown Shortcut](screenshots/fskneeboard-quietshutdown.png)
+
+*Quietshutdown Shortcut*
 
 ---
 
@@ -350,6 +473,8 @@ Personal statement:
 However, here's a virus [report from virustotal for the binaries of Version 1.2.0](https://www.virustotal.com/gui/file/fc643b18493735e8e8e931c5434541738b650eca1692148bfaf57c04270f67b1/detection). Please note how many virus scanners do NOT flag the server as a positive. Please upload your own copy of FSKneeboard to virustotal to see the results of the latest version for yourself.
 
 ![Virustotal Report of Version 1.2.0](screenshots/virus-total-1-2-0.png)
+
+*Virustotal Report of Version 1.2.0*
 
 ---
 

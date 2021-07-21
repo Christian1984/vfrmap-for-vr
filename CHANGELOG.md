@@ -1,5 +1,28 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.4.0
+
+## EXPERIMENTAL:
+
+- added more hotkey options (Ctrl + Shift + F, Ctrl + Shift + K, Ctrl + Shift + T)
+
+## MAJOR:
+
+- added an all new windows installer which installs the server to a dedicated directory of the user's choice and the ingame panel to the (automatically detected) community folder ("should work" (TM) for both the Steam and the Windows Store versions of MSFS)...
+- ... and also install your license file in the proper directory (*)
+- added icao identifiers associated with waypoints that are pulled from the ingame flightplan (*)
+- added open flightmaps integration as a separate nav data overlay
+- added dark mode and "red flashlight" mode
+
+## MINOR:
+
+- removed magenta line from latest known aircraft position to the first waypoint when the aircraft is invisible (*)
+- added capability to toggle the visibility of the final waypoint's nav info flag as well (*)
+- fixed resolution scaling persistence
+- improved teleport UI
+
+---
+
 # v1.3.0
 
 ## EXPERIMENTAL:
