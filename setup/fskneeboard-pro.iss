@@ -114,9 +114,10 @@ begin
   winstoreCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community');
   steamCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community');
   
-  communityFolderDirWizardDescription := 'WARNING: Your Flight Simulator Community Folder could NOT be auto-detected! Please set the path to your community folder manually:'#13#10#13#10
-    '- WINDOWS STORE USERS: If you have purchased MSFS through the Windows Store, you will typically find it under'#13#10#13#10 + 'C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\ '#13#10 + 'LocalCache\Packages\Community'#13#10#13#10
-    + '- STEAM USERS: If you have purchased MSFS through Steam, the default path for your Community Folder would typically be'#13#10#13#10 + 'C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\ '#13#10 + 'LocalCache\Packages\Community';
+  communityFolderDirWizardDescription := '*** PLEASE DO NOT CLICK NEXT BEFORE READING THIS ***'#13#10#13#10
+    + 'WARNING: Your Flight Simulator Community Folder could NOT be auto-detected! Please set AND VERIFY the path to your community folder manually:'#13#10#13#10
+    + '- WINDOWS STORE USERS: If you have purchased MSFS through the Windows Store, you will typically find it under C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10#13#10
+    + '- STEAM USERS: If you have purchased MSFS through Steam, the default path for your Community Folder would typically be C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community';
 
   if DirExists(winstoreCommunityFolder) then begin
     communityFolder := winstoreCommunityFolder;
