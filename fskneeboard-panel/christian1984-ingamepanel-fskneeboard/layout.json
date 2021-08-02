@@ -1,6 +1,11 @@
 {
   "content": [
     {
+      "path": "html_ui/icons/toolbar/ICON_TOOLBAR_CHRISTIAN1984_INGAMEPANEL_VFRMAPFORVR.svg",
+      "size": 6238,
+      "date": 132697274432455015
+    },
+    {
       "path": "html_ui/InGamePanels/FSKneeboardPanel/FSKneeboardPanel.css",
       "size": 1009,
       "date": 132441482909180874
@@ -17,8 +22,8 @@
     },
     {
       "path": "html_ui/Textures/Menu/toolbar/ICON_TOOLBAR_CHRISTIAN1984_INGAMEPANEL_VFRMAPFORVR.svg",
-      "size": 702,
-      "date": 132401952992678246
+      "size": 6238,
+      "date": 132697274432455015
     },
     {
       "path": "InGamePanels/christian1984-ingamepanel-fskneeboard.spb",
