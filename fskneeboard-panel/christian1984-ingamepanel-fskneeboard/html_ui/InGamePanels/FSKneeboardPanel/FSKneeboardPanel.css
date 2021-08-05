@@ -53,11 +53,13 @@ html, body {
 
 #overlay_brightness {
     background-color: black;
+    mix-blend-mode: multiply;
     opacity: 0;
 }
 
 #overlay_red {
     background-color: darkred;
+    mix-blend-mode: multiply;
     opacity: 0.6;
     display: none;
 }
