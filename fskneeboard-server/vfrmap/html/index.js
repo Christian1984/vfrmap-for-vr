@@ -270,16 +270,17 @@ function request_hotkey() {
 }
 
 function init() {
+    console.log(document.location);
     if (iframe_map) {
-        iframe_map.src = 'http://localhost:9000/freemium/maps.html';
+        iframe_map.src = document.location.href + 'freemium/maps.html';
     }
 
     if (iframe_charts) {
-        iframe_charts.src = 'http://localhost:9000/premium/charts.html';
+        iframe_charts.src = document.location.href + 'premium/charts.html';
     }
 
     if (iframe_notepad) {
-        iframe_notepad.src = 'http://localhost:9000/premium/notepad.html';
+        iframe_notepad.src = document.location.href + 'premium/notepad.html';
     }
 
     if(switch_map) {
