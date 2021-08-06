@@ -2,6 +2,19 @@
 
 # v1.4.0
 
+## MAJOR:
+
+- fixed "missing MSFS toolbar icon"-bug that was introduced with Sim Update 5
+- changed ingame icon to reflect FSKneeboard's "brand identity"
+
+## MINOR:
+
+- improved dark mode by setting blend mode to multiply
+
+---
+
+# v1.4.0
+
 ## EXPERIMENTAL:
 
 - added more hotkey options (Ctrl + Shift + F, Ctrl + Shift + K, Ctrl + Shift + T)
