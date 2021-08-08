@@ -284,8 +284,25 @@ input[type=radio] {
 
 #search-map-panel #search-map-panel-results {
     flex-grow: 1;
-    background-color: darkred;
     overflow: auto;
+}
+
+#search-map-panel #search-map-panel-results {
+    padding: 0;
+    margin: 1em;
+}
+
+#search-map-panel #search-map-panel-results li {
+    padding: 1em;
+    list-style-type: none;
+    background-color: black;
+    border: #ffbf00 1px solid;
+    color: #ffbf00;
+    cursor: pointer;
+}
+
+#search-map-panel #search-map-panel-results li span:not(:last-child)::after {
+    content: ", ";
 }
 
 #waypoint-confirm-dialog-wrapper {

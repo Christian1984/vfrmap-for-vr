@@ -389,6 +389,10 @@ function initMap() {
     });
 }
 
+function pan_to(lat, lng) {
+    map.panTo(L.latLng(lat, lng));
+}
+
 function set_teleport_marker(latlng) {
     if (!markerTeleport || !markerTeleport._icon) return;
 
@@ -626,7 +630,7 @@ function registerHandlers() {
                 activate_default_mode();
             }
             else {
-                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div);
+                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, hide_search_map_panel, pan_to);
             }
         });
     }
