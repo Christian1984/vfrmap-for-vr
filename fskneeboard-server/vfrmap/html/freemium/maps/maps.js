@@ -389,7 +389,8 @@ function initMap() {
     });
 }
 
-function pan_to(lat, lng) {
+function pan_to(lat, lng, follow = false) {
+    set_follow(follow);
     map.panTo(L.latLng(lat, lng));
 }
 
