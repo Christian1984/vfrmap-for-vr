@@ -38,4 +38,8 @@ class Waypoints {
     load_flightplan() {
         //intentionally left empty
     }
+    
+    search_map() {
+        //intentionally left empty
+    }
 }

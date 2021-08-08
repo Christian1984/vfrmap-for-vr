@@ -223,7 +223,7 @@ input[type=radio] {
     background-color: lightblue;
 }
 
-#premium-info {
+.map-overlay-panel {
     top:1em;
     right: 1em;
     bottom: 1em;
@@ -235,7 +235,7 @@ input[type=radio] {
     overflow: hidden;
     border: 3px solid black;
 }
-#premium-info #premium-info-wrapper {
+.map-overlay-panel .map-overlay-panel-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
@@ -244,16 +244,25 @@ input[type=radio] {
     flex-direction: column;
 }
 
-#premium-info #premium-info-wrapper h3 {
+.map-overlay-panel .map-overlay-panel-wrapper h3 {
     flex-grow: 0;
     margin: 0.5em;
     padding: 0;
 }
 
-#premium-info .highlight,
-#premium-info a {
+.map-overlay-panel .highlight,
+.map-overlay-panel a {
     color: #ffbf00;
     text-decoration: none;
+}
+
+.map-overlay-panel .map-overlay-panel-close {
+    text-align: right;
+    top: 0.25em;
+    right: 1em;
+    color: #ffbf00;
+    font-size: large;
+    font-weight: bold;
 }
 
 #premium-info iframe {
@@ -264,13 +273,19 @@ input[type=radio] {
     flex-grow: 1;
 }
 
-#premium-info #premium-info-close {
-    position: absolute;
-    top: 0.25em;
-    right: 1em;
-    color: #ffbf00;
-    font-size: large;
-    font-weight: bold;
+#search-map-panel #search-map-panel-search {
+    display: flex;
+    margin: 1em;
+}
+
+#search-map-panel #search-map-panel-search input {
+    flex-grow: 1;
+}
+
+#search-map-panel #search-map-panel-results {
+    flex-grow: 1;
+    background-color: darkred;
+    overflow: auto;
 }
 
 #waypoint-confirm-dialog-wrapper {

@@ -596,6 +596,41 @@ function registerHandlers() {
         });
     }
 
+    const search_map_btn = document.querySelector("#search-map");
+    if (search_map_btn) {
+        search_map_btn.addEventListener("click", () => {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+                activate_default_mode();
+            }
+            else {
+                hide_search_map_panel(false);
+            }
+        });
+    }
+
+    const search_map_panel_close_btn = document.querySelector("#search-map-panel-close");
+    if (search_map_panel_close_btn) {
+        search_map_panel_close_btn.addEventListener("click", () => {
+            hide_search_map_panel();
+        });
+    }
+
+    const search_map_panel_search_btn = document.querySelector("#search-map-panel-search button");
+    const search_map_panel_search_input = document.querySelector("#search-map-panel-search input");
+    const search_map_result_div = document.querySelector("#search-map-panel-results");
+    if (search_map_panel_search_btn && search_map_panel_search_input && search_map_result_div) {
+        search_map_panel_search_btn.addEventListener("click", () => {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+                activate_default_mode();
+            }
+            else {
+                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div);
+            }
+        });
+    }
+
     const confirm_load_flightplan_btn = document.querySelector("#waypoint-confirm-dialog-yes");
     if (confirm_load_flightplan_btn) {
         confirm_load_flightplan_btn.addEventListener("click", () => {
@@ -702,6 +737,18 @@ function hide_waypoint_confirm_dialog(hide = true) {
     }
     else {
         waypoint_confirm_dialog_wrapper.classList.remove("hidden");
+    }
+}
+
+function hide_search_map_panel(hide = true) {
+    const search_map_panel = document.querySelector("#search-map-panel");
+    if (!search_map_panel) return;
+
+    if (hide) {
+        search_map_panel.classList.add("hidden");
+    }
+    else {
+        search_map_panel.classList.remove("hidden");
     }
 }
 

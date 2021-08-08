@@ -57,6 +57,7 @@
             <input class="left" type="radio" id="mode-add-marker" name="mode-controls" value="add-marker" checked><label for="mode-add-marker"><i class="fas fa-map-marker-alt"></i></label>
             <input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker"><label for="mode-remove-marker"><i class="fas fa-trash"></i></label>
             <input class="right" type="radio" id="mode-teleport" name="mode-controls" value="teleport"><label for="mode-teleport"><i class="fas fa-magic"></i></label>
+            <span class="left right" id="search-map"><i class="fas fa-search-location"></i></span>
         </div>
 
         <div id="wind-indicator">
@@ -85,14 +86,30 @@
             </div>
         </div>
 
-
-        <div id="premium-info" class="hidden">
-            <div id="premium-info-wrapper">
-                <a href="#" id="premium-info-close">[x]</a>
+        <div id="premium-info" class="map-overlay-panel hidden">
+            <div id="premium-info-wrapper" class="map-overlay-panel-wrapper">
+                <div class="map-overlay-panel-close">
+                    <a href="#" id="premium-info-close">[x]</a>
+                </div>
                 <h3><span class="highlight">Waypoints and Tracks</span> are advanced features that are part of <span class="highlight">FSKneeboard PRO</span>.</h3>
                 <h3>Learn more below or purchase your copy of <span class="highlight">FSKneeboard PRO</span> at <a href="https://fskneeboard.com/buy-now">https://fskneeboard.com/buy-now</a></h3>
                 <h3><span class="highlight">FSKneeboard PRO</span> comes with the fairest pricing model on the market: <span class="highlight">YOU PAY WHAT YOU WANT!</span></h3>
                 <iframe></iframe>
+            </div>
+        </div>
+
+        <div id="search-map-panel" class="map-overlay-panel">
+            <div id="search-map-panel-wrapper" class="map-overlay-panel-wrapper">
+                <div class="map-overlay-panel-close">
+                    <a href="#" id="search-map-panel-close">[x]</a>
+                </div>
+                <div id="search-map-panel-search">
+                    <label for="search-map-panel-query">Find:</label>&nbsp;
+                    <input id="search-map-panel-query" />&nbsp;
+                    <button>Search</button>
+                </div>
+                <div id="search-map-panel-results">
+                </div>
             </div>
         </div>
     </body>
