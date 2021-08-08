@@ -601,6 +601,7 @@ function registerHandlers() {
         });
     }
 
+    const search_map_panel_search_input = document.querySelector("#search-map-panel-search input");
     const search_map_btn = document.querySelector("#search-map");
     if (search_map_btn) {
         search_map_btn.addEventListener("click", () => {
@@ -610,6 +611,9 @@ function registerHandlers() {
             }
             else {
                 hide_search_map_panel(false);
+                if (search_map_panel_search_input) {
+                    search_map_panel_search_input.focus();
+                }
             }
         });
     }
@@ -621,8 +625,14 @@ function registerHandlers() {
         });
     }
 
-    const search_map_panel_search_btn = document.querySelector("#search-map-panel-search button");
-    const search_map_panel_search_input = document.querySelector("#search-map-panel-search input");
+    const search_map_panel_keyboard = document.querySelector("#search-map-panel #onscreen-keyboard");
+    if (search_map_panel_search_input && search_map_panel_keyboard) {
+        search_map_panel_search_input.addEventListener("focus", () => {
+            search_map_panel_keyboard.classList.remove("hidden");
+        });
+    }
+
+    const search_map_panel_search_btn = document.querySelector("#search-map-panel-search #search-map-panel-search-btn");
     const search_map_result_div = document.querySelector("#search-map-panel-results");
     if (search_map_panel_search_btn && search_map_panel_search_input && search_map_result_div) {
         search_map_panel_search_btn.addEventListener("click", () => {
@@ -631,9 +641,41 @@ function registerHandlers() {
                 activate_default_mode();
             }
             else {
+                search_map_panel_keyboard.classList.add("hidden");
                 waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, hide_search_map_panel, pan_to);
             }
         });
+    }
+
+    const search_map_panel_clear_btn = document.querySelector("#search-map-panel-search #search-map-panel-clear-btn");
+    if (search_map_panel_clear_btn && search_map_panel_search_input) {
+        search_map_panel_clear_btn.addEventListener("click", () => {
+            search_map_panel_search_input.value = "";
+        });
+    }
+
+    if (search_map_panel_search_input) {
+        const search_map_panel_keyboard_btns = document.querySelectorAll("#search-map-panel #onscreen-keyboard td");
+        for (let search_map_panel_keyboard_btn of search_map_panel_keyboard_btns) {
+            search_map_panel_keyboard_btn.addEventListener("click", () => {
+                if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-backspace") {
+                    search_map_panel_search_input.value = search_map_panel_search_input.value.slice(0, -1);
+                }
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-space") {
+                    search_map_panel_search_input.value += " ";
+                }
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-clear") {
+                    search_map_panel_search_input.value = "";
+                }
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-enter" && search_map_panel_search_btn) {
+                    search_map_panel_search_btn.click();
+                }    
+                else if (search_map_panel_keyboard_btn.innerText) {
+                    search_map_panel_search_input.value += search_map_panel_keyboard_btn.innerText;
+                }
+                
+            });
+        }
     }
 
     const confirm_load_flightplan_btn = document.querySelector("#waypoint-confirm-dialog-yes");

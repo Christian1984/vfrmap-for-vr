@@ -273,6 +273,10 @@ input[type=radio] {
     flex-grow: 1;
 }
 
+#search-map-panel {
+    font-size: large;
+}
+
 #search-map-panel #search-map-panel-search {
     display: flex;
     margin: 1em;
@@ -300,6 +304,33 @@ input[type=radio] {
     border: #ffbf00 1px solid;
     color: #ffbf00;
     cursor: pointer;
+}
+
+#search-map-panel #onscreen-keyboard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+}
+
+#search-map-panel #onscreen-keyboard table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+#search-map-panel #onscreen-keyboard td {
+    text-align: center;
+    border: 1px solid black;
+    background-color: lightgray;
+    color: black;
+    width: 2em;
+    height: 2em;
+    cursor: pointer;
+}
+
+#search-map-panel #onscreen-keyboard td:hover {
+    background-color: white;
 }
 
 #search-map-panel #search-map-panel-results li span:not(:last-child)::after {

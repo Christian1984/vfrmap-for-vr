@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        <div id="search-map-panel" class="map-overlay-panel hidden">
+        <div id="search-map-panel" class="map-overlay-panel">
             <div id="search-map-panel-wrapper" class="map-overlay-panel-wrapper">
                 <div class="map-overlay-panel-close">
                     <a href="#" id="search-map-panel-close">[x]</a>
@@ -106,10 +106,67 @@
                 <div id="search-map-panel-search">
                     <label for="search-map-panel-query">Find:</label>&nbsp;
                     <input id="search-map-panel-query" />&nbsp;
-                    <button>Search</button>
+                    <button id="search-map-panel-clear-btn">Clear</button>
+                    <button id="search-map-panel-search-btn">Search</button>
                 </div>
                 <ul id="search-map-panel-results">
                 </ul>
+            </div>
+            <div id="onscreen-keyboard">
+                <table>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>0</td>
+                        <td id="onscreen-keyboard-backspace"><i class="fas fa-backspace"></i></td>
+                    </tr>
+                    <tr>
+                        <td>q</td>
+                        <td>w</td>
+                        <td>e</td>
+                        <td>r</td>
+                        <td>t</td>
+                        <td>y</td>
+                        <td>u</td>
+                        <td>i</td>
+                        <td>o</td>
+                        <td>p</td>
+                        <td id="onscreen-keyboard-clear"><i class="fas fa-broom"></i></td>
+                    </tr>
+                    <tr>
+                        <td>a</td>
+                        <td>s</td>
+                        <td>d</td>
+                        <td>f</td>
+                        <td>g</td>
+                        <td>h</td>
+                        <td>j</td>
+                        <td>k</td>
+                        <td>l</td>
+                        <td colspan="2" rowspan="3" id="onscreen-keyboard-enter"><i class="fas fa-search-location"></i></td>
+                    </tr>
+                    <tr>
+                        <td>y</td>
+                        <td>x</td>
+                        <td>c</td>
+                        <td>v</td>
+                        <td>b</td>
+                        <td>n</td>
+                        <td>m</td>
+                        <td>,</td>
+                        <td>.</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" id="onscreen-keyboard-space">___</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </body>
