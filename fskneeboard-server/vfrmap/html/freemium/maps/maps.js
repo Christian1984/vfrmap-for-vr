@@ -634,6 +634,7 @@ function registerHandlers() {
 
     const search_map_panel_search_btn = document.querySelector("#search-map-panel-search #search-map-panel-search-btn");
     const search_map_result_div = document.querySelector("#search-map-panel-results");
+    const search_map_spinner_div = document.querySelector("#search-map-panel-spinner");
     if (search_map_panel_search_btn && search_map_panel_search_input && search_map_result_div) {
         search_map_panel_search_btn.addEventListener("click", () => {
             if (!waypoints.is_mode_available()) {
@@ -642,7 +643,7 @@ function registerHandlers() {
             }
             else {
                 search_map_panel_keyboard.classList.add("hidden");
-                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, hide_search_map_panel, pan_to);
+                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, search_map_spinner_div, hide_search_map_panel, pan_to);
             }
         });
     }

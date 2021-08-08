@@ -306,7 +306,12 @@ input[type=radio] {
     cursor: pointer;
 }
 
-#search-map-panel #search-map-panel-results li:hover {
+#search-map-panel #search-map-panel-results li.warning {
+    border: red 1px solid;
+    color: red;
+}
+
+#search-map-panel #search-map-panel-results li:not(.warning):hover {
     background-color: darkslategray;
 }
 
