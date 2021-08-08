@@ -294,6 +294,7 @@ input[type=radio] {
 
 #search-map-panel #search-map-panel-results li {
     padding: 1em;
+    margin: 0.5em;
     list-style-type: none;
     background-color: black;
     border: #ffbf00 1px solid;
