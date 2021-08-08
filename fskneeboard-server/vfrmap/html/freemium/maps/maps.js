@@ -651,6 +651,9 @@ function registerHandlers() {
     if (search_map_panel_clear_btn && search_map_panel_search_input) {
         search_map_panel_clear_btn.addEventListener("click", () => {
             search_map_panel_search_input.value = "";
+            if (search_map_result_div) {
+                search_map_result_div.innerHTML = "";
+            }
         });
     }
 
@@ -664,12 +667,12 @@ function registerHandlers() {
                 else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-space") {
                     search_map_panel_search_input.value += " ";
                 }
-                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-clear") {
-                    search_map_panel_search_input.value = "";
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-clear" && search_map_panel_clear_btn) {
+                    search_map_panel_clear_btn.click();
                 }
                 else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-enter" && search_map_panel_search_btn) {
                     search_map_panel_search_btn.click();
-                }    
+                }
                 else if (search_map_panel_keyboard_btn.innerText) {
                     search_map_panel_search_input.value += search_map_panel_keyboard_btn.innerText;
                 }

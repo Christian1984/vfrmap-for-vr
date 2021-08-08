@@ -306,6 +306,10 @@ input[type=radio] {
     cursor: pointer;
 }
 
+#search-map-panel #search-map-panel-results li:hover {
+    background-color: darkslategray;
+}
+
 #search-map-panel #onscreen-keyboard {
     position: absolute;
     bottom: 0;
