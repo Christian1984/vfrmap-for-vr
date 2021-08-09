@@ -339,7 +339,7 @@ function initMap() {
     markerTeleport = L.marker(markerPos, {});
     markerTeleport.addTo(map);
     markerTeleport.bindPopup(L.popup({autoPan: false, closeButton: false}).setContent(teleport_popup.main));
-    set_teleport_marker(markerPos);
+    set_teleport_marker(markerPos, false);
     hide_teleport_marker();
 
     waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold);
@@ -389,13 +389,17 @@ function initMap() {
     });
 }
 
-function pan_to(lat, lng, follow = false) {
+function pan_to(latlng, follow = false) {
     set_follow(follow);
-    map.panTo(L.latLng(lat, lng));
+    map.panTo(L.latLng(latlng.lat, latlng.lng));
 }
 
-function set_teleport_marker(latlng) {
+function set_teleport_marker(latlng, activate_mode = true) {
     if (!markerTeleport || !markerTeleport._icon) return;
+
+    if (activate_mode) {
+        activate_teleport_mode();
+    }
 
     markerTeleport.setLatLng(latlng);
     teleport_popup.gps.value = latlng.lat.toFixed(8) + "," + latlng.lng.toFixed(8);
@@ -643,7 +647,7 @@ function registerHandlers() {
             }
             else {
                 search_map_panel_keyboard.classList.add("hidden");
-                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, search_map_spinner_div, hide_search_map_panel, pan_to);
+                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, search_map_spinner_div, hide_search_map_panel, pan_to, set_teleport_marker);
             }
         });
     }
@@ -770,12 +774,16 @@ function registerHandlers() {
     }
 }
 
+function activate_teleport_mode() {
+    const teleport = document.querySelector("#mode-teleport");
+    if (teleport) {
+        teleport.click();
+    }
+}
+
 function activate_default_mode() {
     if (!waypoints.is_mode_available()) {
-        const teleport = document.querySelector("#mode-teleport");
-        if (teleport) {
-            teleport.click();
-        }
+        activate_teleport_mode();
     }
 }
 
