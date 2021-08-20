@@ -28,6 +28,7 @@ let teleport_popup;
 let waypoints;
 let follow_plane = false;
 let plane_visible = true;
+let rubberband_visibility = true;
 let mode_options = { mode: MODES.add_track_markers };
 let ac_visibility_options = {
     ac_visibility: true,
@@ -344,6 +345,10 @@ function initMap() {
 
     waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold);
 
+    marker.on("click", function() {
+        toggle_rubberband();
+    });
+
     map.on("dragstart", function(e) {
         set_follow(false);
     });
@@ -473,6 +478,12 @@ function set_airplane_marker_visibility(visible) {
     waypoints.update_track();
 }
 
+function toggle_rubberband() {
+    rubberband_visibility = !rubberband_visibility;
+    save_rubberband_visibility();
+    waypoints.set_rubberband_visibility(rubberband_visibility);
+}
+
 function update_visibility_buttons() {
     let rb_hidden = document.querySelector("#ac-visibility-none");
     let rb_plane = document.querySelector("#ac-visibility-plane");
@@ -514,6 +525,10 @@ function save_ac_visibility() {
     localStorage.setItem("ac_visibility_options", JSON.stringify(ac_visibility_options));
 }
 
+function save_rubberband_visibility() {
+    localStorage.setItem("rubberband_visibility", rubberband_visibility);
+}
+
 function loadStoredState() {
     const stored_vos = localStorage.getItem("ac_visibility_options");
     if (stored_vos != null) {
@@ -524,6 +539,12 @@ function loadStoredState() {
         catch(e) {
             /* ignore silently */
         }
+    }
+
+    const rb_visibility = localStorage.getItem("rubberband_visibility");
+    if (rb_visibility != null) {
+        rubberband_visibility = rb_visibility != "true";
+        toggle_rubberband();
     }
 
     const follow = localStorage.getItem("b_follow");
