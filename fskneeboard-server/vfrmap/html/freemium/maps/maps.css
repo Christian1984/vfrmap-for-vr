@@ -342,7 +342,18 @@ input[type=radio] {
     background-color: white;
 }
 
-#search-map-panel #search-map-panel-results li span:not(:last-child)::after {
+#search-map-panel #search-map-panel-results li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#search-map-panel #search-map-panel-results li>span:first-child {
+    flex: 1;
+    text-align: left;
+}
+
+#search-map-panel #search-map-panel-results li span span:not(:first-child)::before {
     content: ", ";
 }
 
