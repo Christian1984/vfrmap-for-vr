@@ -265,6 +265,10 @@ input[type=radio] {
     font-weight: bold;
 }
 
+.map-overlay-panel .map-overlay-panel-close:hover {
+    opacity: 0.5;
+}
+
 #premium-info iframe {
     width: 100%;
     height: 100vh;
