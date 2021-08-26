@@ -423,19 +423,25 @@ This project uses forks of two amazing community projects. Without them, it woul
 
 Great work, guys! Thanks for sharing your work with us!!!
 
-Panel-Bar Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
+### Icons
 
 Helicopter Icon provided by [SVGRepo](https://www.svgrepo.com/svg/128811/helicopter-bottom-view-silhouette).
 
 Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
 
-Maps and APIs:
+### Maps and APIs
 
 - [OpenStreetMap](https://www.openstreetmap.org/copyright)
 - [Stamen](http://maps.stamen.com)
 - [Carto](https://carto.com/)
 - [openAIP](https://www.openaip.net)
 - [open flightmaps](https://www.openflightmaps.org/)
+
+### Sample Documents
+
+(PRO) The Weather Forecast Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Aviation_weather_forecast_chart.png)
+
+(PRO) The Approach Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Mdwild31c.JPG)
 
 ---
 

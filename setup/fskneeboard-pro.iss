@@ -48,6 +48,9 @@ Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-steam.bat"; DestDi
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-windows-store.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\charts\copy-your-charts-here.txt"; DestDir: "{app}\charts"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\charts\traffic-pattern.png"; DestDir: "{app}\charts"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\traffic-pattern.png"; DestDir: "{app}\charts"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\approach\MDW.png"; DestDir: "{app}\charts\approach"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\weather\weather_forecast_chart.png"; DestDir: "{app}\charts\weather"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\autosave\autosaves-will-go-here.txt"; DestDir: "{app}\autosave"; Flags: ignoreversion
 
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\layout.json"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard"; Flags: ignoreversion

@@ -21,3 +21,5 @@ latestcheck.json
 *.syso
 
 !fskneeboard-server/charts/traffic-pattern.png
+!fskneeboard-server/charts/approach/MDW.png
+!fskneeboard-server/charts/weather/weather_forecast_chart.png
