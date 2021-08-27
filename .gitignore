@@ -20,6 +20,12 @@ latestcheck.json
 *.pdf
 *.syso
 
+# ignore css files once converted to sass
+*.css.map
+# *.css
+index.css
+
 !fskneeboard-server/charts/traffic-pattern.png
 !fskneeboard-server/charts/approach/MDW.png
 !fskneeboard-server/charts/weather/weather_forecast_chart.png
+

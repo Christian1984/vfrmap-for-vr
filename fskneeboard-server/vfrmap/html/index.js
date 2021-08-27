@@ -117,7 +117,10 @@ function load_state() {
     const red = localStorage.getItem("red");
     if (red != null) {
         set_red_light(red == "true");
-        red_light.checked = red == "true";
+
+        if (red_light) {
+            red_light.checked = red == "true";
+        }
     }
 
     const brightness = localStorage.getItem("brightness");
