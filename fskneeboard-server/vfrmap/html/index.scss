@@ -31,16 +31,33 @@ html, body {
     transition: all 200ms ease;
 
     > ul {
+        display: flex;
+        flex-direction: column;
         list-style-type: none;
         padding: 0;
         margin: 0;
+        height: 100%;
+
+        * {
+            user-select: none;
+        }
 
         > li {
             margin: 0;
             cursor: pointer;
             padding: 0;
 
-            > a {
+            span {
+                &:first-child {
+                    > svg {
+                        font-size: 1.5rem;
+                        width: 1.5rem;
+                        min-width: 1.5rem;
+                    }
+                }
+            }
+
+            > span {
                 padding: 1rem;
                 color: $color-primary;
                 text-decoration: none;
@@ -48,12 +65,6 @@ html, body {
                 align-items: center;
                 height: 2rem;
                 transition: all $transition-speed-fast ease;
-
-                > svg {
-                    font-size: 1.5rem;
-                    width: 1.5rem;
-                    min-width: 1.5rem;
-                }
 
                 &.active {
                     > svg,
@@ -66,6 +77,39 @@ html, body {
                     margin-left: 1rem;
                     display: none;
                     transition: all 200ms ease;
+
+                    > input {
+                        display: none;
+
+                        + label {
+                            cursor: pointer;
+
+                            .checked
+                            {
+                                display: none;
+                            }
+                        }
+
+                        &:checked {
+                            +label {
+                                .checked {
+                                    display: unset;
+                                }
+
+                                .unchecked {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.toolgroup {
+                    > span {
+                        &:hover {
+                            color: $color-highlight;
+                        }
+                    }
                 }
 
                 &:hover {
@@ -80,6 +124,10 @@ html, body {
                     }
                 }
             }
+
+            &:nth-child(4) {
+                margin-top: auto;
+            }
         }
     }
 
@@ -88,7 +136,7 @@ html, body {
 
         > ul {
             > li {
-                > a {
+                > span {
                     > span {
                         display: unset;
                     }

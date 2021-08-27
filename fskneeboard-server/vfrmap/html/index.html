@@ -21,35 +21,59 @@
         </div>
         <nav id="custom_panel_toolbar">
             <ul>
-                <li><a href="#" id="switch_map" class="active"><i class="fas fa-globe-americas"></i><span>Map</span></a></li>
-                <li><a href="#" id="switch_charts"><i class="fas fa-paste"></i><span>Charts</span></a></li>
-                <li><a href="#" id="switch_notepad"><i class="fas fa-edit"></i><span>Notepad</span></a></li>
+                <li><span id="switch_map" class="active"><i class="fas fa-globe-americas"></i><span>Map</span></span></li>
+                <li><span id="switch_charts"><i class="fas fa-paste"></i><span>Charts</span></span></li>
+                <li><span id="switch_notepad"><i class="fas fa-edit"></i><span>Notepad</span></span></li>
+                <li>
+                    <span class="toolgroup">
+                        <i class="fas fa-moon"></i>
+                        <span>
+                            <input type="checkbox" id="red_light"></input><label for="red_light"><i class="checked fas fa-toggle-on"></i><i class="unchecked fas fa-toggle-off"></i></label>
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="toolgroup">
+                        <i class="fas fa-sun"></i>
+                        <span id="brightness_down">
+                            <i class="fas fa-minus-square"></i>
+                        </span>
+                        <span id="brightness_up">
+                            <i class="fas fa-plus-square"></i>
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="toolgroup">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        <span id="zoom_out">
+                            <i class="fas fa-minus-square"></i>
+                        </span>
+                        <span id="zoom_in">
+                            <i class="fas fa-plus-square"></i>
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span class="toolgroup">
+                        <i class="fas fa-expand-alt" style="transform: rotate(45deg);"></i>
+                        <span id="unstretch">
+                            <i class="fas fa-minus-square"></i>
+                        </span>
+                        <span id="stretch">
+                            <i class="fas fa-plus-square"></i>
+                        </span>
+                    </span>
+                </li>
+                <li>
+                    <span id="reset" class="toolgroup">
+                        <i class="fas fa-undo"></i>
+                        <span id="unstretch">
+                            Reset
+                        </span>
+                    </span>
+                </li>
             </ul>
-            <!--
-            <span id="tab_switches">
-                <span id="switch_map" class="active"><i class="fas fa-globe-americas"></i></span>
-                <span id="switch_charts"><i class="fas fa-paste"></i></span>
-                <span id="switch_notepad"><i class="fas fa-edit"></i></span>
-            </span>
-            <span id="custom_panel_toolbar_tools">
-                <span class="toolgroup">
-                    <span id="brightness_down"><i class="fas fa-moon"></i></span>
-                    <input type="checkbox" id="red_light"></input><label for="red_light"><i class="fas fa-adjust"></i></label>
-                    <span id="brightness_up"><i class="fas fa-sun"></i></span>
-                </span>
-                <span class="toolgroup">
-                    <span id="zoom_out"><i class="fas fa-compress-arrows-alt"></i></span>
-                    <span id="zoom_in"><i class="fas fa-expand-arrows-alt"></i></span>
-                </span>
-                <span class="toolgroup">
-                    <span id="stretch"><i class="fas fa-expand-alt" style="transform: rotate(45deg);"></i></span>
-                    <span id="unstretch"><i class="fas fa-compress-alt" style="transform: rotate(45deg);"></i></span>
-                </span>
-                <span class="toolgroup">
-                    <span id="reset"><i class="fas fa-undo"></i></span>
-                </span>
-            </span>
-            -->
         </nav>
     </div>
     <script type="text/javascript" src="index.js"></script>
