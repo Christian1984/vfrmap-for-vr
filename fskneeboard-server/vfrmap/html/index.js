@@ -162,7 +162,12 @@ function reset_red_light() {
 }
 
 function set_brightness(brightness) {
-    current_brightness = brightness;
+    try {
+        current_brightness = Number.parseInt(brightness);
+    }
+    catch (e) {
+        current_brightness = 100;
+    }
 
     if (current_brightness > 100) {
         current_brightness = 100;
