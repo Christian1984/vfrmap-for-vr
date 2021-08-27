@@ -23,7 +23,7 @@ latestcheck.json
 # ignore css files once converted to sass
 *.css.map
 # *.css
-index.css
+fskneeboard-server/vfrmap/html/index.css
 
 !fskneeboard-server/charts/traffic-pattern.png
 !fskneeboard-server/charts/approach/MDW.png
