@@ -1,13 +1,4 @@
-$bg-primary: #333;
-$color-primary: #999;
-
-$bg-secondary: #111;
-$color-secondary: #eee;
-
-$color-highlight: #ffbf00;
-
-$transition-speed-slow: 600ms;
-$transition-speed-fast: 200ms;
+@import "consts";
 
 nav {
     position: fixed;
