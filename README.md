@@ -151,7 +151,7 @@ There are two ways to install FSKneeboard on your system: With a fully automated
 
 ## Windows Installer (Recommended)
 
-Download the Installer-Executable (`Install-FSKneeboard-FREE-v1.4.0.exe`) from [the release section](https://github.com/Christian1984/vfrmap-for-vr/releases).
+Download the Installer-Executable (`Install-FSKneeboard-FREE-vX.Z.Y.exe`) from [the release section](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
 >PLEASE NOTE: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version Installer!
 
