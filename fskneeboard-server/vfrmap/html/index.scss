@@ -2,6 +2,8 @@ $width-collapsed: 4rem;
 $width-expanded: 12rem;
 $height-expanded: 8rem;
 
+$color-highlight: #ffbf00;
+
 html, body {
     padding: 0;
     margin: 0;
@@ -14,6 +16,20 @@ html, body {
 #custom_panel_toolbar {
     left: 0;
     bottom: 0;
+
+    > ul {
+        > li {
+            span {
+                &:first-child {
+                    > svg {
+                        font-size: 1.5rem;
+                        width: 1.5rem !important;
+                        min-width: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 40rem) {
@@ -40,14 +56,27 @@ html, body {
         }
 
         > ul {
+            flex-direction: row;
+            justify-content: stretch;
+
             > li {
                 &:nth-child(4) {
                     margin-left: auto;
                 }
 
                 > span {
+                    flex-direction: column;
+                    align-items: center;
+                    height: 100%;
+
+                    &.active {
+                        border-top-color: $color-highlight;
+                    }
+
                     &.toolgroup {
                         > span {
+                            margin-left: 0;
+
                             &:nth-child(2) {
                                 margin-top: 1rem;
                             }
@@ -71,12 +100,32 @@ html, body {
 
         &:hover {
             width: $width-expanded;
+            
+            > ul {
+                > li {
+                    > span {
+                        > span {
+                            display: unset;
+                        }
+                    }
+                }
+            }
         }
 
         > ul {
+            flex-direction: column;
+
             > li {
                 &:nth-child(4) {
                     margin-top: auto;
+                }
+                
+                > span {
+                    height: 2rem;
+
+                    &.active {
+                        border-right-color: $color-highlight;
+                    }
                 }
             }
         }

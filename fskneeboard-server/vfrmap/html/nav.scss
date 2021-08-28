@@ -30,13 +30,11 @@ nav {
             padding: 0;
             cursor: pointer;
 
-            span {
-                &:first-child {
-                    > svg {
-                        font-size: 1.5rem;
-                        width: 1.5rem !important;
-                        min-width: 1.5rem;
-                    }
+            input {
+                /*display: none;*/
+
+                + label {
+                    cursor: pointer;
                 }
             }
 
@@ -62,11 +60,7 @@ nav {
                     transition: all 200ms ease;
 
                     > input {
-                        display: none;
-
                         + label {
-                            cursor: pointer;
-
                             .checked
                             {
                                 display: none;
@@ -108,72 +102,5 @@ nav {
                 }
             }
         }
-    }
-}
-
-@media only screen and (max-width: 40rem) {
-    nav {
-        > ul {
-            flex-direction: row;
-            justify-content: stretch;
-
-            > li {
-                > span {
-                    flex-direction: column;
-                    align-items: center;
-                    height: 100%;
-
-                    &.active {
-                        border-top-color: $color-highlight;
-                    }
-
-                    &.toolgroup {
-                        > span {
-                            margin-left: 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    #content_wrap {
-        bottom: $width-collapsed;
-        left: 0;
-    }
-}
-
-@media only screen and (min-width: 40rem) {
-    nav {
-        &:hover {
-            > ul {
-                > li {
-                    > span {
-                        > span {
-                            display: unset;
-                        }
-                    }
-                }
-            }
-        }
-
-        > ul {
-            flex-direction: column;
-
-            > li {
-                > span {
-                    height: 2rem;
-
-                    &.active {
-                        border-right-color: $color-highlight;
-                    }
-                }
-            }
-        }
-    }
-
-    #content_wrap {
-        left: $width-collapsed;
-        bottom: 0;
     }
 }

@@ -7,6 +7,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-title" content="VFRMap">
+        <link rel="stylesheet" href="http://localhost:9000/nav.css">
         <link rel="stylesheet" href="maps.css" />
         <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css">
         <script type="text/javascript" src="http://localhost:9000/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
@@ -43,6 +44,13 @@
                 </table>
             </div>
         </div>
+
+        <nav id="maps-ui">
+            <ul>
+                <li><span><input type="checkbox" id="wind-indicator-toggle" checked /><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label></span></li>
+                <li><span><input type="radio" id="ac-visibility-none" name="ac-visibility" value="none" checked /><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label></span></li>
+            </ul>
+        </nav>
 
         <div id="hud-controls" class="map-controls">
             <input class="left right" type="checkbox" id="wind-indicator-toggle" checked><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label>
