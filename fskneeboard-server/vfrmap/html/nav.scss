@@ -1,0 +1,179 @@
+$bg-primary: #333;
+$color-primary: #999;
+
+$bg-secondary: #111;
+$color-secondary: #eee;
+
+$color-highlight: #ffbf00;
+
+$transition-speed-slow: 600ms;
+$transition-speed-fast: 200ms;
+
+nav {
+    position: fixed;
+    background-color: $bg-primary;
+    transition: all 200ms ease;
+
+    > ul {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+
+        * {
+            user-select: none;
+        }
+
+        > li {
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+
+            span {
+                &:first-child {
+                    > svg {
+                        font-size: 1.5rem;
+                        width: 1.5rem !important;
+                        min-width: 1.5rem;
+                    }
+                }
+            }
+
+            > span {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                text-decoration: none;
+                color: $color-primary;
+                border: 0.25rem solid transparent;
+                transition: all $transition-speed-fast ease;
+
+                &.active {
+                    > svg,
+                    > span {
+                        color: $color-secondary;
+                    }
+                }
+
+                > span {
+                    margin-left: 1rem;
+                    display: none;
+                    transition: all 200ms ease;
+
+                    > input {
+                        display: none;
+
+                        + label {
+                            cursor: pointer;
+
+                            .checked
+                            {
+                                display: none;
+                            }
+                        }
+
+                        &:checked {
+                            +label {
+                                .checked {
+                                    display: unset;
+                                }
+
+                                .unchecked {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.toolgroup {
+                    > span {
+                        &:hover {
+                            color: $color-highlight;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: $bg-secondary;
+
+                    > svg {
+                        color: $color-highlight;
+                    }
+
+                    > span {
+                        color: $color-secondary;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 40rem) {
+    nav {
+        > ul {
+            flex-direction: row;
+            justify-content: stretch;
+
+            > li {
+                > span {
+                    flex-direction: column;
+                    align-items: center;
+                    height: 100%;
+
+                    &.active {
+                        border-top-color: $color-highlight;
+                    }
+
+                    &.toolgroup {
+                        > span {
+                            margin-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #content_wrap {
+        bottom: $width-collapsed;
+        left: 0;
+    }
+}
+
+@media only screen and (min-width: 40rem) {
+    nav {
+        &:hover {
+            > ul {
+                > li {
+                    > span {
+                        > span {
+                            display: unset;
+                        }
+                    }
+                }
+            }
+        }
+
+        > ul {
+            flex-direction: column;
+
+            > li {
+                > span {
+                    height: 2rem;
+
+                    &.active {
+                        border-right-color: $color-highlight;
+                    }
+                }
+            }
+        }
+    }
+
+    #content_wrap {
+        left: $width-collapsed;
+        bottom: 0;
+    }
+}
