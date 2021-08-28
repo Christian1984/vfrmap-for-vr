@@ -18,9 +18,9 @@ html, body {
             span {
                 &:first-child {
                     > svg {
-                        font-size: 1.5rem;
-                        width: 1.5rem !important;
-                        min-width: 1.5rem;
+                        font-size: $main-nav-font-size;
+                        width: $main-nav-font-size;
+                        min-width: $main-nav-font-size;
                     }
                 }
             }
@@ -117,7 +117,7 @@ html, body {
                 }
                 
                 > span {
-                    height: 2rem;
+                    height: 1.25rem;
 
                     &.active {
                         border-right-color: $color-highlight;

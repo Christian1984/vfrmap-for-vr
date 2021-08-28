@@ -132,7 +132,7 @@ body {
     }
 }
 
-@media only screen and (max-width: $small-screen-width) {
+@media only screen and (max-width: $small-screen-width - $width-collapsed) {
     #maps-ui {
         left: 0;
         right: 0;
@@ -162,7 +162,7 @@ body {
     }
 }
 
-@media only screen and (min-width: $small-screen-width) {
+@media only screen and (min-width: $small-screen-width - $width-collapsed) {
     #maps-ui {
         right: 0;
         top: 0;
