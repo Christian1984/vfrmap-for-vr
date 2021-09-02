@@ -85,12 +85,25 @@ body {
 
     > ul {
         > li {
+
+            &:hover {
+                > span {
+                    &.tooltip {
+                        display: flex;
+                    }
+                } 
+            }
+
             > span {
                 width: $span-width;
                 height: $span-width;
                 padding: 0;
                 align-items: center;
                 border: none;
+
+                &.tooltip {
+                    display: none;
+                }
 
                 > span {
                     display: block;
@@ -149,6 +162,21 @@ body {
                 &.big-marginator {
                     margin-left: auto;
                 }
+
+                > span {
+                    &.tooltip {
+                        position: absolute;
+                        top: $span-width;
+                        width: $tooltip-width;
+                        justify-content: center;
+                        background-color: $bg-secondary;
+                        color: $color-secondary;
+
+                        &.force-left {
+                            right: 0;
+                        }
+                    }
+                }
             }
         }
     }
@@ -178,6 +206,17 @@ body {
 
                 &.big-marginator {
                     margin-top: auto;
+                }
+
+                > span {
+                    &.tooltip {
+                        position: absolute;
+                        right: $span-width;
+                        width: $tooltip-width;
+                        justify-content: center;
+                        background-color: $bg-secondary;
+                        color: $color-secondary;
+                    }
                 }
             }
         }

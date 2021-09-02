@@ -47,21 +47,51 @@
 
         <nav id="maps-ui">
             <ul>
-                <li><span><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span></span></li>
+                <li>
+                    <span class="tooltip">Load Flightplan</span>
+                    <span><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span></span>
+                </li>
+                
+                <li class="marginator">
+                    <span class="tooltip">Add Marker</span>
+                    <span><input type="radio" id="mode-add-marker" name="mode-controls" value="add-marker" checked /><label for="mode-add-marker"><i class="fas fa-map-marker-alt"></i></label></span>
+                </li>
+                <li>
+                    <span class="tooltip">Remove Marker</span>
+                    <span><input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker" /><label for="mode-remove-marker"><i class="fas fa-trash"></i></label></span>
+                </li>
+                <li>
+                    <span class="tooltip">Teleport</span>
+                    <span><input type="radio" id="mode-teleport" name="mode-controls" value="teleport" /><label for="mode-teleport"><i class="fas fa-magic"></i></label></span>
+                </li>
 
-                <li class="marginator"><span><input type="radio" id="mode-add-marker" name="mode-controls" value="add-marker" checked /><label for="mode-add-marker"><i class="fas fa-map-marker-alt"></i></label></span></li>
-                <li><span><input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker" /><label for="mode-remove-marker"><i class="fas fa-trash"></i></label></span></li>
-                <li><span><input type="radio" id="mode-teleport" name="mode-controls" value="teleport" /><label for="mode-teleport"><i class="fas fa-magic"></i></label></span></li>
+                <li class="marginator">
+                    <span class="tooltip">Find Location</span>
+                    <span><span id="search-map"><i class="fas fa-search-location"></i></span></span>
+                </li>
 
-                <li class="marginator"><span><span id="search-map"><i class="fas fa-search-location"></i></span></span></li>
+                <li class="big-marginator force-left">
+                    <span class="tooltip">Wind Indicator</span>
+                    <span><input type="checkbox" id="wind-indicator-toggle" checked /><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label></span>
+                </li>
 
-                <li class="big-marginator"><span><input type="checkbox" id="wind-indicator-toggle" checked /><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label></span></li>
+                <li class="marginator">
+                    <span class="tooltip force-left">Hide Aircraft</span>
+                    <span><input type="radio" id="ac-visibility-none" name="ac-visibility" value="none" /><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label></span>
+                </li>
+                <li>
+                    <span class="tooltip force-left">Icon: Airplane</span>
+                    <span><input type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked/><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label></span>
+                </li>
+                <li>
+                    <span class="tooltip force-left">Icon: Helicopter</span>
+                    <span><input type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter" /><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label></span>
+                </li>
 
-                <li class="marginator"><span><input type="radio" id="ac-visibility-none" name="ac-visibility" value="none" /><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label></span></li>
-                <li><span><input type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked/><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label></span></li>
-                <li><span><input type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter" /><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label></span></li>
-
-                <li class="marginator"><span><span id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span></span></li>
+                <li class="marginator">
+                    <span class="tooltip force-left">Center A/C</span>
+                    <span><span id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span></span>
+                </li>
             </ul>
         </nav>
 
