@@ -16,12 +16,10 @@ html, body {
     > ul {
         > li {
             span {
-                &:first-child {
-                    > svg {
-                        font-size: $main-nav-font-size;
-                        width: $main-nav-font-size;
-                        min-width: $main-nav-font-size;
-                    }
+                > svg {
+                    font-size: $main-nav-font-size;
+                    width: $main-nav-font-size;
+                    min-width: $main-nav-font-size;
                 }
             }
         }
@@ -38,12 +36,10 @@ html, body {
 
             > ul {
                 > li {
-                    &:not(:last-child) {
-                        > span {
-                            &.toolgroup {
-                                > span {
-                                    display: unset;
-                                }
+                    > span {
+                        &.toolgroup {
+                            > span {
+                                display: unset;
                             }
                         }
                     }
