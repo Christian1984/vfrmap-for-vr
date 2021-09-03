@@ -5,6 +5,7 @@ echo copy premium modules...
 del /s /q _vendor\premium\*.* >nul 2>&1
 rmdir /s /q _vendor\premium\ >nul 2>&1
 robocopy _vendor\premium_src _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
+call npx sass -q .
 
 :build
 echo generate bindata...
