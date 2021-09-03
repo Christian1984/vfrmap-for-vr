@@ -11,12 +11,6 @@ html, body {
     font-family: "Open Sans";
 }
 
-html {
-    /* compensate for weird in-game-browser scaling, step 1 */
-    /* width: 125%; */
-    /* width: 111%; */
-}
-
 .map-overlay-panel {
     h4 {
         margin: 0.25rem 0;
@@ -63,10 +57,9 @@ body {
 #wind-indicator {
     position: absolute;
     z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.75);
-    border: 2px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba($bg-primary, 0.9);
+    color: $color-primary;
     border-radius: 5px;
-    background-clip: padding-box;
     padding: 0.5em;
     display: flex;
     align-items: center;
@@ -84,21 +77,77 @@ body {
     justify-content: center;
 }
 
+.leaflet-control-layers {
+    border: none !important;
+    background-color: rgba($bg-primary, 0.9);
+    background-clip: unset !important;
+    
+    > .leaflet-control-layers-toggle {
+        border-radius: 5px !important;
+        color: $color-primary;
+    }
+}
+
 input[type=checkbox],
 input[type=radio] {
     display: none;
 }
 
-.leaflet-control input[type=checkbox] +label,
-.leaflet-control input[type=checkbox] +span,
-.leaflet-control input[type=radio] +label,
-.leaflet-control input[type=radio] +span {
-    position: relative;
-    margin-right: 1em;
-    padding-left: 2.25em;
-    height: 1em;
-    line-height: 1em;
-    user-select: none;
+.leaflet-control {
+    input[type=checkbox],
+    input[type=radio] {
+        + label,
+        + span {
+            position: relative;
+            margin-right: 1em;
+            padding-left: 2.25em;
+            height: 1em;
+            line-height: 1em;
+            user-select: none;
+            color: $color-primary;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                transition: all 0.1s ease;
+                border: 1px solid $color-secondary;
+                border-radius: 1em;
+                background-color: $bg-secondary;
+            }
+
+            &::before {
+                height: 1em;
+                width: 2em;
+                left: 0;
+                top: 0;
+            }
+
+            &::after {
+                background-color: $color-secondary;
+                height: 0.6em;
+                width: 0.6em;
+                left: 0.2em;
+                top: 0.2em;
+            }
+        }
+
+        &:checked {
+            + label,
+            + span {
+                &::before {
+                    border-color: $color-highlight;
+                    background-color: $color-highlight;
+                }
+
+                &::after {
+                    transform: translateX(1em);
+                    border-color: $bg-secondary;
+                    background-color: $bg-secondary;
+                }
+            }
+        }
+    }
 }
 
 .leaflet-popup-content {
@@ -106,69 +155,17 @@ input[type=radio] {
     width: unset !important;
 }
 
-.leaflet-control input[type=checkbox] +label::before,
-.leaflet-control input[type=checkbox] +label::after,
-.leaflet-control input[type=checkbox] +span::before,
-.leaflet-control input[type=checkbox] +span::after,
-.leaflet-control input[type=radio] +label::before,
-.leaflet-control input[type=radio] +label::after,
-.leaflet-control input[type=radio] +span::before,
-.leaflet-control input[type=radio] +span::after {
-    content: '';
-    position: absolute;
-    transition: all 0.1s ease;
-    border: 1px solid black;
-    border-radius: 1em;
-    background-color: white;
-}
+.dialog-buttons {
+    > span {
+        background-color: lightgray;
+        padding: 5px;
+        border: 1px solid black;
+        cursor: pointer;
 
-.leaflet-control input[type=checkbox] +label::before,
-.leaflet-control input[type=checkbox] +span::before,
-.leaflet-control input[type=radio] +label::before,
-.leaflet-control input[type=radio] +span::before {
-    height: 1em;
-    width: 2em;
-    left: 0;
-    top: 0;
-}
-
-.leaflet-control input[type=checkbox] +label::after,
-.leaflet-control input[type=checkbox] +span::after,
-.leaflet-control input[type=radio] +label::after,
-.leaflet-control input[type=radio] +span::after {
-    background-color: black;
-    height: 0.6em;
-    width: 0.6em;
-    left: 0.2em;
-    top: 0.2em;
-}
-
-.leaflet-control input:checked[type=checkbox] +label::before,
-.leaflet-control input:checked[type=checkbox] +span::before,
-.leaflet-control input:checked[type=radio] +label::before,
-.leaflet-control input:checked[type=radio] +span::before {
-    border-color: blue;
-    background-color: blue;
-}
-
-.leaflet-control input:checked[type=checkbox] +span::after,
-.leaflet-control input:checked[type=checkbox] +label::after,
-.leaflet-control input:checked[type=radio] +span::after,
-.leaflet-control input:checked[type=radio] +label::after {
-    transform: translateX(1em);
-    border-color: white;
-    background-color: white;
-}
-
-.dialog-buttons > span {
-    background-color: lightgray;
-    padding: 5px;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
-.dialog-buttons > span:hover {
-    background-color: lightblue;
+        &:hover {
+            background-color: lightblue;
+        }
+    }
 }
 
 .map-overlay-panel {
@@ -182,131 +179,136 @@ input[type=radio] {
     z-index: 10000;
     overflow: hidden;
     border: 3px solid black;
-}
-.map-overlay-panel .map-overlay-panel-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+
+    .map-overlay-panel-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        
+        h3 {
+            flex-grow: 0;
+            margin: 0.5em;
+            padding: 0;
+        }
+    }
+    
+    .highlight,
+    a {
+        color: #ffbf00;
+        text-decoration: none;
+    }
+    
+    .map-overlay-panel-close {
+        text-align: right;
+        top: 0.25em;
+        right: 1em;
+        color: #ffbf00;
+        font-size: large;
+        font-weight: bold;
+
+        &:hover {
+            opacity: 0.5;
+        }
+    }
 }
 
-.map-overlay-panel .map-overlay-panel-wrapper h3 {
-    flex-grow: 0;
-    margin: 0.5em;
-    padding: 0;
-}
-
-.map-overlay-panel .highlight,
-.map-overlay-panel a {
-    color: #ffbf00;
-    text-decoration: none;
-}
-
-.map-overlay-panel .map-overlay-panel-close {
-    text-align: right;
-    top: 0.25em;
-    right: 1em;
-    color: #ffbf00;
-    font-size: large;
-    font-weight: bold;
-}
-
-.map-overlay-panel .map-overlay-panel-close:hover {
-    opacity: 0.5;
-}
-
-#premium-info iframe {
-    width: 100%;
-    height: 100vh;
-    overflow-x: hidden;
-    border: none;
-    flex-grow: 1;
+#premium-info {
+    iframe {
+        width: 100%;
+        height: 100vh;
+        overflow-x: hidden;
+        border: none;
+        flex-grow: 1;
+    }
 }
 
 #search-map-panel {
     font-size: large;
 }
 
-#search-map-panel #search-map-panel-search {
+#search-map-panel-search {
     display: flex;
     margin: 1em;
+    
+    input {
+        flex-grow: 1;
+    }
 }
 
-#search-map-panel #search-map-panel-search input {
-    flex-grow: 1;
-}
-
-#search-map-panel #search-map-panel-results {
+#search-map-panel-results {
     flex-grow: 1;
     overflow: auto;
-}
-
-#search-map-panel #search-map-panel-results {
     padding: 0;
     margin: 1em;
+    
+    li {
+        padding: 1em;
+        margin: 0.5em;
+        list-style-type: none;
+        background-color: black;
+        border: #ffbf00 1px solid;
+        color: #ffbf00;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        &.warning {
+            border: red 1px solid;
+            color: red;
+        }
+        
+        &:not(.warning) {
+            &:hover {
+                background-color: darkslategray;
+            }
+        }
+
+        > span {
+            &:first-child {
+                flex: 1;
+                text-align: left;
+            }
+        }
+
+        span {
+            span:not(:first-child) {
+                &::before {
+                    content: ", ";
+                }
+            }
+        }
+    }
 }
 
-#search-map-panel #search-map-panel-results li {
-    padding: 1em;
-    margin: 0.5em;
-    list-style-type: none;
-    background-color: black;
-    border: #ffbf00 1px solid;
-    color: #ffbf00;
-    cursor: pointer;
-}
-
-#search-map-panel #search-map-panel-results li.warning {
-    border: red 1px solid;
-    color: red;
-}
-
-#search-map-panel #search-map-panel-results li:not(.warning):hover {
-    background-color: darkslategray;
-}
-
-#search-map-panel #onscreen-keyboard {
+#onscreen-keyboard {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: black;
-}
-
-#search-map-panel #onscreen-keyboard table {
-    margin: 0 auto;
-    border-collapse: collapse;
-}
-
-#search-map-panel #onscreen-keyboard td {
-    text-align: center;
-    border: 1px solid black;
-    background-color: lightgray;
-    color: black;
-    width: 2em;
-    height: 2em;
-    cursor: pointer;
-}
-
-#search-map-panel #onscreen-keyboard td:hover {
-    background-color: white;
-}
-
-#search-map-panel #search-map-panel-results li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#search-map-panel #search-map-panel-results li>span:first-child {
-    flex: 1;
-    text-align: left;
-}
-
-#search-map-panel #search-map-panel-results li span span:not(:first-child)::before {
-    content: ", ";
+    
+    table {
+        margin: 0 auto;
+        border-collapse: collapse;
+        
+        td {
+            text-align: center;
+            border: 1px solid black;
+            background-color: lightgray;
+            color: black;
+            width: 2em;
+            height: 2em;
+            cursor: pointer;
+            
+            &:hover {
+                background-color: white;
+            }
+        }
+    }
 }
 
 #waypoint-confirm-dialog-wrapper {
