@@ -9,7 +9,8 @@
             &:hover {
                 > span {
                     &.tooltip {
-                        display: flex;
+                        width: $tooltip-width;
+                        transition-delay: $tooltip-delay;
                     }
                 } 
             }
@@ -22,13 +23,15 @@
                 border: none;
 
                 &.tooltip {
-                    display: none;
+                    display: flex;
+                    width: 0;
                     position: absolute;
-                    width: $tooltip-width;
                     justify-content: center;
                     background-color: $bg-secondary;
+                    overflow: hidden;
                     opacity: 0.7;
                     color: $color-secondary;
+                    transition: width $transition-speed-fast ease;
                 }
 
                 > span {

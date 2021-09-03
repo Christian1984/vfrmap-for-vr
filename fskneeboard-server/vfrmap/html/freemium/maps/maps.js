@@ -725,7 +725,7 @@ function registerHandlers() {
     }
 
     //const mode_control_btns = document.querySelectorAll("#mode-controls > input");
-    const mode_control_btns = document.querySelectorAll("#maps-ui input[type='radio'][name='mode-controls']");
+    const mode_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='mode-controls']");
     for (let i = 0; i < mode_control_btns.length; i++) {
         mode_control_btns[i].addEventListener("click", () => {
             switch (mode_control_btns[i].value) {
@@ -752,7 +752,7 @@ function registerHandlers() {
     }
 
     //const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input.ac-visibility");
-    const ac_visibility_control_btns = document.querySelectorAll("#maps-ui input[type='radio'][name='ac-visibility']");
+    const ac_visibility_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='ac-visibility']");
     for (let i = 0; i < ac_visibility_control_btns.length; i++) {
         ac_visibility_control_btns[i].addEventListener("click", () => {
             ac_visibility_options.ac_visibility = true;
