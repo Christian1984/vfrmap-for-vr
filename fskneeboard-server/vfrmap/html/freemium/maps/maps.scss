@@ -1,7 +1,5 @@
 @import "../../consts";
 
-$span-width: 2rem;
-
 * {
     user-select: none;
 }
@@ -10,7 +8,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font: 16px "Helvetica Neue", Arial, Helvetica, sans-serif
+    font-family: "Open Sans";
 }
 
 html {
@@ -78,153 +76,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-#maps-ui {
-    z-index: 1000;
-
-    > ul {
-        > li {
-
-            &:hover {
-                > span {
-                    &.tooltip {
-                        display: flex;
-                    }
-                } 
-            }
-
-            > span {
-                width: $span-width;
-                height: $span-width;
-                padding: 0;
-                align-items: center;
-                border: none;
-
-                &.tooltip {
-                    display: none;
-                }
-
-                > span {
-                    display: block;
-                    margin: 0 auto;
-                }
-
-                > label {
-                    line-height: $span-width;
-                    flex: 1;
-                    text-align: center;
-
-                    > svg {
-                        font-size: 1rem;
-                        width: 1rem !important;
-                        min-width: 1rem;
-                    }
-                }
-
-                > input {
-                    &:checked {
-                        + label {
-                            > svg {
-                                color: $color-highlight;
-                            }
-                        }
-                    }
-                }
-
-
-                &:hover {
-                    > label {
-                        > svg {
-                            color: $color-secondary;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (max-width: $small-screen-width - $width-collapsed) {
-    #maps-ui {
-        left: 0;
-        right: 0;
-        top: 0;
-
-        > ul {
-            flex-direction: row;
-
-            > li {
-                &.marginator {
-                    margin-left: $span-width / 2;
-                }
-
-                &.big-marginator {
-                    margin-left: auto;
-                }
-
-                > span {
-                    &.tooltip {
-                        position: absolute;
-                        top: $span-width;
-                        width: $tooltip-width;
-                        justify-content: center;
-                        background-color: $bg-secondary;
-                        color: $color-secondary;
-
-                        &.force-left {
-                            right: 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    #map {
-        margin-top: $span-width;
-    }
-
-    #wind-indicator {
-        top: calc(#{$span-width} + 10px);
-    }
-}
-
-@media only screen and (min-width: $small-screen-width - $width-collapsed) {
-    #maps-ui {
-        right: 0;
-        top: 0;
-        bottom: 0;
-
-        > ul {
-            flex-direction: column;
-
-            > li {
-                &.marginator {
-                    margin-top: $span-width / 2;
-                }
-
-                &.big-marginator {
-                    margin-top: auto;
-                }
-
-                > span {
-                    &.tooltip {
-                        position: absolute;
-                        right: $span-width;
-                        width: $tooltip-width;
-                        justify-content: center;
-                        background-color: $bg-secondary;
-                        color: $color-secondary;
-                    }
-                }
-            }
-        }
-    }
-
-    #map {
-        margin-right: $span-width;;
-    }
 }
 
 input[type=checkbox],
