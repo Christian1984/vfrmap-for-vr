@@ -339,3 +339,19 @@ input[type=radio] {
 .hidden {
     display: none !important;
 }
+
+@media only screen and (max-width: $small-screen-width - $width-collapsed) {
+    #map {
+        margin-top: $span-width;
+    }
+
+    #wind-indicator {
+        top: calc(#{$span-width} + 10px);
+    }
+}
+
+@media only screen and (min-width: $small-screen-width - $width-collapsed) {
+    #map {
+        margin-right: $span-width;
+    }
+}

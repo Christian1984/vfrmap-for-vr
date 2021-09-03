@@ -1,8 +1,6 @@
 @import "consts";
 
-$span-width: 2rem;
-
-#maps-ui {
+#submenu {
     z-index: 1000;
 
     > ul {
@@ -25,6 +23,12 @@ $span-width: 2rem;
 
                 &.tooltip {
                     display: none;
+                    position: absolute;
+                    width: $tooltip-width;
+                    justify-content: center;
+                    background-color: $bg-secondary;
+                    opacity: 0.7;
+                    color: $color-secondary;
                 }
 
                 > span {
@@ -68,7 +72,7 @@ $span-width: 2rem;
 }
 
 @media only screen and (max-width: $small-screen-width - $width-collapsed) {
-    #maps-ui {
+    #submenu {
         left: 0;
         right: 0;
         top: 0;
@@ -87,12 +91,7 @@ $span-width: 2rem;
 
                 > span {
                     &.tooltip {
-                        position: absolute;
                         top: $span-width;
-                        width: $tooltip-width;
-                        justify-content: center;
-                        background-color: $bg-secondary;
-                        color: $color-secondary;
 
                         &.force-left {
                             right: 0;
@@ -102,18 +101,10 @@ $span-width: 2rem;
             }
         }
     }
-
-    #map {
-        margin-top: $span-width;
-    }
-
-    #wind-indicator {
-        top: calc(#{$span-width} + 10px);
-    }
 }
 
 @media only screen and (min-width: $small-screen-width - $width-collapsed) {
-    #maps-ui {
+    #submenu {
         right: 0;
         top: 0;
         bottom: 0;
@@ -132,19 +123,10 @@ $span-width: 2rem;
 
                 > span {
                     &.tooltip {
-                        position: absolute;
                         right: $span-width;
-                        width: $tooltip-width;
-                        justify-content: center;
-                        background-color: $bg-secondary;
-                        color: $color-secondary;
                     }
                 }
             }
         }
-    }
-
-    #map {
-        margin-right: $span-width;;
     }
 }
