@@ -15,8 +15,8 @@
             }
 
             > span {
-                width: $span-width;
-                height: $span-width;
+                width: $submenu-width;
+                height: $submenu-width;
                 padding: 0;
                 align-items: center;
                 border: none;
@@ -37,7 +37,7 @@
                 }
 
                 > label {
-                    line-height: $span-width;
+                    line-height: $submenu-width;
                     flex: 1;
                     text-align: center;
 
@@ -82,7 +82,7 @@
 
             > li {
                 &.marginator {
-                    margin-left: $span-width / 2;
+                    margin-left: $submenu-width / 2;
                 }
 
                 &.big-marginator {
@@ -91,7 +91,7 @@
 
                 > span {
                     &.tooltip {
-                        top: $span-width;
+                        top: $submenu-width;
 
                         &.force-left {
                             right: 0;
@@ -114,7 +114,7 @@
 
             > li {
                 &.marginator {
-                    margin-top: $span-width / 2;
+                    margin-top: $submenu-width / 2;
                 }
 
                 &.big-marginator {
@@ -123,7 +123,7 @@
 
                 > span {
                     &.tooltip {
-                        right: $span-width;
+                        right: $submenu-width;
                     }
                 }
             }

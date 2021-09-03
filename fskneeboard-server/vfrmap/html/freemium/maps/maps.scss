@@ -342,16 +342,16 @@ input[type=radio] {
 
 @media only screen and (max-width: $small-screen-width - $width-collapsed) {
     #map {
-        margin-top: $span-width;
+        margin-top: $submenu-width;
     }
 
     #wind-indicator {
-        top: calc(#{$span-width} + 10px);
+        top: calc(#{$submenu-width} + 10px);
     }
 }
 
 @media only screen and (min-width: $small-screen-width - $width-collapsed) {
     #map {
-        margin-right: $span-width;
+        margin-right: $submenu-width;
     }
 }
