@@ -877,12 +877,6 @@ document.addEventListener("DOMContentLoaded", function() {
     wind_indicator_velocity = document.getElementById("wind-indicator-velocity");
 
     window.document.addEventListener("keydown", (e) => {
-        //catch backspace and prevent navigation
-        if (e.keyCode == 8) {
-            e.preventDefault();
-            return;
-        }
-
         dispatch_keyevent(e);
     });
 

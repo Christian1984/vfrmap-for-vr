@@ -387,11 +387,6 @@ function init() {
     request_hotkey();
 
     window.document.addEventListener("keydown", (e) => {
-        if (e.keyCode == 8) {
-            e.preventDefault();
-            return;
-        }
-
         dispatch_keyevent(e);
     });
 
