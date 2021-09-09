@@ -52,10 +52,6 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 
 *Navigational Data Enabled*
 
-![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints-icao.png)
-
-*Waypoints with ICAO Identifiers*
-
 ![Charts Viewer](screenshots/fskneeboard-3.jpg)
 
 *Charts Viewer*
@@ -75,6 +71,10 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 ![Dark Mode (Red Flashlight)](screenshots/fskneeboard-darkmode-red.png)
 
 *Dark Mode (Red Flashlight)*
+
+![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints-icao.png)
+
+*Waypoints with ICAO Identifiers (Old UI)*
 
 # TL;DR
 
@@ -296,6 +296,8 @@ In order to launch FSKneeboard, you need to do two things:
 In order to open up the actual FSKneeboard panel inside MSFS, first enter VR mode. Next, hit the `[TAB]` key to bring up the ingame toolbar and click the FSKneeboard icon to bring up the ingame panel.
 
 ![FSKneeboard - How to open the ingame panel](screenshots/fskneeboard-usage-open-panel.png)
+
+*How to open the ingame panel (old icon)*
 
 ---
 
