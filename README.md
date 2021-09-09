@@ -307,7 +307,7 @@ In order to open up the actual FSKneeboard panel inside MSFS, first enter VR mod
 
 Depending on your personal preference and various external factors (like your 2D screen resolution, your MSFS window size, your supersampling settings) chances are the map inside your FSKneeboard panel may appear too small or to large, or in some cases even stretched in a weird way. In that case you may use FSKneeboard's dynamic resolution controls to adjust the panel's resolution to your personal preference.
 
-![FSKneeboard - How to open the ingame panel](screenshots/fskneeboard-dynamic-resolution-controls.png)
+![FSKneeboard - Dynamic Resolution Control](screenshots/fskneeboard-dynamic-resolution-controls.png)
 
 If the map is hard to read and appears too small, no matter how far you have zoomed in or out, click the button with the four arrows pointing outwards **multiple times** to stepwise increase the size of the panel's content for better readability. If it appears too large, then click the button button with the arrows pointing inwards in the same fashion.
 
@@ -334,6 +334,12 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
 
+The location finder can be accessed via the search icon on the toolbar and allows you to type in any street address or POI via the onboard keyboard and find it on the map. You can then select to just pan the map there, add a waypoint at this location or teleport there.
+
+![Map Viewer Location Finder](screenshots/fskneeboard-map-location_finder.png)
+
+*Map Viewer*
+
 > PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
 
 ## Charts Viewer
@@ -346,7 +352,7 @@ FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format.
 
 You can browse and access your charts folder by clicking the browse charts button in the toolbar. You can also use the left and right arrow buttons on the toolbar to browse the individual documents inside the current directory.
 
-![Charts Viewer](screenshots/fskneeboard-charts-browser.png)
+![Charts Viewer Document Browser](screenshots/fskneeboard-charts-browser.png)
 
 *Charts Viewer Document Browser*
 
