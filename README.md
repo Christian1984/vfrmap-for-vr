@@ -121,7 +121,9 @@ If you have any problems, questions or would like to get in touch and stay invol
 - Windows Installer for simple installation and configuration
 - Add, remove and modify waypoints and tracks on the map<sup>\*</sup>
 - Pull the currently loaded flightplan from MSFS into your kneeboard map, including ICAO identifiers<sup>\*</sup>
+- Search for any address or POI worldwide right from FSKneeboard and add it as waypoint or even teleport there<sup>\*</sup>
 - Watch charts and checklists inside the integrated charts viewer<sup>\*</sup>
+- Organize approach charts, checklists, weather charts etc. in separate subfolders<sup>\*</sup>
 - Take notes inflight with your mouse on the integrated notepad<sup>\*</sup>
 - Automatically create snapshots/savegames from your flights every few minutes so you're able to recover Flight Simulator instabilities and crashes (fully configurable, see [Advanced Usage Section](#advanced-usage) for details)<sup>\*</sup>
 
@@ -324,6 +326,7 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 - A track will be automatically added between waypoints and a flag will show you information about the distance to the final waypoint and the heading of your track.
 - You can click any given waypoint you have placed to toggle the visibility of its particular info-flag. The info-flag of the last waypoint of your track is always visible.
 - If you get in the proximity of less than 0.5 NM of any given waypoint it will automatically be removed from the map. The last waypoint on your track will not be removed automatically, however, so you can use it to find a mission target or destination.
+- You may click your own aircraft to toggle the "rubberband" that connects your airplane to the first waypoint.
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
@@ -341,9 +344,15 @@ FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format.
 
 *Charts Viewer*
 
+You can browse and access your charts folder by clicking the browse charts button in the toolbar. You can also use the left and right arrow buttons on the toolbar to browse the individual documents inside the current directory.
+
+![Charts Viewer](screenshots/fskneeboard-charts-browser.png)
+
+*Charts Viewer Document Browser*
+
 <div style="page-break-after: always;"></div>
 
-Make sure to place your charts inside the `charts` folder inside the server directory.
+Make sure to place your charts inside the `charts` folder inside the server directory. You can also use subdirectories to organize your charts (to  checklists from approach charts for example).
 
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
 
