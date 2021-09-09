@@ -87,7 +87,6 @@ begin
 end;
 
 procedure InitializeWizard;
-procedure InitializeWizard;
 var
   AfterID: Integer;
   communityFolderSuccess: Boolean;
@@ -143,15 +142,6 @@ begin
   CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
   CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
   AfterID := CommunityFolderDirWizardPage.ID;
-
-  LicenseFileWizardPage := CreateInputFilePage(
-      AfterID,
-      'Select License File',
-      'Please tell us where we can find your license file...'#13#10
-      + '(Typically that would be something like C:\Users\[username]\Downloads)', '');
-  LicenseFileWizardPage.Add('&License File:', 'FSKneeboard License Files|*.lic', '.lic');
-  LicenseFileWizardPage.Values[0] := ExpandConstant('{%USERPROFILE}\Downloads\fskneeboard.lic');
-  AfterID := LicenseFileWizardPage.ID;
 end;
 
 function NextButtonClick(CurrPageID: Integer): Boolean;
