@@ -2,11 +2,14 @@
 
 # v1.5.0
 
+## EXPERIMENTAL:
+
+- added a location finder to the map component that allows you to search the map for a street address or POI (*)
+
 ## MAJOR:
 
 - complete redesign/overhaul of the user interface for a modern, much cleaner look and feel
 - added a document browser to the charts viewer that allows an improved organization of your individual charts in subfolders (*)
-- added a location finder to the map component that allows you to search the map for a street address or POI (*)
 
 ## MINOR:
 

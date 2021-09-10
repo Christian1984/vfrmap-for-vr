@@ -334,15 +334,23 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 *Map Viewer*
 
+### Loading a Flightplan (PRO)
+
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
+
+> PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
+
+### Location Finder (Experimental)
+
+> REMARKS:
+> - This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
+> - I noticed that the location finder has a minor glitch when it is showing the results list (see screenshot). It's not perfect, yet, but it gets the job done. I figured it's worth getting it into your hands as soon as possible than to spend another one or two weeks tweaking the final 5% out of the release. I hope you agree :-)
 
 The location finder can be accessed via the search icon on the toolbar and allows you to type in any street address or POI via the onboard keyboard and find it on the map. You can then select to just pan the map there, add a waypoint at this location or teleport there.
 
-![Map Viewer Location Finder](screenshots/fskneeboard-map-location_finder.png)
+![Map Viewer Location Finder](screenshots/fskneeboard-map-location-finder.jpg)
 
-*Map Viewer*
-
-> PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
+*Map Viewer Location Finder*
 
 ## Charts Viewer
 
