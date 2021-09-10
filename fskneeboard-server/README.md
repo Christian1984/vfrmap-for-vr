@@ -6,6 +6,7 @@ cross-compiles from macos/linux, no other dependencies required. produces a sing
 
 ## how to build
 
+- install sass compiler via npm
 - install go version 1.14.14
 - install https://github.com/jteeuwen/go-bindata globally
 - install https://github.com/tc-hib/go-winres globally (go get https://github.com/tc-hib/go-winres)

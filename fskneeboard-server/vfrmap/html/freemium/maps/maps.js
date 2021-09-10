@@ -28,6 +28,7 @@ let teleport_popup;
 let waypoints;
 let follow_plane = false;
 let plane_visible = true;
+let rubberband_visibility = true;
 let mode_options = { mode: MODES.add_track_markers };
 let ac_visibility_options = {
     ac_visibility: true,
@@ -339,10 +340,14 @@ function initMap() {
     markerTeleport = L.marker(markerPos, {});
     markerTeleport.addTo(map);
     markerTeleport.bindPopup(L.popup({autoPan: false, closeButton: false}).setContent(teleport_popup.main));
-    set_teleport_marker(markerPos);
+    set_teleport_marker(markerPos, false);
     hide_teleport_marker();
 
     waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold);
+
+    marker.on("click", function() {
+        toggle_rubberband();
+    });
 
     map.on("dragstart", function(e) {
         set_follow(false);
@@ -389,8 +394,17 @@ function initMap() {
     });
 }
 
-function set_teleport_marker(latlng) {
+function pan_to(latlng, follow = false) {
+    set_follow(follow);
+    map.panTo(L.latLng(latlng.lat, latlng.lng));
+}
+
+function set_teleport_marker(latlng, activate_mode = true) {
     if (!markerTeleport || !markerTeleport._icon) return;
+
+    if (activate_mode) {
+        activate_teleport_mode();
+    }
 
     markerTeleport.setLatLng(latlng);
     teleport_popup.gps.value = latlng.lat.toFixed(8) + "," + latlng.lng.toFixed(8);
@@ -464,6 +478,12 @@ function set_airplane_marker_visibility(visible) {
     waypoints.update_track();
 }
 
+function toggle_rubberband() {
+    rubberband_visibility = !rubberband_visibility;
+    save_rubberband_visibility();
+    waypoints.set_rubberband_visibility(rubberband_visibility);
+}
+
 function update_visibility_buttons() {
     let rb_hidden = document.querySelector("#ac-visibility-none");
     let rb_plane = document.querySelector("#ac-visibility-plane");
@@ -505,6 +525,10 @@ function save_ac_visibility() {
     localStorage.setItem("ac_visibility_options", JSON.stringify(ac_visibility_options));
 }
 
+function save_rubberband_visibility() {
+    localStorage.setItem("rubberband_visibility", rubberband_visibility);
+}
+
 function loadStoredState() {
     const stored_vos = localStorage.getItem("ac_visibility_options");
     if (stored_vos != null) {
@@ -515,6 +539,12 @@ function loadStoredState() {
         catch(e) {
             /* ignore silently */
         }
+    }
+
+    const rb_visibility = localStorage.getItem("rubberband_visibility");
+    if (rb_visibility != null) {
+        rubberband_visibility = rb_visibility != "true";
+        toggle_rubberband();
     }
 
     const follow = localStorage.getItem("b_follow");
@@ -596,6 +626,87 @@ function registerHandlers() {
         });
     }
 
+    const search_map_panel_search_input = document.querySelector("#search-map-panel-search input");
+    const search_map_btn = document.querySelector("#search-map");
+    if (search_map_btn) {
+        search_map_btn.addEventListener("click", () => {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+                activate_default_mode();
+            }
+            else {
+                hide_search_map_panel(false);
+                if (search_map_panel_search_input) {
+                    search_map_panel_search_input.focus();
+                }
+            }
+        });
+    }
+
+    const search_map_panel_close_btn = document.querySelector("#search-map-panel-close");
+    if (search_map_panel_close_btn) {
+        search_map_panel_close_btn.addEventListener("click", () => {
+            hide_search_map_panel();
+        });
+    }
+
+    const search_map_panel_keyboard = document.querySelector("#search-map-panel #onscreen-keyboard");
+    if (search_map_panel_search_input && search_map_panel_keyboard) {
+        search_map_panel_search_input.addEventListener("focus", () => {
+            search_map_panel_keyboard.classList.remove("hidden");
+        });
+    }
+
+    const search_map_panel_search_btn = document.querySelector("#search-map-panel-search #search-map-panel-search-btn");
+    const search_map_result_div = document.querySelector("#search-map-panel-results");
+    const search_map_spinner_div = document.querySelector("#search-map-panel-spinner");
+    if (search_map_panel_search_btn && search_map_panel_search_input && search_map_result_div) {
+        search_map_panel_search_btn.addEventListener("click", () => {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+                activate_default_mode();
+            }
+            else {
+                search_map_panel_keyboard.classList.add("hidden");
+                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, search_map_spinner_div, hide_search_map_panel, pan_to, set_teleport_marker);
+            }
+        });
+    }
+
+    const search_map_panel_clear_btn = document.querySelector("#search-map-panel-search #search-map-panel-clear-btn");
+    if (search_map_panel_clear_btn && search_map_panel_search_input) {
+        search_map_panel_clear_btn.addEventListener("click", () => {
+            search_map_panel_search_input.value = "";
+            if (search_map_result_div) {
+                search_map_result_div.innerHTML = "";
+            }
+        });
+    }
+
+    if (search_map_panel_search_input) {
+        const search_map_panel_keyboard_btns = document.querySelectorAll("#search-map-panel #onscreen-keyboard td");
+        for (let search_map_panel_keyboard_btn of search_map_panel_keyboard_btns) {
+            search_map_panel_keyboard_btn.addEventListener("click", () => {
+                if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-backspace") {
+                    search_map_panel_search_input.value = search_map_panel_search_input.value.slice(0, -1);
+                }
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-space") {
+                    search_map_panel_search_input.value += " ";
+                }
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-clear" && search_map_panel_clear_btn) {
+                    search_map_panel_clear_btn.click();
+                }
+                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-enter" && search_map_panel_search_btn) {
+                    search_map_panel_search_btn.click();
+                }
+                else if (search_map_panel_keyboard_btn.innerText) {
+                    search_map_panel_search_input.value += search_map_panel_keyboard_btn.innerText;
+                }
+                
+            });
+        }
+    }
+
     const confirm_load_flightplan_btn = document.querySelector("#waypoint-confirm-dialog-yes");
     if (confirm_load_flightplan_btn) {
         confirm_load_flightplan_btn.addEventListener("click", () => {
@@ -613,7 +724,8 @@ function registerHandlers() {
         });
     }
 
-    const mode_control_btns = document.querySelectorAll("#mode-controls > input");
+    //const mode_control_btns = document.querySelectorAll("#mode-controls > input");
+    const mode_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='mode-controls']");
     for (let i = 0; i < mode_control_btns.length; i++) {
         mode_control_btns[i].addEventListener("click", () => {
             switch (mode_control_btns[i].value) {
@@ -639,7 +751,8 @@ function registerHandlers() {
         });
     }
 
-    const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input.ac-visibility");
+    //const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input.ac-visibility");
+    const ac_visibility_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='ac-visibility']");
     for (let i = 0; i < ac_visibility_control_btns.length; i++) {
         ac_visibility_control_btns[i].addEventListener("click", () => {
             ac_visibility_options.ac_visibility = true;
@@ -684,12 +797,16 @@ function registerHandlers() {
     }
 }
 
+function activate_teleport_mode() {
+    const teleport = document.querySelector("#mode-teleport");
+    if (teleport) {
+        teleport.click();
+    }
+}
+
 function activate_default_mode() {
     if (!waypoints.is_mode_available()) {
-        const teleport = document.querySelector("#mode-teleport");
-        if (teleport) {
-            teleport.click();
-        }
+        activate_teleport_mode();
     }
 }
 
@@ -702,6 +819,18 @@ function hide_waypoint_confirm_dialog(hide = true) {
     }
     else {
         waypoint_confirm_dialog_wrapper.classList.remove("hidden");
+    }
+}
+
+function hide_search_map_panel(hide = true) {
+    const search_map_panel = document.querySelector("#search-map-panel");
+    if (!search_map_panel) return;
+
+    if (hide) {
+        search_map_panel.classList.add("hidden");
+    }
+    else {
+        search_map_panel.classList.remove("hidden");
     }
 }
 

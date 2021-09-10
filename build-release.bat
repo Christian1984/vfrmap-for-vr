@@ -37,6 +37,8 @@ rmdir /s /q ..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\
 del /s /q ..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\index.html >nul 2>&1
 
 robocopy .\charts\ ..\dist\pro\fskneeboard-server\charts traffic-pattern.png /NFL /NDL /NJH /NJS /nc /ns /np
+robocopy .\charts\approach ..\dist\pro\fskneeboard-server\charts\approach MDW.png /NFL /NDL /NJH /NJS /nc /ns /np
+robocopy .\charts\weather ..\dist\pro\fskneeboard-server\charts\weather weather_forecast_chart.png /NFL /NDL /NJH /NJS /nc /ns /np
 mkdir ..\dist\pro\fskneeboard-server\autosave\
 
 echo Creating hints...

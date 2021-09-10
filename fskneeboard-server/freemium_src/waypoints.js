@@ -22,6 +22,10 @@ class Waypoints {
     set_plane_visibility() {
         //intentionally left empty
     }
+    
+    set_rubberband_visibility() {
+        //intentionally left empty
+    }
 
     add_marker() {
         //intentionally left empty
@@ -36,6 +40,10 @@ class Waypoints {
     }
     
     load_flightplan() {
+        //intentionally left empty
+    }
+    
+    search_map() {
         //intentionally left empty
     }
 }

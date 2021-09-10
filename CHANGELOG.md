@@ -1,5 +1,26 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.5.0
+
+## EXPERIMENTAL:
+
+- added a location finder to the map component that allows you to search the map for a street address or POI (*)
+
+## MAJOR:
+
+- complete redesign/overhaul of the user interface for a modern, much cleaner look and feel
+- added a document browser to the charts viewer that allows an improved organization of your individual charts in subfolders (*)
+
+## MINOR:
+
+- the "rubberband" from the airplane to your first waypoint can now be toggled by clicking your airplane (*)
+- added color coded warnings to the installer to clearly indicate whether the community folder was properly identified or not
+- added dynamic resolution scaling to the documentation
+- added new screenshots to the documentation
+- minor bug fixes
+
+---
+
 # v1.4.1
 
 ## MAJOR:

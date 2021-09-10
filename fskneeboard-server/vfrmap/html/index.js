@@ -13,14 +13,20 @@ const switch_notepad = document.getElementById("switch_notepad");
 
 const temp = document.getElementById("temp");
 
-const brightness_down = document.getElementById("brightness_down");
 const red_light = document.getElementById("red_light");
+
+const brightness_down = document.getElementById("brightness_down");
 const brightness_up = document.getElementById("brightness_up");
+const brightness_reset = document.getElementById("brightness_reset");
+
 const zoom_in = document.getElementById("zoom_in");
 const zoom_out = document.getElementById("zoom_out");
+const zoom_reset = document.getElementById("zoom_reset");
+
+
 const stretch = document.getElementById("stretch");
 const unstretch = document.getElementById("unstretch");
-const reset = document.getElementById("reset");
+const reset_stretch_button = document.getElementById("reset-stretch");
 
 let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;
@@ -117,7 +123,10 @@ function load_state() {
     const red = localStorage.getItem("red");
     if (red != null) {
         set_red_light(red == "true");
-        red_light.checked = red == "true";
+
+        if (red_light) {
+            red_light.checked = red == "true";
+        }
     }
 
     const brightness = localStorage.getItem("brightness");
@@ -159,7 +168,12 @@ function reset_red_light() {
 }
 
 function set_brightness(brightness) {
-    current_brightness = brightness;
+    try {
+        current_brightness = Number.parseInt(brightness);
+    }
+    catch (e) {
+        current_brightness = 100;
+    }
 
     if (current_brightness > 100) {
         current_brightness = 100;
@@ -234,8 +248,17 @@ function stretch_views(stretch) {
 }
 
 function reset_zoom() {
+    const ratio = current_zoom.y / current_zoom.x;
+
     current_zoom.x = 1;
-    current_zoom.y = 1;
+    current_zoom.y = ratio;
+
+    apply_zoom();
+    save_zoom();
+}
+
+function reset_stretch() {
+    current_zoom.x = current_zoom.y;
 
     apply_zoom();
     save_zoom();
@@ -343,11 +366,21 @@ function init() {
         });
     }
 
-    if (reset) {
-        reset.addEventListener("click", () => {
+    if (brightness_reset) {
+        brightness_reset.addEventListener("click", () => {
             reset_brightness();
+        });
+    }
+
+    if (zoom_reset) {
+        zoom_reset.addEventListener("click", () => {
             reset_zoom();
-            reset_red_light();
+        });
+    }
+
+    if (stretch_reset) {
+        stretch_reset.addEventListener("click", () => {
+            reset_stretch();
         });
     }
 

@@ -24,17 +24,19 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 2. [TL;DR](#tldr)
 3. [Support Your Modders :-)](#support-your-modders-smiley)
 4. [Go PRO](#go-pro)
-5. [Features](#features)
-6. [Components](#components)
-7. [Installation](#installation)
-8. [Usage](#usage)
-9. [Advanced Usage](#advanced-usage)
-10. [Troubleshooting](#troubleshooting)
-11. [Roadmap](#roadmap)
-12. [Attribution](#attribution)
-13. [Releases and Downloads](#releases-and-downloads)
-14. [How to Contribute?](#how-to-contribute)
-15. [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected)
+5. [Getting Support](#getting-support)
+6. [Features](#features)
+7. [Components](#components)
+8. [Installation](#installation)
+9. [First Launch](#first-launch)
+10. [Usage](#usage)
+11. [Advanced Usage](#advanced-usage)
+12. [Troubleshooting](#troubleshooting)
+13. [Roadmap](#roadmap)
+14. [Attribution](#attribution)
+15. [Releases and Downloads](#releases-and-downloads)
+16. [How to Contribute?](#how-to-contribute)
+17. [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected)
 
 ---
 
@@ -49,10 +51,6 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 ![Navigational Data Enabled](screenshots/fskneeboard-2.jpg)
 
 *Navigational Data Enabled*
-
-![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints-icao.png)
-
-*Waypoints with ICAO Identifiers*
 
 ![Charts Viewer](screenshots/fskneeboard-3.jpg)
 
@@ -74,6 +72,10 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 
 *Dark Mode (Red Flashlight)*
 
+![Waypoints with ICAO Identifiers](screenshots/fskneeboard-waypoints-icao.png)
+
+*Waypoints with ICAO Identifiers (Old UI)*
+
 # TL;DR
 
 The Mod consists of **TWO PARTS(!)**: a *server* and an *ingame-panel* that you need to install and run **BOTH**!
@@ -94,11 +96,17 @@ If you enjoy this project, please consider buying me a coffee and/or donating to
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
 
-## Go PRO
+# Go PRO
 
 Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's really your call! You'll unlock all features of FSKneeboard plus you support the mod development. Also, you'll make a 1-year-old and a 5-year-old very, very happy, as I can buy them more ice cream :-)
 
+# Getting Support
+
+If you have any problems, questions or would like to get in touch and stay involved with an active community of like-minded VR enthusiasts, then don't miss out on yoining our community Discord over at [https://discord.fskneeboard.com](https://discord.fskneeboard.com)!
+
 ---
+
+<div style="page-break-after: always;"></div>
 
 # Features
 
@@ -113,7 +121,9 @@ Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's rea
 - Windows Installer for simple installation and configuration
 - Add, remove and modify waypoints and tracks on the map<sup>\*</sup>
 - Pull the currently loaded flightplan from MSFS into your kneeboard map, including ICAO identifiers<sup>\*</sup>
+- Search for any address or POI worldwide right from FSKneeboard and add it as waypoint or even teleport there<sup>\*</sup>
 - Watch charts and checklists inside the integrated charts viewer<sup>\*</sup>
+- Organize approach charts, checklists, weather charts etc. in separate subfolders<sup>\*</sup>
 - Take notes inflight with your mouse on the integrated notepad<sup>\*</sup>
 - Automatically create snapshots/savegames from your flights every few minutes so you're able to recover Flight Simulator instabilities and crashes (fully configurable, see [Advanced Usage Section](#advanced-usage) for details)<sup>\*</sup>
 
@@ -143,9 +153,9 @@ There are two ways to install FSKneeboard on your system: With a fully automated
 
 ## Windows Installer (Recommended)
 
-Download the Installer-Executable (`Install-FSKneeboard-FREE-v1.4.0.exe`) from [the release section](https://github.com/Christian1984/vfrmap-for-vr/releases).
+Download the Installer-Executable (`Install-FSKneeboard-FREE-vX.Z.Y.exe`) from [the release section](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
-PRO users will receive a separate download link upon purchasing their license to download the PRO-Version Installer! 
+>PLEASE NOTE: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version Installer!
 
 ### Step 1: Launch the Installer
 
@@ -185,7 +195,7 @@ At that stage, PRO supporters should have their license ready (usually somewhere
 
 <div style="page-break-after: always;"></div>
 
-### Step 5: Go for it
+### Step 5: Proceed
 
 You should now see a summary of what the installer will copy to what folders. Click `Next` and the installation will begin. At the end, you will find everything you need to start FSKneeboard in your windows start menu.
 
@@ -203,7 +213,9 @@ Make sure to backup your license file and your charts folder, though, just to be
 
 ## Manual Installation (For those who don't trust the installer or need a "portable" version...)
 
-Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/releases)
+Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/releases).
+
+>PLEASE NOTE: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version!
 
 ### Manually Installing the Server Component
 
@@ -255,7 +267,14 @@ Please remove **all files** from the server directory and `christian1984-ingamep
 
 <div style="page-break-after: always;"></div>
 
-# Usage
+# First Launch
+
+In order to launch FSKneeboard, you need to do two things:
+
+1. Launch the FSKneeboard local server application by clicking the FSKneeboard icon on your desktop or launch fskneeboard.exe from your command line and...
+2. ... open the actual FSKneeboard ingame panel inside MSFS.
+
+## Launching the FSKneeboard Server and Automatically Run MSFS
 
 - Depending on where you have purchased Microsoft Flight Simulator, you may use launch FSKneeboard's starting:
     - `fskneeboard-autostart-windows-store.bat` for owners who have purchased via Windows Store (which simply calls `fskneeboard.exe --winstorefs`), or
@@ -272,6 +291,34 @@ Please remove **all files** from the server directory and `christian1984-ingamep
 
 <div style="page-break-after: always;"></div>
 
+## Bring Up The FSKneeboard Panel in VR
+
+In order to open up the actual FSKneeboard panel inside MSFS, first enter VR mode. Next, hit the `[TAB]` key to bring up the ingame toolbar and click the FSKneeboard icon to bring up the ingame panel.
+
+![FSKneeboard - How to open the ingame panel](screenshots/fskneeboard-usage-open-panel.png)
+
+*How to open the ingame panel (old icon)*
+
+---
+
+<div style="page-break-after: always;"></div>
+
+# Usage
+
+## Dynamic Resolution Scaling
+
+Depending on your personal preference and various external factors (like your 2D screen resolution, your MSFS window size, your supersampling settings) chances are the map inside your FSKneeboard panel may appear too small or to large, or in some cases even stretched in a weird way. In that case you may use FSKneeboard's dynamic resolution controls to adjust the panel's resolution to your personal preference.
+
+![FSKneeboard - Dynamic Resolution Control](screenshots/fskneeboard-dynamic-resolution-controls.png)
+
+If the map is hard to read and appears too small, no matter how far you have zoomed in or out, click the button with the four arrows pointing outwards **multiple times** to stepwise increase the size of the panel's content for better readability. If it appears too large, then click the button button with the arrows pointing inwards in the same fashion.
+
+If the map appears to be compressed horizontally, then click the button with the two horizontal arrows pointing outwards **multiple times** to stepwise stretch the panel in the horizontal direction. If, on the other hand, the panel appears stretched horizontally, click the button with the two horizontal arrows pointing inwards in the same fashion.
+
+The reset button on the very right hand side allows you to reset both your custom resolution and stretch settings.
+
+<div style="page-break-after: always;"></div>
+
 ## Map Viewer
 
 The map is the core component of FSKneeboard and available to FREE and PRO users alike. It contains several map modes as well as a representation of your own aircraft that you may also turn off so that you can "navigate by hand" on bush trips and the likes.
@@ -281,14 +328,29 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 - A track will be automatically added between waypoints and a flag will show you information about the distance to the final waypoint and the heading of your track.
 - You can click any given waypoint you have placed to toggle the visibility of its particular info-flag. The info-flag of the last waypoint of your track is always visible.
 - If you get in the proximity of less than 0.5 NM of any given waypoint it will automatically be removed from the map. The last waypoint on your track will not be removed automatically, however, so you can use it to find a mission target or destination.
+- You may click your own aircraft to toggle the "rubberband" that connects your airplane to the first waypoint.
 
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
 *Map Viewer*
 
+### Loading a Flightplan (PRO)
+
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
 
 > PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
+
+### Location Finder (Experimental)
+
+> REMARKS:
+> - This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
+> - I noticed that the location finder has a minor glitch when it is showing the results list (see screenshot). It's not perfect, yet, but it gets the job done. I figured it's worth getting it into your hands as soon as possible than to spend another one or two weeks tweaking the final 5% out of the release. I hope you agree :-)
+
+The location finder can be accessed via the search icon on the toolbar and allows you to type in any street address or POI via the onboard keyboard and find it on the map. You can then select to just pan the map there, add a waypoint at this location or teleport there.
+
+![Map Viewer Location Finder](screenshots/fskneeboard-map-location-finder.jpg)
+
+*Map Viewer Location Finder*
 
 ## Charts Viewer
 
@@ -298,9 +360,15 @@ FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format.
 
 *Charts Viewer*
 
+You can browse and access your charts folder by clicking the browse charts button in the toolbar. You can also use the left and right arrow buttons on the toolbar to browse the individual documents inside the current directory.
+
+![Charts Viewer Document Browser](screenshots/fskneeboard-charts-browser.png)
+
+*Charts Viewer Document Browser*
+
 <div style="page-break-after: always;"></div>
 
-Make sure to place your charts inside the `charts` folder inside the server directory.
+Make sure to place your charts inside the `charts` folder inside the server directory. You can also use subdirectories to organize your charts (to  checklists from approach charts for example).
 
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
 
@@ -390,9 +458,33 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 # Troubleshooting
 
-- "I get errors when I try to start the server!" => This can happen if, for whatever reason, `fskneeboard.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `fskneeboard.exe` is located!
-- "Windows says FSKneeboard contains a virus!" => That is a false positive and a well-known problem with software written in GO. Please make sure to read the section [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) below.
-- "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!" => Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. There is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
+## "I cannot see the FSKneeboard ingame panel inside MSFS. What is wrong?"
+
+> There are typically two reasons why this can happen:
+> 1. First, make sure that you have opened up MSFS's ingame toolbar. In 2D mode, that happens automatically when you hover your mouse over the chevron on the very top of the window. In VR mode you need to press the `[TAB]` key to bring up this toolbar! Now, double-check whether the FSKneeboard icon appears on that toolbar or not. If it does, then click it. Issue solved :-)
+> 2. Second, if the icon does not appear, it is very likely that the ingame panel was installed to the wrong directory. To identify the proper community folder please read the next section and then come back... Got your community folder location? Great! Now uninstall FSKneeboard and run the installer again. When prompted to enter your community folder location, enter the community folder path that you have just identified. Restart MSFS and the panel should appear.
+
+## "I cannot find my community folder. Help!!!"
+
+> Here's how to localize your active community folder with 100% certainty:
+> 1. Start MSFS and wait for the main menu to be loaded.
+> 2. Now click Options > General
+> 3. Open the "Developers"-settings-page, which is located at the bottom of the list on the left
+> 4. Turn on "Developers Mode"
+> 5. A new menu bar will appear on the top of your screen. Select Tools > Virtual File System
+> 6. Now you can locate the community folder under "Watched Bases"
+
+## "I get errors when I try to start the server!"
+
+> This can happen if, for whatever reason, `fskneeboard.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `fskneeboard.exe` is located!
+
+## "Windows says FSKneeboard contains a virus!"
+
+> That is a false positive and a well-known problem with software written in GO. Please make sure to read the section [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) below.
+
+## "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!"
+
+> Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. There is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
 
 ---
 
@@ -418,18 +510,17 @@ And here are some wishes from the community that I have to check for feasibility
 
 This project uses forks of two amazing community projects. Without them, it would have taken me an incredible amount of time building this thing all on my own. Hence, I want to thank the two:
 
-- The server is forked from [lian/msfs2020-go](https://github.com/lian/msfs2020-go).
-- The client/ingame panel is forked from [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
+- The original server was forked from [lian/msfs2020-go](https://github.com/lian/msfs2020-go).
+- The original client/ingame panel was forked from [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
 
 Great work, guys! Thanks for sharing your work with us!!!
 
-Panel-Bar Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
+### Icons
 
-Helicopter Icon provided by [SVGRepo](https://www.svgrepo.com/svg/128811/helicopter-bottom-view-silhouette).
+- Helicopter Icon provided by [SVGRepo](https://www.svgrepo.com/svg/128811/helicopter-bottom-view-silhouette).
+- Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
 
-Other Icons provided by [FontAwesome](https://fontawesome.com/license/free).
-
-Maps and APIs:
+### Maps and APIs
 
 - [OpenStreetMap](https://www.openstreetmap.org/copyright)
 - [Stamen](http://maps.stamen.com)
@@ -437,7 +528,15 @@ Maps and APIs:
 - [openAIP](https://www.openaip.net)
 - [open flightmaps](https://www.openflightmaps.org/)
 
+### Sample Documents
+
+- The Traffic Pattern Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Airport_Traffic_Pattern_from_AIM_4-3-2.svg)
+- (PRO) The Weather Forecast Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Aviation_weather_forecast_chart.png)
+- (PRO) The Approach Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Mdwild31c.JPG)
+
 ---
+
+<div style="page-break-after: always;"></div>
 
 # Releases and Downloads
 

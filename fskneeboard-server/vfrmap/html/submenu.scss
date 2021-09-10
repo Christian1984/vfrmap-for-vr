@@ -1,0 +1,135 @@
+@import "consts";
+
+#submenu {
+    z-index: 1000;
+
+    > ul {
+        > li {
+
+            &:hover {
+                > span {
+                    &.tooltip {
+                        width: $tooltip-width;
+                        transition-delay: $tooltip-delay;
+                    }
+                } 
+            }
+
+            > span {
+                width: $submenu-width;
+                height: $submenu-width;
+                padding: 0;
+                align-items: center;
+                border: none;
+
+                &.tooltip {
+                    display: flex;
+                    width: 0;
+                    position: absolute;
+                    justify-content: center;
+                    background-color: $bg-secondary;
+                    overflow: hidden;
+                    opacity: 0.7;
+                    color: $color-secondary;
+                    transition: width $transition-speed-fast ease;
+                }
+
+                > span {
+                    display: block;
+                    margin: 0 auto;
+                }
+
+                > label {
+                    line-height: $submenu-width;
+                    flex: 1;
+                    text-align: center;
+
+                    > svg {
+                        font-size: 1rem;
+                        width: 1rem !important;
+                        min-width: 1rem;
+                    }
+                }
+
+                > input {
+                    &:checked {
+                        + label {
+                            > svg {
+                                color: $color-highlight;
+                            }
+                        }
+                    }
+                }
+
+
+                &:hover {
+                    > label {
+                        > svg {
+                            color: $color-secondary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $small-screen-width - $width-collapsed) {
+    #submenu {
+        left: 0;
+        right: 0;
+        top: 0;
+
+        > ul {
+            flex-direction: row;
+
+            > li {
+                &.marginator {
+                    margin-left: $submenu-width / 2;
+                }
+
+                &.big-marginator {
+                    margin-left: auto;
+                }
+
+                > span {
+                    &.tooltip {
+                        top: $submenu-width;
+
+                        &.force-left {
+                            right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: $small-screen-width - $width-collapsed) {
+    #submenu {
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        > ul {
+            flex-direction: column;
+
+            > li {
+                &.marginator {
+                    margin-top: $submenu-width / 2;
+                }
+
+                &.big-marginator {
+                    margin-top: auto;
+                }
+
+                > span {
+                    &.tooltip {
+                        right: $submenu-width;
+                    }
+                }
+            }
+        }
+    }
+}

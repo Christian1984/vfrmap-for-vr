@@ -1,0 +1,97 @@
+@import "consts";
+
+nav {
+    position: fixed;
+    background-color: $bg-primary;
+    transition: all 200ms ease;
+
+    > ul {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+
+        * {
+            user-select: none;
+        }
+
+        > li {
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+
+            input {
+                display: none;
+
+                + label {
+                    cursor: pointer;
+                }
+            }
+
+            > span {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                text-decoration: none;
+                color: $color-primary;
+                border: 0.25rem solid transparent;
+                transition: all $transition-speed-fast ease;
+
+                &.active {
+                    > svg,
+                    > span {
+                        color: $color-secondary;
+                    }
+                }
+
+                > span {
+                    margin-left: 1rem;
+                    display: none;
+                    transition: all 200ms ease;
+
+                    > input {
+                        + label {
+                            .checked
+                            {
+                                display: none;
+                            }
+                        }
+
+                        &:checked {
+                            +label {
+                                .checked {
+                                    display: unset;
+                                }
+
+                                .unchecked {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.toolgroup {
+                    > span {
+                        &:hover {
+                            color: $color-highlight;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: $bg-secondary;
+
+                    > svg {
+                        color: $color-highlight;
+                    }
+
+                    > span {
+                        color: $color-secondary;
+                    }
+                }
+            }
+        }
+    }
+}

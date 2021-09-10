@@ -5,7 +5,7 @@
 **/autosave/*.SPB
 **/autosave/*.WPR
 /dist
-fskneeboard-server/charts/*.PNG
+fskneeboard-server/charts/**/*.PNG
 .env
 fskneeboard.exe
 vfrmap-for-vr-win64.zip
@@ -19,5 +19,11 @@ latestcheck.json
 *.lic
 *.pdf
 *.syso
+*.css.map
+*.css
 
+fskneeboard-server/vfrmap/html/index.css
 !fskneeboard-server/charts/traffic-pattern.png
+!fskneeboard-server/charts/approach/MDW.png
+!fskneeboard-server/charts/weather/weather_forecast_chart.png
+

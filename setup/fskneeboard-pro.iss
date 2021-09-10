@@ -48,6 +48,9 @@ Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-steam.bat"; DestDi
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-windows-store.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\charts\copy-your-charts-here.txt"; DestDir: "{app}\charts"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\charts\traffic-pattern.png"; DestDir: "{app}\charts"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\traffic-pattern.png"; DestDir: "{app}\charts"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\approach\MDW.png"; DestDir: "{app}\charts\approach"; Flags: ignoreversion
+Source: "..\dist\pro\fskneeboard-server\charts\weather\weather_forecast_chart.png"; DestDir: "{app}\charts\weather"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\autosave\autosaves-will-go-here.txt"; DestDir: "{app}\autosave"; Flags: ignoreversion
 
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\layout.json"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard"; Flags: ignoreversion
@@ -103,6 +106,7 @@ end;
 procedure InitializeWizard;
 var
   AfterID: Integer;
+  communityFolderSuccess: Boolean;
   communityFolder: String;
   winstoreCommunityFolder: String;
   steamCommunityFolder: String;
@@ -110,28 +114,30 @@ var
 
 begin
   AfterID := wpSelectDir;
+  communityFolderSuccess := False;
 
   winstoreCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community');
   steamCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community');
   
-  communityFolderDirWizardDescription := '*** PLEASE DO NOT CLICK NEXT BEFORE READING THIS ***'#13#10#13#10
+  if DirExists(winstoreCommunityFolder) or DirExists(steamCommunityFolder) then begin
+    communityFolderSuccess := True;
+    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your Flight Simulator Community Folder.';
+
+    if DirExists(steamCommunityFolder) then begin
+        communityFolder := steamCommunityFolder;
+        Log('steamCommunityFolder found!');
+    end else if DirExists(winstoreCommunityFolder) then begin
+        communityFolder := winstoreCommunityFolder;
+        Log('winstoreCommunityFolder found!');
+    end
+  end else begin
+    communityFolderDirWizardDescription := '*** PLEASE DO NOT CLICK NEXT BEFORE READING THIS ***'#13#10#13#10
     + 'WARNING: Your Flight Simulator Community Folder could NOT be auto-detected! Please set AND VERIFY the path to your community folder manually:'#13#10#13#10
     + '- WINDOWS STORE USERS: If you have purchased MSFS through the Windows Store, you will typically find it under C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10#13#10
     + '- STEAM USERS: If you have purchased MSFS through Steam, the default path for your Community Folder would typically be C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community';
 
-  if DirExists(winstoreCommunityFolder) then begin
-    communityFolder := winstoreCommunityFolder;
-    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your Flight Simulator Community Folder.';
-    Log('winstoreCommunityFolder found!');
-  end else if DirExists(steamCommunityFolder) then begin
-    communityFolder := steamCommunityFolder;
-    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your Flight Simulator Community Folder.';
-    Log('steamCommunityFolder found!');
-  end else begin
     communityFolder := 'C:\'
   end;
-
-  communityFolderDirWizardDescription := communityFolderDirWizardDescription + ''#13#10#13#10 + 'PLEASE NOTE: If the FSKneeboard-Ingame-Panel does NOT appear inside the game, then double-check that you have this directory right!';
 
   CommunityFolderDirWizardPage := CreateInputDirPage(
         AfterID,
@@ -139,8 +145,19 @@ begin
         'Please tell us where your Flight Simulator Community Folder is located!',
         communityFolderDirWizardDescription,
         False, '');
-  CommunityFolderDirWizardPage.Add('&Microsoft Flight Simulator Community Folder:');
-  CommunityFolderDirWizardPage.Values[0] := winstoreCommunityFolder;
+  CommunityFolderDirWizardPage.Add('IMPORTANT: If the FSKneeboard-Ingame-Panel does NOT appear inside the game, then double-check that you have this directory right!' + #13#10#13#10 + 'Microsoft Flight Simulator Community Folder:');
+  CommunityFolderDirWizardPage.Values[0] := communityFolder;
+
+  if communityFolderSuccess then begin
+    CommunityFolderDirWizardPage.SubCaptionLabel.Font.Color := clGreen;
+  end else begin
+    CommunityFolderDirWizardPage.SubCaptionLabel.Font.Color := clRed;
+  end;
+
+  CommunityFolderDirWizardPage.SubCaptionLabel.Font.Style := [fsBold];
+
+  CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
+  CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
   AfterID := CommunityFolderDirWizardPage.ID;
 
   LicenseFileWizardPage := CreateInputFilePage(
