@@ -10,6 +10,41 @@ function dispatch_keyevent(event) {
     }
 }
 
+function store_data_set(key_value_array) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/data/", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                console.log("POST to /data responded with:", json)
+            }
+        }
+    };
+    xhr.send(JSON.stringify({ data: key_value_array }));
+}
+
+function retrieve_data_set(key_array, callback) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/dataSet/?keys=" + JSON.stringify(key_array), true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                console.log("GET to /data responded with:", json)
+
+                if (json != null && callback != null) {
+                    callback(json.data);
+                }
+            }
+        }
+    };
+
+    xhr.send();
+}
+
 function store_data(key, string_data) {
     let xhr = new XMLHttpRequest();
 
@@ -37,7 +72,6 @@ function store_data(key, string_data) {
 
 function retrieve_data(key, callback) {
     let xhr = new XMLHttpRequest();
-
     xhr.open("GET", "/data/?key=" + key, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.onreadystatechange = function () {
