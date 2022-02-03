@@ -9,3 +9,11 @@ function dispatch_keyevent(event) {
         window.parent.window.document.dispatchEvent(new KeyboardEvent(event.type, event));
     }
 }
+
+function store_data(key, value) {
+    localStorage.setItem(key, value);
+}
+
+function retrieve_data(key) {
+    return localStorage.getItem(key);
+}

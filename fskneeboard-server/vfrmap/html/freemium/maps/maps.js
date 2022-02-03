@@ -359,7 +359,7 @@ function initMap() {
 
     map.on("zoomend", function(e) {
         updateStoredCenter();
-        localStorage.setItem("n_zoom", map.getZoom());
+        store_data("n_zoom", map.getZoom());
     });
 
     map.on("click", function(e) {
@@ -451,7 +451,7 @@ function set_follow(follow) {
     }
 
     follow_plane = follow;
-    localStorage.setItem("b_follow", follow);
+    store_data("b_follow", follow);
 
     if (follow) {
         ac_visibility_options.ac_visibility = follow
@@ -517,20 +517,20 @@ function center_airplane() {
 
 function updateStoredCenter() {
     const center = map.getCenter();
-    localStorage.setItem("n_last_lat", center.lat);
-    localStorage.setItem("n_last_long", center.lng);
+    store_data("n_last_lat", center.lat);
+    store_data("n_last_long", center.lng);
 }
 
 function save_ac_visibility() {
-    localStorage.setItem("ac_visibility_options", JSON.stringify(ac_visibility_options));
+    store_data("ac_visibility_options", JSON.stringify(ac_visibility_options));
 }
 
 function save_rubberband_visibility() {
-    localStorage.setItem("rubberband_visibility", rubberband_visibility);
+    store_data("rubberband_visibility", rubberband_visibility);
 }
 
 function loadStoredState() {
-    const stored_vos = localStorage.getItem("ac_visibility_options");
+    const stored_vos = retrieve_data("ac_visibility_options");
     if (stored_vos != null) {
         try {
             ac_visibility_options = JSON.parse(stored_vos);
@@ -541,13 +541,13 @@ function loadStoredState() {
         }
     }
 
-    const rb_visibility = localStorage.getItem("rubberband_visibility");
+    const rb_visibility = retrieve_data("rubberband_visibility");
     if (rb_visibility != null) {
         rubberband_visibility = rb_visibility != "true";
         toggle_rubberband();
     }
 
-    const follow = localStorage.getItem("b_follow");
+    const follow = retrieve_data("b_follow");
     if (follow != null) {
         set_follow(follow == "true" && ac_visibility_options.ac_visibility);
     }
@@ -555,8 +555,8 @@ function loadStoredState() {
         set_follow(true);
     }
 
-    const last_long = localStorage.getItem("n_last_long");
-    const last_lat = localStorage.getItem("n_last_lat");
+    const last_long = retrieve_data("n_last_long");
+    const last_lat = retrieve_data("n_last_lat");
 
     if (!follow_plane && last_long != null && last_lat != null) {
         setTimeout(() => {
@@ -564,26 +564,26 @@ function loadStoredState() {
         }, 500);
     }
 
-    const zoom = localStorage.getItem("n_zoom");
+    const zoom = retrieve_data("n_zoom");
     if (zoom != null) {
         map.setZoom(zoom);
     }
 
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
     for (let i = 0; i < nav_data_cbs.length; i++) {
-        const active = localStorage.getItem("b_nav_data_" + i);
+        const active = retrieve_data("b_nav_data_" + i);
         if (active != null && active == "true") {
             nav_data_cbs[i].click();
         }
     }
 
-    const active_map = localStorage.getItem("n_active_map");
+    const active_map = retrieve_data("n_active_map");
     const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
     if (active_map != null && nav_data_rbs.length > 0 && active_map < nav_data_rbs.length) {
         nav_data_rbs[active_map].click();
     }
 
-    const wind_indicator_visibility = localStorage.getItem("wind_indicator_visibility");
+    const wind_indicator_visibility = retrieve_data("wind_indicator_visibility");
     const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
     if (wind_indicator_visibility != null && wind_indicator_visibility == "false" && wind_indicator_toggle != null) {
         wind_indicator_toggle.click();
@@ -597,14 +597,14 @@ function registerHandlers() {
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
     for (let i = 0; i < nav_data_cbs.length; i++) {
         nav_data_cbs[i].addEventListener("change", () => {
-            localStorage.setItem("b_nav_data_" + i, nav_data_cbs[i].checked)
+            store_data("b_nav_data_" + i, nav_data_cbs[i].checked)
         });
     }
 
     const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
     for (let i = 0; i < nav_data_rbs.length; i++) {
         nav_data_rbs[i].addEventListener("change", () => {
-            localStorage.setItem("n_active_map", i)
+            store_data("n_active_map", i)
         });
     }
 
@@ -777,7 +777,7 @@ function registerHandlers() {
     if (wind_indicator_btn) {
         wind_indicator_btn.addEventListener("change", () => {
             hide_wind_indicator(!wind_indicator_btn.checked);
-            localStorage.setItem("wind_indicator_visibility", wind_indicator_btn.checked);
+            store_data("wind_indicator_visibility", wind_indicator_btn.checked);
         })
     }
 

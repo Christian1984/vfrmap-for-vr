@@ -31,7 +31,7 @@ const reset_stretch_button = document.getElementById("reset-stretch");
 let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;
 
-function dispatch_keyevent(event) {
+function dispatch_keyevent_top(event) {
     const msg = JSON.stringify({
         type: "KeyboardEvent",
         data: {
@@ -93,24 +93,24 @@ function switch_to_notepad() {
 }
 
 function save_tab(tab_id) {
-    localStorage.setItem("active_tab", tab_id);
+    store_data("active_tab", tab_id);
 }
 
 function save_red(red) {
     if (red == null) return;
-    localStorage.setItem("red", red);
+    store_data("red", red);
 }
 
 function save_brightness() {
-    localStorage.setItem("brightness", current_brightness);
+    store_data("brightness", current_brightness);
 }
 
 function save_zoom() {
-    localStorage.setItem("zoom", JSON.stringify(current_zoom));
+    store_data("zoom", JSON.stringify(current_zoom));
 }
 
 function load_state() {
-    const zoom = localStorage.getItem("zoom");
+    const zoom = retrieve_data("zoom");
     if (zoom != null) {
         try {
             current_zoom = JSON.parse(zoom);
@@ -120,7 +120,7 @@ function load_state() {
         apply_zoom();
     }
 
-    const red = localStorage.getItem("red");
+    const red = retrieve_data("red");
     if (red != null) {
         set_red_light(red == "true");
 
@@ -129,12 +129,12 @@ function load_state() {
         }
     }
 
-    const brightness = localStorage.getItem("brightness");
+    const brightness = retrieve_data("brightness");
     if (brightness != null) {
         set_brightness(brightness);
     }
 
-    const active_tab = localStorage.getItem("active_tab");
+    const active_tab = retrieve_data("active_tab");
     if (active_tab != null) {
         switch(active_tab) {
             case "1":
@@ -387,7 +387,7 @@ function init() {
     request_hotkey();
 
     window.document.addEventListener("keydown", (e) => {
-        dispatch_keyevent(e);
+        dispatch_keyevent_top(e);
     });
 
     load_state();
