@@ -135,14 +135,16 @@ func dbInit(db *bolt.DB) {
 	db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte(boltBucketName))
 		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+			return fmt.Errorf("Cannot create bucket: %s", err)
 		}
 		return nil
 	})
 }
 
 func dbWrite(db *bolt.DB, key string, value string) {
-	fmt.Printf("Storing data: %s = %s\n", key, value)
+	if verbose {
+		fmt.Printf("Storing data: %s = %s\n", key, value)
+	}
 
 	db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(boltBucketName))
@@ -152,7 +154,10 @@ func dbWrite(db *bolt.DB, key string, value string) {
 }
 
 func dbRead(db *bolt.DB, key string) string {
-	fmt.Printf("Reading data: %s\n", key)
+
+	if verbose {
+		fmt.Printf("Reading data for key=%s\n", key)
+	}
 
 	var out *string
 
@@ -163,7 +168,9 @@ func dbRead(db *bolt.DB, key string) string {
 		outs := string(v[:])
 		out = &outs
 
-		fmt.Printf("%s is: %s\n", key, *out)
+		if verbose {
+			fmt.Printf("%s is: %s\n", key, *out)
+		}
 
 		return nil
 	})
@@ -492,31 +499,40 @@ func main() {
 				return
 			}
 
-			var storageData StorageData
-			sdErr := json.NewDecoder(r.Body).Decode(&storageData)
-			if sdErr != nil {
-				fmt.Println("Error in handleData: " + sdErr.Error())
-				http.Error(w, sdErr.Error(), http.StatusBadRequest)
-				return
-			}
-
-			fmt.Println("Received StorageData: key=" + storageData.Key + ", value=" + storageData.Value)
-
-			if len(storageData.Key) == 0 {
-				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
-				return
-			}
-
 			out := ""
 			var res StorageData
 
 			switch r.Method {
 			case http.MethodGet:
-				out = dbRead(db, storageData.Key)
-				res = StorageData{storageData.Key, out}
+				key := r.URL.Query().Get("key")
+
+				if len(key) == 0 {
+					http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
+					return
+				}
+
+				out = dbRead(db, key)
+				res = StorageData{key, out}
 				break
 
 			case http.MethodPost:
+				var storageData StorageData
+				sdErr := json.NewDecoder(r.Body).Decode(&storageData)
+				if sdErr != nil {
+					fmt.Println("Error in handleData: " + sdErr.Error())
+					http.Error(w, sdErr.Error(), http.StatusBadRequest)
+					return
+				}
+
+				if verbose {
+					fmt.Println("Received StorageData: key=" + storageData.Key + ", value=" + storageData.Value)
+				}
+
+				if len(storageData.Key) == 0 {
+					http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
+					return
+				}
+
 				dbWrite(db, storageData.Key, storageData.Value)
 				res = storageData
 				break
