@@ -81,6 +81,14 @@ type StorageData struct {
 	Value string `json:"value"`
 }
 
+type StorageDataSet struct {
+	DataSets []StorageData `json:"data"`
+}
+
+type StorageDataKeysArray struct {
+	Keys []string
+}
+
 func (r *TrafficReport) RequestData(s *simconnect.SimConnect) {
 	defineID := s.GetDefineID(r)
 	requestID := defineID
@@ -308,9 +316,6 @@ func main() {
 	} else {
 		fmt.Println("Established connection with local FSKneeboard database!")
 		dbInit(db)
-		dbWrite(db, "test", "Hallo Welt!")
-		out := dbRead(db, "test")
-		fmt.Printf("Value returned from db: [%s]\n", out)
 
 		fmt.Println("")
 	}
@@ -499,20 +504,19 @@ func main() {
 				return
 			}
 
-			out := ""
 			var res StorageData
 
 			switch r.Method {
 			case http.MethodGet:
 				key := r.URL.Query().Get("key")
 
-				if len(key) == 0 {
+				if len(strings.TrimSpace(key)) == 0 {
 					http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 					return
 				}
 
-				out = dbRead(db, key)
-				res = StorageData{key, out}
+				out := dbRead(db, strings.TrimSpace(key))
+				res = StorageData{key, strings.TrimSpace(out)}
 				break
 
 			case http.MethodPost:
@@ -525,16 +529,111 @@ func main() {
 				}
 
 				if verbose {
-					fmt.Println("Received StorageData: key=" + storageData.Key + ", value=" + storageData.Value)
+
+					fmt.Println("Received StorageData: key=" + strings.TrimSpace(storageData.Key) + ", value=" + strings.TrimSpace(storageData.Value))
 				}
 
-				if len(storageData.Key) == 0 {
+				if len(strings.TrimSpace(storageData.Key)) == 0 {
 					http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 					return
 				}
 
-				dbWrite(db, storageData.Key, storageData.Value)
+				dbWrite(db, strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
 				res = storageData
+				break
+			}
+
+			responseJson, jsonErr := json.Marshal(res)
+
+			if jsonErr != nil {
+				fmt.Println(jsonErr.Error())
+				http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(responseJson))
+		}
+
+		handleDataSet := func(w http.ResponseWriter, r *http.Request) {
+			if r.Method != http.MethodGet && r.Method != http.MethodPost {
+				http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
+				return
+			}
+
+			var res StorageDataSet
+
+			switch r.Method {
+			case http.MethodGet:
+				keysString := r.URL.Query().Get("keys")
+
+				if verbose {
+					fmt.Printf("Received Keys for data retrieval (raw):\n", keysString)
+				}
+
+				keys := StorageDataKeysArray{}
+				jsonErr := json.Unmarshal([]byte(keysString), &keys.Keys)
+
+				if jsonErr != nil {
+					fmt.Println("Error in handleDataSet: " + jsonErr.Error())
+					http.Error(w, jsonErr.Error(), http.StatusBadRequest)
+					return
+				}
+
+				if verbose {
+					fmt.Printf("Extracted %d Keys for data retrieval:\n", len(keys.Keys))
+					for _, key := range keys.Keys {
+						fmt.Println("key=" + strings.TrimSpace(key))
+					}
+				}
+
+				for _, key := range keys.Keys {
+					if len(strings.TrimSpace(key)) == 0 {
+						http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
+						return
+					}
+				}
+
+				for _, key := range keys.Keys {
+					value := dbRead(db, strings.TrimSpace(key))
+					sd := StorageData{strings.TrimSpace(key), value}
+					res.DataSets = append(res.DataSets, sd)
+				}
+
+				break
+
+			case http.MethodPost:
+				var storageDataSet StorageDataSet
+				sdErr := json.NewDecoder(r.Body).Decode(&storageDataSet)
+				if sdErr != nil {
+					fmt.Println("Error in handleData: " + sdErr.Error())
+					http.Error(w, sdErr.Error(), http.StatusBadRequest)
+					return
+				}
+
+				if verbose {
+					fmt.Printf("Received %d StorageDataSet for storage:\n", len(storageDataSet.DataSets))
+					for _, ds := range storageDataSet.DataSets {
+						fmt.Println("StorageData: key=" + strings.TrimSpace(ds.Key) + ", value=" + strings.TrimSpace(ds.Value))
+					}
+				}
+
+				for _, ds := range storageDataSet.DataSets {
+					if len(strings.TrimSpace(ds.Key)) == 0 {
+						http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
+						return
+					}
+				}
+
+				for _, ds := range storageDataSet.DataSets {
+					dbWrite(db, strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
+				}
+
+				res = storageDataSet
 				break
 			}
 
@@ -602,6 +701,7 @@ func main() {
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
 		http.HandleFunc("/data/", handleData)
+		http.HandleFunc("/dataSet/", handleDataSet)
 		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
