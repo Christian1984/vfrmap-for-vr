@@ -10,6 +10,16 @@ function dispatch_keyevent(event) {
     }
 }
 
+function array_to_object(array, key) {
+    const init = {};
+    return array.reduce((acc, el) => {
+        return {
+            ...acc,
+            [el[key]]: el.value,
+        };
+    }, init);
+};
+
 function store_data_set(key_value_array) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "/data/", true);
@@ -36,7 +46,8 @@ function retrieve_data_set(key_array, callback) {
                 console.log("GET to /data responded with:", json)
 
                 if (json != null && callback != null) {
-                    callback(json.data);
+                    const result_object = array_to_object(json.data, "key");
+                    callback(result_object);
                 }
             }
         }
@@ -81,7 +92,8 @@ function retrieve_data(key, callback) {
                 console.log("GET to /data responded with:", json)
 
                 if (json != null && callback != null) {
-                    callback(json.value);
+                    const result_object = array_to_object([json.data], "key");
+                    callback(result_object);
                 }
             }
         }

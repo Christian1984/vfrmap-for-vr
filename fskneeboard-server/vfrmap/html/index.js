@@ -110,44 +110,47 @@ function save_zoom() {
 }
 
 function load_state() {
-    const zoom = retrieve_data("zoom");
-    if (zoom != null) {
-        try {
-            current_zoom = JSON.parse(zoom);
+    retrieve_data_set(["zoom", "red", "brightness", "active_tab"], (data) => {
+        console.log(data);
+
+        if (data.zoom != null && data.zoom !== "") {
+            try {
+                current_zoom = JSON.parse(data.zoom);
+                console.log("Zoom: " + current_zoom);
+            }
+            catch(e) {
+                console.log("Zoom exception: " + e);
+            }
+    
+            apply_zoom();
         }
-        catch(e) { /* ignore silently */ }
 
-        apply_zoom();
-    }
-
-    const red = retrieve_data("red");
-    if (red != null) {
-        set_red_light(red == "true");
-
-        if (red_light) {
-            red_light.checked = red == "true";
+        if (data.red != null && data.red !== "") {
+            set_red_light(data.red == "true");
+    
+            if (red_light) {
+                red_light.checked = data.red == "true";
+            }
         }
-    }
 
-    const brightness = retrieve_data("brightness");
-    if (brightness != null) {
-        set_brightness(brightness);
-    }
-
-    const active_tab = retrieve_data("active_tab");
-    if (active_tab != null) {
-        switch(active_tab) {
-            case "1":
-                switch_to_charts();
-                break;
-            case "2":
-                switch_to_notepad();
-                break;
-            default:
-                switch_to_map();
-                break;
+        if (data.brightness != null && data.brightness !== "") {
+            set_brightness(data.brightness);
         }
-    }
+
+        if (data.active_tab != null && data.active_tab !== "") {
+            switch(data.active_tab) {
+                case "1":
+                    switch_to_charts();
+                    break;
+                case "2":
+                    switch_to_notepad();
+                    break;
+                default:
+                    switch_to_map();
+                    break;
+            }
+        }
+    });
 }
 
 function set_red_light(red) {
