@@ -33,7 +33,6 @@ import (
 	"vfrmap-for-vr/vfrmap/websockets"
 
 	updatechecker "github.com/Christian1984/go-update-checker"
-	"github.com/boltdb/bolt"
 )
 
 type Report struct {
@@ -134,56 +133,6 @@ func shutdownWithPrompt() {
 	}
 
 	os.Exit(0)
-}
-
-const boltBucketName = "fskneeboard"
-const boltFileName = "fskneeboard.db"
-
-func dbInit(db *bolt.DB) {
-	db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte(boltBucketName))
-		if err != nil {
-			return fmt.Errorf("Cannot create bucket: %s", err)
-		}
-		return nil
-	})
-}
-
-func dbWrite(db *bolt.DB, key string, value string) {
-	if verbose {
-		fmt.Printf("Storing data: %s = %s\n", key, value)
-	}
-
-	db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(boltBucketName))
-		err := b.Put([]byte(key), []byte(value))
-		return err
-	})
-}
-
-func dbRead(db *bolt.DB, key string) string {
-
-	if verbose {
-		fmt.Printf("Reading data for key=%s\n", key)
-	}
-
-	var out *string
-
-	db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(boltBucketName))
-		v := b.Get([]byte(key))
-
-		outs := string(v[:])
-		out = &outs
-
-		if verbose {
-			fmt.Printf("%s is: %s\n", key, *out)
-		}
-
-		return nil
-	})
-
-	return *out
 }
 
 var buildVersion string
@@ -309,13 +258,13 @@ func main() {
 
 	// connect to bolt db
 	fmt.Println("=== INFO: Local FSKneeboard Database Connection")
-	db, db_err := bolt.Open(boltFileName, 0600, &bolt.Options{Timeout: 1 * time.Second})
+	db_err := dbConnect()
 	if db_err != nil {
 		fmt.Println("\nWARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...")
 		shutdownWithPrompt()
 	} else {
 		fmt.Println("Established connection with local FSKneeboard database!")
-		dbInit(db)
+		dbInit()
 
 		fmt.Println("")
 	}
@@ -515,7 +464,7 @@ func main() {
 					return
 				}
 
-				out := dbRead(db, strings.TrimSpace(key))
+				out := dbRead(strings.TrimSpace(key))
 				res = StorageData{key, strings.TrimSpace(out)}
 				break
 
@@ -538,7 +487,7 @@ func main() {
 					return
 				}
 
-				dbWrite(db, strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
+				dbWrite(strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
 				res = storageData
 				break
 			}
@@ -599,7 +548,7 @@ func main() {
 				}
 
 				for _, key := range keys.Keys {
-					value := dbRead(db, strings.TrimSpace(key))
+					value := dbRead(strings.TrimSpace(key))
 					sd := StorageData{strings.TrimSpace(key), value}
 					res.DataSets = append(res.DataSets, sd)
 				}
@@ -630,7 +579,7 @@ func main() {
 				}
 
 				for _, ds := range storageDataSet.DataSets {
-					dbWrite(db, strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
+					dbWrite(strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
 				}
 
 				res = storageDataSet
