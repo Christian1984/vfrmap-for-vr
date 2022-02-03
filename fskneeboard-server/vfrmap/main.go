@@ -76,6 +76,11 @@ type Hotkey struct {
 	KeyCode  int  `json:"keycode"`
 }
 
+type StorageData struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
 func (r *TrafficReport) RequestData(s *simconnect.SimConnect) {
 	defineID := s.GetDefineID(r)
 	requestID := defineID
@@ -137,6 +142,8 @@ func dbInit(db *bolt.DB) {
 }
 
 func dbWrite(db *bolt.DB, key string, value string) {
+	fmt.Printf("Storing data: %s = %s\n", key, value)
+
 	db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(boltBucketName))
 		err := b.Put([]byte(key), []byte(value))
@@ -144,7 +151,9 @@ func dbWrite(db *bolt.DB, key string, value string) {
 	})
 }
 
-func dbRead(db *bolt.DB, key string) *string {
+func dbRead(db *bolt.DB, key string) string {
+	fmt.Printf("Reading data: %s\n", key)
+
 	var out *string
 
 	db.View(func(tx *bolt.Tx) error {
@@ -159,7 +168,7 @@ func dbRead(db *bolt.DB, key string) *string {
 		return nil
 	})
 
-	return out
+	return *out
 }
 
 var buildVersion string
@@ -294,7 +303,7 @@ func main() {
 		dbInit(db)
 		dbWrite(db, "test", "Hallo Welt!")
 		out := dbRead(db, "test")
-		fmt.Printf("Value returned from db: [%s]\n", *out)
+		fmt.Printf("Value returned from db: [%s]\n", out)
 
 		fmt.Println("")
 	}
@@ -477,6 +486,58 @@ func main() {
 			w.Write([]byte(responseJson))
 		}
 
+		handleData := func(w http.ResponseWriter, r *http.Request) {
+			if r.Method != http.MethodGet && r.Method != http.MethodPost {
+				http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
+				return
+			}
+
+			var storageData StorageData
+			sdErr := json.NewDecoder(r.Body).Decode(&storageData)
+			if sdErr != nil {
+				fmt.Println("Error in handleData: " + sdErr.Error())
+				http.Error(w, sdErr.Error(), http.StatusBadRequest)
+				return
+			}
+
+			fmt.Println("Received StorageData: key=" + storageData.Key + ", value=" + storageData.Value)
+
+			if len(storageData.Key) == 0 {
+				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
+				return
+			}
+
+			out := ""
+			var res StorageData
+
+			switch r.Method {
+			case http.MethodGet:
+				out = dbRead(db, storageData.Key)
+				res = StorageData{storageData.Key, out}
+				break
+
+			case http.MethodPost:
+				dbWrite(db, storageData.Key, storageData.Value)
+				res = storageData
+				break
+			}
+
+			responseJson, jsonErr := json.Marshal(res)
+
+			if jsonErr != nil {
+				fmt.Println(jsonErr.Error())
+				http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+			w.Header().Set("Pragma", "no-cache")
+			w.Header().Set("Expires", "0")
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(responseJson))
+		}
+
 		freemium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
@@ -524,6 +585,7 @@ func main() {
 
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
+		http.HandleFunc("/data/", handleData)
 		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
