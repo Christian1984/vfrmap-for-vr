@@ -123,6 +123,45 @@ func shutdownWithPrompt() {
 	os.Exit(0)
 }
 
+const boltBucketName = "fskneeboard"
+const boltFileName = "fskneeboard.db"
+
+func dbInit(db *bolt.DB) {
+	db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte(boltBucketName))
+		if err != nil {
+			return fmt.Errorf("create bucket: %s", err)
+		}
+		return nil
+	})
+}
+
+func dbWrite(db *bolt.DB, key string, value string) {
+	db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(boltBucketName))
+		err := b.Put([]byte(key), []byte(value))
+		return err
+	})
+}
+
+func dbRead(db *bolt.DB, key string) *string {
+	var out *string
+
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(boltBucketName))
+		v := b.Get([]byte(key))
+
+		outs := string(v[:])
+		out = &outs
+
+		fmt.Printf("%s is: %s\n", key, *out)
+
+		return nil
+	})
+
+	return out
+}
+
 var buildVersion string
 var buildTime string
 var pro string
@@ -246,12 +285,17 @@ func main() {
 
 	// connect to bolt db
 	fmt.Println("=== INFO: Local FSKneeboard Database Connection")
-	db, db_err := bolt.Open("fskneeboard.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	db, db_err := bolt.Open(boltFileName, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if db_err != nil {
 		fmt.Println("\nWARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...")
 		shutdownWithPrompt()
 	} else {
 		fmt.Println("Established connection with local FSKneeboard database!")
+		dbInit(db)
+		dbWrite(db, "test", "Hallo Welt!")
+		out := dbRead(db, "test")
+		fmt.Printf("Value returned from db: [%s]\n", *out)
+
 		fmt.Println("")
 	}
 	defer db.Close()
