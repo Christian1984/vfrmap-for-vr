@@ -16,6 +16,8 @@ SimConnect.dll
 push.sh
 bindata.go
 latestcheck.json
+fskneeboard.db
+fskneeboard.db.lock
 *.lic
 *.pdf
 *.syso

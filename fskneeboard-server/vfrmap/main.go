@@ -33,6 +33,7 @@ import (
 	"vfrmap-for-vr/vfrmap/websockets"
 
 	updatechecker "github.com/Christian1984/go-update-checker"
+	"github.com/boltdb/bolt"
 )
 
 type Report struct {
@@ -242,6 +243,18 @@ func main() {
 	}
 
 	fmt.Println("")
+
+	// connect to bolt db
+	fmt.Println("=== INFO: Local FSKneeboard Database Connection")
+	db, db_err := bolt.Open("fskneeboard.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	if db_err != nil {
+		fmt.Println("\nWARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...")
+		shutdownWithPrompt()
+	} else {
+		fmt.Println("Established connection with local FSKneeboard database!")
+		fmt.Println("")
+	}
+	defer db.Close()
 
 	// starting Flight Simulator
 	fmt.Println("=== INFO: Flight Simulator Autostart")

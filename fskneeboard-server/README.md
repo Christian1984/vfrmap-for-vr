@@ -10,8 +10,9 @@ cross-compiles from macos/linux, no other dependencies required. produces a sing
 - install go version 1.14.14
 - install https://github.com/jteeuwen/go-bindata globally
 - install https://github.com/tc-hib/go-winres globally (go get https://github.com/tc-hib/go-winres)
+- install https://github.com/boltdb/bolt globally (go get github.com/boltdb/bolt/...)
 - copy required stuff to folder _vendor (see README.md there)
-- run build-fskneeboard-server.bat
+- run build-fskneeboard-server-FREE.bat or build-fskneeboard-server-PRO.bat
 
 ## status
 
