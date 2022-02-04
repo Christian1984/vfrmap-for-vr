@@ -110,17 +110,12 @@ function save_zoom() {
 }
 
 function load_state() {
-    retrieve_data_set(["zoom", "red", "brightness", "active_tab"], (data) => {
-        console.log(data);
-
+    retrieve_data_set(["zoom", "red", "brightness", "active_tab"], data => {
         if (data.zoom != null && data.zoom !== "") {
             try {
                 current_zoom = JSON.parse(data.zoom);
-                console.log("Zoom: " + current_zoom);
             }
-            catch(e) {
-                console.log("Zoom exception: " + e);
-            }
+            catch(e) { /* ignore silently */ }
     
             apply_zoom();
         }

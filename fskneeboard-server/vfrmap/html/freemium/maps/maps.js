@@ -517,8 +517,11 @@ function center_airplane() {
 
 function updateStoredCenter() {
     const center = map.getCenter();
-    store_data("n_last_lat", center.lat);
-    store_data("n_last_long", center.lng);
+
+    store_data_set([
+        { key: "n_last_lat", value: center.lat },
+        { key: "n_last_long", value: center.lng }
+    ]);
 }
 
 function save_ac_visibility() {
@@ -530,67 +533,78 @@ function save_rubberband_visibility() {
 }
 
 function loadStoredState() {
-    const stored_vos = retrieve_data("ac_visibility_options");
-    if (stored_vos != null) {
-        try {
-            ac_visibility_options = JSON.parse(stored_vos);
-            updateIcon();
-        }
-        catch(e) {
-            /* ignore silently */
-        }
-    }
-
-    const rb_visibility = retrieve_data("rubberband_visibility");
-    if (rb_visibility != null) {
-        rubberband_visibility = rb_visibility != "true";
-        toggle_rubberband();
-    }
-
-    const follow = retrieve_data("b_follow");
-    if (follow != null) {
-        set_follow(follow == "true" && ac_visibility_options.ac_visibility);
-    }
-    else {
-        set_follow(true);
-    }
-
-    const last_long = retrieve_data("n_last_long");
-    const last_lat = retrieve_data("n_last_lat");
-
-    if (!follow_plane && last_long != null && last_lat != null) {
-        setTimeout(() => {
-            map.panTo(L.latLng(last_lat, last_long));
-        }, 500);
-    }
-
-    const zoom = retrieve_data("n_zoom");
-    if (zoom != null) {
-        map.setZoom(zoom);
-    }
+    let key_array = [
+        "ac_visibility_options",
+        "rubberband_visibility",
+        "b_follow",
+        "n_last_long",
+        "n_last_lat",
+        "n_zoom",
+        "n_active_map",
+        "wind_indicator_visibility"
+    ];
 
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
     for (let i = 0; i < nav_data_cbs.length; i++) {
-        const active = retrieve_data("b_nav_data_" + i);
-        if (active != null && active == "true") {
-            nav_data_cbs[i].click();
+        key_array.push("b_nav_data_" + i);
+    }
+
+    retrieve_data_set(key_array,
+        data => {
+            if (data.ac_visibility_options != null) {
+                try {
+                    ac_visibility_options = JSON.parse(data.ac_visibility_options);
+                    updateIcon();
+                }
+                catch(e) {
+                    /* ignore silently */
+                }
+            }
+            
+            if (data.rubberband_visibility != null) {
+                rubberband_visibility = data.rubberband_visibility != "true";
+                toggle_rubberband();
+            }
+        
+            if (data.b_follow != null) {
+                set_follow(data.b_follow == "true" && ac_visibility_options.ac_visibility);
+            }
+            else {
+                set_follow(true);
+            }
+        
+            if (!follow_plane && data.n_last_long != null && data.n_last_lat != null) {
+                setTimeout(() => {
+                    map.panTo(L.latLng(data.n_last_lat, data.n_last_long));
+                }, 500);
+            }
+
+            if (data.n_zoom != null) {
+                map.setZoom(data.n_zoom);
+            }
+            
+            for (let i = 0; i < nav_data_cbs.length; i++) {
+                const active = data["b_nav_data_" + i];
+                if (active != null && active == "true") {
+                    nav_data_cbs[i].click();
+                }
+            }
+        
+            const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
+            if (data.n_active_map != null && nav_data_rbs.length > 0 && data.n_active_map < nav_data_rbs.length) {
+                nav_data_rbs[data.n_active_map].click();
+            }
+        
+            const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
+            if (data.wind_indicator_visibility != null && data.wind_indicator_visibility == "false" && wind_indicator_toggle != null) {
+                wind_indicator_toggle.click();
+            }
+        
+            update_visibility_buttons();
+            waypoints.load_trackdata();
         }
-    }
+    );
 
-    const active_map = retrieve_data("n_active_map");
-    const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
-    if (active_map != null && nav_data_rbs.length > 0 && active_map < nav_data_rbs.length) {
-        nav_data_rbs[active_map].click();
-    }
-
-    const wind_indicator_visibility = retrieve_data("wind_indicator_visibility");
-    const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
-    if (wind_indicator_visibility != null && wind_indicator_visibility == "false" && wind_indicator_toggle != null) {
-        wind_indicator_toggle.click();
-    }
-
-    update_visibility_buttons();
-    waypoints.load_trackdata();
 }
 
 function registerHandlers() {

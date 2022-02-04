@@ -10,9 +10,9 @@ function dispatch_keyevent(event) {
     }
 }
 
-function array_to_object(array, key) {
+function array_to_object(arr, key) {
     const init = {};
-    return array.reduce((acc, el) => {
+    return arr.reduce((acc, el) => {
         return {
             ...acc,
             [el[key]]: el.value,
@@ -20,19 +20,25 @@ function array_to_object(array, key) {
     }, init);
 };
 
-function store_data_set(key_value_array) {
+function store_data_set(key_string_value_array) {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "/data/", true);
+    xhr.open("POST", "/dataSet/", true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                var json = JSON.parse(xhr.responseText);
-                console.log("POST to /data responded with:", json)
+                //console.log("POST to /data responded with:", JSON.parse(xhr.responseText))
             }
         }
     };
-    xhr.send(JSON.stringify({ data: key_value_array }));
+
+    for (kv of key_string_value_array) {
+        if (kv.value.toString != null) {
+            kv.value = kv.value.toString();
+        }
+    }
+
+    xhr.send(JSON.stringify({ data: key_string_value_array }));
 }
 
 function retrieve_data_set(key_array, callback) {
@@ -43,7 +49,7 @@ function retrieve_data_set(key_array, callback) {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                console.log("GET to /data responded with:", json)
+                //console.log("GET to /data responded with:", json)
 
                 if (json != null && callback != null) {
                     const result_object = array_to_object(json.data, "key");
@@ -73,8 +79,7 @@ function store_data(key, string_data) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                var json = JSON.parse(xhr.responseText);
-                console.log("POST to /data responded with:", json)
+                //console.log("POST to /data responded with:", JSON.parse(xhr.responseText))
             }
         }
     };
@@ -89,10 +94,10 @@ function retrieve_data(key, callback) {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                console.log("GET to /data responded with:", json)
+                //console.log("GET to /data responded with:", json)
 
                 if (json != null && callback != null) {
-                    const result_object = array_to_object([json.data], "key");
+                    const result_object = array_to_object([json], "key");
                     callback(result_object);
                 }
             }
