@@ -27,6 +27,10 @@ class Waypoints {
         //intentionally left empty
     }
 
+    clear_track() {
+        //intentionally left empty
+    }
+
     add_marker() {
         //intentionally left empty
     }

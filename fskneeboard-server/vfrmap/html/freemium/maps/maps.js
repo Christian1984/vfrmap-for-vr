@@ -640,6 +640,21 @@ function registerHandlers() {
         });
     }
 
+    const trash_waypoints_btn = document.querySelector("#trash-waypoints");
+    if (trash_waypoints_btn) {
+        trash_waypoints_btn.addEventListener("click", () => {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+                activate_default_mode();
+            }
+            else {
+                if (waypoints.has_waypoints()) {
+                    hide_trash_waypoints_confirm_dialog(false);
+                }
+            }
+        });
+    }
+
     const search_map_panel_search_input = document.querySelector("#search-map-panel-search input");
     const search_map_btn = document.querySelector("#search-map");
     if (search_map_btn) {
@@ -738,6 +753,23 @@ function registerHandlers() {
         });
     }
 
+    const confirm_trash_waypoints_btn = document.querySelector("#trash-waypoints-confirm-dialog-yes");
+    if (confirm_trash_waypoints_btn) {
+        confirm_trash_waypoints_btn.addEventListener("click", () => {
+            if (waypoints.is_mode_available()) {
+                waypoints.clear_track(true);
+            }
+            hide_trash_waypoints_confirm_dialog();
+        });
+    }
+
+    const cancel_trash_waypoints_btn = document.querySelector("#trash-waypoints-confirm-dialog-no");
+    if (cancel_trash_waypoints_btn) {
+        cancel_trash_waypoints_btn.addEventListener("click", () => {
+            hide_trash_waypoints_confirm_dialog();
+        });
+    }
+
     //const mode_control_btns = document.querySelectorAll("#mode-controls > input");
     const mode_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='mode-controls']");
     for (let i = 0; i < mode_control_btns.length; i++) {
@@ -824,16 +856,24 @@ function activate_default_mode() {
     }
 }
 
-function hide_waypoint_confirm_dialog(hide = true) {
-    const waypoint_confirm_dialog_wrapper = document.querySelector("#waypoint-confirm-dialog-wrapper");
-    if (!waypoint_confirm_dialog_wrapper) return;
+function hide_confirm_dialog(wrapper_selector, hide) {
+    const confirm_dialog_wrapper = document.querySelector(wrapper_selector);
+    if (!confirm_dialog_wrapper) return;
 
     if (hide) {
-        waypoint_confirm_dialog_wrapper.classList.add("hidden");
+        confirm_dialog_wrapper.classList.add("hidden");
     }
     else {
-        waypoint_confirm_dialog_wrapper.classList.remove("hidden");
+        confirm_dialog_wrapper.classList.remove("hidden");
     }
+}
+
+function hide_waypoint_confirm_dialog(hide = true) {
+    hide_confirm_dialog("#waypoint-confirm-dialog-wrapper", hide);
+}
+
+function hide_trash_waypoints_confirm_dialog(hide = true) {
+    hide_confirm_dialog("#trash-waypoints-confirm-dialog-wrapper", hide);
 }
 
 function hide_search_map_panel(hide = true) {

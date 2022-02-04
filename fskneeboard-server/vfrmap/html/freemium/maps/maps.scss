@@ -311,7 +311,8 @@ input[type=radio] {
     }
 }
 
-#waypoint-confirm-dialog-wrapper {
+#waypoint-confirm-dialog-wrapper,
+#trash-waypoints-confirm-dialog-wrapper {
     top:0;
     right: 0;
     bottom: 0;
@@ -322,19 +323,21 @@ input[type=radio] {
     overflow: hidden;
 }
 
-#waypoint-confirm-dialog {
+#waypoint-confirm-dialog,
+#trash-waypoints-confirm-dialog {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
     color: black;
-}
 
-#waypoint-confirm-dialog > div,
-#waypoint-confirm-dialog > h3 {
-    margin: 1em;
-    text-align: center;
+    > div,
+    > h3 {
+        margin: 1em;
+        text-align: center;
+
+    }
 }
 
 .icao_ident {

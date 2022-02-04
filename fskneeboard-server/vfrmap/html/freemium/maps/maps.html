@@ -53,14 +53,18 @@
                     <span class="tooltip">Load Flightplan</span>
                     <span><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span></span>
                 </li>
+                <li>
+                    <span class="tooltip">Remove All Waypoints</span>
+                    <span><span id="trash-waypoints"><i class="fas fa-trash"></i></span></span>
+                </li>
                 
                 <li class="marginator">
-                    <span class="tooltip">Add Marker</span>
+                    <span class="tooltip">Add Waypoint</span>
                     <span><input type="radio" id="mode-add-marker" name="mode-controls" value="add-marker" checked /><label for="mode-add-marker"><i class="fas fa-map-marker-alt"></i></label></span>
                 </li>
                 <li>
-                    <span class="tooltip">Remove Marker</span>
-                    <span><input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker" /><label for="mode-remove-marker"><i class="fas fa-trash"></i></label></span>
+                    <span class="tooltip">Remove Waypoint</span>
+                    <span><input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker" /><label for="mode-remove-marker"><i class="fas fa-eraser"></i></label></span>
                 </li>
                 <li>
                     <span class="tooltip">Teleport</span>
@@ -119,6 +123,18 @@
                 <div class="dialog-buttons">
                     <span id="waypoint-confirm-dialog-yes">Yes</span>
                     <span id="waypoint-confirm-dialog-no">No</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="trash-waypoints-confirm-dialog-wrapper" class="hidden">
+            <div id="trash-waypoints-confirm-dialog">
+                <h3>
+                    You are about to REMOVE ALL of your manually placed waypoints. Do you wish to proceed?
+                </h3>
+                <div class="dialog-buttons">
+                    <span id="trash-waypoints-confirm-dialog-yes">Yes</span>
+                    <span id="trash-waypoints-confirm-dialog-no">No</span>
                 </div>
             </div>
         </div>
