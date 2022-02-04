@@ -132,7 +132,7 @@ function load_state() {
             set_brightness(data.brightness);
         }
 
-        if (data.active_tab != null && data.active_tab !== "") {
+        /*if (data.active_tab != null && data.active_tab !== "") {
             switch(data.active_tab) {
                 case "1":
                     switch_to_charts();
@@ -144,7 +144,7 @@ function load_state() {
                     switch_to_map();
                     break;
             }
-        }
+        }*/
     });
 }
 
