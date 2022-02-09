@@ -9,6 +9,7 @@
         <meta name="apple-mobile-web-app-title" content="VFRMap">
         <link rel="stylesheet" href="http://localhost:9000/mainmenu.css">
         <link rel="stylesheet" href="http://localhost:9000/submenu.css">
+        <link rel="stylesheet" href="http://localhost:9000/dialogs.css">
         <link rel="stylesheet" href="maps.css" />
         <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" />
@@ -115,8 +116,8 @@
             </span>
         </div>
 
-        <div id="waypoint-confirm-dialog-wrapper" class="hidden">
-            <div id="waypoint-confirm-dialog">
+        <div id="waypoint-confirm-dialog-wrapper" class="confirm-dialog-wrapper hidden">
+            <div id="waypoint-confirm-dialog" class="confirm-dialog">
                 <h3>
                     Loading the active flightplan will REPLACE your manually placed waypoints. Do you wish to proceed?
                 </h3>
@@ -127,8 +128,8 @@
             </div>
         </div>
 
-        <div id="trash-waypoints-confirm-dialog-wrapper" class="hidden">
-            <div id="trash-waypoints-confirm-dialog">
+        <div id="trash-waypoints-confirm-dialog-wrapper" class="confirm-dialog-wrapper hidden">
+            <div id="trash-waypoints-confirm-dialog" class="confirm-dialog">
                 <h3>
                     You are about to REMOVE ALL of your manually placed waypoints. Do you wish to proceed?
                 </h3>

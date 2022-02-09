@@ -54,7 +54,8 @@
                 > input {
                     &:checked {
                         + label {
-                            > svg {
+                            > svg,
+                            > span {
                                 color: $color-highlight;
                             }
                         }

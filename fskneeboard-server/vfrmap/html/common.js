@@ -106,3 +106,15 @@ function retrieve_data(key, callback) {
 
     xhr.send();
 }
+
+function hide_confirm_dialog(wrapper_selector, hide) {
+    const confirm_dialog_wrapper = document.querySelector(wrapper_selector);
+    if (!confirm_dialog_wrapper) return;
+
+    if (hide) {
+        confirm_dialog_wrapper.classList.add("hidden");
+    }
+    else {
+        confirm_dialog_wrapper.classList.remove("hidden");
+    }
+}

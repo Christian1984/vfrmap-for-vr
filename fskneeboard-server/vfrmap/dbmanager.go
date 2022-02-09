@@ -61,10 +61,11 @@ func dbWrite(key string, value string) {
 }
 
 func dbRead(key string) string {
-
+	/*
 	if verbose {
 		fmt.Printf("Reading data for key=%s\n", key)
 	}
+	*/
 
 	var out *string
 
@@ -116,10 +117,11 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		/*
 		if verbose {
-
 			fmt.Println("Received StorageData: key=" + strings.TrimSpace(storageData.Key) + ", value=" + strings.TrimSpace(storageData.Value))
 		}
+		*/
 
 		if len(strings.TrimSpace(storageData.Key)) == 0 {
 			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
@@ -160,7 +162,7 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 		keysString := r.URL.Query().Get("keys")
 
 		if verbose {
-			fmt.Printf("Received Keys for data retrieval (raw):\n", keysString)
+			fmt.Printf("Received Keys for data retrieval (raw): %s\n", keysString)
 		}
 
 		keys := StorageDataKeysArray{}
@@ -205,9 +207,11 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 
 		if verbose {
 			fmt.Printf("Received %d StorageDataSet for storage:\n", len(storageDataSet.DataSets))
+			/*
 			for _, ds := range storageDataSet.DataSets {
 				fmt.Println("StorageData: key=" + strings.TrimSpace(ds.Key) + ", value=" + strings.TrimSpace(ds.Value))
 			}
+			*/
 		}
 
 		for _, ds := range storageDataSet.DataSets {

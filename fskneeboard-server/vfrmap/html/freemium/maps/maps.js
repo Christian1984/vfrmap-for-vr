@@ -856,18 +856,6 @@ function activate_default_mode() {
     }
 }
 
-function hide_confirm_dialog(wrapper_selector, hide) {
-    const confirm_dialog_wrapper = document.querySelector(wrapper_selector);
-    if (!confirm_dialog_wrapper) return;
-
-    if (hide) {
-        confirm_dialog_wrapper.classList.add("hidden");
-    }
-    else {
-        confirm_dialog_wrapper.classList.remove("hidden");
-    }
-}
-
 function hide_waypoint_confirm_dialog(hide = true) {
     hide_confirm_dialog("#waypoint-confirm-dialog-wrapper", hide);
 }

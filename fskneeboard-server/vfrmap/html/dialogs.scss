@@ -1,0 +1,39 @@
+.confirm-dialog-wrapper {
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    z-index: 10001;
+    overflow: hidden;
+
+    .confirm-dialog {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        color: black;
+    
+        > div,
+        > h3 {
+            margin: 1em;
+            text-align: center;
+    
+        }
+
+        .dialog-buttons {
+            > span {
+                background-color: lightgray;
+                padding: 5px;
+                border: 1px solid black;
+                cursor: pointer;
+        
+                &:hover {
+                    background-color: lightblue;
+                }
+            }
+        }
+    }
+}
