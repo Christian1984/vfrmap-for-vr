@@ -283,7 +283,7 @@ input[type=radio] {
     display: none !important;
 }
 
-@media only screen and (max-width: calc($small-screen-width - $width-collapsed)) {
+@media only screen and (max-width: #{$small-screen-width - $width-collapsed}) {
     #map {
         margin-top: $submenu-width;
     }
@@ -293,7 +293,7 @@ input[type=radio] {
     }
 }
 
-@media only screen and (min-width: calc($small-screen-width - $width-collapsed)) {
+@media only screen and (min-width: #{$small-screen-width - $width-collapsed}) {
     #map {
         margin-right: $submenu-width;
     }
