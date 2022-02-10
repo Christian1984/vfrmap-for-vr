@@ -770,7 +770,6 @@ function registerHandlers() {
         });
     }
 
-    //const mode_control_btns = document.querySelectorAll("#mode-controls > input");
     const mode_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='mode-controls']");
     for (let i = 0; i < mode_control_btns.length; i++) {
         mode_control_btns[i].addEventListener("click", () => {
@@ -797,7 +796,6 @@ function registerHandlers() {
         });
     }
 
-    //const ac_visibility_control_btns = document.querySelectorAll("#hud-controls > input.ac-visibility");
     const ac_visibility_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='ac-visibility']");
     for (let i = 0; i < ac_visibility_control_btns.length; i++) {
         ac_visibility_control_btns[i].addEventListener("click", () => {
@@ -825,6 +823,20 @@ function registerHandlers() {
             hide_wind_indicator(!wind_indicator_btn.checked);
             store_data("wind_indicator_visibility", wind_indicator_btn.checked);
         })
+    }
+
+    const zoom_in_btn = document.querySelector("#map-zoom-in");
+    if (zoom_in_btn) {
+        zoom_in_btn.addEventListener("click", () => {
+            map.setZoom(map.getZoom() + 1);
+        });
+    }
+
+    const zoom_out_btn = document.querySelector("#map-zoom-out");
+    if (zoom_out_btn) {
+        zoom_out_btn.addEventListener("click", () => {
+            map.setZoom(map.getZoom() - 1);
+        });
     }
 
     const center_ac_btn = document.querySelector("#ac-toggle-follow");
