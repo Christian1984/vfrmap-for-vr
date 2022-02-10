@@ -1,0 +1,34 @@
+#onscreen-keyboard-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#onscreen-keyboard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    user-select: none;
+    
+    table {
+        margin: 0 auto;
+        border-collapse: collapse;
+        
+        td {
+            text-align: center;
+            border: 1px solid black;
+            background-color: lightgray;
+            color: black;
+            width: 2em;
+            height: 2em;
+            cursor: pointer;
+            
+            &:hover {
+                background-color: white;
+            }
+        }
+    }
+}

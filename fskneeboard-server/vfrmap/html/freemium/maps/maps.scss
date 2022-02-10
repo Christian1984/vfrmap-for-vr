@@ -1,4 +1,5 @@
 @import "../../consts";
+@import "../../keyboard";
 
 * {
     user-select: none;
@@ -271,33 +272,6 @@ input[type=radio] {
     }
 }
 
-#onscreen-keyboard {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: black;
-    
-    table {
-        margin: 0 auto;
-        border-collapse: collapse;
-        
-        td {
-            text-align: center;
-            border: 1px solid black;
-            background-color: lightgray;
-            color: black;
-            width: 2em;
-            height: 2em;
-            cursor: pointer;
-            
-            &:hover {
-                background-color: white;
-            }
-        }
-    }
-}
-
 .icao_ident {
     font-weight: bold;
     text-decoration: underline;
@@ -309,7 +283,7 @@ input[type=radio] {
     display: none !important;
 }
 
-@media only screen and (max-width: $small-screen-width - $width-collapsed) {
+@media only screen and (max-width: calc($small-screen-width - $width-collapsed)) {
     #map {
         margin-top: $submenu-width;
     }
@@ -319,7 +293,7 @@ input[type=radio] {
     }
 }
 
-@media only screen and (min-width: $small-screen-width - $width-collapsed) {
+@media only screen and (min-width: calc($small-screen-width - $width-collapsed)) {
     #map {
         margin-right: $submenu-width;
     }
