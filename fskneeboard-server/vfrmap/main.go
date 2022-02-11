@@ -24,6 +24,7 @@ import (
 	"vfrmap-for-vr/_vendor/premium/charts"
 	"vfrmap-for-vr/_vendor/premium/common"
 	"vfrmap-for-vr/_vendor/premium/drm"
+	"vfrmap-for-vr/_vendor/premium/notepad"
 	"vfrmap-for-vr/_vendor/premium/waypoints"
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
@@ -141,6 +142,8 @@ var hotkey int
 
 var verbose bool
 var httpListen string
+
+var np notepad.Notepad
 
 func main() {
 	flag.BoolVar(&verbose, "verbose", false, "verbose output")
@@ -306,6 +309,8 @@ func main() {
 	}
 
 	ws := websockets.New()
+	notepadWs := websockets.New()
+	np = notepad.New(notepadWs, verbose)
 
 	report := &Report{}
 	trafficReport := &TrafficReport{}
@@ -480,6 +485,7 @@ func main() {
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
+		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
 		http.HandleFunc("/data/", dataController)
 		http.HandleFunc("/dataSet/", dataSetController)

@@ -88,6 +88,9 @@ func dbRead(key string) string {
 
 // controller methods
 func dataController(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("DataSetController called...")
+	np.BroadcastNote()
+
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
@@ -150,6 +153,9 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 }
 
 func dataSetController(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("DataSetController called...")
+	np.BroadcastNote()
+
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
