@@ -13,12 +13,12 @@ import (
 type StorageData struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
-	Sender string `json:"sender,omitempty`
+	Sender string `json:"sender,omitempty"`
 }
 
 type StorageDataSet struct {
 	DataSets []StorageData `json:"data"`
-	Sender string `json:"sender,omitempty`
+	Sender string `json:"sender,omitempty"`
 }
 
 type StorageDataKeysArray struct {

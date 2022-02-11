@@ -1,4 +1,4 @@
-const senderId = "ItsMe";
+const sender_id = Math.floor(Math.random() * Number.MAX_VALUE).toString();
 
 function dispatch_keyevent(event) {
     //catch backspace and prevent navigation
@@ -41,7 +41,7 @@ function store_data_set(key_string_value_array, remote = true) {
             }
         }
     
-        xhr.send(JSON.stringify({ data: key_string_value_array, sender: senderId }));
+        xhr.send(JSON.stringify({ data: key_string_value_array, sender: sender_id }));
     }
     else {
         for (const el of key_string_value_array) {
@@ -94,7 +94,7 @@ function store_data(key, string_data, remote = true) {
         let body = {
             key: key,
             value: payload,
-            sender: senderId
+            sender: sender_id
         }
         xhr.open("POST", "/data/", true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
