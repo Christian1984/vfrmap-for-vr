@@ -208,7 +208,7 @@ func main() {
 	if autosaveInterval > 0 {
 		fmt.Printf("Autosave Interval set to %d minute(s)...\n", autosaveInterval)
 	} else {
-		fmt.Println("INFO: Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flights every 5 minutes...")
+		fmt.Println("Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flights every 5 minutes...")
 	}
 
 	if !bPro {
@@ -242,7 +242,7 @@ func main() {
 
 		fmt.Println("Hotkey set to " + mod + "+" + key)
 	} else {
-		fmt.Println("INFO: Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable [ALT]+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
+		fmt.Println("Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable [ALT]+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
 	}
 
 	fmt.Println("")
@@ -299,12 +299,14 @@ func main() {
 
 			if devMode {
 				fmt.Println("\nRunning with --dev: Not connected to Flight Simulator!!!")
+				fmt.Println("")
 				break
 			}
 
 			time.Sleep(5 * time.Second)
 		} else if s != nil {
 			fmt.Println("\nConnected to Flight Simulator!")
+			fmt.Println("")
 			break
 		}
 	}
@@ -502,6 +504,18 @@ func main() {
 		if devMode {
 			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/FSKneeboardPanel"))
 			http.Handle("/test/", http.StripPrefix("/test/", testServer))
+		}
+
+		// connect tablet etc.
+		ip, addr_err := getOutboundIP()
+		server_addr_arr := strings.Split(httpListen, ":")
+		port := server_addr_arr[len(server_addr_arr) - 1]
+
+		if (addr_err == nil && ip != nil) {
+			fmt.Println("=== INFO: Connecting Your Tablet")
+			fmt.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
+			fmt.Println("FSKneeboard Server-Address: " + ip.To4().String() + ":" + port)
+			fmt.Println("")
 		}
 
 		err := http.ListenAndServe(httpListen, nil)
