@@ -93,7 +93,9 @@ function switch_to_notepad() {
 }
 
 function save_tab(tab_id) {
-    store_data("active_tab", tab_id);
+    // store the active tab only on session-level/locally
+    // to make sure that map loads properly upon first page load
+    store_data("active_tab", tab_id, false);
 }
 
 function save_red(red) {
@@ -110,7 +112,23 @@ function save_zoom() {
 }
 
 function load_state() {
-    retrieve_data_set(["zoom", "red", "brightness", "active_tab"], data => {
+    retrieve_data("active_tab", data => {
+        if (data.active_tab != null && data.active_tab !== "") {
+            switch(data.active_tab) {
+                case "1":
+                    switch_to_charts();
+                    break;
+                case "2":
+                    switch_to_notepad();
+                    break;
+                default:
+                    switch_to_map();
+                    break;
+            }
+        }
+    }, false);
+
+    retrieve_data_set(["zoom", "red", "brightness"], data => {
         if (data.zoom != null && data.zoom !== "") {
             try {
                 current_zoom = JSON.parse(data.zoom);
@@ -130,20 +148,6 @@ function load_state() {
 
         if (data.brightness != null && data.brightness !== "") {
             set_brightness(data.brightness);
-        }
-
-        if (data.active_tab != null && data.active_tab !== "") {
-            switch(data.active_tab) {
-                case "1":
-                    switch_to_charts();
-                    break;
-                case "2":
-                    switch_to_notepad();
-                    break;
-                default:
-                    switch_to_map();
-                    break;
-            }
         }
     });
 }
