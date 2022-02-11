@@ -13,10 +13,12 @@ import (
 type StorageData struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
+	Sender string `json:"sender,omitempty`
 }
 
 type StorageDataSet struct {
 	DataSets []StorageData `json:"data"`
+	Sender string `json:"sender,omitempty`
 }
 
 type StorageDataKeysArray struct {
@@ -88,9 +90,6 @@ func dbRead(key string) string {
 
 // controller methods
 func dataController(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("DataSetController called...")
-	np.BroadcastNote()
-
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
@@ -108,7 +107,7 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 		}
 
 		out := dbRead(strings.TrimSpace(key))
-		res = StorageData{key, strings.TrimSpace(out)}
+		res = StorageData{key, strings.TrimSpace(out), ""}
 		break
 
 	case http.MethodPost:
@@ -133,6 +132,9 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 
 		dbWrite(strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
 		res = storageData
+		
+		np.BroadcastIfNote(storageData.Sender, storageData.Key)
+
 		break
 	}
 
@@ -153,9 +155,6 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 }
 
 func dataSetController(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("DataSetController called...")
-	np.BroadcastNote()
-
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
@@ -196,7 +195,7 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 
 		for _, key := range keys.Keys {
 			value := dbRead(strings.TrimSpace(key))
-			sd := StorageData{strings.TrimSpace(key), value}
+			sd := StorageData{strings.TrimSpace(key), value, ""}
 			res.DataSets = append(res.DataSets, sd)
 		}
 
@@ -227,9 +226,14 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		var keys []string
+
 		for _, ds := range storageDataSet.DataSets {
 			dbWrite(strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
+			keys = append(keys, ds.Key)
 		}
+
+		np.BroadcastIfContainsNote(storageDataSet.Sender, keys)
 
 		res = storageDataSet
 		break

@@ -1,3 +1,5 @@
+const senderId = "ItsMe";
+
 function dispatch_keyevent(event) {
     //catch backspace and prevent navigation
     if (event.keyCode == 8) {
@@ -39,7 +41,7 @@ function store_data_set(key_string_value_array, remote = true) {
             }
         }
     
-        xhr.send(JSON.stringify({ data: key_string_value_array }));
+        xhr.send(JSON.stringify({ data: key_string_value_array, sender: senderId }));
     }
     else {
         for (const el of key_string_value_array) {
@@ -91,7 +93,8 @@ function store_data(key, string_data, remote = true) {
     
         let body = {
             key: key,
-            value: payload
+            value: payload,
+            sender: senderId
         }
         xhr.open("POST", "/data/", true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
