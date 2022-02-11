@@ -175,12 +175,13 @@ func main() {
 
 	if bPro {
 		fmt.Println("=== INFO: License")
-		if !drm.Valid() {
+		drmData := drm.New()
+		if !drmData.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
 			shutdownWithPrompt()
 		} else {
-			fmt.Println("Valid license found!")
+			fmt.Println("Valid license found! This copy of FSKneeboard is licensed to: " + drmData.Email())
 			fmt.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
 			fmt.Println("")
 		}
