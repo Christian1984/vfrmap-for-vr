@@ -397,5 +397,16 @@ function init() {
 
 document.addEventListener("DOMContentLoaded", function() {
     log("index.js => DOMContentLoaded fired!");
+
+    txt = "Browser Information:\n";
+    txt += "\tCodeName:\t\t" + navigator.appCodeName + "\n";
+    txt += "\tName:\t\t\t" + navigator.appName + "\n";
+    txt += "\tVersion:\t\t" + navigator.appVersion + "\n";
+    txt += "\tCookies Enabled:\t" + navigator.cookieEnabled + "\n";
+    txt += "\tPlatform:\t\t" + navigator.platform + "\n";
+    txt += "\tUser-agent header:\t" + navigator.userAgent + "\n";
+
+    log(txt);
+
     init();
 });
