@@ -1,4 +1,4 @@
-const sender_id = Math.floor(Math.random() * Number.MAX_VALUE).toString();
+const sender_id = md5(Math.floor(Math.random() * Number.MAX_VALUE).toString());
 const default_log_level = "DEBUG";
 
 function dispatch_keyevent(event) {

@@ -528,6 +528,10 @@ Great work, guys! Thanks for sharing your work with us!!!
 - [openAIP](https://www.openaip.net)
 - [open flightmaps](https://www.openflightmaps.org/)
 
+## Framework and Libraries
+
+- [JavaScript-MD](https://github.com/blueimp/JavaScript-MD5)
+
 ### Sample Documents
 
 - The Traffic Pattern Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Airport_Traffic_Pattern_from_AIM_4-3-2.svg)
