@@ -114,7 +114,7 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 		var storageData StorageData
 		sdErr := json.NewDecoder(r.Body).Decode(&storageData)
 		if sdErr != nil {
-			fmt.Println("Error in handleData: " + sdErr.Error())
+			fmt.Println("Error in dataController: " + sdErr.Error())
 			http.Error(w, sdErr.Error(), http.StatusBadRequest)
 			return
 		}
@@ -174,7 +174,7 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 		jsonErr := json.Unmarshal([]byte(keysString), &keys.Keys)
 
 		if jsonErr != nil {
-			fmt.Println("Error in handleDataSet: " + jsonErr.Error())
+			fmt.Println("Error in dataSetController: " + jsonErr.Error())
 			http.Error(w, jsonErr.Error(), http.StatusBadRequest)
 			return
 		}

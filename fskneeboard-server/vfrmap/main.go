@@ -490,6 +490,7 @@ func main() {
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
+		http.HandleFunc("/log/", logController)
 		http.HandleFunc("/data/", dataController)
 		http.HandleFunc("/dataSet/", dataSetController)
 		http.HandleFunc("/freemium/", freemium)
@@ -624,9 +625,11 @@ func main() {
 				case s.DefineMap["Report"]:
 					report = (*Report)(ppData)
 
+					/*
 					if verbose {
 						fmt.Printf("REPORT: %#v\n", report)
 					}
+					*/
 
 					ws.Broadcast(map[string]interface{}{
 						"type":           "plane",

@@ -152,3 +152,17 @@ function hide_confirm_dialog(wrapper_selector, hide) {
         confirm_dialog_wrapper.classList.remove("hidden");
     }
 }
+
+function log_server(message, level = "INFO") {
+    let xhr = new XMLHttpRequest();
+    
+    let body = {
+        level: level,
+        message: message,
+        sender: sender_id
+    }
+
+    xhr.open("POST", "/log/", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify(body));
+}
