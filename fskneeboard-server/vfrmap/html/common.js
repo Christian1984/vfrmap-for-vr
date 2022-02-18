@@ -1,4 +1,5 @@
 const sender_id = Math.floor(Math.random() * Number.MAX_VALUE).toString();
+const default_log_level = "DEBUG";
 
 function dispatch_keyevent(event) {
     //catch backspace and prevent navigation
@@ -15,10 +16,8 @@ function dispatch_keyevent(event) {
 function array_to_object(arr, key) {
     const init = {};
     return arr.reduce((acc, el) => {
-        return {
-            ...acc,
-            [el[key]]: el.value,
-        };
+        acc[el[key]] = el.value
+        return acc;
     }, init);
 };
 
@@ -153,7 +152,7 @@ function hide_confirm_dialog(wrapper_selector, hide) {
     }
 }
 
-function log_server(message, level = "INFO") {
+function log_server(message, level = default_log_level) {
     let xhr = new XMLHttpRequest();
     
     let body = {
@@ -166,3 +165,20 @@ function log_server(message, level = "INFO") {
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify(body));
 }
+
+function log_local(message, level = default_log_level) {
+    const logDiv = document.querySelector("div#log");
+
+    if (logDiv) {
+        logDiv.innerHTML = "<p>[" + level + "] " + message + "</p>" + logDiv.innerHTML
+    }
+}
+
+function log(message, level = default_log_level) {
+    log_local(message, level);
+    log_server(message, level);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    log("common.js => DOMContentLoaded fired!");
+});

@@ -1,0 +1,10 @@
+div#log {
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #0f0;
+    pointer-events: none;
+}

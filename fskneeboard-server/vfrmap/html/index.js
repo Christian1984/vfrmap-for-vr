@@ -295,8 +295,6 @@ function request_hotkey() {
 }
 
 function init() {
-    log_server("index.js alive!");
-
     if (iframe_map) {
         iframe_map.src = '/freemium/maps.html';
     }
@@ -397,4 +395,7 @@ function init() {
     load_state();
 }
 
-init();
+document.addEventListener("DOMContentLoaded", function() {
+    log("index.js => DOMContentLoaded fired!");
+    init();
+});
