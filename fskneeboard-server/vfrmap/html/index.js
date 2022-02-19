@@ -396,17 +396,23 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    log("index.js => DOMContentLoaded fired!");
+    log("index.js => DOMContentLoaded fired!", "DEBUG");
 
-    txt = "Browser Information:\n";
-    txt += "\tCodeName:\t\t" + navigator.appCodeName + "\n";
-    txt += "\tName:\t\t\t" + navigator.appName + "\n";
-    txt += "\tVersion:\t\t" + navigator.appVersion + "\n";
-    txt += "\tCookies Enabled:\t" + navigator.cookieEnabled + "\n";
-    txt += "\tPlatform:\t\t" + navigator.platform + "\n";
-    txt += "\tUser-agent header:\t" + navigator.userAgent + "\n";
+    try {
+        let txt = "Browser Information:\n";
 
-    log(txt);
+        txt += "\tCodeName:          " + navigator.appCodeName + "\n";
+        txt += "\tName:              " + navigator.appName + "\n";
+        txt += "\tVersion:           " + navigator.appVersion + "\n";
+        txt += "\tCookies Enabled:   " + navigator.cookieEnabled + "\n";
+        txt += "\tPlatform:          " + navigator.platform + "\n";
+        txt += "\tUser-agent header: " + navigator.userAgent + "\n";
+    
+        log(txt);
+    }
+    catch (e) {
+        log("Could not retrieve browser information", "WARN");
+    }
 
     init();
 });

@@ -142,12 +142,14 @@ var hotkey int
 
 var verbose bool
 var httpListen string
+var logLevel string
 
 var np notepad.Notepad
 
 func main() {
 	flag.BoolVar(&verbose, "verbose", false, "verbose output")
 	flag.StringVar(&httpListen, "listen", "0.0.0.0:9000", "http listen")
+	flag.StringVar(&logLevel, "log", "off", "set log level (debug | info | error | off)")
 	flag.BoolVar(&disableTeleport, "disable-teleport", false, "disable teleport")
 	flag.BoolVar(&devMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.BoolVar(&steamfs, "steamfs", false, "start Flight Simulator via Steam")
@@ -159,6 +161,11 @@ func main() {
 	flag.IntVar(&hotkey, "hotkey", 0, "select a hotkey to toggle the ingame panel's visibility. 1 => [ALT]+F, 2 => [ALT]+K, 3 => [ALT]+T, 4 => [CTRL]+[SHIFT]+F, 5 => [CTRL]+[SHIFT]+K, 6 => [CTRL]+[SHIFT]+T")
 
 	flag.Parse()
+
+	if shouldLog(Debug) {
+		createLogFile()
+		logMessage("Logfile created!", Debug)
+	}
 
 	bPro = pro == "true"
 

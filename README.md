@@ -445,6 +445,8 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 - `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
 - `--hotkey [number]`: Enable the hotkey feature and set it to Alt+F `[number] = 1`, Alt+K `[number] = 2` or Alt+T `[number] = 3`.
+- `--log [level]`: Set log level and enable logging to file. `[level]` can be any of `debug | info | warn | error | off` (defaults to `off`). Use together with flag `--verbose` to also log to `stdout`.
+- `--verbose`: Enable verbose mode.
 - `--winstorefs`: Start FSKneeboard together with your Flight Simulator purchased via Windows Store.
 - `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.

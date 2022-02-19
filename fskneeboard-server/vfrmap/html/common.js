@@ -180,5 +180,5 @@ function log(message, level = default_log_level) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    log("common.js => DOMContentLoaded fired!");
+    log("common.js => DOMContentLoaded fired!", "DEBUG");
 });
