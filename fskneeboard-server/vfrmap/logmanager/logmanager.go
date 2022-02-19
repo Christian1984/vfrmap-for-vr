@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -34,7 +35,17 @@ func Init(level string, verbose bool) {
 }
 
 func CreateLogFile() {
-	var fileName = time.Now().Local().Format("2006-01-02T15-04-05") + "_fskneeboard.log"
+	logspath := filepath.Join(".", "logs")
+	err := os.MkdirAll(logspath, os.ModePerm)
+
+	if err != nil {
+		log.Fatal("Could not create logs folder, details: " + err.Error())
+		return
+	}
+
+	var timestamp = time.Now().Local().Format("2006-01-02T15-04-05")
+
+	var fileName = filepath.Join(logspath, timestamp + "_fskneeboard.log")
 
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if (err != nil) {
@@ -44,6 +55,8 @@ func CreateLogFile() {
 
 	log.SetOutput(file)
 	hasOutputFile = true
+
+	log.Println("FSKneeboard Log File Created At " + timestamp)
 }
 
 func ShouldLog(level string) bool {
@@ -80,11 +93,7 @@ func LogMessageWithSender(message string, level string, sender string, verboseOv
 		fmt.Println(logString)
 	}
 
-	if !ShouldLog(level) {
-		return
-	}
-
-	if hasOutputFile {
+	if ShouldLog(level) && hasOutputFile {
 		log.Println(logString)
 	}
 }

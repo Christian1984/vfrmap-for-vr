@@ -85,6 +85,7 @@ Filename: "https://discord.fskneeboard.com"; Flags: nowait shellexec runasorigin
 ;This works if it is installed in custom location
 Type: files; Name: "{app}\latestcheck.json"; 
 Type: files; Name: "{app}\SimConnect.dll"; 
+Type: filesandordirs; Name: "{app}\logs"; 
 
 [Code]
 var

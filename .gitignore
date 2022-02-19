@@ -6,7 +6,7 @@
 **/autosave/*.WPR
 /dist
 fskneeboard-server/charts/**/*.PNG
-fskneeboard-server/*.log
+fskneeboard-server/logs/*
 .env
 fskneeboard.exe
 vfrmap-for-vr-win64.zip
