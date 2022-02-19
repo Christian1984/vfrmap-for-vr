@@ -15,6 +15,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -31,6 +32,7 @@ import (
 	"vfrmap-for-vr/vfrmap/html/freemium"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
+	"vfrmap-for-vr/vfrmap/logmanager"
 	"vfrmap-for-vr/vfrmap/websockets"
 
 	updatechecker "github.com/Christian1984/go-update-checker"
@@ -162,10 +164,34 @@ func main() {
 
 	flag.Parse()
 
-	if shouldLog(Debug) {
-		createLogFile()
-		logMessage("Logfile created!", Debug)
+	logmanager.Init(logLevel, verbose)
+
+	if logmanager.ShouldLog(logLevel) {
+		logmanager.CreateLogFile()
+		logmanager.LogMessage("Logfile created!", logmanager.Debug)
 	}
+	
+	/*
+	logmanager.LogMessage("OFF-Test", logmanager.Off)
+	logmanager.LogMessage("DEBUG-Test", logmanager.Debug)
+	logmanager.LogMessage("INFO-Test", logmanager.Info)
+	logmanager.LogMessage("WARN-Test", logmanager.Warn)
+	logmanager.LogMessage("ERROR-Test", logmanager.Error)
+	*/
+
+
+	logmanager.LogMessage("FSKneeboard started with params\n" + 
+		"\tverbose:          " + strconv.FormatBool(verbose) + "\n" +
+		"\tlisten:           " + httpListen + "\n" +
+		"\tlog:              " + logLevel + "\n" +
+		"\tdisable-teleport: " + strconv.FormatBool(disableTeleport) + "\n" +
+		"\tdev:              " + strconv.FormatBool(devMode) + "\n" +
+		"\tsteamfs:          " + strconv.FormatBool(steamfs) + "\n" +
+		"\twinstorefs:       " + strconv.FormatBool(winstorefs) + "\n" +
+		"\tnoupdatecheck:    " + strconv.FormatBool(noupdatecheck) + "\n" +
+		"\tquietshutdown:    " + strconv.FormatBool(quietshutdown) + "\n" +
+		"\tautosave:         " + strconv.Itoa(autosaveInterval) + "\n" +
+		"\thotkey:           " + strconv.Itoa(hotkey) + "\n", "DEBUG")
 
 	bPro = pro == "true"
 
@@ -497,7 +523,7 @@ func main() {
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
-		http.HandleFunc("/log/", logController)
+		http.HandleFunc("/log/", logmanager.LogController)
 		http.HandleFunc("/data/", dataController)
 		http.HandleFunc("/dataSet/", dataSetController)
 		http.HandleFunc("/freemium/", freemium)

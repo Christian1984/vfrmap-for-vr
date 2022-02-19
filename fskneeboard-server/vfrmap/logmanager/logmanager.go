@@ -1,4 +1,4 @@
-package main
+package logmanager
 
 import (
 	"encoding/json"
@@ -25,8 +25,15 @@ const (
 )
 
 var hasOutputFile = false
+var logLevel = Off
+var isVerbose = false
 
-func createLogFile() {
+func Init(level string, verbose bool) {
+	logLevel = level
+	isVerbose = verbose
+}
+
+func CreateLogFile() {
 	var fileName = time.Now().Local().Format("2006-01-02T15-04-05") + "_fskneeboard.log"
 
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
@@ -39,7 +46,7 @@ func createLogFile() {
 	hasOutputFile = true
 }
 
-func shouldLog(level string) bool {
+func ShouldLog(level string) bool {
 	var configuredLevel = strings.ToLower(logLevel)
 	var thisLevel = strings.ToLower(level)
 
@@ -62,19 +69,19 @@ func shouldLog(level string) bool {
 	return false
 }
 
-func logMessageWithSender(message string, level string, sender string) {
-	if !shouldLog(level) {
-		return
-	}
-
+func LogMessageWithSender(message string, level string, sender string, verboseOverride bool) {
 	logString := "[" + strings.ToUpper(strings.TrimSpace(level)) + "] " + strings.TrimSpace(message)
 
 	if (strings.TrimSpace(sender) != "") {
 		logString += " (from " + strings.TrimSpace(sender) + ")"
 	}
 
-	if verbose {
+	if isVerbose || verboseOverride {
 		fmt.Println(logString)
+	}
+
+	if !ShouldLog(level) {
+		return
 	}
 
 	if hasOutputFile {
@@ -82,12 +89,16 @@ func logMessageWithSender(message string, level string, sender string) {
 	}
 }
 
-func logMessage(message string, level string) {
-	logMessageWithSender(message, level, "")
+func LogMessage(message string, level string) {
+	LogMessageWithSender(message, level, "", false)
+}
+
+func LogMessageAndForceConsole(message string, level string) {
+	LogMessageWithSender(message, level, "", true)
 }
 
 // controller methods
-func logController(w http.ResponseWriter, r *http.Request) {
+func LogController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
@@ -101,7 +112,7 @@ func logController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logMessageWithSender(logData.Message, logData.Level, logData.Sender)
+	LogMessageWithSender(logData.Message, logData.Level, logData.Sender, false)
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
