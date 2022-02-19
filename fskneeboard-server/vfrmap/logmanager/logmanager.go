@@ -43,9 +43,7 @@ func CreateLogFile() {
 		return
 	}
 
-	var timestamp = time.Now().Local().Format("2006-01-02T15-04-05")
-
-	var fileName = filepath.Join(logspath, timestamp + "_fskneeboard.log")
+	var fileName = filepath.Join(logspath, time.Now().Local().Format("2006-01-02T15-04-05") + "_fskneeboard.log")
 
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if (err != nil) {
@@ -56,7 +54,8 @@ func CreateLogFile() {
 	log.SetOutput(file)
 	hasOutputFile = true
 
-	log.Println("FSKneeboard Log File Created At " + timestamp)
+	log.Println("FSKneeboard Log File, Log-Level: [" + strings.ToUpper(logLevel) + "]")
+	log.Println("======================================================================")
 }
 
 func ShouldLog(level string) bool {
