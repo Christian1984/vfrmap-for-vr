@@ -207,18 +207,25 @@ func main() {
 	exePath, _ := os.Executable()
 
 	if bPro {
-		fmt.Println("=== INFO: License")
+		logger.LogDebug("FSKneeboard PRO started. Checking license information...", false)
+
+		fmt.Println("=== INFO: License")		
 		drmData := drm.New()
 		if !drmData.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
+			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "], serial [" + drmData.Serial() + "] - Shutting down!", false)
 			shutdownWithPrompt()
 		} else {
 			fmt.Println("Valid license found! This copy of FSKneeboard is licensed to: " + drmData.Email())
 			fmt.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
 			fmt.Println("")
+
+			logger.LogDebug("Valid license found, details: email [" + drmData.Email() + "], serial [" + drmData.Serial() + "]", false)
 		}
 	} else {
+		logger.LogDebug("FSKneeboard FREE started...", false)
+
 		fmt.Println("=== INFO: How to Support the Development of FSKneeboard")
 		fmt.Println("Thanks for trying FSKneeboard FREE!")
 		fmt.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
@@ -226,10 +233,14 @@ func main() {
 	}
 
 	if !noupdatecheck {
+		logger.LogDebug("Running Update-Check...", false)
+
 		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
 		uc.CheckForUpdate(buildVersion)
 
 		if uc.UpdateAvailable {
+			logger.LogDebug("New Version found:\n" + uc.Message, false)
+
 			uc.PrintMessage()
 			fmt.Println("")
 		}
@@ -273,6 +284,7 @@ func main() {
 			mod = "[CTRL]+[SHIFT]"
 		}
 
+		logger.LogDebug("Hotkey set to " + mod + "+" + key, false)
 		fmt.Println("Hotkey set to " + mod + "+" + key)
 	} else {
 		fmt.Println("Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable [ALT]+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
@@ -284,9 +296,13 @@ func main() {
 	fmt.Println("=== INFO: Local FSKneeboard Database Connection")
 	db_err := dbConnect()
 	if db_err != nil {
-		fmt.Println("\nWARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...")
+		fmt.Println("")
+
+		logger.LogError("WARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...", true)
 		shutdownWithPrompt()
-	} else {
+		} else {
+		logger.LogDebug("Established connection with local FSKneeboard database!", false)
+
 		fmt.Println("Established connection with local FSKneeboard database!")
 		dbInit()
 
@@ -298,21 +314,26 @@ func main() {
 	fmt.Println("=== INFO: Flight Simulator Autostart")
 
 	if steamfs {
+		logger.LogDebug("Starting Steam version of MSFS...", false)
 		fmt.Println("Starting Flight Simulator via Steam... Just sit tight :-)")
 		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start steam://run/1250410")
 		fserr := cmd.Start()
 		if fserr != nil {
+			logger.LogWarn("Steam version of MSFS could not be started, details: " + fserr.Error(), false)
 			fmt.Println("Flight Simulator could not be started. Please start Flight Simulator manually! (" + fserr.Error() + ")")
 		}
 	} else if winstorefs {
+		logger.LogDebug("Starting Windows Store version of MSFS...", false)
 		fmt.Println("Starting Flight Simulator... Just sit tight :-)")
 		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App -FastLaunch")
 		fserr := cmd.Run()
 		if fserr != nil {
+			logger.LogWarn("Windows Store version of MSFS could not be started, details: " + fserr.Error(), false)
 			fmt.Println("WARNING: Flight Simulator could not be started. Please start Flight Simulator manually! (" + fserr.Error() + ")")
 			fmt.Println("IMPORTANT: If you have purchased MSFS on Steam, please run 'fskneeboard.exe --steamfs' as described in the manual under 'Usage'!")
 		}
 	} else {
+		logger.LogDebug("MSFS autostart disabled!", false)
 		fmt.Println("FSKneeboard started without autostart options --steamfs or --winstorefs.")
 		fmt.Println("If you haven't already, please start Flight Simulator manually!")
 	}
@@ -321,6 +342,7 @@ func main() {
 	var s *simconnect.SimConnect
 	var err error
 
+	logger.LogDebug("Connecting to Flight Simulator...", false)
 	fmt.Print("\nConnecting to Flight Simulator..")
 
 	for true {
@@ -331,6 +353,7 @@ func main() {
 		if err != nil {
 
 			if devMode {
+				logger.LogDebug("Running with --dev: Not connected to Flight Simulator!", false)
 				fmt.Println("\nRunning with --dev: Not connected to Flight Simulator!!!")
 				fmt.Println("")
 				break
@@ -338,6 +361,7 @@ func main() {
 
 			time.Sleep(5 * time.Second)
 		} else if s != nil {
+			logger.LogDebug("Connected to Flight Simulator!", false)
 			fmt.Println("\nConnected to Flight Simulator!")
 			fmt.Println("")
 			break
@@ -546,9 +570,11 @@ func main() {
 		port := server_addr_arr[len(server_addr_arr) - 1]
 
 		if (addr_err == nil && ip != nil) {
+			connectInfo := ip.To4().String() + ":" + port
+			logger.LogDebug("FSKneeboard available at: " + connectInfo, false)
 			fmt.Println("=== INFO: Connecting Your Tablet")
 			fmt.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
-			fmt.Println("FSKneeboard Server-Address: " + ip.To4().String() + ":" + port)
+			fmt.Println("FSKneeboard Server-Address: " + connectInfo)
 			fmt.Println("")
 		}
 
@@ -618,8 +644,7 @@ func main() {
 
 			case simconnect.RECV_ID_OPEN:
 				recvOpen := *(*simconnect.RecvOpen)(ppData)
-				fmt.Printf(
-					"\nFlight Simulator Info:\n  Codename: %s\n  Version: %d.%d (%d.%d)\n  Simconnect: %d.%d (%d.%d)\n\n",
+				fsInfo := fmt.Sprintf("\nFlight Simulator Info:\n  Codename: %s\n  Version: %d.%d (%d.%d)\n  Simconnect: %d.%d (%d.%d)",
 					recvOpen.ApplicationName,
 					recvOpen.ApplicationVersionMajor,
 					recvOpen.ApplicationVersionMinor,
@@ -628,8 +653,9 @@ func main() {
 					recvOpen.SimConnectVersionMajor,
 					recvOpen.SimConnectVersionMinor,
 					recvOpen.SimConnectBuildMajor,
-					recvOpen.SimConnectBuildMinor,
-				)
+					recvOpen.SimConnectBuildMinor)
+				logger.LogInfo("Connected to MSFS, details:" + fsInfo, false)
+				fmt.Println(fsInfo + "\n")
 				fmt.Printf("Ready... Please leave this window open during your Flight Simulator session. Have a safe flight :-)\n\n")
 
 			case simconnect.RECV_ID_EVENT:
