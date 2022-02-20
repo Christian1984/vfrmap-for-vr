@@ -7,13 +7,13 @@ const LogLevel = {
     OFF: "off"
 }
 
-class Logger {
-    static level = undefined;
-    static initCalled = false;
-    static queue = [];
+let LoggerLevel = undefined;
+let LoggerInitCalled = false;
+let LoggerQueue = [];
 
+class Logger {
     static init() {
-        Logger.initCalled = true;
+        LoggerInitCalled = true;
 
         let xhr = new XMLHttpRequest();
         xhr.open("GET", "/loglevel/", true);
@@ -24,7 +24,7 @@ class Logger {
                     const levelToLower = xhr.responseText.toLowerCase();
 
                     if (levelToLower == LogLevel.DEBUG || levelToLower == LogLevel.INFO || levelToLower == LogLevel.WARN || levelToLower == LogLevel.ERROR || levelToLower == LogLevel.OFF) {
-                        Logger.level = levelToLower;
+                        LoggerLevel = levelToLower;
                         Logger.logInfo("Client LogLevel received and set to [" + levelToLower + "]");
 
                         // mitigate concurrency at least for current frame
@@ -40,7 +40,7 @@ class Logger {
                     }
                     else {
                         Logger.logWarn("Received invalid client LogLevel: [" + levelToLower + "]; Logger turned off!");
-                        Logger.level = LogLevel.OFF;
+                        LoggerLevel = LogLevel.OFF;
                     }
                 }
             }
@@ -50,23 +50,23 @@ class Logger {
     }
 
     static shouldLog(level) {
-        if (Logger.level == undefined) {
+        if (LoggerLevel == undefined) {
             return true;
         }
 
-        if (Logger.level == LogLevel.DEBUG && (level.toLowerCase() == LogLevel.DEBUG || level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
+        if (LoggerLevel == LogLevel.DEBUG && (level.toLowerCase() == LogLevel.DEBUG || level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
             return true;
         }
 
-        if (Logger.level == LogLevel.INFO && (level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
+        if (LoggerLevel == LogLevel.INFO && (level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
             return true;
         }
 
-        if (Logger.level == LogLevel.WARN && (level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
+        if (LoggerLevel == LogLevel.WARN && (level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
             return true;
         }
 
-        if (Logger.level == LogLevel.ERROR && level.toLowerCase() == LogLevel.ERROR) {
+        if (LoggerLevel == LogLevel.ERROR && level.toLowerCase() == LogLevel.ERROR) {
             return true;
         }
 
@@ -74,15 +74,15 @@ class Logger {
     }
 
     static enqueueLog(message, level) {
-        Logger.queue.push({message: message, level: level});
+        LoggerQueue.push({message: message, level: level});
     }
 
     static processQueue() {
-        Logger.logDebug("Processing Logger queue... Queued items: " + Logger.queue.length);
+        Logger.logDebug("Processing Logger queue... Queued items: " + LoggerQueue.length);
 
-        if (Logger.level != undefined) {
-            while (Logger.queue.length > 0) {
-                const log = Logger.queue.pop();
+        if (LoggerLevel != undefined) {
+            while (LoggerQueue.length > 0) {
+                const log = LoggerQueue.pop();
                 Logger.logMessage(log.message, log.level);
             }
         }
@@ -115,14 +115,14 @@ class Logger {
     }
 
     static logMessage(message, level) {
-        if (Logger.level != undefined) {
+        if (LoggerLevel != undefined) {
             if (Logger.shouldLog(level)) {
                 Logger.logLocal(message, level);
                 Logger.logRemote(message, level);
             }
         }
         else {
-            if (!Logger.initCalled) {
+            if (!LoggerInitCalled) {
                 Logger.init();
             }
 
