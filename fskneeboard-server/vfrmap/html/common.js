@@ -17,7 +17,7 @@ function array_to_object(arr, key) {
         acc[el[key]] = el.value
         return acc;
     }, init);
-};
+}
 
 function store_data_set(key_string_value_array, remote = true) {
     if (remote) {

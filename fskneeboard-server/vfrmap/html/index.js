@@ -389,7 +389,7 @@ function init() {
     request_hotkey();
 
     window.document.addEventListener("keydown", (e) => {
-        Logger.logDebug("index.js => keydown event registered: [" + e.key + "]");
+        Logger.logDebug("index.js => keydown event registered, e.key=[" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");
         dispatch_keyevent_top(e);
     });
 

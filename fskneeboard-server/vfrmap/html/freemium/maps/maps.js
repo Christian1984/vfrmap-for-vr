@@ -933,7 +933,7 @@ document.addEventListener("DOMContentLoaded", function() {
     wind_indicator_velocity = document.getElementById("wind-indicator-velocity");
 
     window.document.addEventListener("keydown", (e) => {
-        Logger.logDebug("maps.js => keydown event registered: [" + e.key + "]");
+        Logger.logDebug("maps.js => keydown event registered: [" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");
         console.log(e);
         dispatch_keyevent(e);
     });
