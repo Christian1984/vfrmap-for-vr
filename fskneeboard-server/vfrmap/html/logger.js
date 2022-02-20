@@ -9,9 +9,11 @@ const LogLevel = {
 
 class Logger {
     static level = undefined;
+    static initCalled = false;
+    static queue = [];
 
-    static init(callback) {
-        //if (Logger.level == undefined) Logger.level = LogLevel.DEBUG;
+    static init() {
+        Logger.initCalled = true;
 
         let xhr = new XMLHttpRequest();
         xhr.open("GET", "/loglevel/", true);
@@ -19,22 +21,22 @@ class Logger {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    console.log(xhr.responseText);
-
                     const levelToLower = xhr.responseText.toLowerCase();
+
                     if (levelToLower == LogLevel.DEBUG || levelToLower == LogLevel.INFO || levelToLower == LogLevel.WARN || levelToLower == LogLevel.ERROR || levelToLower == LogLevel.OFF) {
-                        Logger.level = xhr.responseText.toLowerCase();
-                        Logger.logDebug("Client LogLevel received and set to [" + levelToLower + "]");
+                        Logger.level = levelToLower;
+                        Logger.logInfo("Client LogLevel received and set to [" + levelToLower + "]");
 
-                        if (callback) {
-                            callback();
-                        }
+                        // mitigate concurrency at least for current frame
+                        setTimeout(() => Logger.processQueue(), 0);
 
+                        /*
                         Logger.logMessage("OFF-Test", LogLevel.OFF);
                         Logger.logDebug("DEBUG-Test");
                         Logger.logInfo("INFO-Test");
                         Logger.logWarn("WARN-Test");
                         Logger.logError("ERROR-Test");
+                        */
                     }
                     else {
                         Logger.logWarn("Received invalid client LogLevel: [" + levelToLower + "]; Logger turned off!");
@@ -71,6 +73,21 @@ class Logger {
         return false;
     }
 
+    static enqueueLog(message, level) {
+        Logger.queue.push({message: message, level: level});
+    }
+
+    static processQueue() {
+        Logger.logDebug("Processing Logger queue... Queued items: " + Logger.queue.length);
+
+        if (Logger.level != undefined) {
+            while (Logger.queue.length > 0) {
+                const log = Logger.queue.pop();
+                Logger.logMessage(log.message, log.level);
+            }
+        }
+    }
+
     static logRemote(message, level) {
         let xhr = new XMLHttpRequest();
         
@@ -86,22 +103,30 @@ class Logger {
     }
 
     static logLocal(message, level) {
+        const logString = "[" + level + "] " + message;
+
+        console.log(logString);
+
         const logDiv = document.querySelector("div#log");
     
         if (logDiv) {
-            logDiv.innerHTML = "<p>[" + level + "] " + message + "</p>" + logDiv.innerHTML
+            logDiv.innerHTML = "<p>" + logString + "</p>" + logDiv.innerHTML
         }
     }
 
-    static logMessage(message, level, retry = true) {
-        if (Logger.level == undefined && retry === true) {
-            Logger.init(() => Logger.logMessage(message, level, false));
-            return;
+    static logMessage(message, level) {
+        if (Logger.level != undefined) {
+            if (Logger.shouldLog(level)) {
+                Logger.logLocal(message, level);
+                Logger.logRemote(message, level);
+            }
         }
+        else {
+            if (!Logger.initCalled) {
+                Logger.init();
+            }
 
-        if (Logger.shouldLog(level)) {
-            Logger.logLocal(message, level);
-            Logger.logRemote(message, level);
+            Logger.enqueueLog(message, level);
         }
     }
 
