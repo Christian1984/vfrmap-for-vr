@@ -9,3 +9,7 @@ window.addEventListener("message", (m) => {
         }
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    Logger.logDebug("charts.js (FREE) => DOMContentLoaded fired!");
+});

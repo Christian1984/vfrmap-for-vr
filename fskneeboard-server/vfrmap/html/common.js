@@ -1,6 +1,4 @@
-const sender_id = md5(Math.floor(Math.random() * Number.MAX_VALUE).toString());
-const default_log_level = "DEBUG";
-
+// depends on sender.js
 function dispatch_keyevent(event) {
     //catch backspace and prevent navigation
     if (event.keyCode == 8) {
@@ -40,7 +38,7 @@ function store_data_set(key_string_value_array, remote = true) {
             }
         }
     
-        xhr.send(JSON.stringify({ data: key_string_value_array, sender: sender_id }));
+        xhr.send(JSON.stringify({ data: key_string_value_array, sender: SENDER_ID }));
     }
     else {
         for (const el of key_string_value_array) {
@@ -93,7 +91,7 @@ function store_data(key, string_data, remote = true) {
         let body = {
             key: key,
             value: payload,
-            sender: sender_id
+            sender: SENDER_ID
         }
         xhr.open("POST", "/data/", true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -152,33 +150,6 @@ function hide_confirm_dialog(wrapper_selector, hide) {
     }
 }
 
-function log_server(message, level = default_log_level) {
-    let xhr = new XMLHttpRequest();
-    
-    let body = {
-        level: level,
-        message: message,
-        sender: sender_id
-    }
-
-    xhr.open("POST", "/log/", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify(body));
-}
-
-function log_local(message, level = default_log_level) {
-    const logDiv = document.querySelector("div#log");
-
-    if (logDiv) {
-        logDiv.innerHTML = "<p>[" + level + "] " + message + "</p>" + logDiv.innerHTML
-    }
-}
-
-function log(message, level = default_log_level) {
-    log_local(message, level);
-    log_server(message, level);
-}
-
 document.addEventListener("DOMContentLoaded", function() {
-    log("common.js => DOMContentLoaded fired!", "DEBUG");
+    Logger.logDebug("common.js => DOMContentLoaded fired!");
 });

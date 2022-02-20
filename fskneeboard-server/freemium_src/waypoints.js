@@ -51,3 +51,7 @@ class Waypoints {
         //intentionally left empty
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    Logger.logDebug("waypoints.js (FREE) => DOMContentLoaded fired!");
+});

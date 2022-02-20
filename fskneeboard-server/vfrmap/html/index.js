@@ -389,6 +389,7 @@ function init() {
     request_hotkey();
 
     window.document.addEventListener("keydown", (e) => {
+        Logger.logDebug("index.js => keydown event registered: " + JSON.stringify(e));
         dispatch_keyevent_top(e);
     });
 
@@ -396,7 +397,7 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    log("index.js => DOMContentLoaded fired!", "DEBUG");
+    Logger.logDebug("index.js => DOMContentLoaded fired!");
 
     try {
         let txt = "Browser Information:\n";
@@ -408,10 +409,10 @@ document.addEventListener("DOMContentLoaded", function() {
         txt += "\tPlatform:          " + navigator.platform + "\n";
         txt += "\tUser-agent header: " + navigator.userAgent + "\n";
     
-        log(txt);
+        Logger.logDebug(txt);
     }
     catch (e) {
-        log("Could not retrieve browser information", "WARN");
+        Logger.logWarn("Could not retrieve browser information");
     }
 
     init();
