@@ -4,9 +4,73 @@ const LogLevel = {
     INFO: "info",
     WARN: "warn",
     ERROR: "error",
+    OFF: "off"
 }
 
 class Logger {
+    static level = undefined;
+
+    static init(callback) {
+        //if (Logger.level == undefined) Logger.level = LogLevel.DEBUG;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/loglevel/", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+
+                    const levelToLower = xhr.responseText.toLowerCase();
+                    if (levelToLower == LogLevel.DEBUG || levelToLower == LogLevel.INFO || levelToLower == LogLevel.WARN || levelToLower == LogLevel.ERROR || levelToLower == LogLevel.OFF) {
+                        Logger.level = xhr.responseText.toLowerCase();
+                        Logger.logDebug("Client LogLevel received and set to [" + levelToLower + "]");
+
+                        if (callback) {
+                            callback();
+                        }
+
+                        Logger.logMessage("OFF-Test", LogLevel.OFF);
+                        Logger.logDebug("DEBUG-Test");
+                        Logger.logInfo("INFO-Test");
+                        Logger.logWarn("WARN-Test");
+                        Logger.logError("ERROR-Test");
+                    }
+                    else {
+                        Logger.logWarn("Received invalid client LogLevel: [" + levelToLower + "]; Logger turned off!");
+                        Logger.level = LogLevel.OFF;
+                    }
+                }
+            }
+        };
+
+        xhr.send();
+    }
+
+    static shouldLog(level) {
+        if (Logger.level == undefined) {
+            return true;
+        }
+
+        if (Logger.level == LogLevel.DEBUG && (level.toLowerCase() == LogLevel.DEBUG || level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
+            return true;
+        }
+
+        if (Logger.level == LogLevel.INFO && (level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
+            return true;
+        }
+
+        if (Logger.level == LogLevel.WARN && (level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
+            return true;
+        }
+
+        if (Logger.level == LogLevel.ERROR && level.toLowerCase() == LogLevel.ERROR) {
+            return true;
+        }
+
+        return false;
+    }
+
     static logRemote(message, level) {
         let xhr = new XMLHttpRequest();
         
@@ -29,9 +93,16 @@ class Logger {
         }
     }
 
-    static logMessage(message, level) {
-        Logger.logLocal(message, level);
-        Logger.logRemote(message, level);
+    static logMessage(message, level, retry = true) {
+        if (Logger.level == undefined && retry === true) {
+            Logger.init(() => Logger.logMessage(message, level, false));
+            return;
+        }
+
+        if (Logger.shouldLog(level)) {
+            Logger.logLocal(message, level);
+            Logger.logRemote(message, level);
+        }
     }
 
     static logDebug(message) {

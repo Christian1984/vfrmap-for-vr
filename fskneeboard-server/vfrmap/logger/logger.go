@@ -123,7 +123,7 @@ func LogController(w http.ResponseWriter, r *http.Request) {
 	var logData LogData
 	sdErr := json.NewDecoder(r.Body).Decode(&logData)
 	if sdErr != nil {
-		fmt.Println("Error in logController: " + sdErr.Error())
+		fmt.Println("Error in LogController: " + sdErr.Error())
 		http.Error(w, sdErr.Error(), http.StatusBadRequest)
 		return
 	}
@@ -135,5 +135,19 @@ func LogController(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Pragma", "no-cache")
 	w.Header().Set("Expires", "0")
 	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte("yay"))
+	w.Write([]byte(""))
+}
+
+func LogLevelController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(logLevel))
 }

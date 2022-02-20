@@ -548,6 +548,7 @@ func main() {
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
 		http.HandleFunc("/log/", logger.LogController)
+		http.HandleFunc("/loglevel/", logger.LogLevelController)
 		http.HandleFunc("/data/", dataController)
 		http.HandleFunc("/dataSet/", dataSetController)
 		http.HandleFunc("/freemium/", freemium)
