@@ -1,4 +1,4 @@
-package logmanager
+package logger
 
 import (
 	"encoding/json"
@@ -81,7 +81,7 @@ func ShouldLog(level string) bool {
 	return false
 }
 
-func LogMessageWithSender(message string, level string, sender string, verboseOverride bool) {
+func LogMessage(message string, level string, sender string, verboseOverride bool) {
 	logString := "[" + strings.ToUpper(strings.TrimSpace(level)) + "] " + strings.TrimSpace(message)
 
 	if (strings.TrimSpace(sender) != "") {
@@ -97,12 +97,20 @@ func LogMessageWithSender(message string, level string, sender string, verboseOv
 	}
 }
 
-func LogMessage(message string, level string) {
-	LogMessageWithSender(message, level, "", false)
+func LogDebug(message string, verboseOverride bool) {
+	LogMessage(message, Debug, "", verboseOverride)
 }
 
-func LogMessageAndForceConsole(message string, level string) {
-	LogMessageWithSender(message, level, "", true)
+func LogInfo(message string, verboseOverride bool) {
+	LogMessage(message, Info, "", verboseOverride)
+}
+
+func LogWarn(message string, verboseOverride bool) {
+	LogMessage(message, Warn, "", verboseOverride)
+}
+
+func LogError(message string, verboseOverride bool) {
+	LogMessage(message, Error, "", verboseOverride)
 }
 
 // controller methods
@@ -120,7 +128,7 @@ func LogController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	LogMessageWithSender(logData.Message, logData.Level, logData.Sender, false)
+	LogMessage(logData.Message, logData.Level, logData.Sender, false)
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")

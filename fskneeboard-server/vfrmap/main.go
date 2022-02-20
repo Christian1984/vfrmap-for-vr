@@ -32,7 +32,7 @@ import (
 	"vfrmap-for-vr/vfrmap/html/freemium"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
-	"vfrmap-for-vr/vfrmap/logmanager"
+	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/websockets"
 
 	updatechecker "github.com/Christian1984/go-update-checker"
@@ -164,23 +164,23 @@ func main() {
 
 	flag.Parse()
 
-	logmanager.Init(logLevel, verbose)
+	logger.Init(logLevel, verbose)
 
-	if logmanager.ShouldLog(logLevel) {
-		logmanager.CreateLogFile()
-		logmanager.LogMessage("Logfile created!", logmanager.Debug)
+	if logger.ShouldLog(logLevel) {
+		logger.CreateLogFile()
+		logger.LogDebug("Logfile created!", false)
 	}
 	
 	/*
-	logmanager.LogMessage("OFF-Test", logmanager.Off)
-	logmanager.LogMessage("DEBUG-Test", logmanager.Debug)
-	logmanager.LogMessage("INFO-Test", logmanager.Info)
-	logmanager.LogMessage("WARN-Test", logmanager.Warn)
-	logmanager.LogMessage("ERROR-Test", logmanager.Error)
+	logger.LogMessage("OFF-Test", logger.Off, "", false)
+	logger.LogDebug("DEBUG-Test", false)
+	logger.LogInfo("INFO-Test", false)
+	logger.LogWarn("WARN-Test", false)
+	logger.LogError("ERROR-Test", false)
 	*/
 
 
-	logmanager.LogMessage("FSKneeboard started with params\n" + 
+	logger.LogDebug("FSKneeboard started with params\n" + 
 		"\tverbose:          " + strconv.FormatBool(verbose) + "\n" +
 		"\tlisten:           " + httpListen + "\n" +
 		"\tlog:              " + logLevel + "\n" +
@@ -191,7 +191,7 @@ func main() {
 		"\tnoupdatecheck:    " + strconv.FormatBool(noupdatecheck) + "\n" +
 		"\tquietshutdown:    " + strconv.FormatBool(quietshutdown) + "\n" +
 		"\tautosave:         " + strconv.Itoa(autosaveInterval) + "\n" +
-		"\thotkey:           " + strconv.Itoa(hotkey) + "\n", "DEBUG")
+		"\thotkey:           " + strconv.Itoa(hotkey) + "\n", false)
 
 	bPro = pro == "true"
 
@@ -523,7 +523,7 @@ func main() {
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkey)
-		http.HandleFunc("/log/", logmanager.LogController)
+		http.HandleFunc("/log/", logger.LogController)
 		http.HandleFunc("/data/", dataController)
 		http.HandleFunc("/dataSet/", dataSetController)
 		http.HandleFunc("/freemium/", freemium)
