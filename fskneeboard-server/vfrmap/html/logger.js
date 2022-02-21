@@ -82,7 +82,7 @@ class Logger {
 
         if (LoggerLevel != undefined) {
             while (LoggerQueue.length > 0) {
-                const log = LoggerQueue.pop();
+                const log = LoggerQueue.shift();
                 Logger.logMessage(log.message, log.level);
             }
         }
@@ -90,6 +90,10 @@ class Logger {
 
     static logRemote(message, level) {
         let xhr = new XMLHttpRequest();
+
+        //ensure that message and level are strings
+        message = String(message);
+        level = String(level);
         
         let body = {
             level: level,
@@ -117,8 +121,11 @@ class Logger {
     static logMessage(message, level) {
         if (LoggerLevel != undefined) {
             if (Logger.shouldLog(level)) {
-                Logger.logLocal(message, level);
-                Logger.logRemote(message, level);
+                // run async
+                setTimeout(() => {
+                    Logger.logLocal(message, level);
+                    Logger.logRemote(message, level);
+                }, 0);
             }
         }
         else {
