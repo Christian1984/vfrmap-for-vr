@@ -386,11 +386,37 @@ Your charts folder should look like this:
 
 ## Notepad
 
-Notepad is another feature that FSKneeboard PRO users have access to. It allows you to take notes during your flight session by simply drawing on it with your mouse.
+Notepad is another feature that FSKneeboard PRO users have access to. It allows you to take notes during your flight session by simply drawing on it with your mouse or typing with your physical or a virtual onscreen keyboard.
 
 ![Notepad](screenshots/fskneeboard-notepad-legend.png)
 
 *Notepad*
+
+The notepad can be used in one of two modes: Scribble Mode and Type Mode. The two modes can be used on the same note and you can switch back and forth between them any time.
+
+## Scribble Mode
+
+In Scribble Mode you use your mouse to, well, scribble something on the notepad. Just click the left mouse button, hold it down and drag your mouse to draw a line and handwrite notes.
+
+## Type Mode
+
+In Type Mode you can either the virtual onscreen keyboard or your physical keyboard (which is still **experimental**, see remarks below for details) to type information. Here's how: 
+
+- Activate the mode by clicking the appropriate keyboard icon
+- Now, click to place the cursor where you want the note to appear (default is the top left corner of the notepad)
+- Start typing with your keyboard or the virtual onscreen keyboard
+
+> REMARKS:
+> Please note that FSKneeboard DOES NOT intercept Flight Simulator hotkeys when you use your physical keyboard to take notes.
+> When you type the letter `G` for example, chances are that your landing gear lever will be toggled! Be aware of that and opt for the virtual keyboard if issues arise.
+
+## Taking Multiple Notes
+
+You can take up to 5 notes at a time and switch between them using the index buttons in the menu bar. The notes will be saved even across multiple flights, until you delete them manually!
+
+## Taking Notes With Tablet Computers
+
+You can also connect a tablet computer to FSKneeboard (see [Connecting to FSKneeboard With Your Browser, a Second PC or Tablet]() below) and take notes with your fingers. Notes will be instantly synced across devices, allowing you to take notes with your actual, physical tablet right on your knee and have them transferred over into your VR cockpit!
 
 ## Autosave
 
@@ -441,6 +467,20 @@ If you like, you can use your HOTAS configuration software to map this hotkey/sh
 
 # Advanced Usage
 
+## Connecting to FSKneeboard With Your Browser, a Second PC or Tablet
+
+You can also connect to FSKneeboard with your browser outside of MSFS or even a second device. When starting FSKneeboard (and after connecting to MSFS) you will receive some information like this in the application window:
+
+```
+=== INFO: Connecting Your Tablet
+Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.
+FSKneeboard Server-Address: 192.168.178.5:3000
+```
+
+Simply take that IP-address and port information and type it into the address bar of your browser on your local machine, your laptop or tablet (which has to be on the same WIFI, obviously).
+
+## Command Line Arguments
+
 The FSKneeboard server can be started with several commandline arguments to further customize its behaviour. In general, all you need to do is add them behind your "fskneeboard.exe" shortcut.
 
 - `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
@@ -487,6 +527,11 @@ The FSKneeboard server can be started with several commandline arguments to furt
 ## "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!"
 
 > Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. There is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
+
+## "I can't get it to work! What can I do?"
+
+> You can always reach out to me via Discord, which is the fastest way to get in touch. Please visit https://discord.fskneeboard.com to get support.
+> Also, you can run `fskneeboard.exe --log debug` to make FSKneeboard write a detailed log which will help me to analyze what might be going wrong on your end. Please do not share this log publicly, as it may contain your email address!
 
 ---
 
