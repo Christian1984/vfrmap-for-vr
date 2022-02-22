@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
+	"vfrmap-for-vr/vfrmap/logger"
 
 	"github.com/boltdb/bolt"
 )
@@ -44,6 +46,7 @@ func dbInit() {
 	db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte(boltBucketName))
 		if err != nil {
+			logger.LogError("Cannot create bucket " + boltBucketName + " in db " + boltFileName + ", details: " + err.Error(), false)
 			return fmt.Errorf("Cannot create bucket: %s", err)
 		}
 		return nil
@@ -51,9 +54,7 @@ func dbInit() {
 }
 
 func dbWrite(key string, value string) {
-	if verbose {
-		fmt.Printf("Storing data: %s = %s\n", key, value)
-	}
+	logger.LogDebug("Storing data: [" + key + "]=[" + value + "]", false)
 
 	db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(boltBucketName))
@@ -63,11 +64,7 @@ func dbWrite(key string, value string) {
 }
 
 func dbRead(key string) string {
-	/*
-	if verbose {
-		fmt.Printf("Reading data for key=%s\n", key)
-	}
-	*/
+	logger.LogDebug("Reading data for key [" + key + "]", false)
 
 	var out *string
 
@@ -78,9 +75,7 @@ func dbRead(key string) string {
 		outs := string(v[:])
 		out = &outs
 
-		if verbose {
-			fmt.Printf("%s is: %s\n", key, *out)
-		}
+		logger.LogDebug("[" + key + "] is: [" + *out + "]", false)
 
 		return nil
 	})
@@ -91,6 +86,7 @@ func dbRead(key string) string {
 // controller methods
 func dataController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
+		logger.LogError("Method "+r.Method+" not allowed!", false);
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
 	}
@@ -102,6 +98,7 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 		key := r.URL.Query().Get("key")
 
 		if len(strings.TrimSpace(key)) == 0 {
+			logger.LogError("Property \"key\" must NOT be empty!", false);
 			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 			return
 		}
@@ -114,18 +111,15 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 		var storageData StorageData
 		sdErr := json.NewDecoder(r.Body).Decode(&storageData)
 		if sdErr != nil {
-			fmt.Println("Error in dataController: " + sdErr.Error())
+			logger.LogError("Error in dataController POST method: " + sdErr.Error(), true)
 			http.Error(w, sdErr.Error(), http.StatusBadRequest)
 			return
 		}
 
-		/*
-		if verbose {
-			fmt.Println("Received StorageData: key=" + strings.TrimSpace(storageData.Key) + ", value=" + strings.TrimSpace(storageData.Value))
-		}
-		*/
+		logger.LogDebug("Received StorageData: key=[" + strings.TrimSpace(storageData.Key) + "], value=[" + strings.TrimSpace(storageData.Value) + "]", false)
 
 		if len(strings.TrimSpace(storageData.Key)) == 0 {
+			logger.LogError("Property \"key\" must NOT be empty!", false);
 			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 			return
 		}
@@ -156,6 +150,7 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 
 func dataSetController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
+		logger.LogError("Method "+r.Method+" not allowed!", false);
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
 	}
@@ -166,28 +161,25 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		keysString := r.URL.Query().Get("keys")
 
-		if verbose {
-			fmt.Printf("Received Keys for data retrieval (raw): %s\n", keysString)
-		}
+		logger.LogDebug("Received Keys for data retrieval (raw): " + keysString, false)
 
 		keys := StorageDataKeysArray{}
 		jsonErr := json.Unmarshal([]byte(keysString), &keys.Keys)
 
 		if jsonErr != nil {
-			fmt.Println("Error in dataSetController: " + jsonErr.Error())
+			logger.LogError("Error in dataSetController GET method: " + jsonErr.Error(), true)
 			http.Error(w, jsonErr.Error(), http.StatusBadRequest)
 			return
 		}
 
-		if verbose {
-			fmt.Printf("Extracted %d Keys for data retrieval:\n", len(keys.Keys))
-			for _, key := range keys.Keys {
-				fmt.Println("key=" + strings.TrimSpace(key))
-			}
+		logger.LogDebug("Extracted " + strconv.Itoa(len(keys.Keys)) + " keys for data retrieval:", false)
+		for _, key := range keys.Keys {
+			logger.LogDebug("  key=[" + strings.TrimSpace(key) + "]", false)
 		}
 
 		for _, key := range keys.Keys {
 			if len(strings.TrimSpace(key)) == 0 {
+				logger.LogError("Property \"key\" must NOT be empty!", false);
 				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 				return
 			}
@@ -205,22 +197,19 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 		var storageDataSet StorageDataSet
 		sdErr := json.NewDecoder(r.Body).Decode(&storageDataSet)
 		if sdErr != nil {
-			fmt.Println("Error in handleData: " + sdErr.Error())
+			logger.LogError("Error in dataSetController POST method: " + sdErr.Error(), false)
 			http.Error(w, sdErr.Error(), http.StatusBadRequest)
 			return
 		}
 
-		if verbose {
-			fmt.Printf("Received %d StorageDataSet for storage:\n", len(storageDataSet.DataSets))
-			/*
-			for _, ds := range storageDataSet.DataSets {
-				fmt.Println("StorageData: key=" + strings.TrimSpace(ds.Key) + ", value=" + strings.TrimSpace(ds.Value))
-			}
-			*/
+		logger.LogDebug("Received " + strconv.Itoa(len(storageDataSet.DataSets)) + " StorageDataSet for storage:", false)
+		for _, ds := range storageDataSet.DataSets {
+			logger.LogDebug("StorageData: key=[" + strings.TrimSpace(ds.Key) + "], value=[" + strings.TrimSpace(ds.Value) + "]", false)
 		}
 
 		for _, ds := range storageDataSet.DataSets {
 			if len(strings.TrimSpace(ds.Key)) == 0 {
+				logger.LogError("Property \"key\" must NOT be empty!", false);
 				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 				return
 			}
