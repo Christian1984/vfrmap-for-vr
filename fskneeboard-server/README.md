@@ -1,6 +1,6 @@
 # FSKneeboard Server
 
-The simconnect package [fskneeboard-server/simconnect](simconnect/) connects to MSFS 2020 using Go.
+The FSKneeboard server connects to MSFS 2020 via the simconnect package [fskneeboard-server/simconnect](simconnect/) using Go.
 
 ## How to Build
 
