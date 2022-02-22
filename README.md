@@ -334,6 +334,8 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 *Map Viewer*
 
+<div style="page-break-after: always;"></div>
+
 ### Loading a Flightplan (PRO)
 
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
@@ -353,6 +355,8 @@ The location finder can be accessed via the search icon on the toolbar and allow
 ![Map Viewer Location Finder](screenshots/fskneeboard-map-location-finder.jpg)
 
 *Map Viewer Location Finder*
+
+<div style="page-break-after: always;"></div>
 
 ## Charts Viewer
 
@@ -480,9 +484,9 @@ You can also connect to FSKneeboard with your browser outside of MSFS or even a 
 ```
 === INFO: Connecting Your Tablet
 
-Besides using the FSKneeboard ingame panel from within Flight Simulator you can also 
-connect to FSKneeboard with your tablet or web browser. To do so please enter follwing 
-IP address and port into the address bar.
+Besides using the FSKneeboard ingame panel from within Flight Simulator
+you can also connect to FSKneeboard with your tablet or web browser.
+To do so please enter follwing IP address and port into the address bar.
 
 FSKneeboard Server-Address: 192.168.178.5:3000
 ```
@@ -552,8 +556,9 @@ Here's a list of features that I've planned to implement in the foreseeable futu
 
 - Migrate the entire server component from GO to .NET to mitigate false virus alerts
 - Integrate Navigraph and Little Nav Map (if feasible)
-- Take notes via iPads and then have them synced to your in-sim notepad
-- Allow for multiple notes to be taken, instead of having only one "sheet"
+- Integrate a vPilot interface for better accessibility of ATC in VR
+- Integration for Glasscockpit panels (like the G-1000)
+- Extend the chart viewer to also read txt-files
 - Embed Twitch Chat / Discord / YouTube(?)
 - (... This could be your wish :-) ...)
 
