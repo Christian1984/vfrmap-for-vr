@@ -214,14 +214,14 @@ func main() {
 		if !drmData.Valid() {
 			fmt.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			fmt.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
-			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "], serial [" + drmData.Serial() + "] - Shutting down!", false)
+			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "] - Shutting down!", false)
 			shutdownWithPrompt()
 		} else {
 			fmt.Println("Valid license found! This copy of FSKneeboard is licensed to: " + drmData.Email())
 			fmt.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
 			fmt.Println("")
 
-			logger.LogInfo("Valid license found, details: email [" + drmData.Email() + "], serial [" + drmData.Serial() + "]", false)
+			logger.LogInfo("Valid license found, details: email [" + drmData.Email() + "]", false)
 		}
 	} else {
 		logger.LogInfo("FSKneeboard FREE started...", false)
