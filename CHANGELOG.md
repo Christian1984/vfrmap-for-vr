@@ -1,5 +1,31 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.6.0
+
+## EXPERIMENTAL:
+
+- support for note-taking with physical keyboards (*)
+
+## MAJOR:
+
+- complete overhaul of the notepad functionality (*)
+- added a new Type Mode to the notepad for typing notes with either a virtual onscreen keyboard or a physical keyboard (*)
+- added the capability to take multiple notes (*)
+- added persistance to notes, flightplans and waypoints, the active chart etc.: they are now saved on the local server and will be available across sessions (*)
+- added persistance to configuration parameters such as the resolution scale and stretch etc.: They will now be saved on the local server and be available across sessions, so that they don't have to be reconfigured for every flight
+- added support for external devices (tablets, laptops, and local browser on second screen)
+- added support for notes taken via a tablet to be instantly synced to the FSKneeboard panel inside your VR cockpit
+
+## MINOR:
+
+- added a confirmation dialog to the delete note button to prevent trashing notes by accident
+- added a logging mechanism that can create log files for better tech support and better debugging capabilities
+- fixed a bug that could make notes and waypoints disappear when the window was resized
+- fixed a bug that caused distances to be shown in miles, not nautical miles
+- minor bug fixes
+
+---
+
 # v1.5.0
 
 ## EXPERIMENTAL:

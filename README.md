@@ -338,7 +338,9 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
 
-> PLEASE NOTE: When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
+> PLEASE NOTE:
+> 
+> When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
 
 ### Location Finder (Experimental)
 
@@ -407,7 +409,9 @@ In Type Mode you can either the virtual onscreen keyboard or your physical keybo
 - Start typing with your keyboard or the virtual onscreen keyboard
 
 > REMARKS:
+> 
 > Please note that FSKneeboard DOES NOT intercept Flight Simulator hotkeys when you use your physical keyboard to take notes.
+> 
 > When you type the letter `G` for example, chances are that your landing gear lever will be toggled! Be aware of that and opt for the virtual keyboard if issues arise.
 
 ## Taking Multiple Notes
@@ -416,12 +420,14 @@ You can take up to 5 notes at a time and switch between them using the index but
 
 ## Taking Notes With Tablet Computers
 
-You can also connect a tablet computer to FSKneeboard (see [Connecting to FSKneeboard With Your Browser, a Second PC or Tablet]() below) and take notes with your fingers. Notes will be instantly synced across devices, allowing you to take notes with your actual, physical tablet right on your knee and have them transferred over into your VR cockpit!
+You can also connect a tablet computer to FSKneeboard (see [Connecting to FSKneeboard With Your Browser, a Second PC or Tablet](#connecting-to-fskneeboard-with-your-browser-a-second-pc-or-tablet) below) and take notes with your fingers. Notes will be instantly synced across devices, allowing you to take notes with your actual, physical tablet right on your knee and have them transferred over into your VR cockpit!
 
 ## Autosave
 
 > REMARKS:
-> Please make sure to NOT launch fskneeboard with the --autosave option when you are planning to go on a bush trip! It seems that once a flight is saved via SimConnect (which is the interface that FSKneeboard uses internally to communicate with MSFS), Flight Simulator falls flat on its face when trying to properly save the Bush Trip progress. Both MSFS and FSKneeboard will in fact continue to save the flight; but unfortunately as a free flight, not as a bush trip flight, which leads to conflicts when trying to load the flight back up... 
+> 
+> Please make sure to NOT launch fskneeboard with the --autosave option when you are planning to go on a bush trip! It seems that once a flight is saved via SimConnect (which is the interface that FSKneeboard uses internally to communicate with MSFS), Flight Simulator falls flat on its face when trying to properly save the Bush Trip progress. Both MSFS and FSKneeboard will in fact continue to save the flight; but unfortunately as a free flight, not as a bush trip flight, which leads to conflicts when trying to load the flight back up...
+> 
 > MSFS does automatically save your bush trip progress automatically, anyway, so you don't need FSKneeboard's autosave in that particular scenario!
 
 Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
@@ -473,7 +479,11 @@ You can also connect to FSKneeboard with your browser outside of MSFS or even a 
 
 ```
 === INFO: Connecting Your Tablet
-Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.
+
+Besides using the FSKneeboard ingame panel from within Flight Simulator you can also 
+connect to FSKneeboard with your tablet or web browser. To do so please enter follwing 
+IP address and port into the address bar.
+
 FSKneeboard Server-Address: 192.168.178.5:3000
 ```
 
@@ -531,6 +541,7 @@ The FSKneeboard server can be started with several commandline arguments to furt
 ## "I can't get it to work! What can I do?"
 
 > You can always reach out to me via Discord, which is the fastest way to get in touch. Please visit https://discord.fskneeboard.com to get support.
+> 
 > Also, you can run `fskneeboard.exe --log debug` to make FSKneeboard write a detailed log which will help me to analyze what might be going wrong on your end. Please do not share this log publicly, as it may contain your email address!
 
 ---
