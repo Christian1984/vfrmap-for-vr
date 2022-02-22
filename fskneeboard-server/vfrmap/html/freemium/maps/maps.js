@@ -44,6 +44,9 @@ let wind_indicator_arrow;
 let wind_indicator_direction;
 let wind_indicator_velocity;
 
+let reloadTimeout = undefined;
+const reloadDelay = 250;
+
 const map_resolutions = {
     high: {
         tile_size: 256,
@@ -391,6 +394,20 @@ function initMap() {
         registerHandlers();
         loadStoredState();
         activate_default_mode();
+    });
+
+    window.addEventListener("resize", () => {
+        Logger.logDebug("maps.js => resize fired!");
+
+        if (reloadTimeout != null) {
+            clearTimeout(reloadTimeout);
+            Logger.logDebug("maps.js => reloadTimeout cleared!");
+        }
+
+        reloadTimeout = setTimeout(() => {
+            Logger.logDebug("maps.js => reloadTimeout fired!");
+            waypoints.load_trackdata();
+        }, reloadDelay);
     });
 }
 
