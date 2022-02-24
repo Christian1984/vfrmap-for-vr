@@ -129,6 +129,137 @@ If you have any problems, questions or would like to get in touch and stay invol
 
 *(\*) indicates "premium"-features that are available in FSKneeboard PRO, which is available for a Pay-What-You-Want-Price at https://fskneeboard.com/buy-now*
 
+## FREE vs. PRO
+
+Here's a quick feature breakdown of what features are included in both the FREE and the PRO version, and which features are exclusive for PRO version supporters...
+
+<table id="free-pro-compare">
+<tbody>
+<tr>
+<th></th>
+<th>Free</th>
+<th>PRO</th>
+</tr>
+<tr>
+<td>Highly detailed maps for VFR flying</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Map resolution and UI optimized for VR (and FULLY configurable)</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>"Moving Map" (i.e. map follows your airplane position in real time)</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Hide airplane for full "paper map navigation" experience</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Teleport to any position on the planet with a click of a button</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Night mode (Maps)</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Configurable Hotkey</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Waypoints</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Load Flight Simulator Flightplan</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Locate ANY address or POI around the world and add it as a waypoint to your flightplan</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Track data (like total distance, per-waypoint-distance and course to next waypoint etc.)</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Charts Viewer for approach charts, checklists, notes etc.</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Notepad for taking notes in-VR without peeking under your headset</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Notetaking with your physical iPad or Android tablet and instant sync into your VR cockpit</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Configurable Autosave function to recover your flights, for example after a system crash</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>YOU actively support the ongoing development of FSKneeboard, bringing Flight Simming in VR to the next level :-)</td>
+<td>😎
+Sure! Thanks for giving the mod a shot :-) Spread the word!</td>
+<td>💚
+YEAH! You rock!!!</td>
+</tr>
+<tr>
+<td></td>
+<td><a class="more-link" href="https://github.com/Christian1984/vfrmap-for-vr/releases" target="_blank" rel="noopener">TRY FREE</a></td>
+<td><a class="more-link" href="https://fskneeboard.com/buy-now/">BUY NOW</a></td>
+</tr>
+</tbody>
+</table>
+
 ---
 
 <div style="page-break-after: always;"></div>

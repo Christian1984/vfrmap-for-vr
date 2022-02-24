@@ -1,5 +1,13 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.6.1
+
+## MAJOR:
+
+- hotfix for two bugs that prevented the waypoints and notepad module to not load previously saved waypoints and notes when certain parameters were not already initialized (*)
+
+---
+
 # v1.6.0
 
 ## EXPERIMENTAL:
