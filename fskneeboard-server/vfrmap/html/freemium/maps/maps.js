@@ -612,9 +612,7 @@ function loadStoredState() {
             }
         
             const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
-            console.log(nav_data_rbs);
             if (data.n_active_map != null && data.n_active_map != "" && nav_data_rbs.length > 0 && data.n_active_map < nav_data_rbs.length) {
-                console.log(data.n_active_map);
                 nav_data_rbs[data.n_active_map].click();
             }
         
