@@ -3,58 +3,82 @@ package controlpanel
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
-var consoleText string
-var console *widget.TextGrid
+var consoleBinding binding.String
+var autoScroll = true
+var console *widget.Label
 var consoleScroll *container.Scroll
 
+func ClearConsole() {
+	if (consoleBinding != nil) {
+		consoleBinding.Set("")
+	}
+}
+
 func ConsoleLog(message string) {
-	consoleText += message
+	if (consoleBinding != nil) {
+		consoleText, err := consoleBinding.Get()
 
-	if console != nil {
-		console.SetText(consoleText)
+		if (err == nil) {
+			consoleBinding.Set(consoleText + message)
+
+			if (consoleScroll != nil && autoScroll) {
+				consoleScroll.ScrollToBottom()
+			}
+		}
 	}
-
-	if (consoleScroll != nil) {
-		consoleScroll.ScrollToBottom()
-	}
-
 }
 
 func ConsoleLogLn(message string) {
-	if len(consoleText) > 0 {
-		message += "\n"
-	}
-
-	ConsoleLog(message)
+	ConsoleLog(message + "\n")
 }
 
 func ControlPanel() *fyne.Container {
-	consoleText = ""
-	console = widget.NewTextGrid()
-	console.ShowLineNumbers = true
-
+	// console
+	consoleBinding = binding.NewString()
+	console = widget.NewLabelWithData(consoleBinding)
 	consoleScroll = container.NewScroll(console)
 
-	startServer := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
+	middle := container.NewMax(consoleScroll)
+	
+	// top
+	startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
 		ConsoleLogLn("Server Started")
 	})
 
-	stopServer := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {
+	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {
 		ConsoleLogLn("Server Stopped")
 	})
 
-	launchSim := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
+	launchSimBtn := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
 		ConsoleLogLn("Launching MSFS...")
 	})
 
-	top := container.NewHBox(startServer, stopServer, launchSim)
-	middle := container.NewMax(consoleScroll)
-	border := layout.NewBorderLayout(top, nil, nil, nil)
+	top := container.NewHBox(startServerBtn, stopServerBtn, launchSimBtn)
 	
-	return container.New(border, top, middle)
+	// bottom
+	clearLogBtn := widget.NewButtonWithIcon("Clear Console Output", theme.ContentClearIcon(), func() {
+		ClearConsole()
+	})
+
+	scrollToBottomCb := widget.NewCheck("Enable Autoscroll", func(checked bool) {
+		autoScroll = checked
+
+		if (autoScroll) {
+			consoleScroll.ScrollToBottom()
+		}
+	})
+
+	scrollToBottomCb.SetChecked(true)
+	
+	bottom := container.NewHBox(clearLogBtn, scrollToBottomCb)
+
+	// layout
+	border := layout.NewBorderLayout(top, bottom, nil, nil)	
+	return container.New(border, top, bottom, middle)
 }

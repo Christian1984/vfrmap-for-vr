@@ -159,8 +159,11 @@ func startFskServer() {
 	var s *simconnect.SimConnect
 	var err error
 
-	logger.LogInfo("Connecting to Flight Simulator...", false)
-	Print("\nConnecting to Flight Simulator..")
+	time.Sleep(1 * time.Second)
+
+	logger.LogInfo("Waiting for Flight Simulator...", false)
+	Println("")
+	Print("Waiting for Flight Simulator..")
 
 	for true {
 		Print(".")
@@ -171,7 +174,8 @@ func startFskServer() {
 
 			if devMode {
 				logger.LogInfo("Running with --dev: Not connected to Flight Simulator!", false)
-				Println("\nRunning with --dev: Not connected to Flight Simulator!!!")
+				Println("")
+				Println("Running with --dev: Not connected to Flight Simulator!!!")
 				Println("")
 				break
 			}
@@ -179,7 +183,8 @@ func startFskServer() {
 			time.Sleep(5 * time.Second)
 		} else if s != nil {
 			logger.LogInfo("Connected to Flight Simulator!", false)
-			Println("\nConnected to Flight Simulator!")
+			Println("")
+			Println("Connected to Flight Simulator!")
 			Println("")
 			break
 		}
@@ -780,9 +785,8 @@ func main() {
 		"\tautosave:         " + strconv.Itoa(autosaveInterval) + "\n" +
 		"\thotkey:           " + strconv.Itoa(hotkey) + "\n", false)
 
-	//go startServer()
+	go startFskServer()
 	initFsk()
-	controlpanel.ConsoleLog("test")
 	gui.ShowAndRun()
 }
 

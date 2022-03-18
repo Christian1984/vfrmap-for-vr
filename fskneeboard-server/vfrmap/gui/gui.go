@@ -26,7 +26,7 @@ func InitGui() {
 	)
 
 	w.SetContent(tabs)
-	w.Resize(fyne.NewSize(640, 480))
+	w.Resize(fyne.NewSize(800, 600))
 }
 
 func ShowAndRun() {
