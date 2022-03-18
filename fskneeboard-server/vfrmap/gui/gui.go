@@ -2,7 +2,7 @@ package gui
 
 import (
 	"fmt"
-	"vfrmap-for-vr/vfrmap/gui/tabs"
+	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -10,15 +10,16 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+var w fyne.Window
 
 func InitGui() {
 	fmt.Println("Starting FSKneeboard GUI...")
 
 	a := app.New()
-	w := a.NewWindow("FSKneeboard")
+	w = a.NewWindow("FSKneeboard")
 
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Control Panel", tabs.ControlPanel()),
+		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", widget.NewLabel("//TODO")),
 		container.NewTabItem("Hotkeys", widget.NewLabel("//TODO")),
 		container.NewTabItem("PDF Import", widget.NewLabel("//TODO")),
@@ -26,6 +27,10 @@ func InitGui() {
 
 	w.SetContent(tabs)
 	w.Resize(fyne.NewSize(640, 480))
+}
 
-	w.ShowAndRun()
+func ShowAndRun() {
+	if w != nil {
+		w.ShowAndRun()
+	}
 }

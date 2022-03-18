@@ -1,4 +1,4 @@
-package tabs
+package controlpanel
 
 import (
 	"fyne.io/fyne/v2"
@@ -8,33 +8,48 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func ControlPanel() *fyne.Container {
-	consoleText := ""
-	console := widget.NewTextGrid()
-	console.ShowLineNumbers = true
+var consoleText string
+var console *widget.TextGrid
+var consoleScroll *container.Scroll
 
-	consoleScroll := container.NewScroll(console)
+func ConsoleLog(message string) {
+	consoleText += message
 
-	appendToConsole := func(line string) {
-		if len(consoleText) > 0 {
-			consoleText += "\n"
-		}
-
-		consoleText += line
+	if console != nil {
 		console.SetText(consoleText)
+	}
+
+	if (consoleScroll != nil) {
 		consoleScroll.ScrollToBottom()
 	}
 
+}
+
+func ConsoleLogLn(message string) {
+	if len(consoleText) > 0 {
+		message += "\n"
+	}
+
+	ConsoleLog(message)
+}
+
+func ControlPanel() *fyne.Container {
+	consoleText = ""
+	console = widget.NewTextGrid()
+	console.ShowLineNumbers = true
+
+	consoleScroll = container.NewScroll(console)
+
 	startServer := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
-		appendToConsole("Server Started")
+		ConsoleLogLn("Server Started")
 	})
 
 	stopServer := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {
-		appendToConsole("Server Stopped")
+		ConsoleLogLn("Server Stopped")
 	})
 
 	launchSim := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
-		appendToConsole("Launching MSFS...")
+		ConsoleLogLn("Launching MSFS...")
 	})
 
 	top := container.NewHBox(startServer, stopServer, launchSim)
