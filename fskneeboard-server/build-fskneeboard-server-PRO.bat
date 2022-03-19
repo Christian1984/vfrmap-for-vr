@@ -10,6 +10,7 @@ call npx sass -q .
 :build
 echo generate bindata...
 go generate -v .\vfrmap\
+go generate -v .\vfrmap\server
 go generate -v .\vfrmap\html\fontawesome
 go generate -v .\vfrmap\html\leafletjs
 go generate -v .\vfrmap\html\freemium

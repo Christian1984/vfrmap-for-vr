@@ -1,10 +1,10 @@
-package main
+package utils
 
 import (
 	"net"
 )
 
-func getOutboundIP() (net.IP, error) {
+func GetOutboundIP() (net.IP, error) {
     conn, err := net.Dial("udp", "8.8.8.8:80")
     if err != nil {
         return nil, err

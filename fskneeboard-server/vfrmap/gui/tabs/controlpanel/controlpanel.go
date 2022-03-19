@@ -1,6 +1,8 @@
 package controlpanel
 
 import (
+	"vfrmap-for-vr/vfrmap/server"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
@@ -49,6 +51,7 @@ func ControlPanel() *fyne.Container {
 	// top
 	startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
 		ConsoleLogLn("Server Started")
+		server.FskDoSomething()
 	})
 
 	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {

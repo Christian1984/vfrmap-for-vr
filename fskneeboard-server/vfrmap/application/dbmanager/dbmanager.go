@@ -1,4 +1,4 @@
-package main
+package dbmanager
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/logger"
 
 	"github.com/boltdb/bolt"
@@ -32,17 +33,17 @@ const boltFileName = "fskneeboard.db"
 
 var db *bolt.DB
 
-func dbConnect() error {
-	boldDb, db_err := bolt.Open(boltFileName, 0600, &bolt.Options{Timeout: 1 * time.Second})
+func DbConnect() error {
+	boltDb, db_err := bolt.Open(boltFileName, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if db_err != nil {
 		return db_err
 	}
 
-	db = boldDb
+	db = boltDb
 	return nil
 }
 
-func dbInit() {
+func DbInit() {
 	db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte(boltBucketName))
 		if err != nil {
@@ -53,7 +54,11 @@ func dbInit() {
 	})
 }
 
-func dbWrite(key string, value string) {
+func DbClose() {
+	db.Close()
+}
+
+func DbWrite(key string, value string) {
 	logger.LogDebug("Storing data: [" + key + "]=[" + value + "]", false)
 
 	db.Update(func(tx *bolt.Tx) error {
@@ -63,7 +68,7 @@ func dbWrite(key string, value string) {
 	})
 }
 
-func dbRead(key string) string {
+func DbRead(key string) string {
 	logger.LogDebug("Reading data for key [" + key + "]", false)
 
 	var out *string
@@ -84,7 +89,7 @@ func dbRead(key string) string {
 }
 
 // controller methods
-func dataController(w http.ResponseWriter, r *http.Request) {
+func DataController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
 		logger.LogError("Method "+r.Method+" not allowed!", false);
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
@@ -103,7 +108,7 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		out := dbRead(strings.TrimSpace(key))
+		out := DbRead(strings.TrimSpace(key))
 		res = StorageData{key, strings.TrimSpace(out), ""}
 		break
 
@@ -124,10 +129,10 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		dbWrite(strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
+		DbWrite(strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
 		res = storageData
 		
-		np.BroadcastIfNote(storageData.Sender, storageData.Key)
+		globals.Notepad.BroadcastIfNote(storageData.Sender, storageData.Key)
 
 		break
 	}
@@ -148,7 +153,7 @@ func dataController(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(responseJson))
 }
 
-func dataSetController(w http.ResponseWriter, r *http.Request) {
+func DataSetController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
 		logger.LogError("Method "+r.Method+" not allowed!", false);
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
@@ -186,7 +191,7 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, key := range keys.Keys {
-			value := dbRead(strings.TrimSpace(key))
+			value := DbRead(strings.TrimSpace(key))
 			sd := StorageData{strings.TrimSpace(key), value, ""}
 			res.DataSets = append(res.DataSets, sd)
 		}
@@ -218,11 +223,11 @@ func dataSetController(w http.ResponseWriter, r *http.Request) {
 		var keys []string
 
 		for _, ds := range storageDataSet.DataSets {
-			dbWrite(strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
+			DbWrite(strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
 			keys = append(keys, ds.Key)
 		}
 
-		np.BroadcastIfContainsNote(storageDataSet.Sender, keys)
+		globals.Notepad.BroadcastIfContainsNote(storageDataSet.Sender, keys)
 
 		res = storageDataSet
 		break
