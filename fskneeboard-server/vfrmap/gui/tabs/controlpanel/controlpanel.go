@@ -51,11 +51,12 @@ func ControlPanel() *fyne.Container {
 	// top
 	startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
 		ConsoleLogLn("Server Started")
-		server.FskDoSomething()
+		go server.StartFskServer()
 	})
 
 	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {
 		ConsoleLogLn("Server Stopped")
+		go server.StopFskServer()
 	})
 
 	launchSimBtn := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {

@@ -31,6 +31,8 @@ import (
 	"vfrmap-for-vr/vfrmap/websockets"
 )
 
+var started = false
+
 type Report struct {
 	simconnect.RecvSimobjectDataByType
 	Title         [256]byte `name:"TITLE"`
@@ -118,12 +120,13 @@ func ShutdownWithPrompt() {
 	os.Exit(0)
 }
 
-
-func FskDoSomething() {
-	fmt.Println("Something!")
-}
-
 func StartFskServer() {
+	if started {
+		return
+	}
+
+	started = true
+
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)
 	
@@ -542,6 +545,10 @@ func StartFskServer() {
 			handleClientMessage(m, s)
 		}
 	}
+}
+
+func StopFskServer() {
+	//TODO
 }
 
 func handleClientMessage(m websockets.ReceiveMessage, s *simconnect.SimConnect) {

@@ -223,7 +223,6 @@ func main() {
 		"\tautosave:         " + strconv.Itoa(globals.AutosaveInterval) + "\n" +
 		"\thotkey:           " + strconv.Itoa(globals.Hotkey) + "\n", false)
 
-	go server.StartFskServer()
 	initFsk()
 	gui.ShowAndRun()
 }
