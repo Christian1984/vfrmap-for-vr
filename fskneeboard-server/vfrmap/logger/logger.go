@@ -2,13 +2,13 @@ package logger
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+	"vfrmap-for-vr/vfrmap/utils"
 )
 
 type LogData struct {
@@ -89,7 +89,7 @@ func LogMessage(message string, level string, sender string, verboseOverride boo
 	}
 
 	if isVerbose || verboseOverride {
-		fmt.Println(logString)
+		utils.Println(logString)
 	}
 
 	if ShouldLog(level) && hasOutputFile {
@@ -123,7 +123,7 @@ func LogController(w http.ResponseWriter, r *http.Request) {
 	var logData LogData
 	sdErr := json.NewDecoder(r.Body).Decode(&logData)
 	if sdErr != nil {
-		fmt.Println("Error in LogController: " + sdErr.Error())
+		utils.Println("Error in LogController: " + sdErr.Error())
 		http.Error(w, sdErr.Error(), http.StatusBadRequest)
 		return
 	}

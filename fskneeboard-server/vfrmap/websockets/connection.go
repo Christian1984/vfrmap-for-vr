@@ -1,12 +1,12 @@
 package websockets
 
 import (
-    "bytes"
-    "encoding/json"
-    "fmt"
-    "time"
+	"bytes"
+	"encoding/json"
+	"time"
+	"vfrmap-for-vr/vfrmap/utils"
 
-    "github.com/gorilla/websocket"
+	"github.com/gorilla/websocket"
 )
 
 const (
@@ -137,13 +137,13 @@ func (c *Connection) writePump() {
             w.Write(message)
 
             if err := w.Close(); err != nil {
-                fmt.Println(err)
+                utils.Println(err)
                 return
             }
         case <-ticker.C:
             c.conn.SetWriteDeadline(time.Now().Add(writeWait))
             if err := c.conn.WriteMessage(websocket.PingMessage, []byte{}); err != nil {
-                fmt.Println(err)
+                utils.Println(err)
                 return
             }
         }

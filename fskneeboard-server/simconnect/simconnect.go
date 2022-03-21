@@ -156,7 +156,7 @@ func (s *SimConnect) RegisterDataDefinition(a interface{}) error {
 		}
 
 		s.AddToDataDefinition(defineID, nameTag, unitTag, dataType)
-		//fmt.Printf("fieldName: %s  fieldType: %s  nameTag: %s unitTag: %s\n", fieldName, fieldType, nameTag, unitTag)
+		//utils.Printf("fieldName: %s  fieldType: %s  nameTag: %s unitTag: %s\n", fieldName, fieldType, nameTag, unitTag)
 	}
 
 	return nil

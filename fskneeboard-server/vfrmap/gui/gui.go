@@ -1,8 +1,8 @@
 package gui
 
 import (
-	"fmt"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
+	"vfrmap-for-vr/vfrmap/utils"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -13,7 +13,7 @@ import (
 var w fyne.Window
 
 func InitGui() {
-	fmt.Println("Starting FSKneeboard GUI...")
+	utils.Println("Starting FSKneeboard GUI...")
 
 	a := app.New()
 	w = a.NewWindow("FSKneeboard")

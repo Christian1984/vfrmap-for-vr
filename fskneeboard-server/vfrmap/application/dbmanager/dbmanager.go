@@ -9,6 +9,7 @@ import (
 	"time"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/logger"
+	"vfrmap-for-vr/vfrmap/utils"
 
 	"github.com/boltdb/bolt"
 )
@@ -140,7 +141,7 @@ func DataController(w http.ResponseWriter, r *http.Request) {
 	responseJson, jsonErr := json.Marshal(res)
 
 	if jsonErr != nil {
-		fmt.Println(jsonErr.Error())
+		utils.Println(jsonErr.Error())
 		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -236,7 +237,7 @@ func DataSetController(w http.ResponseWriter, r *http.Request) {
 	responseJson, jsonErr := json.Marshal(res)
 
 	if jsonErr != nil {
-		fmt.Println(jsonErr.Error())
+		utils.Println(jsonErr.Error())
 		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
 		return
 	}

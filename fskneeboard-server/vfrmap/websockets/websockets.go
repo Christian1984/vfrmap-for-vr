@@ -61,11 +61,11 @@ func (h *Websocket) Run() {
 	for {
 		select {
 		case c := <-h.register:
-			//fmt.Println("new browser connection")
+			//utils.Println("new browser connection")
 			h.connections[c] = true
 			h.NewConnection <- ReceiveMessage{Connection: c}
 		case c := <-h.unregister:
-			//fmt.Println("remove browser connection")
+			//utils.Println("remove browser connection")
 			if _, ok := h.connections[c]; ok {
 				delete(h.connections, c)
 				close(c.Send)
