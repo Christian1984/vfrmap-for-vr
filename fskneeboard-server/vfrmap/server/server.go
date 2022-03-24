@@ -122,6 +122,8 @@ func ShutdownWithPrompt() {
 }
 
 func StartFskServer() {
+	return // TODO: only in free mode or if license valid
+
 	if started {
 		return
 	}
