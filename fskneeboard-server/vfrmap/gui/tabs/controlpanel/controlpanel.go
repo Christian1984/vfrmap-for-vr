@@ -6,48 +6,48 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
-var serverStatusValue *widget.Label
-var msfsConnectionValue *widget.Label
-var licenseValue *widget.Label
-
-func updateValue(labelWidget *widget.Label, value string) {
-	if labelWidget != nil {
-		labelWidget.SetText(value)
-	}
-}
+var serverStatusBinding = binding.NewString()
+var msfsConnectionBinding = binding.NewString()
+var licenseBinding = binding.NewString()
 
 func UpdateServerStatus(status string) {
-	updateValue(serverStatusValue, status)
+	serverStatusBinding.Set(status)
 }
 
 func UpdateMsfsConnectionStatus(status string) {
-	updateValue(msfsConnectionValue, status)
+	msfsConnectionBinding.Set(status)
 }
 
 func UpdateLicenseStatus(status string) {
-	updateValue(licenseValue, status)
+	licenseBinding.Set(status)
 }
 
 func ControlPanel() *fyne.Container {
 	//middle
 	serverStatusLabel := widget.NewLabel("Server Status")
-	serverStatusValue = widget.NewLabel("Not Running")
+	serverStatusBinding.Set("Not Running")
+	serverStatusValue := widget.NewLabelWithData(serverStatusBinding)
 
 	msfsConnectionLabel := widget.NewLabel("Flight Simulator")
-	msfsConnectionValue = widget.NewLabel("Not Connected")
+	msfsConnectionBinding.Set("Not Connected")
+	msfsConnectionValue := widget.NewLabelWithData(msfsConnectionBinding)
 
 	licenseLabel := widget.NewLabel("License")
-	licenseValue = widget.NewLabel("Not Valid")
+	licenseBinding.Set("Checking...")
+	licenseValue := widget.NewLabelWithData(licenseBinding)
 
-	grid := container.NewGridWithColumns(2, 
-		serverStatusLabel, serverStatusValue,
+	grid := container.NewGridWithColumns(
+		2,
+		licenseLabel, licenseValue,
 		msfsConnectionLabel, msfsConnectionValue,
-		licenseLabel, licenseValue)
+		serverStatusLabel, serverStatusValue,
+	)
 	middle := container.NewCenter(grid)
 
 	// top
