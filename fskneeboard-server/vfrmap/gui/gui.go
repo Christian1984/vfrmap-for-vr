@@ -17,6 +17,12 @@ func InitGui() {
 	utils.Println("Starting FSKneeboard GUI...")
 
 	a := app.New()
+
+	r, err := fyne.LoadResourceFromPath("icon.png")
+	if err == nil {
+		a.SetIcon(r)
+	}
+
 	w = a.NewWindow("FSKneeboard")
 
 	tabs := container.NewAppTabs(
