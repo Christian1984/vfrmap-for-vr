@@ -4,15 +4,11 @@ import (
 	"fmt"
 )
 
-var guiPrintCallback func(string)
-
-func SetGuiPrintCallback(callback func(string)) {
-	guiPrintCallback = callback
-}
+var GuiPrintCallback func(string)
 
 func printToGui(message string) {
-	if guiPrintCallback != nil {
-		go guiPrintCallback(message)
+	if GuiPrintCallback != nil {
+		go GuiPrintCallback(message)
 	}
 }
 

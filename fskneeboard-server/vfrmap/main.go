@@ -12,7 +12,9 @@ import (
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui"
+	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
+	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server"
 	"vfrmap-for-vr/vfrmap/utils"
@@ -44,19 +46,24 @@ func initFsk() {
 	if globals.Pro {
 		logger.LogInfo("FSKneeboard PRO started. Checking license information...", false)
 
-		utils.Println("=== INFO: License")		
+		utils.Println("=== INFO: License")
 		drmData := drm.New()
 		if !drmData.Valid() {
 			utils.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
 			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "] - Shutting down!", false)
-			server.ShutdownWithPrompt()
+			callbacks.UpdateLicenseStatus("Invalid")
+			//server.ShutdownWithPrompt()
+			// TODO: show dialog!
+
+			return
 		} else {
 			utils.Println("Valid license found! This copy of FSKneeboard is licensed to: " + drmData.Email())
 			utils.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
 			utils.Println("")
 
 			logger.LogInfo("Valid license found, details: email [" + drmData.Email() + "]", false)
+			callbacks.UpdateLicenseStatus("Valid")
 		}
 	} else {
 		logger.LogInfo("FSKneeboard FREE started...", false)
@@ -65,9 +72,12 @@ func initFsk() {
 		utils.Println("Thanks for trying FSKneeboard FREE!")
 		utils.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
 		utils.Println("")
+
+		callbacks.UpdateLicenseStatus("FSKneeboard FREE Trial")
 	}
 
 	if !noupdatecheck {
+		// TODO: Dialog and status to gui
 		logger.LogInfo("Running Update-Check...", false)
 
 		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
@@ -85,6 +95,7 @@ func initFsk() {
 
 	// autosave info
 	utils.Println("=== INFO: Autosave")
+	// TODO: Dialog and status to gui
 
 	if globals.AutosaveInterval > 0 {
 		utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
@@ -179,7 +190,10 @@ func initFsk() {
 
 func main() {
 	gui.InitGui()
-	utils.SetGuiPrintCallback(console.ConsoleLog)
+	utils.GuiPrintCallback = console.ConsoleLog
+	callbacks.UpdateServerStatusCallback = controlpanel.UpdateServerStatus
+	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus
+	callbacks.UpdateLicenseStatusCallback = controlpanel.UpdateLicenseStatus
 
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")

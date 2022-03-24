@@ -22,6 +22,7 @@ import (
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
 	"vfrmap-for-vr/vfrmap/html/freemium"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
@@ -141,6 +142,7 @@ func StartFskServer() {
 	logger.LogInfo("Waiting for Flight Simulator...", false)
 	utils.Println("")
 	utils.Print("Waiting for Flight Simulator..")
+	callbacks.UpdateMsfsConnectionStatus("Connecting...")
 
 	for true {
 		utils.Print(".")
@@ -154,6 +156,9 @@ func StartFskServer() {
 				utils.Println("")
 				utils.Println("Running with --dev: Not connected to Flight Simulator!!!")
 				utils.Println("")
+
+				callbacks.UpdateMsfsConnectionStatus("Not Connected (dev Mode)")
+
 				break
 			}
 
@@ -163,6 +168,7 @@ func StartFskServer() {
 			utils.Println("")
 			utils.Println("Connected to Flight Simulator!")
 			utils.Println("")
+			callbacks.UpdateMsfsConnectionStatus("Connected")
 			break
 		}
 	}
@@ -376,6 +382,8 @@ func StartFskServer() {
 			utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
 			utils.Println("FSKneeboard Server-Address: " + connectInfo)
 			utils.Println("")
+
+			callbacks.UpdateServerStatus("Ready at " + connectInfo)
 		}
 
 		err := http.ListenAndServe(globals.HttpListen, nil)

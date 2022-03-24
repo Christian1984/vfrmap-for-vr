@@ -11,9 +11,44 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+var serverStatusValue *widget.Label
+var msfsConnectionValue *widget.Label
+var licenseValue *widget.Label
+
+func updateValue(labelWidget *widget.Label, value string) {
+	if labelWidget != nil {
+		labelWidget.SetText(value)
+	}
+}
+
+func UpdateServerStatus(status string) {
+	updateValue(serverStatusValue, status)
+}
+
+func UpdateMsfsConnectionStatus(status string) {
+	updateValue(msfsConnectionValue, status)
+}
+
+func UpdateLicenseStatus(status string) {
+	updateValue(licenseValue, status)
+}
+
 func ControlPanel() *fyne.Container {
 	//middle
-	// TODO
+	serverStatusLabel := widget.NewLabel("Server Status")
+	serverStatusValue = widget.NewLabel("Not Running")
+
+	msfsConnectionLabel := widget.NewLabel("Flight Simulator")
+	msfsConnectionValue = widget.NewLabel("Not Connected")
+
+	licenseLabel := widget.NewLabel("License")
+	licenseValue = widget.NewLabel("Not Valid")
+
+	grid := container.NewGridWithColumns(2, 
+		serverStatusLabel, serverStatusValue,
+		msfsConnectionLabel, msfsConnectionValue,
+		licenseLabel, licenseValue)
+	middle := container.NewCenter(grid)
 
 	// top
 	startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
@@ -48,5 +83,5 @@ func ControlPanel() *fyne.Container {
 
 	// layout
 	border := layout.NewBorderLayout(top, nil, nil, nil)
-	return container.New(border, top)
+	return container.New(border, top, middle)
 }
