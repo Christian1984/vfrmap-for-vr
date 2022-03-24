@@ -16,7 +16,7 @@ call build.bat
 echo Build FSKneeboard FREE...
 cd ..\fskneeboard-server\
 
-call build-fskneeboard-server-FREE.bat
+call build-fskneeboard-server-FREE.bat gui
 
 echo Packaging FSKneeboard FREE...
 robocopy .\ ..\dist\free\fskneeboard-server fskneeboard.exe fskneeboard-autostart-steam.bat fskneeboard-autostart-windows-store.bat icon.png /NFL /NDL /NJH /NJS /nc /ns /np
@@ -27,7 +27,7 @@ del /s /q ..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\h
 
 echo Build FSKneeboard PRO...
 
-call build-fskneeboard-server-PRO.bat
+call build-fskneeboard-server-PRO.bat gui
 
 echo Packaging FSKneeboard PRO...
 robocopy .\ ..\dist\pro\fskneeboard-server fskneeboard.exe fskneeboard-autostart-steam.bat fskneeboard-autostart-windows-store.bat icon.png /NFL /NDL /NJH /NJS /nc /ns /np
