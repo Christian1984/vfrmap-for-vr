@@ -12,7 +12,7 @@ import (
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui"
-	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
+	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server"
 	"vfrmap-for-vr/vfrmap/utils"
@@ -179,7 +179,7 @@ func initFsk() {
 
 func main() {
 	gui.InitGui()
-	utils.SetGuiPrintCallback(controlpanel.ConsoleLog)
+	utils.SetGuiPrintCallback(console.ConsoleLog)
 
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")

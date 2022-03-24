@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/utils"
 
@@ -23,6 +24,7 @@ func InitGui() {
 		container.NewTabItem("Settings", widget.NewLabel("//TODO")),
 		container.NewTabItem("Hotkeys", widget.NewLabel("//TODO")),
 		container.NewTabItem("PDF Import", widget.NewLabel("//TODO")),
+		container.NewTabItem("Console", console.Console()),
 	)
 
 	w.SetContent(tabs)
