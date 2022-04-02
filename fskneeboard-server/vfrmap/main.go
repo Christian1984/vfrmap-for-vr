@@ -13,6 +13,7 @@ import (
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -48,13 +49,16 @@ func initFsk() {
 
 		utils.Println("=== INFO: License")
 		drmData := drm.New()
-		if !drmData.Valid() {
+		globals.DrmValid = drmData.Valid()
+
+		if !globals.DrmValid {
 			utils.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
 			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
-			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "] - Shutting down!", false)
+
+			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "]", false)
+
 			callbacks.UpdateLicenseStatus("Invalid")
-			//server.ShutdownWithPrompt()
-			// TODO: show dialog!
+			dialogs.ShowLicenseError()
 
 			return
 		} else {

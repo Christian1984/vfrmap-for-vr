@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/utils"
@@ -35,6 +36,8 @@ func InitGui() {
 
 	w.SetContent(tabs)
 	w.Resize(fyne.NewSize(800, 600))
+
+	dialogs.ParentWindow = &w
 }
 
 func ShowAndRun() {

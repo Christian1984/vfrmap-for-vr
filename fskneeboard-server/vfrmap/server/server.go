@@ -23,6 +23,7 @@ import (
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
 	"vfrmap-for-vr/vfrmap/html/freemium"
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
@@ -122,7 +123,12 @@ func ShutdownWithPrompt() {
 }
 
 func StartFskServer() {
-	return // TODO: only in free mode or if license valid
+	if globals.Pro && !globals.DrmValid {
+		dialogs.ShowLicenseError()
+		utils.Println("WARNING: Cannot start FSKneeboard server, reason: no valid license found!")
+		logger.LogWarn("Cannot start server, reason: no valid license found", false)
+		return
+	}
 
 	if started {
 		return

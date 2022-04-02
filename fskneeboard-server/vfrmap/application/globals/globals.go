@@ -12,6 +12,8 @@ var Hotkey int
 var AutosaveInterval int
 var HttpListen string
 
+var DrmValid bool = false
+
 var Verbose bool
 
 var Notepad notepad.Notepad
