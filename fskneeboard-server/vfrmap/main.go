@@ -80,14 +80,17 @@ func initFsk() {
 		callbacks.UpdateLicenseStatus("FSKneeboard FREE Trial")
 	}
 
+	callbacks.NewVersionAvailable(false)
+
 	if !noupdatecheck {
-		// TODO: Dialog and status to gui
 		logger.LogInfo("Running Update-Check...", false)
 
 		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
 		uc.CheckForUpdate(buildVersion)
 
 		if uc.UpdateAvailable {
+			callbacks.NewVersionAvailable(true)
+
 			logger.LogInfo("New Version found:\n" + uc.Message, false)
 			
 			utils.Println(uc.Message)
@@ -194,10 +197,14 @@ func initFsk() {
 
 func main() {
 	gui.InitGui()
+
 	utils.GuiPrintCallback = console.ConsoleLog
 	callbacks.UpdateServerStatusCallback = controlpanel.UpdateServerStatus
 	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus
 	callbacks.UpdateLicenseStatusCallback = controlpanel.UpdateLicenseStatus
+
+	callbacks.UpdateServerStartedCallback = controlpanel.UpdateServerStarted
+	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
 
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")

@@ -1,8 +1,10 @@
 package controlpanel
 
 import (
+	"os/exec"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/server"
+	"vfrmap-for-vr/vfrmap/utils"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -16,6 +18,9 @@ var serverStatusBinding = binding.NewString()
 var msfsConnectionBinding = binding.NewString()
 var licenseBinding = binding.NewString()
 
+var serverStartedBinding = binding.NewBool()
+var newVersionAvailableBinding = binding.NewBool()
+
 func UpdateServerStatus(status string) {
 	serverStatusBinding.Set(status)
 }
@@ -26,6 +31,14 @@ func UpdateMsfsConnectionStatus(status string) {
 
 func UpdateLicenseStatus(status string) {
 	licenseBinding.Set(status)
+}
+
+func UpdateServerStarted(value bool) {
+	serverStartedBinding.Set(value)
+}
+
+func UpdateNewVersionAvailable(value bool) {
+	newVersionAvailableBinding.Set(value)
 }
 
 func ControlPanel() *fyne.Container {
@@ -65,23 +78,34 @@ func ControlPanel() *fyne.Container {
 		console.ConsoleLogLn("Launching MSFS...")
 	})
 
-	/*test := widget.NewButtonWithIcon("Count", theme.UploadIcon(), func() {
-		console.ConsoleLogLn("Counting")
+	serverStartedBinding.AddListener(binding.NewDataListener(func() {
+		serverStarted, _ := serverStartedBinding.Get()
 
-		go func() {
-			for i := 0; i < 20; i++ {
-				time.Sleep(1 * time.Second)
-				go console.ConsoleLogLn("Counter: " + strconv.Itoa(i))
-			}
-		}()
-	})*/
+		if (serverStarted) {
+			startServerBtn.Disable()
+			stopServerBtn.Enable()
+		} else {
+			startServerBtn.Enable()
+			stopServerBtn.Disable()
+		}
+	}))
 
 	top := container.NewHBox(startServerBtn, stopServerBtn, launchSimBtn)
 	
 	// bottom
-	// TODO
+	updateInfoLabel := widget.NewLabel("A new version of FSKneeboard is available.")
+	downloadUpdateBtn := widget.NewButtonWithIcon("Download Now", theme.DownloadIcon(), func() {
+		exec.Command("rundll32", "url.dll,FileProtocolHandler", "https://fskneeboard.com/download-latest").Start()
+	})
+	bottom := container.NewHBox(updateInfoLabel, downloadUpdateBtn)
+
+	newVersionAvailableBinding.AddListener(binding.NewDataListener(func() {
+		utils.Println("newVersionAvailable DataListener called!")
+		b, _ := newVersionAvailableBinding.Get()
+		bottom.Hidden = !b
+	}))
 
 	// layout
-	border := layout.NewBorderLayout(top, nil, nil, nil)
-	return container.New(border, top, middle)
+	border := layout.NewBorderLayout(top, bottom, nil, nil)
+	return container.New(border, top, bottom, middle)
 }

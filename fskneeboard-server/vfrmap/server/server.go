@@ -123,10 +123,13 @@ func ShutdownWithPrompt() {
 }
 
 func StartFskServer() {
+	callbacks.UpdateServerStarted(true)
+
 	if globals.Pro && !globals.DrmValid {
 		dialogs.ShowLicenseError()
 		utils.Println("WARNING: Cannot start FSKneeboard server, reason: no valid license found!")
 		logger.LogWarn("Cannot start server, reason: no valid license found", false)
+		callbacks.UpdateServerStarted(false)
 		return
 	}
 
@@ -396,6 +399,7 @@ func StartFskServer() {
 
 		err := http.ListenAndServe(globals.HttpListen, nil)
 		if err != nil {
+			callbacks.UpdateServerStarted(false)
 			panic(err)
 		}
 	}()
