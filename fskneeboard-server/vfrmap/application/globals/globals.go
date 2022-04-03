@@ -19,6 +19,7 @@ var HttpListen string
 
 var SteamFs bool
 var WinstoreFs bool
+var MsfsAutostart bool
 
 var DrmValid bool = false
 

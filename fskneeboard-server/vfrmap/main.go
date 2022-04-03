@@ -10,6 +10,7 @@ import (
 	"vfrmap-for-vr/_vendor/premium/drm"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
@@ -168,6 +169,12 @@ func initFsk() {
 
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
+	if (globals.MsfsAutostart) {
+		msfsinterfacing.StartMsfs()
+	} else {
+		logger.LogInfo("MSFS autostart disabled!", false)
+		utils.Println("MSFS autostart disabled!", false)
+	}
 }
 
 func main() {
@@ -181,6 +188,8 @@ func main() {
 	callbacks.UpdateServerStartedCallback = controlpanel.UpdateServerStarted
 	callbacks.UpdateMsfsStartedCallback = controlpanel.UpdateMsfsStarted
 	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
+
+	// TODO: load flags from settings
 
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")

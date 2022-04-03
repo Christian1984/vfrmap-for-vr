@@ -40,7 +40,8 @@ func StartMsfs() {
 		}
 	} else {
 		logger.LogInfo("MSFS autostart disabled!", false)
-		utils.Println("FSKneeboard started without autostart options --steamfs or --winstorefs.")
+		logger.LogInfo("MSFS version not properly configured!", false)
+		utils.Println("MSFS version not configured in the settings. Alternatively, start FSKneeboard with autostart options --steamfs or --winstorefs.")
 		utils.Println("If you haven't already, please start Flight Simulator manually!")
 
 		failed = true
