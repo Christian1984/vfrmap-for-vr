@@ -2,6 +2,8 @@ package controlpanel
 
 import (
 	"os/exec"
+	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/server"
 	"vfrmap-for-vr/vfrmap/utils"
@@ -19,6 +21,7 @@ var msfsConnectionBinding = binding.NewString()
 var licenseBinding = binding.NewString()
 
 var serverStartedBinding = binding.NewBool()
+var msfsStartedBinding = binding.NewBool()
 var newVersionAvailableBinding = binding.NewBool()
 
 func UpdateServerStatus(status string) {
@@ -35,6 +38,10 @@ func UpdateLicenseStatus(status string) {
 
 func UpdateServerStarted(value bool) {
 	serverStartedBinding.Set(value)
+}
+
+func UpdateMsfsStarted(value bool) {
+	msfsStartedBinding.Set(value)
 }
 
 func UpdateNewVersionAvailable(value bool) {
@@ -65,18 +72,30 @@ func ControlPanel() *fyne.Container {
 
 	// top
 	startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
-		console.ConsoleLogLn("Server Started")
+		console.ConsoleLogLn("Starting Server...")
 		go server.StartFskServer()
 	})
 
 	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {
-		console.ConsoleLogLn("Server Stopped")
+		console.ConsoleLogLn("Stopping Server...")
 		go server.StopFskServer()
 	})
+	stopServerBtn.Hidden = true //temporary
 
 	launchSimBtn := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
 		console.ConsoleLogLn("Launching MSFS...")
+		go msfsinterfacing.StartMsfs()
 	})
+
+	msfsStartedBinding.AddListener(binding.NewDataListener(func() {
+		msfsStarted, _ := msfsStartedBinding.Get()
+
+		if msfsStarted {
+			launchSimBtn.Disable()
+		} else {
+			launchSimBtn.Enable()
+		}
+	}))
 
 	serverStartedBinding.AddListener(binding.NewDataListener(func() {
 		serverStarted, _ := serverStartedBinding.Get()
@@ -95,7 +114,7 @@ func ControlPanel() *fyne.Container {
 	// bottom
 	updateInfoLabel := widget.NewLabel("A new version of FSKneeboard is available.")
 	downloadUpdateBtn := widget.NewButtonWithIcon("Download Now", theme.DownloadIcon(), func() {
-		exec.Command("rundll32", "url.dll,FileProtocolHandler", "https://fskneeboard.com/download-latest").Start()
+		exec.Command("rundll32", "url.dll,FileProtocolHandler", globals.DownloadLink).Start()
 	})
 	bottom := container.NewHBox(updateInfoLabel, downloadUpdateBtn)
 

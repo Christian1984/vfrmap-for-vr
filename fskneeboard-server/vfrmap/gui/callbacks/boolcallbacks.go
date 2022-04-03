@@ -12,6 +12,12 @@ func UpdateServerStarted(status bool) {
 	runBoolCallback(status, UpdateServerStartedCallback)
 }
 
+var UpdateMsfsStartedCallback func(bool)
+
+func UpdateMsfsStarted(status bool) {
+	runBoolCallback(status, UpdateMsfsStartedCallback)
+}
+
 var NewVersionAvailableCallback func(bool)
 
 func NewVersionAvailable(status bool) {
