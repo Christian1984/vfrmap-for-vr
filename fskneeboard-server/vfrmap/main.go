@@ -33,16 +33,6 @@ var noupdatecheck bool
 func initFsk() {
 	utils.Println("Initializing FSKneeboard Core Application...")
 
-	globals.Pro = pro == "true"
-
-	globals.ProductName = "FSKneeboard"
-	if globals.Pro {
-		globals.ProductName += " PRO"
-		globals.DownloadLink = globals.DownloadLinkPro
-		} else {
-		globals.DownloadLink = globals.DownloadLinkFree
-	}
-
 	utils.Printf("\n"+globals.ProductName+" - Server\n  Website: https://fskneeboard.com\n  Discord: https://discord.fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", buildVersion, buildTime)
 
 	if globals.Pro {
@@ -99,30 +89,12 @@ func initFsk() {
 		} else {
 			logger.LogInfo("Could not find a new version!", false)
 		}
-	}
-
-	// autosave info
-	/*
-	utils.Println("=== INFO: Autosave")
-	// TODO: Dialog and status to gui
-
-	if globals.AutosaveInterval > 0 {
-		utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
-		logger.LogInfo("Autosave Interval set to " + strconv.Itoa(globals.AutosaveInterval) + " minute(s)", false)
 	} else {
-		utils.Println("Autosave not activated. Run fskneeboard.exe --autosave 5 to automatically save your flights every 5 minutes...")
-		logger.LogInfo("Autosave not activated", false)
+		callbacks.NewVersionAvailable(false)
 	}
-
-	if globals.Pro {
-		utils.Println("PLEASE NOTE: 'Autosave' is a feature available exclusively to FSKneeboard PRO supporters. Please consider supporting the development of FSKneeboard by purchasing a license at https://fskneeboard.com/buy-now/")
-	}
-
-	utils.Println("")
-	*/
 
 	// hotkey info
-	utils.Println("=== INFO: Hotkey")
+	/*utils.Println("=== INFO: Hotkey")
 
 	if globals.Hotkey != 0 {
 		key := "F"
@@ -150,7 +122,7 @@ func initFsk() {
 		utils.Println("Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable [ALT]+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
 	}
 
-	utils.Println("")
+	utils.Println("")*/
 
 	// connect to bolt db
 	utils.Println("=== INFO: Local FSKneeboard Database Connection")
@@ -195,6 +167,17 @@ func registerGuiCallbacks() {
 }
 
 func main() {
+	globals.Pro = pro == "true"
+
+	globals.ProductName = "FSKneeboard"
+	if globals.Pro {
+		globals.ProductName += " PRO"
+		globals.DownloadLink = globals.DownloadLinkPro
+	} else {
+		globals.ProductName += " FREE"
+		globals.DownloadLink = globals.DownloadLinkFree
+	}
+
 	// flags to respect always
 	flag.BoolVar(&globals.DevMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")

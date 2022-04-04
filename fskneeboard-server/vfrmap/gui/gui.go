@@ -31,13 +31,7 @@ func InitGui() {
 		logger.LogWarn("Icon could not be loaded!", false)
 	}
 
-	title := "FSKneeboard "
-
-	if globals.Pro {
-		title += "PRO"
-	} else {
-		title += "FREE"
-	}
+	title := globals.ProductName
 
 	w = a.NewWindow(title)
 

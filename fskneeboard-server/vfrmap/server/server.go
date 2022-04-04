@@ -130,13 +130,19 @@ func UpdateAutosaveInterval() {
 		autosaveTick.Stop()
 	}
 
+	utils.Println("=== INFO: Autosave")
+
 	if globals.AutosaveInterval > 0 {
-		logger.LogDebug("Autosave interval updated: Creating new ticker with an interval of " + strconv.Itoa(globals.AutosaveInterval) + " minutes", false)
+		utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
+		logger.LogInfo("Autosave interval updated: Creating new ticker with an interval of " + strconv.Itoa(globals.AutosaveInterval) + " minutes", false)
 		autosaveTick = time.NewTicker(time.Duration(globals.AutosaveInterval) * time.Minute)
 	} else {
-		logger.LogDebug("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
+		utils.Println("Autosave deactivated. Please configure the autosave interval in the settings section.")
+		logger.LogInfo("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
 		autosaveTick = time.NewTicker(9999 * time.Minute)
 	}
+
+	utils.Println("")
 
 	callbacks.UpdateAutosave(globals.AutosaveInterval)
 }
@@ -172,6 +178,7 @@ func StartFskServer() {
 	logger.LogInfo("Waiting for Flight Simulator...", false)
 	utils.Println("")
 	utils.Print("Waiting for Flight Simulator..")
+	callbacks.UpdateServerStatus("Waiting for Flight Simulator...")
 	callbacks.UpdateMsfsConnectionStatus("Connecting...")
 
 	for true {

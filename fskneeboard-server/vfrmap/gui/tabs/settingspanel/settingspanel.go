@@ -26,7 +26,7 @@ var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
 
 var loglevelOptions = []string{
-	strings.Title(logger.Off), 
+	strings.Title(logger.Off),
 	strings.Title(logger.Debug),
 	strings.Title(logger.Info),
 	strings.Title(logger.Warn),
