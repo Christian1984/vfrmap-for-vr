@@ -10,16 +10,18 @@ const DownloadLinkFree = "https://fskneeboard.com/free-download/"
 var DownloadLink string
 
 var Quietshutdown bool
-var DisableTeleport bool
 var DevMode bool
 var ProductName string
 var Hotkey int
 var AutosaveInterval int
 var HttpListen string
+var LogLevel string
 
 var SteamFs bool
 var WinstoreFs bool
 var MsfsAutostart bool
+
+var DisableTeleport = false
 
 var DrmValid bool = false
 

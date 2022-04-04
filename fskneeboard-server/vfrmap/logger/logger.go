@@ -30,8 +30,23 @@ var logLevel = Off
 var isVerbose = false
 
 func Init(level string, verbose bool) {
-	logLevel = level
+	SetLevel(level)
+	SetVerbose(verbose)
+}
+
+func SetLevel(level string) {
+	logLevel = strings.ToLower(level)
+}
+
+func SetVerbose(verbose bool) {
 	isVerbose = verbose
+}
+
+func TryCreateLogFile() {
+	if !hasOutputFile && ShouldLog(logLevel) {
+		CreateLogFile()
+		LogDebug("Logfile created!", false)
+	}
 }
 
 func CreateLogFile() {

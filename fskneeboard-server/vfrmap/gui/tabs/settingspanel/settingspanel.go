@@ -2,6 +2,7 @@ package settingspanel
 
 import (
 	"strconv"
+	"strings"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -24,6 +25,15 @@ var msfsAutostartBinding = binding.NewBool()
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
 
+var loglevelOptions = []string{
+	strings.Title(logger.Off), 
+	strings.Title(logger.Debug),
+	strings.Title(logger.Info),
+	strings.Title(logger.Warn),
+	strings.Title(logger.Error),
+}
+var loglevelBinding = binding.NewString()
+
 func UpdateAutosaveStatus(interval int) {
 	intervalString := "Off"
 
@@ -35,6 +45,8 @@ func UpdateAutosaveStatus(interval int) {
 }
 
 func SettingsPanel() *fyne.Container {
+	logger.LogDebug("Initializing Settings Panel...", false)
+
 	// MSFS version select
 	msfsVersionLabel := widget.NewLabel("Flight Simulator Version")
 	msfsVersionSelect := widget.NewSelect(msfsVersionOptions, func(selected string) {
@@ -98,7 +110,31 @@ func SettingsPanel() *fyne.Container {
 	autosaveBinding.Set("Off")
 
 	// set log level
-	// TODO
+	loglevelLabel := widget.NewLabel("Log Level")
+	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
+		loglevelBinding.Set(selected)
+	})
+
+	loglevelBinding.AddListener(binding.NewDataListener(func() {
+		loglevelString, _ := loglevelBinding.Get()
+
+		matchIndex := 0
+
+		for index, value := range loglevelOptions {
+			if strings.ToLower(loglevelString) == strings.ToLower(value) {
+				matchIndex = index
+				break
+			}
+		}
+
+		loglevelSelect.SetSelected(loglevelOptions[matchIndex])
+
+		globals.LogLevel = strings.ToLower(loglevelString)
+		logger.SetLevel(loglevelString)
+		logger.TryCreateLogFile()
+	}))
+
+	loglevelBinding.Set(globals.LogLevel)
 
 	// grid and centerContainer
 	//empty := widget.NewLabel("")
@@ -107,7 +143,11 @@ func SettingsPanel() *fyne.Container {
 		msfsVersionLabel, msfsVersionSelect,
 		msfsAutostartLabel, msfsAutostartCb,
 		autosaveLabel, autosaveSelect,
+		loglevelLabel, loglevelSelect,
 	)
 	centerContainer := container.NewCenter(grid)
+
+	logger.LogDebug("Settings Panel initialized", false)
+
 	return centerContainer
 }

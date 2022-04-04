@@ -6,6 +6,7 @@ import (
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
+	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server"
 
 	"fyne.io/fyne/v2"
@@ -60,6 +61,8 @@ func UpdateAutosaveStatus(interval int) {
 }
 
 func ControlPanel() *fyne.Container {
+	logger.LogDebug("Initializing Control Panel...", false)
+
 	//middle
 	serverStatusLabel := widget.NewLabel("Server Status")
 	serverStatusBinding.Set("Not Running")
@@ -141,5 +144,9 @@ func ControlPanel() *fyne.Container {
 
 	// layout
 	border := layout.NewBorderLayout(top, bottom, nil, nil)
-	return container.New(border, top, bottom, middle)
+	resContainer := container.New(border, top, bottom, middle)
+
+	logger.LogDebug("Control Panel initialized", false)
+
+	return resContainer
 }

@@ -1,6 +1,8 @@
 package console
 
 import (
+	"vfrmap-for-vr/vfrmap/logger"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
@@ -36,6 +38,8 @@ func ConsoleLogLn(message string) {
 }
 
 func Console() *fyne.Container {
+	logger.LogDebug("Initializing Console Panel...", false)
+
 	// console
 	consoleBinding = binding.NewString()
 	console = widget.NewLabelWithData(consoleBinding)
@@ -62,8 +66,12 @@ func Console() *fyne.Container {
 	
 	bottom := container.NewHBox(clearLogBtn, scrollToBottomCb)
 
-	border := layout.NewBorderLayout(nil, bottom, nil, nil)	
-	return container.New(border, bottom, middle)
+	border := layout.NewBorderLayout(nil, bottom, nil, nil)
+	resContainer := container.New(border, bottom, middle)
+
+	logger.LogDebug("Console Panel initialized", false)
+
+	return resContainer
 }
 
 func conditionalAutoScroll() {

@@ -28,10 +28,7 @@ var buildVersion string
 var buildTime string
 var pro string
 
-var disableTeleport bool
 var noupdatecheck bool
-
-var logLevel string
 
 func initFsk() {
 	utils.Println("Initializing FSKneeboard Core Application...")
@@ -198,33 +195,26 @@ func registerGuiCallbacks() {
 }
 
 func main() {
-	gui.InitGui()
-
-	registerGuiCallbacks()
-
-	// TODO: load flags from settings
-
-	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
-	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")
-	flag.StringVar(&logLevel, "log", "off", "set log level (debug | info | error | off)")
-	flag.BoolVar(&globals.DisableTeleport, "disable-teleport", false, "disable teleport")
+	// flags to respect always
 	flag.BoolVar(&globals.DevMode, "dev", false, "enable dev mode, i.e. no running msfs required")
-	flag.BoolVar(&globals.SteamFs, "steamfs", false, "start Flight Simulator via Steam")
-	flag.BoolVar(&globals.WinstoreFs, "winstorefs", false, "start Flight Simulator via Windows Store")
+	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")
 	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
+	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
+
+	// flags to compare against stored values
+	flag.StringVar(&globals.LogLevel, "log", "off", "set log level (debug | info | error | off)")
+
+	// TODO: flags to check if required
 	flag.BoolVar(&globals.Quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
 
-	flag.IntVar(&globals.AutosaveInterval, "autosave", 0, "set autosave interval in minutes")
+	// TODO: flags to remove/replace by gui
 	flag.IntVar(&globals.Hotkey, "hotkey", 0, "select a hotkey to toggle the ingame panel's visibility. 1 => [ALT]+F, 2 => [ALT]+K, 3 => [ALT]+T, 4 => [CTRL]+[SHIFT]+F, 5 => [CTRL]+[SHIFT]+K, 6 => [CTRL]+[SHIFT]+T")
 
 	flag.Parse()
 
-	logger.Init(logLevel, globals.Verbose)
-
-	if logger.ShouldLog(logLevel) {
-		logger.CreateLogFile()
-		logger.LogDebug("Logfile created!", false)
-	}
+	// init logger
+	logger.Init(globals.LogLevel, globals.Verbose)
+	logger.TryCreateLogFile()
 	
 	/*
 	logger.LogMessage("OFF-Test", logger.Off, "", false)
@@ -237,16 +227,14 @@ func main() {
 
 	logger.LogInfo("FSKneeboard started with params\n" + 
 		"\tverbose:          " + strconv.FormatBool(globals.Verbose) + "\n" +
+		"\tlog:              " + globals.LogLevel + "\n" +
 		"\tlisten:           " + globals.HttpListen + "\n" +
-		"\tlog:              " + logLevel + "\n" +
-		"\tdisable-teleport: " + strconv.FormatBool(disableTeleport) + "\n" +
 		"\tdev:              " + strconv.FormatBool(globals.DevMode) + "\n" +
-		"\tsteamfs:          " + strconv.FormatBool(globals.SteamFs) + "\n" +
-		"\twinstorefs:       " + strconv.FormatBool(globals.WinstoreFs) + "\n" +
 		"\tnoupdatecheck:    " + strconv.FormatBool(noupdatecheck) + "\n" +
-		"\tquietshutdown:    " + strconv.FormatBool(globals.Quietshutdown) + "\n" +
-		"\tautosave:         " + strconv.Itoa(globals.AutosaveInterval) + "\n" +
-		"\thotkey:           " + strconv.Itoa(globals.Hotkey) + "\n", false)
+		"\tquietshutdown:    " + strconv.FormatBool(globals.Quietshutdown) + "\n", false)
+
+	gui.InitGui()
+	registerGuiCallbacks()
 
 	initFsk()
 	gui.ShowAndRun()
