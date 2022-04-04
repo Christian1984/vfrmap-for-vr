@@ -16,6 +16,7 @@ import (
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
+	"vfrmap-for-vr/vfrmap/gui/tabs/settingspanel"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server"
 	"vfrmap-for-vr/vfrmap/utils"
@@ -102,6 +103,7 @@ func initFsk() {
 	}
 
 	// autosave info
+	/*
 	utils.Println("=== INFO: Autosave")
 	// TODO: Dialog and status to gui
 
@@ -118,6 +120,7 @@ func initFsk() {
 	}
 
 	utils.Println("")
+	*/
 
 	// hotkey info
 	utils.Println("=== INFO: Hotkey")
@@ -173,21 +176,29 @@ func initFsk() {
 		msfsinterfacing.StartMsfs()
 	} else {
 		logger.LogInfo("MSFS autostart disabled!", false)
-		utils.Println("MSFS autostart disabled!", false)
+		utils.Println("MSFS autostart disabled! Please configure your version of Flight Simulator and enable autostart in the settings section.")
 	}
+}
+
+func registerGuiCallbacks() {
+	utils.GuiPrintCallback = console.ConsoleLog
+
+	callbacks.UpdateServerStatusCallback = controlpanel.UpdateServerStatus
+	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus
+	callbacks.UpdateLicenseStatusCallback = controlpanel.UpdateLicenseStatus
+
+	callbacks.UpdateAutosaveCallbacks = append(callbacks.UpdateAutosaveCallbacks, controlpanel.UpdateAutosaveStatus)
+	callbacks.UpdateAutosaveCallbacks = append(callbacks.UpdateAutosaveCallbacks, settingspanel.UpdateAutosaveStatus)
+
+	callbacks.UpdateServerStartedCallback = controlpanel.UpdateServerStarted
+	callbacks.UpdateMsfsStartedCallback = controlpanel.UpdateMsfsStarted
+	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
 }
 
 func main() {
 	gui.InitGui()
 
-	utils.GuiPrintCallback = console.ConsoleLog
-	callbacks.UpdateServerStatusCallback = controlpanel.UpdateServerStatus
-	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus
-	callbacks.UpdateLicenseStatusCallback = controlpanel.UpdateLicenseStatus
-
-	callbacks.UpdateServerStartedCallback = controlpanel.UpdateServerStarted
-	callbacks.UpdateMsfsStartedCallback = controlpanel.UpdateMsfsStarted
-	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
+	registerGuiCallbacks()
 
 	// TODO: load flags from settings
 

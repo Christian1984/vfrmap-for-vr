@@ -3,7 +3,9 @@ package settingspanel
 import (
 	"strconv"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/logger"
+	"vfrmap-for-vr/vfrmap/server"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -18,6 +20,19 @@ var msfsVersionOptions = []string{msfsVersionOptionWinstore, msfsVersionOptionSt
 var msfsVersionBinding = binding.NewString()
 
 var msfsAutostartBinding = binding.NewBool()
+
+var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
+var autosaveBinding = binding.NewString()
+
+func UpdateAutosaveStatus(interval int) {
+	intervalString := "Off"
+
+	if interval > 0 {
+		intervalString = strconv.Itoa(interval)
+	}
+
+	autosaveBinding.Set(intervalString)
+}
 
 func SettingsPanel() *fyne.Container {
 	// MSFS version select
@@ -55,17 +70,43 @@ func SettingsPanel() *fyne.Container {
 		logger.LogInfo("MSFS Autostart updated: " + strconv.FormatBool(msfsAutostart), false)
 	}))
 
+	// set autosave properties
+	autosaveLabel := widget.NewLabel("Autosave Interval [minutes]")
+	autosaveSelect := widget.NewSelect(autosaveOptions, func(selected string) {
+		autosaveBinding.Set(selected)
+	})
+
+	autosaveBinding.AddListener(binding.NewDataListener(func() {
+		autosaveString, _ := autosaveBinding.Get()
+
+		if autosaveString != "Off" && !globals.Pro {
+			autosaveString = "Off"
+			dialogs.ShowProFeatureInfo("Autosave")
+		}
+
+		autosaveSelect.SetSelected(autosaveString)
+
+		autosaveInterval, err := strconv.Atoi(autosaveString)
+		if err != nil {
+			autosaveInterval = 0
+		}
+
+		globals.AutosaveInterval = autosaveInterval
+		server.UpdateAutosaveInterval()
+	}))
+
+	autosaveBinding.Set("Off")
+
 	// set log level
 	// TODO
 
-	// set autosave properties
-	// TODO
-
 	// grid and centerContainer
+	//empty := widget.NewLabel("")
 	grid := container.NewGridWithColumns(
 		2,
 		msfsVersionLabel, msfsVersionSelect,
 		msfsAutostartLabel, msfsAutostartCb,
+		autosaveLabel, autosaveSelect,
 	)
 	centerContainer := container.NewCenter(grid)
 	return centerContainer

@@ -2,6 +2,7 @@ package controlpanel
 
 import (
 	"os/exec"
+	"strconv"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
@@ -19,6 +20,7 @@ import (
 var serverStatusBinding = binding.NewString()
 var msfsConnectionBinding = binding.NewString()
 var licenseBinding = binding.NewString()
+var autosaveBinding = binding.NewString()
 
 var serverStartedBinding = binding.NewBool()
 var msfsStartedBinding = binding.NewBool()
@@ -48,6 +50,16 @@ func UpdateNewVersionAvailable(value bool) {
 	newVersionAvailableBinding.Set(value)
 }
 
+func UpdateAutosaveStatus(interval int) {
+	intervalString := "Off"
+
+	if interval > 0 {
+		intervalString = strconv.Itoa(interval) + " minutes"
+	}
+
+	autosaveBinding.Set(intervalString)
+}
+
 func ControlPanel() *fyne.Container {
 	//middle
 	serverStatusLabel := widget.NewLabel("Server Status")
@@ -62,11 +74,16 @@ func ControlPanel() *fyne.Container {
 	licenseBinding.Set("Checking...")
 	licenseValue := widget.NewLabelWithData(licenseBinding)
 
+	autosaveLabel := widget.NewLabel("Autosave Interval")
+	autosaveBinding.Set("Off")
+	autosaveValue := widget.NewLabelWithData(autosaveBinding)
+
 	grid := container.NewGridWithColumns(
 		2,
 		licenseLabel, licenseValue,
 		msfsConnectionLabel, msfsConnectionValue,
 		serverStatusLabel, serverStatusValue,
+		autosaveLabel, autosaveValue,
 	)
 	middle := container.NewCenter(grid)
 

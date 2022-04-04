@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -34,6 +35,7 @@ import (
 )
 
 var started = false
+var autosaveTick *time.Ticker
 
 type Report struct {
 	simconnect.RecvSimobjectDataByType
@@ -120,6 +122,23 @@ func ShutdownWithPrompt() {
 	}
 
 	os.Exit(0)
+}
+
+func UpdateAutosaveInterval() {
+	if autosaveTick != nil {
+		logger.LogDebug("Autosave interval updated: Stopping old timer...", false)
+		autosaveTick.Stop()
+	}
+
+	if globals.AutosaveInterval > 0 {
+		logger.LogDebug("Autosave interval updated: Creating new ticker with an interval of " + strconv.Itoa(globals.AutosaveInterval) + " minutes", false)
+		autosaveTick = time.NewTicker(time.Duration(globals.AutosaveInterval) * time.Minute)
+	} else {
+		logger.LogDebug("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
+		autosaveTick = time.NewTicker(9999 * time.Minute)
+	}
+
+	callbacks.UpdateAutosave(globals.AutosaveInterval)
 }
 
 func StartFskServer() {
@@ -403,14 +422,6 @@ func StartFskServer() {
 			panic(err)
 		}
 	}()
-
-	var autosaveTick *time.Ticker
-
-	if globals.AutosaveInterval > 0 {
-		autosaveTick = time.NewTicker(time.Duration(globals.AutosaveInterval) * time.Minute)
-	} else {
-		autosaveTick = time.NewTicker(9999 * time.Minute)
-	}
 
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
