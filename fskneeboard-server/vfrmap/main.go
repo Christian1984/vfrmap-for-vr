@@ -34,6 +34,8 @@ var noupdatecheck bool
 var logLevel string
 
 func initFsk() {
+	utils.Println("Initializing FSKneeboard Core Application...")
+
 	globals.Pro = pro == "true"
 
 	globals.ProductName = "FSKneeboard"

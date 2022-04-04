@@ -7,7 +7,6 @@ import (
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/server"
-	"vfrmap-for-vr/vfrmap/utils"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -136,7 +135,6 @@ func ControlPanel() *fyne.Container {
 	bottom := container.NewHBox(updateInfoLabel, downloadUpdateBtn)
 
 	newVersionAvailableBinding.AddListener(binding.NewDataListener(func() {
-		utils.Println("newVersionAvailable DataListener called!")
 		b, _ := newVersionAvailableBinding.Get()
 		bottom.Hidden = !b
 	}))
