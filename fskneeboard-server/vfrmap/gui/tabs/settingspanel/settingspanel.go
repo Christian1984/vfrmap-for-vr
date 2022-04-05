@@ -84,8 +84,6 @@ func SettingsPanel() *fyne.Container {
 	msfsVersionBinding.AddListener(binding.NewDataListener(func() {
 		selected, _ := msfsVersionBinding.Get()
 
-		msfsVersionSelect.SetSelected(selected)
-
 		globals.SteamFs = false
 		globals.WinstoreFs = false
 
@@ -95,7 +93,11 @@ func SettingsPanel() *fyne.Container {
 		} else if selected == msfsVersionOptionSteam {
 			globals.SteamFs = true
 			logger.LogInfo("Selected MSFS Version: Steam", false)
+		} else {
+			return
 		}
+
+		msfsVersionSelect.SetSelected(selected)
 
 		dbmanager.StoreMsfsVersion()
 	}))
@@ -133,14 +135,23 @@ func SettingsPanel() *fyne.Container {
 	})
 
 	autosaveBinding.AddListener(binding.NewDataListener(func() {
-		autosaveString, _ := autosaveBinding.Get()
+		autosaveString, bindingErr := autosaveBinding.Get()
+
+		if bindingErr != nil {
+			logger.LogError(bindingErr.Error(), false)
+		}
 
 		if autosaveString != "Off" && !globals.Pro {
 			autosaveString = "Off"
 			dialogs.ShowProFeatureInfo("Autosave")
 		}
 
-		autosaveSelect.SetSelected(autosaveString)
+		for _, v := range autosaveOptions {
+			if v == autosaveString {
+				autosaveSelect.SetSelected(autosaveString)
+				break
+			}
+		}
 
 		autosaveInterval, err := strconv.Atoi(autosaveString)
 		if err != nil {

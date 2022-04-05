@@ -5,6 +5,7 @@ package main
 import (
 	"flag"
 	"strconv"
+	"time"
 
 	"vfrmap-for-vr/_vendor/premium/common"
 	"vfrmap-for-vr/_vendor/premium/drm"
@@ -262,6 +263,8 @@ func main() {
 
 	gui.InitGui()
 	registerGuiCallbacks()
+
+	time.Sleep(1 * time.Second)
 
 	initFsk()
 

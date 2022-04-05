@@ -39,5 +39,5 @@ func MsfsAutostartChanged(autostart bool) {
 var ServerAutostartChangedCallback func(bool)
 
 func ServerAutostartChanged(autostart bool) {
-	runBoolCallback(autostart, MsfsAutostartChangedCallback)
+	runBoolCallback(autostart, ServerAutostartChangedCallback)
 }
