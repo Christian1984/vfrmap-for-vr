@@ -1,35 +1,16 @@
 package dbmanager
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
-	"strconv"
-	"strings"
 	"time"
-	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/logger"
-	"vfrmap-for-vr/vfrmap/utils"
 
 	"github.com/boltdb/bolt"
 )
 
-type StorageData struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-	Sender string `json:"sender,omitempty"`
-}
+const clientDataBucket = "fskneeboard"
+const serverSettingsBucket = "serversettings"
 
-type StorageDataSet struct {
-	DataSets []StorageData `json:"data"`
-	Sender string `json:"sender,omitempty"`
-}
-
-type StorageDataKeysArray struct {
-	Keys []string
-}
-
-const boltBucketName = "fskneeboard"
 const boltFileName = "fskneeboard.db"
 
 var db *bolt.DB
@@ -44,13 +25,27 @@ func DbConnect() error {
 	return nil
 }
 
+func initBucket(name string, tx *bolt.Tx) error {
+	_, err := tx.CreateBucketIfNotExists([]byte(name))
+	if err != nil {
+		logger.LogError("Cannot create bucket " + name + " in db " + boltFileName + ", details: " + err.Error(), false)
+		return fmt.Errorf("Cannot create bucket: %s", err)
+	}
+	return nil
+}
+
 func DbInit() {
 	db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte(boltBucketName))
-		if err != nil {
-			logger.LogError("Cannot create bucket " + boltBucketName + " in db " + boltFileName + ", details: " + err.Error(), false)
-			return fmt.Errorf("Cannot create bucket: %s", err)
+		dtbcktErr := initBucket(clientDataBucket, tx)
+		if dtbcktErr != nil {
+			return dtbcktErr
 		}
+
+		srvSttErr := initBucket(serverSettingsBucket, tx)
+		if srvSttErr != nil {
+			return srvSttErr
+		}
+
 		return nil
 	})
 }
@@ -59,23 +54,23 @@ func DbClose() {
 	db.Close()
 }
 
-func DbWrite(key string, value string) {
-	logger.LogDebug("Storing data: [" + key + "]=[" + value + "]", false)
+func dbWrite(bucket string, key string, value string) {
+	logger.LogDebug("Storing data: [" + key + "]=[" + value + "] in bucket [" + bucket + "]", false)
 
 	db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(boltBucketName))
+		b := tx.Bucket([]byte(bucket))
 		err := b.Put([]byte(key), []byte(value))
 		return err
 	})
 }
 
-func DbRead(key string) string {
-	logger.LogDebug("Reading data for key [" + key + "]", false)
+func dbRead(bucket string, key string) string {
+	logger.LogDebug("Reading data for key [" + key + "] from bucket [" + bucket + "]", false)
 
 	var out *string
 
 	db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(boltBucketName))
+		b := tx.Bucket([]byte(bucket))
 		v := b.Get([]byte(key))
 
 		outs := string(v[:])
@@ -89,163 +84,11 @@ func DbRead(key string) string {
 	return *out
 }
 
-// controller methods
-func DataController(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet && r.Method != http.MethodPost {
-		logger.LogError("Method "+r.Method+" not allowed!", false);
-		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var res StorageData
-
-	switch r.Method {
-	case http.MethodGet:
-		key := r.URL.Query().Get("key")
-
-		if len(strings.TrimSpace(key)) == 0 {
-			logger.LogError("Property \"key\" must NOT be empty!", false);
-			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
-			return
-		}
-
-		out := DbRead(strings.TrimSpace(key))
-		res = StorageData{key, strings.TrimSpace(out), ""}
-		break
-
-	case http.MethodPost:
-		var storageData StorageData
-		sdErr := json.NewDecoder(r.Body).Decode(&storageData)
-		if sdErr != nil {
-			logger.LogError("Error in dataController POST method: " + sdErr.Error(), true)
-			http.Error(w, sdErr.Error(), http.StatusBadRequest)
-			return
-		}
-
-		logger.LogDebug("Received StorageData: key=[" + strings.TrimSpace(storageData.Key) + "], value=[" + strings.TrimSpace(storageData.Value) + "]", false)
-
-		if len(strings.TrimSpace(storageData.Key)) == 0 {
-			logger.LogError("Property \"key\" must NOT be empty!", false);
-			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
-			return
-		}
-
-		DbWrite(strings.TrimSpace(storageData.Key), strings.TrimSpace(storageData.Value))
-		res = storageData
-		
-		globals.Notepad.BroadcastIfNote(storageData.Sender, storageData.Key)
-
-		break
-	}
-
-	responseJson, jsonErr := json.Marshal(res)
-
-	if jsonErr != nil {
-		utils.Println(jsonErr.Error())
-		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Set("Pragma", "no-cache")
-	w.Header().Set("Expires", "0")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(responseJson))
+func DbWriteData(key string, value string) {
+	dbWrite(clientDataBucket, key, value)
 }
 
-func DataSetController(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet && r.Method != http.MethodPost {
-		logger.LogError("Method "+r.Method+" not allowed!", false);
-		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var res StorageDataSet
-
-	switch r.Method {
-	case http.MethodGet:
-		keysString := r.URL.Query().Get("keys")
-
-		logger.LogDebug("Received Keys for data retrieval (raw): " + keysString, false)
-
-		keys := StorageDataKeysArray{}
-		jsonErr := json.Unmarshal([]byte(keysString), &keys.Keys)
-
-		if jsonErr != nil {
-			logger.LogError("Error in dataSetController GET method: " + jsonErr.Error(), true)
-			http.Error(w, jsonErr.Error(), http.StatusBadRequest)
-			return
-		}
-
-		logger.LogDebug("Extracted " + strconv.Itoa(len(keys.Keys)) + " keys for data retrieval:", false)
-		for _, key := range keys.Keys {
-			logger.LogDebug("  key=[" + strings.TrimSpace(key) + "]", false)
-		}
-
-		for _, key := range keys.Keys {
-			if len(strings.TrimSpace(key)) == 0 {
-				logger.LogError("Property \"key\" must NOT be empty!", false);
-				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
-				return
-			}
-		}
-
-		for _, key := range keys.Keys {
-			value := DbRead(strings.TrimSpace(key))
-			sd := StorageData{strings.TrimSpace(key), value, ""}
-			res.DataSets = append(res.DataSets, sd)
-		}
-
-		break
-
-	case http.MethodPost:
-		var storageDataSet StorageDataSet
-		sdErr := json.NewDecoder(r.Body).Decode(&storageDataSet)
-		if sdErr != nil {
-			logger.LogError("Error in dataSetController POST method: " + sdErr.Error(), false)
-			http.Error(w, sdErr.Error(), http.StatusBadRequest)
-			return
-		}
-
-		logger.LogDebug("Received " + strconv.Itoa(len(storageDataSet.DataSets)) + " StorageDataSet for storage:", false)
-		for _, ds := range storageDataSet.DataSets {
-			logger.LogDebug("StorageData: key=[" + strings.TrimSpace(ds.Key) + "], value=[" + strings.TrimSpace(ds.Value) + "]", false)
-		}
-
-		for _, ds := range storageDataSet.DataSets {
-			if len(strings.TrimSpace(ds.Key)) == 0 {
-				logger.LogError("Property \"key\" must NOT be empty!", false);
-				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
-				return
-			}
-		}
-
-		var keys []string
-
-		for _, ds := range storageDataSet.DataSets {
-			DbWrite(strings.TrimSpace(ds.Key), strings.TrimSpace(ds.Value))
-			keys = append(keys, ds.Key)
-		}
-
-		globals.Notepad.BroadcastIfContainsNote(storageDataSet.Sender, keys)
-
-		res = storageDataSet
-		break
-	}
-
-	responseJson, jsonErr := json.Marshal(res)
-
-	if jsonErr != nil {
-		utils.Println(jsonErr.Error())
-		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Set("Pragma", "no-cache")
-	w.Header().Set("Expires", "0")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(responseJson))
+func DbReadData(key string) string {
+	return dbRead(clientDataBucket, key)
 }
+
