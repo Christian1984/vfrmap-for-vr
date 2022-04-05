@@ -23,3 +23,9 @@ var UpdateLicenseStatusCallback func(string)
 func UpdateLicenseStatus(status string) {
 	runStringCallback(status, UpdateLicenseStatusCallback)
 }
+
+var UpdateLogLevelStatusCallback func(string)
+
+func UpdateLogLevelStatus(status string) {
+	runStringCallback(status, UpdateLogLevelStatusCallback)
+}

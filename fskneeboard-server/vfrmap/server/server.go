@@ -144,7 +144,7 @@ func UpdateAutosaveInterval() {
 
 	utils.Println("")
 
-	callbacks.UpdateAutosave(globals.AutosaveInterval)
+	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
 }
 
 func StartFskServer() {

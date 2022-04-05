@@ -3,6 +3,7 @@ package settingspanel
 import (
 	"strconv"
 	"strings"
+	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -44,6 +45,28 @@ func UpdateAutosaveStatus(interval int) {
 	autosaveBinding.Set(intervalString)
 }
 
+func UpdateMsfsVersionStatus(steam bool) {
+	if steam {
+		msfsVersionBinding.Set(msfsVersionOptionSteam)
+	} else {
+		msfsVersionBinding.Set(msfsVersionOptionWinstore)
+	}
+}
+
+func UpdateAutostartStatus(autostart bool) {
+	msfsAutostartBinding.Set(autostart)
+}
+
+func UpdateLogLevelStatus(level string) {
+	lowerLevel := strings.ToLower(level)
+
+	if lowerLevel != logger.Debug && lowerLevel != logger.Info && lowerLevel != logger.Warn && lowerLevel != logger.Error {
+		lowerLevel = "off"
+	}
+
+	loglevelBinding.Set(lowerLevel)
+}
+
 func SettingsPanel() *fyne.Container {
 	logger.LogDebug("Initializing Settings Panel...", false)
 
@@ -68,6 +91,8 @@ func SettingsPanel() *fyne.Container {
 			globals.SteamFs = true
 			logger.LogInfo("Selected MSFS Version: Steam", false)
 		}
+
+		dbmanager.StoreMsfsVersion()
 	}))
 
 	msfsVersionBinding.Set(msfsVersionOptionWinstore)
@@ -80,6 +105,8 @@ func SettingsPanel() *fyne.Container {
 		msfsAutostart, _ := msfsAutostartBinding.Get()
 		globals.MsfsAutostart = msfsAutostart
 		logger.LogInfo("MSFS Autostart updated: " + strconv.FormatBool(msfsAutostart), false)
+
+		dbmanager.StoreMsfsAutostart()
 	}))
 
 	// set autosave properties
@@ -104,6 +131,8 @@ func SettingsPanel() *fyne.Container {
 		}
 
 		globals.AutosaveInterval = autosaveInterval
+		dbmanager.StoreAutosaveInterval()
+
 		server.UpdateAutosaveInterval()
 	}))
 
@@ -130,6 +159,9 @@ func SettingsPanel() *fyne.Container {
 		loglevelSelect.SetSelected(loglevelOptions[matchIndex])
 
 		globals.LogLevel = strings.ToLower(loglevelString)
+
+		dbmanager.StoreLogLevel()
+
 		logger.SetLevel(loglevelString)
 		logger.TryCreateLogFile()
 	}))

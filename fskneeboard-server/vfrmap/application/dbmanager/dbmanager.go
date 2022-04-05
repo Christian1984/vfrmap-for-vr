@@ -57,11 +57,13 @@ func DbClose() {
 func dbWrite(bucket string, key string, value string) {
 	logger.LogDebug("Storing data: [" + key + "]=[" + value + "] in bucket [" + bucket + "]", false)
 
-	db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(bucket))
-		err := b.Put([]byte(key), []byte(value))
-		return err
-	})
+	if db != nil {
+		db.Update(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte(bucket))
+			err := b.Put([]byte(key), []byte(value))
+			return err
+		})
+	}
 }
 
 func dbRead(bucket string, key string) string {
@@ -69,17 +71,19 @@ func dbRead(bucket string, key string) string {
 
 	var out *string
 
-	db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(bucket))
-		v := b.Get([]byte(key))
-
-		outs := string(v[:])
-		out = &outs
-
-		logger.LogDebug("[" + key + "] is: [" + *out + "]", false)
-
-		return nil
-	})
+	if db != nil {
+		db.View(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte(bucket))
+			v := b.Get([]byte(key))
+	
+			outs := string(v[:])
+			out = &outs
+	
+			logger.LogDebug("[" + key + "] is: [" + *out + "]", false)
+	
+			return nil
+		})
+	}
 
 	return *out
 }
@@ -90,5 +94,13 @@ func DbWriteData(key string, value string) {
 
 func DbReadData(key string) string {
 	return dbRead(clientDataBucket, key)
+}
+
+func DbWriteSettings(key string, value string) {
+	dbWrite(serverSettingsBucket, key, value)
+}
+
+func DbReadSettings(key string) string {
+	return dbRead(serverSettingsBucket, key)
 }
 

@@ -131,7 +131,7 @@ func initFsk() {
 		utils.Println("")
 
 		logger.LogError("WARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...", true)
-		server.ShutdownWithPrompt()
+		server.ShutdownWithPrompt() // TODO!!!
 		} else {
 		logger.LogInfo("Established connection with local FSKneeboard database!", false)
 
@@ -141,6 +141,28 @@ func initFsk() {
 		utils.Println("")
 	}
 
+	// load settings
+	// loglevel
+	if globals.LogLevel != "off" {
+		dbmanager.StoreLogLevel() // store loglevel if set through args
+	} else {
+		globals.LogLevel = dbmanager.LoadLogLevel() // only load if off so far
+	}
+
+	callbacks.UpdateLogLevelStatus(globals.LogLevel)
+
+	// autosave interval
+	dbmanager.LoadAutosaveInterval()
+	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
+
+	// msfs version
+	dbmanager.LoadMsfsVersion()
+	callbacks.MsfsVersionChanged(globals.SteamFs)
+
+	// msfs autostart
+	dbmanager.LoadMsfsAutostart()
+	callbacks.AutostartChanged(globals.MsfsAutostart)
+
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
 	if (globals.MsfsAutostart) {
@@ -148,6 +170,7 @@ func initFsk() {
 	} else {
 		logger.LogInfo("MSFS autostart disabled!", false)
 		utils.Println("MSFS autostart disabled! Please configure your version of Flight Simulator and enable autostart in the settings section.")
+		utils.Println("")
 	}
 }
 
@@ -158,12 +181,17 @@ func registerGuiCallbacks() {
 	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus
 	callbacks.UpdateLicenseStatusCallback = controlpanel.UpdateLicenseStatus
 
-	callbacks.UpdateAutosaveCallbacks = append(callbacks.UpdateAutosaveCallbacks, controlpanel.UpdateAutosaveStatus)
-	callbacks.UpdateAutosaveCallbacks = append(callbacks.UpdateAutosaveCallbacks, settingspanel.UpdateAutosaveStatus)
+	callbacks.UpdateLogLevelStatusCallback = settingspanel.UpdateLogLevelStatus
+
+	callbacks.UpdateAutosaveStatusCallbacks = append(callbacks.UpdateAutosaveStatusCallbacks, controlpanel.UpdateAutosaveStatus)
+	callbacks.UpdateAutosaveStatusCallbacks = append(callbacks.UpdateAutosaveStatusCallbacks, settingspanel.UpdateAutosaveStatus)
 
 	callbacks.UpdateServerStartedCallback = controlpanel.UpdateServerStarted
 	callbacks.UpdateMsfsStartedCallback = controlpanel.UpdateMsfsStarted
 	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
+
+	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
+	callbacks.AutostartChangedCallback = settingspanel.UpdateAutostartStatus
 }
 
 func main() {
@@ -185,7 +213,7 @@ func main() {
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 
 	// flags to compare against stored values
-	flag.StringVar(&globals.LogLevel, "log", "off", "set log level (debug | info | error | off)")
+	flag.StringVar(&globals.LogLevel, "log", "off", "set log level (debug | info | error)")
 
 	// TODO: flags to check if required
 	flag.BoolVar(&globals.Quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
@@ -220,5 +248,6 @@ func main() {
 	registerGuiCallbacks()
 
 	initFsk()
+
 	gui.ShowAndRun()
 }

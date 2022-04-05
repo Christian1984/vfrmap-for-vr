@@ -12,8 +12,8 @@ func runIntCallbacks(value int, callbacks []func(int)) {
 	}
 }
 
-var UpdateAutosaveCallbacks []func(int)
+var UpdateAutosaveStatusCallbacks []func(int)
 
-func UpdateAutosave(interval int) {
-	runIntCallbacks(interval, UpdateAutosaveCallbacks)
+func UpdateAutosaveStatus(interval int) {
+	runIntCallbacks(interval, UpdateAutosaveStatusCallbacks)
 }
