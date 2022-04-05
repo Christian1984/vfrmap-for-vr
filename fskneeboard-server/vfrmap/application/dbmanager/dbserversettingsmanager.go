@@ -36,6 +36,16 @@ func LoadMsfsAutostart() {
 	globals.MsfsAutostart = autostart
 }
 
+// msfs autostart
+func StoreServerAutostart() {
+	DbWriteSettings("serverAutostart", strconv.FormatBool(globals.ServerAutostart))
+}
+
+func LoadServerAutostart() {
+	autostart, _ := strconv.ParseBool(DbReadSettings("serverAutostart"))
+	globals.ServerAutostart = autostart
+}
+
 
 // autosave
 func StoreAutosaveInterval() {

@@ -30,8 +30,14 @@ func MsfsVersionChanged(steam bool) {
 	runBoolCallback(steam, MsfsVersionChangedCallback)
 }
 
-var AutostartChangedCallback func(bool)
+var MsfsAutostartChangedCallback func(bool)
 
-func AutostartChanged(autostart bool) {
-	runBoolCallback(autostart, AutostartChangedCallback)
+func MsfsAutostartChanged(autostart bool) {
+	runBoolCallback(autostart, MsfsAutostartChangedCallback)
+}
+
+var ServerAutostartChangedCallback func(bool)
+
+func ServerAutostartChanged(autostart bool) {
+	runBoolCallback(autostart, MsfsAutostartChangedCallback)
 }

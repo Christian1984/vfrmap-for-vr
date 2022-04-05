@@ -161,15 +161,30 @@ func initFsk() {
 
 	// msfs autostart
 	dbmanager.LoadMsfsAutostart()
-	callbacks.AutostartChanged(globals.MsfsAutostart)
+	callbacks.MsfsAutostartChanged(globals.MsfsAutostart)
+
+	// server autostart
+	dbmanager.LoadServerAutostart()
+	callbacks.ServerAutostartChanged(globals.ServerAutostart)
 
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
 	if (globals.MsfsAutostart) {
-		msfsinterfacing.StartMsfs()
+		go msfsinterfacing.StartMsfs()
 	} else {
 		logger.LogInfo("MSFS autostart disabled!", false)
 		utils.Println("MSFS autostart disabled! Please configure your version of Flight Simulator and enable autostart in the settings section.")
+		utils.Println("")
+	}
+
+	// starting Flight Simulator
+	utils.Println("=== INFO: FSKneeboard Server Autostart")
+	if (globals.ServerAutostart) {
+		go server.StartFskServer()
+		//msfsinterfacing.StartMsfs()
+	} else {
+		logger.LogInfo("Server autostart disabled!", false)
+		utils.Println("FSKneeboard autostart disabled! Check the FSKneeboard Autostart checkbox in the settings dialog to start the server automatically.")
 		utils.Println("")
 	}
 }
@@ -191,7 +206,8 @@ func registerGuiCallbacks() {
 	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
 
 	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
-	callbacks.AutostartChangedCallback = settingspanel.UpdateAutostartStatus
+	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
+	callbacks.ServerAutostartChangedCallback = settingspanel.UpdateServerAutostartStatus
 }
 
 func main() {

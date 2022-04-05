@@ -22,6 +22,7 @@ var msfsVersionOptions = []string{msfsVersionOptionWinstore, msfsVersionOptionSt
 var msfsVersionBinding = binding.NewString()
 
 var msfsAutostartBinding = binding.NewBool()
+var serverAutostartBinding = binding.NewBool()
 
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
@@ -53,8 +54,12 @@ func UpdateMsfsVersionStatus(steam bool) {
 	}
 }
 
-func UpdateAutostartStatus(autostart bool) {
+func UpdateMsfsAutostartStatus(autostart bool) {
 	msfsAutostartBinding.Set(autostart)
+}
+
+func UpdateServerAutostartStatus(autostart bool) {
+	serverAutostartBinding.Set(autostart)
 }
 
 func UpdateLogLevelStatus(level string) {
@@ -97,7 +102,7 @@ func SettingsPanel() *fyne.Container {
 
 	msfsVersionBinding.Set(msfsVersionOptionWinstore)
 
-	// autostart select
+	// msfs autostart select
 	msfsAutostartLabel := widget.NewLabel("Flight Simulator Autostart")
 	msfsAutostartCb := widget.NewCheckWithData("Start MSFS when FSKneeboard starts", msfsAutostartBinding)
 
@@ -107,6 +112,18 @@ func SettingsPanel() *fyne.Container {
 		logger.LogInfo("MSFS Autostart updated: " + strconv.FormatBool(msfsAutostart), false)
 
 		dbmanager.StoreMsfsAutostart()
+	}))
+
+	// server autostart select
+	serverAutostartLabel := widget.NewLabel("FSKneeboard Server Autostart")
+	serverAutostartCb := widget.NewCheckWithData("Start Server when FSKneeboard starts", serverAutostartBinding)
+
+	serverAutostartBinding.AddListener(binding.NewDataListener(func() {
+		serverAutostart, _ := serverAutostartBinding.Get()
+		globals.ServerAutostart = serverAutostart
+		logger.LogInfo("Server Autostart updated: " + strconv.FormatBool(serverAutostart), false)
+
+		dbmanager.StoreServerAutostart()
 	}))
 
 	// set autosave properties
@@ -174,6 +191,7 @@ func SettingsPanel() *fyne.Container {
 		2,
 		msfsVersionLabel, msfsVersionSelect,
 		msfsAutostartLabel, msfsAutostartCb,
+		serverAutostartLabel, serverAutostartCb,
 		autosaveLabel, autosaveSelect,
 		loglevelLabel, loglevelSelect,
 	)
