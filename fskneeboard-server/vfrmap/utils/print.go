@@ -8,7 +8,7 @@ var GuiPrintCallback func(string)
 
 func printToGui(message string) {
 	if GuiPrintCallback != nil {
-		go GuiPrintCallback(message)
+		GuiPrintCallback(message)
 	}
 }
 

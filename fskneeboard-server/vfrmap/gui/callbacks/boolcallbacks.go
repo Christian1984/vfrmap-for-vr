@@ -2,7 +2,7 @@ package callbacks
 
 func runBoolCallback(value bool, callback func(bool)) {
 	if callback != nil {
-		go callback(value)
+		callback(value)
 	}
 }
 

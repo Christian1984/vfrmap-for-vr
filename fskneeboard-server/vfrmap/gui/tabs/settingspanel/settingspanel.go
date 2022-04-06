@@ -97,7 +97,13 @@ func SettingsPanel() *fyne.Container {
 			return
 		}
 
-		msfsVersionSelect.SetSelected(selected)
+		
+		if strings.ToLower(selected) != strings.ToLower(msfsVersionSelect.Selected) {
+			logger.LogDebug("msfsVersionBinding changed: [" + selected + "]; updating ui select element...", false)
+			msfsVersionSelect.SetSelected(selected)
+		} else {
+			logger.LogDebug("msfsVersionBinding change listener called, but value did not change => [" + selected + "]", false)
+		}
 
 		dbmanager.StoreMsfsVersion()
 	}))
@@ -147,8 +153,13 @@ func SettingsPanel() *fyne.Container {
 		}
 
 		for _, v := range autosaveOptions {
-			if v == autosaveString {
-				autosaveSelect.SetSelected(autosaveString)
+			if strings.ToLower(v) == strings.ToLower(autosaveString) {
+				if strings.ToLower(autosaveString) != strings.ToLower(autosaveSelect.Selected) {
+					logger.LogDebug("autosaveBinding changed: [" + autosaveString + "]; updating ui select element...", false)
+					autosaveSelect.SetSelected(autosaveString)
+				} else {
+					logger.LogDebug("autosaveBinding change listener called, but value did not change => [" + autosaveString + "]", false)
+				}
 				break
 			}
 		}
@@ -184,7 +195,12 @@ func SettingsPanel() *fyne.Container {
 			}
 		}
 
-		loglevelSelect.SetSelected(loglevelOptions[matchIndex])
+		if strings.ToLower(loglevelString) != strings.ToLower(loglevelSelect.Selected) {
+			logger.LogDebug("loglevelBinding changed: [" + loglevelString + "]; updating ui select element...", false)
+			loglevelSelect.SetSelected(loglevelOptions[matchIndex])
+		} else {
+			logger.LogDebug("loglevelBinding change listener called, but value did not change => [" + loglevelString + "]", false)
+		}
 
 		globals.LogLevel = strings.ToLower(loglevelString)
 

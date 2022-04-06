@@ -171,7 +171,7 @@ func initFsk() {
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
 	if (globals.MsfsAutostart) {
-		go msfsinterfacing.StartMsfs()
+		msfsinterfacing.StartMsfs()
 	} else {
 		logger.LogInfo("MSFS autostart disabled!", false)
 		utils.Println("MSFS autostart disabled! Please configure your version of Flight Simulator and enable autostart in the settings section.")
@@ -181,7 +181,7 @@ func initFsk() {
 	// starting Flight Simulator
 	utils.Println("=== INFO: FSKneeboard Server Autostart")
 	if (globals.ServerAutostart) {
-		go server.StartFskServer()
+		server.StartFskServer()
 		//msfsinterfacing.StartMsfs()
 	} else {
 		logger.LogInfo("Server autostart disabled!", false)

@@ -2,7 +2,7 @@ package callbacks
 
 func runStringCallback(value string, callback func(string)) {
 	if callback != nil {
-		go callback(value)
+		callback(value)
 	}
 }
 
