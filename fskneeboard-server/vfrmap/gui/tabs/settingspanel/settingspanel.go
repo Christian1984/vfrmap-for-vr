@@ -102,7 +102,7 @@ func SettingsPanel() *fyne.Container {
 			logger.LogDebug("msfsVersionBinding changed: [" + selected + "]; updating ui select element...", false)
 			msfsVersionSelect.SetSelected(selected)
 		} else {
-			logger.LogDebug("msfsVersionBinding change listener called, but value did not change => [" + selected + "]", false)
+			logger.LogDebug("msfsVersionBinding change listener: ui select element already up to date => [" + selected + "]", false)
 		}
 
 		dbmanager.StoreMsfsVersion()
@@ -158,7 +158,7 @@ func SettingsPanel() *fyne.Container {
 					logger.LogDebug("autosaveBinding changed: [" + autosaveString + "]; updating ui select element...", false)
 					autosaveSelect.SetSelected(autosaveString)
 				} else {
-					logger.LogDebug("autosaveBinding change listener called, but value did not change => [" + autosaveString + "]", false)
+					logger.LogDebug("autosaveBinding change listener: ui select element already up to date => [" + autosaveString + "]", false)
 				}
 				break
 			}
@@ -199,7 +199,7 @@ func SettingsPanel() *fyne.Container {
 			logger.LogDebug("loglevelBinding changed: [" + loglevelString + "]; updating ui select element...", false)
 			loglevelSelect.SetSelected(loglevelOptions[matchIndex])
 		} else {
-			logger.LogDebug("loglevelBinding change listener called, but value did not change => [" + loglevelString + "]", false)
+			logger.LogDebug("loglevelBinding change listener: ui select element already up to date => [" + loglevelString + "]", false)
 		}
 
 		globals.LogLevel = strings.ToLower(loglevelString)
