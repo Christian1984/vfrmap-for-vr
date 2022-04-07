@@ -220,7 +220,6 @@ func SettingsPanel() *fyne.Container {
 	loglevelBinding.Set(globals.LogLevel)
 
 	// grid and centerContainer
-	//empty := widget.NewLabel("")
 	grid := container.NewGridWithColumns(
 		3,
 		msfsVersionLabel, msfsVersionSelect, widget.NewLabel(""),
