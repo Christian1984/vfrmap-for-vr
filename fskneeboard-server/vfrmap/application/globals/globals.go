@@ -1,6 +1,6 @@
 package globals
 
-import "vfrmap-for-vr/freemium_src/notepad"
+import "vfrmap-for-vr/_vendor/premium/notepad"
 
 var Pro bool
 
