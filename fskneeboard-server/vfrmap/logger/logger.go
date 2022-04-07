@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/utils"
 )
 
@@ -46,6 +47,17 @@ func TryCreateLogFile() {
 	if !hasOutputFile && ShouldLog(logLevel) {
 		CreateLogFile()
 		LogDebug("Logfile created!", false)
+	}
+}
+
+func OpenLogFolder() {
+	LogDebug("Trying to open log folder...", false)
+
+	err := utils.OpenExplorer("logs")
+
+	if err != nil {
+		LogError("Could not open log folder", false)
+		dialogs.ShowError("Log folder could not be opened! Reason: " + err.Error())
 	}
 }
 

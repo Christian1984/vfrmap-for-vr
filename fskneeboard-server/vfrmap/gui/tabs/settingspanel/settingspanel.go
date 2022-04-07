@@ -3,6 +3,7 @@ package settingspanel
 import (
 	"strconv"
 	"strings"
+	"vfrmap-for-vr/_vendor/premium/autosave"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
@@ -139,6 +140,9 @@ func SettingsPanel() *fyne.Container {
 	autosaveSelect := widget.NewSelect(autosaveOptions, func(selected string) {
 		autosaveBinding.Set(selected)
 	})
+	autosaveOpenFolderBtn := widget.NewButton("Open Autosave Folder", func() {
+		autosave.OpenAutosaveFolder()
+	})
 
 	autosaveBinding.AddListener(binding.NewDataListener(func() {
 		autosaveString, bindingErr := autosaveBinding.Get()
@@ -182,6 +186,9 @@ func SettingsPanel() *fyne.Container {
 	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
 		loglevelBinding.Set(selected)
 	})
+	logsOpenFolderBtn := widget.NewButton("Open Log Folder", func() {
+		logger.OpenLogFolder()
+	})
 
 	loglevelBinding.AddListener(binding.NewDataListener(func() {
 		loglevelString, _ := loglevelBinding.Get()
@@ -215,12 +222,12 @@ func SettingsPanel() *fyne.Container {
 	// grid and centerContainer
 	//empty := widget.NewLabel("")
 	grid := container.NewGridWithColumns(
-		2,
-		msfsVersionLabel, msfsVersionSelect,
-		msfsAutostartLabel, msfsAutostartCb,
-		serverAutostartLabel, serverAutostartCb,
-		autosaveLabel, autosaveSelect,
-		loglevelLabel, loglevelSelect,
+		3,
+		msfsVersionLabel, msfsVersionSelect, widget.NewLabel(""),
+		msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
+		serverAutostartLabel, serverAutostartCb, widget.NewLabel(""),
+		autosaveLabel, autosaveSelect, autosaveOpenFolderBtn,
+		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
 	)
 	centerContainer := container.NewCenter(grid)
 

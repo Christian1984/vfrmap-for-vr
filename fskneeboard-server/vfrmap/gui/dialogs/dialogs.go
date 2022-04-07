@@ -7,6 +7,10 @@ import (
 
 var ParentWindow *fyne.Window
 
+func ShowError(message string) {
+	dialog.ShowInformation("Something Went Wrong", message, *ParentWindow)
+}
+
 func ShowLicenseError() {
 	dialog.ShowInformation("License Not Valid", "FSKneeboard could not find a valid license.", *ParentWindow)
 }
