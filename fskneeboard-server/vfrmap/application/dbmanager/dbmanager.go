@@ -57,7 +57,9 @@ func DbClose() {
 func dbWrite(bucket string, key string, value string) {
 	logger.LogDebug("Storing data: [" + key + "]=[" + value + "] in bucket [" + bucket + "]", false)
 
-	if db != nil {
+	if db == nil {
+		logger.LogDebug("DB not initialized! Cannot store value for [" + key + "]", false)
+	} else {
 		db.Update(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte(bucket))
 			err := b.Put([]byte(key), []byte(value))
@@ -71,7 +73,9 @@ func dbRead(bucket string, key string) string {
 
 	var out *string
 
-	if db != nil {
+	if db == nil {
+		logger.LogDebug("DB not initialized! Cannot read value for [" + key + "]", false)
+	} else {
 		db.View(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte(bucket))
 			v := b.Get([]byte(key))

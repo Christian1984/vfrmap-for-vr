@@ -29,3 +29,8 @@ var DrmValid bool = false
 var Verbose bool
 
 var Notepad notepad.Notepad
+
+var HotkeysMasterShiftModifier bool
+var HotkeysMasterCtrlModifier bool
+var HotkeysMasterAltModifier bool
+var HotkeysMasterKey string

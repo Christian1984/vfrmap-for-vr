@@ -17,6 +17,7 @@ import (
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
+	"vfrmap-for-vr/vfrmap/gui/tabs/hotkeyspanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/settingspanel"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server"
@@ -168,6 +169,11 @@ func initFsk() {
 	dbmanager.LoadServerAutostart()
 	callbacks.ServerAutostartChanged(globals.ServerAutostart)
 
+	// load hotkeys
+	// master hotkey
+	dbmanager.LoadMasterHotkey()
+	callbacks.UpdateMasterHotkey(globals.HotkeysMasterShiftModifier, globals.HotkeysMasterCtrlModifier, globals.HotkeysMasterAltModifier, globals.HotkeysMasterKey)
+
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
 	if (globals.MsfsAutostart) {
@@ -209,6 +215,8 @@ func registerGuiCallbacks() {
 	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
 	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
 	callbacks.ServerAutostartChangedCallback = settingspanel.UpdateServerAutostartStatus
+
+	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
 }
 
 func main() {
