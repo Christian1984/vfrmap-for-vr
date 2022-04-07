@@ -12,7 +12,6 @@ var DownloadLink string
 var Quietshutdown bool
 var DevMode bool
 var ProductName string
-var Hotkey int
 var AutosaveInterval int
 var HttpListen string
 var LogLevel string
@@ -29,8 +28,3 @@ var DrmValid bool = false
 var Verbose bool
 
 var Notepad notepad.Notepad
-
-var HotkeysMasterShiftModifier bool
-var HotkeysMasterCtrlModifier bool
-var HotkeysMasterAltModifier bool
-var HotkeysMasterKey string

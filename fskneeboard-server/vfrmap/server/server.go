@@ -30,6 +30,7 @@ import (
 	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/logger"
+	"vfrmap-for-vr/vfrmap/server/hotkeys"
 	"vfrmap-for-vr/vfrmap/utils"
 	"vfrmap-for-vr/vfrmap/websockets"
 )
@@ -68,13 +69,6 @@ type TrafficReport struct {
 	Latitude        float64  `name:"PLANE LATITUDE" unit:"degrees"`
 	Longitude       float64  `name:"PLANE LONGITUDE" unit:"degrees"`
 	Heading         float64  `name:"PLANE HEADING DEGREES TRUE" unit:"degrees"`
-}
-
-type Hotkey struct {
-	AltKey   bool `json:"altkey"`
-	CtrlKey  bool `json:"ctrlkey"`
-	ShiftKey bool `json:"shiftkey"`
-	KeyCode  int  `json:"keycode"`
 }
 
 func (r *TrafficReport) RequestData(s *simconnect.SimConnect) {
@@ -294,53 +288,6 @@ func StartFskServer() {
 			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
 		}
 
-		hotkey := func(w http.ResponseWriter, r *http.Request) {
-			keycode := -1
-			altkey := false
-			shiftkey := false
-			ctrlkey := false
-
-			switch globals.Hotkey {
-			case 1:
-				altkey = true
-				keycode = 70
-			case 2:
-				altkey = true
-				keycode = 75
-			case 3:
-				altkey = true
-				keycode = 84
-			case 4:
-				shiftkey = true
-				ctrlkey = true
-				keycode = 70
-			case 5:
-				shiftkey = true
-				ctrlkey = true
-				keycode = 75
-			case 6:
-				shiftkey = true
-				ctrlkey = true
-				keycode = 84
-			}
-
-			hotkey := Hotkey{altkey, shiftkey, ctrlkey, keycode}
-			responseJson, jsonErr := json.Marshal(hotkey)
-
-			if jsonErr != nil {
-				utils.Println(jsonErr.Error())
-				http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-			w.Header().Set("Pragma", "no-cache")
-			w.Header().Set("Expires", "0")
-			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(responseJson))
-		}
-
 		freemium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
@@ -388,7 +335,7 @@ func StartFskServer() {
 
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
-		http.HandleFunc("/hotkey/", hotkey)
+		http.HandleFunc("/hotkey/", hotkeys.ServeMasterHotkey)
 		http.HandleFunc("/log/", logger.LogController)
 		http.HandleFunc("/loglevel/", logger.LogLevelController)
 		http.HandleFunc("/data/", dbmanager.DataController)

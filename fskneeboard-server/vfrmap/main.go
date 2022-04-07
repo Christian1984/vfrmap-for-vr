@@ -95,37 +95,6 @@ func initFsk() {
 		callbacks.NewVersionAvailable(false)
 	}
 
-	// hotkey info
-	/*utils.Println("=== INFO: Hotkey")
-
-	if globals.Hotkey != 0 {
-		key := "F"
-		mod := "[ALT]"
-
-		switch globals.Hotkey {
-		case 2:
-			key = "K"
-		case 3:
-			key = "T"
-		case 4:
-			key = "F"
-			mod = "[CTRL]+[SHIFT]"
-		case 5:
-			key = "K"
-			mod = "[CTRL]+[SHIFT]"
-		case 6:
-			key = "T"
-			mod = "[CTRL]+[SHIFT]"
-		}
-
-		logger.LogInfo("Hotkey set to " + mod + "+" + key, false)
-		utils.Println("Hotkey set to " + mod + "+" + key)
-	} else {
-		utils.Println("Hotkey not configured. Run fskneeboard.exe --hotkey 1 to enable [ALT]+F as your hotkey to toggle the ingame panel's visibility. Please refer to the readme for other hotkey options.")
-	}
-
-	utils.Println("")*/
-
 	// connect to bolt db
 	utils.Println("=== INFO: Local FSKneeboard Database Connection")
 	db_err := dbmanager.DbConnect()
@@ -172,7 +141,7 @@ func initFsk() {
 	// load hotkeys
 	// master hotkey
 	dbmanager.LoadMasterHotkey()
-	callbacks.UpdateMasterHotkey(globals.HotkeysMasterShiftModifier, globals.HotkeysMasterCtrlModifier, globals.HotkeysMasterAltModifier, globals.HotkeysMasterKey)
+	callbacks.UpdateMasterHotkey(globals.MasterHotkey.ShiftKey, globals.MasterHotkey.CtrlKey, globals.MasterHotkey.AltKey, globals.MasterHotkey.Key)
 
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
@@ -242,9 +211,6 @@ func main() {
 
 	// TODO: flags to check if required
 	flag.BoolVar(&globals.Quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
-
-	// TODO: flags to remove/replace by gui
-	flag.IntVar(&globals.Hotkey, "hotkey", 0, "select a hotkey to toggle the ingame panel's visibility. 1 => [ALT]+F, 2 => [ALT]+K, 3 => [ALT]+T, 4 => [CTRL]+[SHIFT]+F, 5 => [CTRL]+[SHIFT]+K, 6 => [CTRL]+[SHIFT]+T")
 
 	flag.Parse()
 

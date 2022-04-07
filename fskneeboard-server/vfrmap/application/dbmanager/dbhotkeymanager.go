@@ -15,24 +15,26 @@ func SanitizeHotkey(key string) string {
 }
 
 func StoreMasterHotkeyShiftModifier() {
-	DbWriteSettings("hotkeyMasterShiftModifier", strconv.FormatBool(globals.HotkeysMasterShiftModifier))
+	DbWriteSettings("hotkeyMasterShiftModifier", strconv.FormatBool(globals.MasterHotkey.ShiftKey))
 }
 
 func StoreMasterHotkeyCtrlModifier() {
-	DbWriteSettings("hotkeyMasterCtrlModifier", strconv.FormatBool(globals.HotkeysMasterCtrlModifier))
+	DbWriteSettings("hotkeyMasterCtrlModifier", strconv.FormatBool(globals.MasterHotkey.CtrlKey))
 }
 
 func StoreMasterHotkeyAltModifier() {
-	DbWriteSettings("hotkeyMasterAltModifier", strconv.FormatBool(globals.HotkeysMasterAltModifier))
+	DbWriteSettings("hotkeyMasterAltModifier", strconv.FormatBool(globals.MasterHotkey.AltKey))
 }
 
 func StoreMasterHotkeyKey() {
-	DbWriteSettings("hotkeyMasterKey", SanitizeHotkey(globals.HotkeysMasterKey))
+	DbWriteSettings("hotkeyMasterKey", SanitizeHotkey(globals.MasterHotkey.Key))
 }
 
 func LoadMasterHotkey() {
-	globals.HotkeysMasterShiftModifier, _ = strconv.ParseBool(DbReadSettings("hotkeyMasterShiftModifier"))
-	globals.HotkeysMasterCtrlModifier, _ = strconv.ParseBool(DbReadSettings("hotkeyMasterCtrlModifier"))
-	globals.HotkeysMasterAltModifier, _ = strconv.ParseBool(DbReadSettings("hotkeyMasterAltModifier"))
-	globals.HotkeysMasterKey = SanitizeHotkey(DbReadSettings("hotkeyMasterKey"))
+	shiftModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMasterShiftModifier"))
+	ctrlModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMasterCtrlModifier"))
+	altModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMasterAltModifier"))
+	key := SanitizeHotkey(DbReadSettings("hotkeyMasterKey"))
+
+	globals.InitMasterHotkey(shiftModifier, ctrlModifier, altModifier, key)
 }

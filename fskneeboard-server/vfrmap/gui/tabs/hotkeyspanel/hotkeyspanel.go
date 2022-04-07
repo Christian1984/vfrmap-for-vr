@@ -60,21 +60,21 @@ func HotkeysPanel() *fyne.Container {
 	masterShiftCb := widget.NewCheckWithData("Shift", masterShiftModifierBinding)
 	masterShiftModifierBinding.AddListener(binding.NewDataListener(func() {
 		value, _ := masterShiftModifierBinding.Get()
-		globals.HotkeysMasterShiftModifier = value
+		globals.MasterHotkey.ShiftKey = value
 		dbmanager.StoreMasterHotkeyShiftModifier()
 	}))
 
 	masterCtrlCb := widget.NewCheckWithData("Ctrl", masterCtrlModifierBinding)
 	masterCtrlModifierBinding.AddListener(binding.NewDataListener(func() {
 		value, _ := masterCtrlModifierBinding.Get()
-		globals.HotkeysMasterCtrlModifier = value
+		globals.MasterHotkey.CtrlKey = value
 		dbmanager.StoreMasterHotkeyCtrlModifier()
 	}))
 
 	masterAltCb := widget.NewCheckWithData("Alt", masterAltModifierBinding)
 	masterAltModifierBinding.AddListener(binding.NewDataListener(func() {
 		value, _ := masterAltModifierBinding.Get()
-		globals.HotkeysMasterAltModifier = value
+		globals.MasterHotkey.AltKey = value
 		dbmanager.StoreMasterHotkeyAltModifier()
 	}))
 
@@ -84,7 +84,7 @@ func HotkeysPanel() *fyne.Container {
 	masterKeyBinding.AddListener(binding.NewDataListener(func() {
 		key, _ := masterKeyBinding.Get()
 
-		globals.HotkeysMasterKey = dbmanager.SanitizeHotkey(key)
+		globals.SetMasterHotkeyKey(dbmanager.SanitizeHotkey(key))
 		dbmanager.StoreMasterHotkeyKey()
 
 		if strings.ToUpper(key) != strings.ToUpper(masterHotkey.Selected) {
