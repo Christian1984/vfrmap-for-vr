@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/hotkeys"
 )
 
 func SanitizeHotkey(key string) string {
@@ -11,7 +12,7 @@ func SanitizeHotkey(key string) string {
 		return ""
 	}
 
-	return strings.ToUpper(key)
+	return strings.ToLower(key)
 }
 
 func StoreMasterHotkeyShiftModifier() {
@@ -36,5 +37,5 @@ func LoadMasterHotkey() {
 	altModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMasterAltModifier"))
 	key := SanitizeHotkey(DbReadSettings("hotkeyMasterKey"))
 
-	globals.InitMasterHotkey(shiftModifier, ctrlModifier, altModifier, key)
+	globals.MasterHotkey = hotkeys.New(shiftModifier, ctrlModifier, altModifier, key)
 }

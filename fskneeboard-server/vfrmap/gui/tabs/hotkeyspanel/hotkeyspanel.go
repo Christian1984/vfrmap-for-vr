@@ -84,7 +84,7 @@ func HotkeysPanel() *fyne.Container {
 	masterKeyBinding.AddListener(binding.NewDataListener(func() {
 		key, _ := masterKeyBinding.Get()
 
-		globals.SetMasterHotkeyKey(dbmanager.SanitizeHotkey(key))
+		globals.MasterHotkey.SetKey(dbmanager.SanitizeHotkey(key))
 		dbmanager.StoreMasterHotkeyKey()
 
 		if strings.ToUpper(key) != strings.ToUpper(masterHotkey.Selected) {
