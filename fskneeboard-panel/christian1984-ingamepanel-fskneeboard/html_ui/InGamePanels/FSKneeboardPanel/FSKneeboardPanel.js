@@ -189,9 +189,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                         self.set_red_light(data.data.red);
                         break;
                 }
-
-                if (data.type == "KeyboardEvent" && data.data != null) {
-                }
             }
             catch (e) {
                 /* ignore silently */

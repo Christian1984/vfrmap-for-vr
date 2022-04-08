@@ -42,6 +42,8 @@ function dispatch_keyevent_top(event) {
             ctrlKey: event.ctrlKey
         }
     });
+
+    Logger.logDebug("index.js => dispatching key event to parent: msg=" + msg);
     
     window.parent.window.postMessage(msg , "*");
 }
@@ -285,6 +287,8 @@ function request_hotkey() {
                             shiftKey: json.shiftkey
                         }
                     });
+
+                    Logger.logDebug("index.js => propagating hotkey configuration to parent: msg=" + msg);
                     
                     window.parent.window.postMessage(msg , "*");
                 }
