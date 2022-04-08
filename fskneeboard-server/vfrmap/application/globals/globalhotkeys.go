@@ -23,7 +23,8 @@ func sanitizedKeycode(key string) int {
 }
 
 func SetMasterHotkeyKey(key string) {
-
+	MasterHotkey.Key = key
+	MasterHotkey.KeyCode = sanitizedKeycode(key)
 }
 
 func InitMasterHotkey(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
