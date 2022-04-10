@@ -125,6 +125,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     }
 
     toggle_collapse() {
+        //console.log("FSKneeboard.js => toggle_collapse() called!");
         this.collapse(!this.collapsed);
     }
 
@@ -156,25 +157,29 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         var self = this;
 
         window.addEventListener("message", (e) => {
+            //console.log("FSKneeboard.js => message event listener, received message: " + e.data);
+
             try {
                 const data = JSON.parse(e.data);
 
                 switch (data.type) {
                     case "KeyboardEvent":
+                        //console.log("FSKneeboard.js => message event listener, received KeyboardEvent: " + JSON.stringify(data));
+
                         if (self.collapse_hotkey == -1) return;
 
                         if (data.data.type == "keydown"
-                        && data.data.keyCode == self.collapse_hotkey
-                        && data.data.altKey == self.collapse_altKey
-                        && data.data.ctrlKey == self.collapse_ctrlKey
-                        && data.data.shiftKey == self.collapse_shiftKey
-                        ) {
+                            && data.data.keyCode == self.collapse_hotkey
+                            && data.data.altKey == self.collapse_altKey
+                            && data.data.ctrlKey == self.collapse_ctrlKey
+                            && data.data.shiftKey == self.collapse_shiftKey) {
                             self.toggle_collapse();
                         }
 
                         break;
 
                     case "HotkeyConfiguration":
+                        //console.log("FSKneeboard.js => message event listener, received HotkeyConfiguration: " + JSON.stringify(data));
                         self.collapse_hotkey = data.data.keyCode;
                         self.collapse_altKey = data.data.altKey;
                         self.collapse_ctrlKey = data.data.ctrlKey;
@@ -201,8 +206,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
             if (e.keyCode == self.collapse_hotkey
                 && e.altKey == self.collapse_altKey
                 && e.ctrlKey == self.collapse_ctrlKey
-                && e.shiftKey == self.collapse_shiftKey
-                ) {
+                && e.shiftKey == self.collapse_shiftKey) {
                 self.toggle_collapse();
             }
         });
