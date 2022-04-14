@@ -156,12 +156,14 @@ func SettingsPanel() *fyne.Container {
 			autosaveInterval = 0
 		}
 
-		if (globals.AutosaveInterval != autosaveInterval) {
+		hasChanged := globals.AutosaveInterval != autosaveInterval
+
+		if hasChanged {
 			globals.AutosaveInterval = autosaveInterval
 			dbmanager.StoreAutosaveInterval()
-	
-			server.UpdateAutosaveInterval()
 		}
+
+		server.UpdateAutosaveInterval(hasChanged)
 	}))
 
 	autosaveBinding.Set("Off")

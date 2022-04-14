@@ -115,20 +115,28 @@ func ShutdownWithPrompt() {
 	}
 }
 
-func UpdateAutosaveInterval() {
+func UpdateAutosaveInterval(verbose bool) {
 	if autosaveTick != nil {
 		logger.LogDebug("Autosave interval updated: Stopping old timer...", false)
 		autosaveTick.Stop()
 	}
 
-	utils.Println("=== INFO: Autosave")
+	if verbose {
+		utils.Println("=== INFO: Autosave")
+	}
 
 	if globals.AutosaveInterval > 0 {
-		utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
+		if verbose {
+			utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
+		}
+
 		logger.LogInfo("Autosave interval updated: Creating new ticker with an interval of " + strconv.Itoa(globals.AutosaveInterval) + " minutes", false)
 		autosaveTick = time.NewTicker(time.Duration(globals.AutosaveInterval) * time.Minute)
 	} else {
-		utils.Println("Autosave deactivated. Please configure the autosave interval in the settings section.")
+		if verbose {
+			utils.Println("Autosave deactivated. Please configure the autosave interval in the settings section.")
+		}
+
 		logger.LogInfo("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
 		autosaveTick = time.NewTicker(9999 * time.Minute)
 	}
@@ -200,7 +208,7 @@ func StartFskServer() {
 
 	ws := websockets.New()
 	notepadWs := websockets.New()
-	globals.Notepad = notepad.New(notepadWs, globals.Verbose)
+	globals.Notepad = notepad.New(notepadWs)
 
 	report := &Report{}
 	trafficReport := &TrafficReport{}
