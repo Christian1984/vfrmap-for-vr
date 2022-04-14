@@ -19,7 +19,7 @@ var LogLevel string
 var SteamFs bool
 var WinstoreFs bool
 var MsfsAutostart bool
-var ServerAutostart bool
+//var ServerAutostart bool
 
 var DisableTeleport = false
 

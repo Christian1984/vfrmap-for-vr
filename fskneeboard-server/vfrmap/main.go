@@ -135,8 +135,8 @@ func initFsk() {
 	callbacks.MsfsAutostartChanged(globals.MsfsAutostart)
 
 	// server autostart
-	dbmanager.LoadServerAutostart()
-	callbacks.ServerAutostartChanged(globals.ServerAutostart)
+	//dbmanager.LoadServerAutostart()
+	//callbacks.ServerAutostartChanged(globals.ServerAutostart)
 
 	// load hotkeys
 	// master hotkey
@@ -153,15 +153,17 @@ func initFsk() {
 		utils.Println("")
 	}
 
-	// starting Flight Simulator
-	utils.Println("=== INFO: FSKneeboard Server Autostart")
+	// starting FSKneeboard Server
+	go server.StartFskServer()
+	
+	/*utils.Println("=== INFO: FSKneeboard Server Autostart")
 	if (globals.ServerAutostart) {
 		go server.StartFskServer()
 	} else {
 		logger.LogInfo("Server autostart disabled!", false)
 		utils.Println("FSKneeboard autostart disabled! Check the FSKneeboard Autostart checkbox in the settings dialog to start the server automatically.")
 		utils.Println("")
-	}
+	}*/
 }
 
 func registerGuiCallbacks() {
@@ -182,7 +184,7 @@ func registerGuiCallbacks() {
 
 	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
 	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
-	callbacks.ServerAutostartChangedCallback = settingspanel.UpdateServerAutostartStatus
+	//callbacks.ServerAutostartChangedCallback = settingspanel.UpdateServerAutostartStatus
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
 }

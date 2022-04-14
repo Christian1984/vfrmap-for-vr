@@ -7,7 +7,6 @@ import (
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/logger"
-	"vfrmap-for-vr/vfrmap/server"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -90,16 +89,17 @@ func ControlPanel() *fyne.Container {
 	middle := container.NewCenter(grid)
 
 	// top
-	startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard", theme.MediaPlayIcon(), func() {
+	/*startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard Server", theme.MediaPlayIcon(), func() {
 		console.ConsoleLogLn("Starting Server...")
 		go server.StartFskServer()
 	})
+	startServerBtn.Hidden = true //temporary until permanent removal
 
-	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard", theme.MediaStopIcon(), func() {
+	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard Server", theme.MediaStopIcon(), func() {
 		console.ConsoleLogLn("Stopping Server...")
 		go server.StopFskServer()
 	})
-	stopServerBtn.Hidden = true //temporary
+	stopServerBtn.Hidden = true //temporary until permanent removal*/
 
 	launchSimBtn := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
 		console.ConsoleLogLn("Launching MSFS...")
@@ -116,7 +116,7 @@ func ControlPanel() *fyne.Container {
 		}
 	}))
 
-	serverStartedBinding.AddListener(binding.NewDataListener(func() {
+	/*serverStartedBinding.AddListener(binding.NewDataListener(func() {
 		serverStarted, _ := serverStartedBinding.Get()
 
 		if (serverStarted) {
@@ -126,9 +126,10 @@ func ControlPanel() *fyne.Container {
 			startServerBtn.Enable()
 			stopServerBtn.Disable()
 		}
-	}))
+	}))*/
 
-	top := container.NewHBox(startServerBtn, stopServerBtn, launchSimBtn)
+	//top := container.NewHBox(startServerBtn, stopServerBtn, launchSimBtn)
+	top := container.NewHBox(launchSimBtn)
 	
 	// bottom
 	updateInfoLabel := widget.NewLabel("A new version of FSKneeboard is available.")
