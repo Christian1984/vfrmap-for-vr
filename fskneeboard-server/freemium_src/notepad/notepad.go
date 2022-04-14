@@ -8,7 +8,7 @@ import (
 type Notepad struct {
 }
 
-func New(ws *websockets.Websocket, verbose bool) Notepad {
+func New(ws *websockets.Websocket) Notepad {
 	np := Notepad{}
 	return np
 }

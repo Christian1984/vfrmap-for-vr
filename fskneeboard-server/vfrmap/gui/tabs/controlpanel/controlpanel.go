@@ -1,6 +1,8 @@
 package controlpanel
 
 import (
+	"image/color"
+	"net/url"
 	"os/exec"
 	"strconv"
 	"vfrmap-for-vr/vfrmap/application/globals"
@@ -8,6 +10,7 @@ import (
 	"vfrmap-for-vr/vfrmap/logger"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/layout"
@@ -22,6 +25,7 @@ var autosaveBinding = binding.NewString()
 
 var msfsStartedBinding = binding.NewBool()
 var newVersionAvailableBinding = binding.NewBool()
+var proVersionBinding = binding.NewBool()
 
 func UpdateServerStatus(status string) {
 	serverStatusBinding.Set(status)
@@ -41,6 +45,10 @@ func UpdateMsfsStarted(value bool) {
 
 func UpdateNewVersionAvailable(value bool) {
 	newVersionAvailableBinding.Set(value)
+}
+
+func UpdateProVersionStatus(pro bool) {
+	proVersionBinding.Set(pro)
 }
 
 func UpdateAutosaveStatus(interval int) {
@@ -110,9 +118,58 @@ func ControlPanel() *fyne.Container {
 		bottom.Hidden = !b
 	}))
 
+	//right
+	textColor := color.RGBA{255, 191, 0, 255}
+
+	freeLabel1 := canvas.NewText("  Thanks For Trying FSKneeboard FREE  ", textColor)
+	freeLabel1.TextStyle.Bold = true
+	freeLabel1.Alignment = fyne.TextAlignCenter
+	
+	freeLabel2 := canvas.NewText("Support the development", textColor)
+	freeLabel2.Alignment = fyne.TextAlignCenter
+	
+	freeLabel3 := canvas.NewText("and unlock ALL features today!", textColor)
+	freeLabel3.Alignment = fyne.TextAlignCenter
+
+	freeImage := canvas.NewImageFromFile("res/pro-img-1.jpg")
+	freeImage.FillMode = canvas.ImageFillOriginal
+
+	learnMoreUrl, _ := url.Parse("https://fskneeboard.com/compare")
+	learnMoreLink := widget.NewHyperlink("Learn more about FSKneeboard PRO", learnMoreUrl)
+	learnMoreLink.Alignment = fyne.TextAlignCenter
+
+	orLabel := canvas.NewText("or", textColor)
+	orLabel.Alignment = fyne.TextAlignCenter
+
+	buyUrl, _ := url.Parse("https://fskneeboard.com/buy-now")
+	buyLink := widget.NewHyperlink("BUY NOW", buyUrl)
+	buyLink.Alignment = fyne.TextAlignCenter
+
+	rightVBox := container.NewVBox(
+		freeLabel1,
+		canvas.NewRectangle(textColor),
+		freeLabel2,
+		freeLabel3,
+		freeImage,
+		learnMoreLink,
+		orLabel,
+		buyLink,
+	)
+
+	rightCenter := container.NewCenter(rightVBox)
+
+	// background-color
+	backgroundColor := canvas.NewRectangle(color.RGBA{30, 30, 30, 255})
+	right := container.NewMax(backgroundColor, rightCenter)
+
+	proVersionBinding.AddListener(binding.NewDataListener(func() {
+		isPro, _ := proVersionBinding.Get()
+		right.Hidden = isPro
+	}))
+
 	// layout
-	border := layout.NewBorderLayout(top, bottom, nil, nil)
-	resContainer := container.New(border, top, bottom, middle)
+	border := layout.NewBorderLayout(top, bottom, nil, right)
+	resContainer := container.New(border, top, bottom, right, middle)
 
 	logger.LogDebug("Control Panel initialized", false)
 
