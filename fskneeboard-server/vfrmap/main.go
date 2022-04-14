@@ -66,7 +66,7 @@ func initFsk() {
 		utils.Println("")
 
 		logger.LogError("WARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...", true)
-		server.ShutdownWithPrompt() // TODO!!!
+		dialogs.ShowErrorAndExit("Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running!")
 		} else {
 		logger.LogInfo("Established connection with local FSKneeboard database!", false)
 
