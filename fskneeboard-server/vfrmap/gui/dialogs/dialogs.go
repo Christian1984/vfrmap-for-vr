@@ -10,9 +10,7 @@ import (
 var ParentWindow *fyne.Window
 
 func ShowError(message string) {
-	dialog.ShowConfirm("Something Went Wrong", message, func(b bool) {
-		os.Exit(0)
-	}, *ParentWindow)
+	dialog.ShowInformation("Something Went Wrong", message, *ParentWindow)
 }
 
 func ShowErrorAndExit(message string) {
@@ -33,4 +31,12 @@ func ShowProFeatureInfo(feature string) {
 
 func ShowMsfsAutostartFailedError() {
 	dialog.ShowInformation("Failed to Start Flight Simulator", "Flight Simulator could not be started. Please see the console output for further details.", *ParentWindow)
+}
+
+func ShowMsfsShutdownInfoAndExit() {
+	dialog.ShowConfirm("Flight Simulator Shutdown", "Flight Simulator was closed.\nDo you want to close FSKneeboard now?\nPLEASE NOTE: FSKneeboard has to be restarted for each Flight Simulator session!", func(b bool) {
+		if b {
+			os.Exit(0)
+		}
+	}, *ParentWindow)
 }

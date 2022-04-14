@@ -169,7 +169,6 @@ func (s *SimConnect) Close() error {
 	r1, _, err := proc_SimConnect_Close.Call(uintptr(s.handle))
 	if int32(r1) < 0 {
 		return fmt.Errorf("SimConnect_Close error: %d %s", int32(r1), err)
-		panic("failed")
 	}
 	return nil
 }

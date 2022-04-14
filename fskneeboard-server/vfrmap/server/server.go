@@ -3,7 +3,6 @@ package server
 //go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html ../html
 
 import (
-	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -109,13 +108,11 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 }
 
 func ShutdownWithPrompt() {
-	if !globals.Quietshutdown {
-		buf := bufio.NewReader(os.Stdin)
-		utils.Print("\nPress ENTER to continue...") //TODO
-		buf.ReadBytes('\n')
+	if globals.Quietshutdown {
+		os.Exit(0)
+	} else {
+		dialogs.ShowMsfsShutdownInfoAndExit()
 	}
-
-	os.Exit(0)
 }
 
 func UpdateAutosaveInterval() {
@@ -216,17 +213,22 @@ func StartFskServer() {
 		err = s.RegisterDataDefinition(report)
 		if err != nil {
 			utils.Println(err)
-			panic(err)
+			logger.LogError("s.RegisterDataDefinition(report) failed, reason: " + err.Error(), false)
+			dialogs.ShowErrorAndExit("Communication with Flight Simulator failed!")
 		}
 
 		err = s.RegisterDataDefinition(trafficReport)
 		if err != nil {
-			panic(err)
+			utils.Println(err)
+			logger.LogError("s.RegisterDataDefinition(trafficReport) failed, reason: " + err.Error(), false)
+			dialogs.ShowErrorAndExit("Communication with Flight Simulator failed!")
 		}
 
 		err = s.RegisterDataDefinition(teleportReport)
 		if err != nil {
-			panic(err)
+			utils.Println(err)
+			logger.LogError("s.RegisterDataDefinition(teleportReport) failed, reason: " + err.Error(), false)
+			dialogs.ShowErrorAndExit("Communication with Flight Simulator failed!")
 		}
 
 		eventSimStartID = s.GetEventID()
@@ -369,13 +371,16 @@ func StartFskServer() {
 
 		err := http.ListenAndServe(globals.HttpListen, nil)
 		if err != nil {
-			panic(err)
+			logger.LogError("FSKneeboard Server could not be started! Reason: " + err.Error(), false)
+			dialogs.ShowErrorAndExit("FSKneeboard Server could not be started!\nPlease close ALL running instances of FSKneeboard an try again.")
 		}
 	}()
 
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
+
+	loggedGetNextDispatchError := false
 
 	for {
 		select {
@@ -412,7 +417,12 @@ func StartFskServer() {
 					// skip error, means no new messages?
 					continue
 				} else {
-					panic(fmt.Errorf("GetNextDispatch error: %d %s", r1, err))
+					if (!loggedGetNextDispatchError) {
+						logger.LogError(fmt.Sprintf("GetNextDispatch error: %d %s", r1, err), false)
+						loggedGetNextDispatchError = true
+					}
+
+					continue
 				}
 			}
 
@@ -502,6 +512,9 @@ func StartFskServer() {
 
 			case simconnect.RECV_ID_QUIT:
 				utils.Println("Flight Simulator was shut down. Exiting...")
+				callbacks.UpdateServerStatus("Not Running")
+				callbacks.UpdateMsfsConnectionStatus("Not Connected")
+
 				ShutdownWithPrompt()
 
 			default:
@@ -526,10 +539,6 @@ func StartFskServer() {
 			handleClientMessage(m, s)
 		}
 	}
-}
-
-func StopFskServer() {
-	//TODO
 }
 
 func handleClientMessage(m websockets.ReceiveMessage, s *simconnect.SimConnect) {
