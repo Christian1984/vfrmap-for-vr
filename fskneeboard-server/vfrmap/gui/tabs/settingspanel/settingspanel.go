@@ -168,7 +168,12 @@ func SettingsPanel() *fyne.Container {
 
 	// set log level
 	loglevelLabel := widget.NewLabel("Log Level")
+	logevelWarningLabel := widget.NewLabel("WARNING: The Log Level \"Debug\" may result in very large log files!")
+	logevelWarningLabel.Hidden = true
+	logevelWarningLabel.Alignment = fyne.TextAlignCenter
+
 	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
+		logevelWarningLabel.Hidden = strings.ToLower(selected) != "debug"
 		loglevelBinding.Set(selected)
 	})
 	logsOpenFolderBtn := widget.NewButton("Open Log Folder", func() {
@@ -212,7 +217,8 @@ func SettingsPanel() *fyne.Container {
 		autosaveLabel, autosaveSelect, autosaveOpenFolderBtn,
 		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
 	)
-	centerContainer := container.NewCenter(grid)
+	vBox := container.NewVBox(grid, logevelWarningLabel)
+	centerContainer := container.NewCenter(vBox)
 
 	logger.LogDebug("Settings Panel initialized", false)
 
