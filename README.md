@@ -724,13 +724,22 @@ Great work, guys! Thanks for sharing your work with us!!!
 
 ## Framework and Libraries
 
+- [Leaflet JS](https://github.com/Leaflet/Leaflet)
 - [JavaScript-MD](https://github.com/blueimp/JavaScript-MD5)
+- [BoltDB](https://github.com/boltdb/bolt)
+- [fyne](https://github.com/fyne-io/fyne)
 
 ### Sample Documents
 
 - The Traffic Pattern Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Airport_Traffic_Pattern_from_AIM_4-3-2.svg)
 - (PRO) The Weather Forecast Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Aviation_weather_forecast_chart.png)
 - (PRO) The Approach Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Mdwild31c.JPG)
+
+---
+
+# Licenses for 3rd Party Software and Libraries
+
+Licenses for 3rd party software and libraries can be found in the [license folder](https://github.com/Christian1984/vfrmap-for-vr/tree/master/licenses)
 
 ---
 
