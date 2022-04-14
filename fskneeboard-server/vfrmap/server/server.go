@@ -36,7 +36,7 @@ import (
 )
 
 var started = false
-var autosaveTick *time.Ticker
+var autosaveTick = time.NewTicker(9999 * time.Minute)
 
 type Report struct {
 	simconnect.RecvSimobjectDataByType

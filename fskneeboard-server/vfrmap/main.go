@@ -37,42 +37,6 @@ func initFsk() {
 
 	utils.Printf("\n"+globals.ProductName+" - Server\n  Website: https://fskneeboard.com\n  Discord: https://discord.fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", buildVersion, buildTime)
 
-	if globals.Pro {
-		logger.LogInfo("FSKneeboard PRO started. Checking license information...", false)
-
-		utils.Println("=== INFO: License")
-		drmData := drm.New()
-		globals.DrmValid = drmData.Valid()
-
-		if !globals.DrmValid {
-			utils.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
-			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
-
-			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "]", false)
-
-			callbacks.UpdateLicenseStatus("Invalid")
-			dialogs.ShowLicenseError()
-
-			return
-		} else {
-			utils.Println("Valid license found! This copy of FSKneeboard is licensed to: " + drmData.Email())
-			utils.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
-			utils.Println("")
-
-			logger.LogInfo("Valid license found, details: email [" + drmData.Email() + "]", false)
-			callbacks.UpdateLicenseStatus("Valid")
-		}
-	} else {
-		logger.LogInfo("FSKneeboard FREE started...", false)
-
-		utils.Println("=== INFO: How to Support the Development of FSKneeboard")
-		utils.Println("Thanks for trying FSKneeboard FREE!")
-		utils.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
-		utils.Println("")
-
-		callbacks.UpdateLicenseStatus("TRIAL (FSKneeboard FREE)")
-	}
-
 	callbacks.NewVersionAvailable(false)
 
 	if !noupdatecheck {
@@ -138,6 +102,43 @@ func initFsk() {
 	// master hotkey
 	dbmanager.LoadMasterHotkey()
 	callbacks.UpdateMasterHotkey(globals.MasterHotkey.ShiftKey, globals.MasterHotkey.CtrlKey, globals.MasterHotkey.AltKey, globals.MasterHotkey.Key)
+
+	// check license
+	if globals.Pro {
+		logger.LogInfo("FSKneeboard PRO started. Checking license information...", false)
+
+		utils.Println("=== INFO: License")
+		drmData := drm.New()
+		globals.DrmValid = drmData.Valid()
+
+		if !globals.DrmValid {
+			utils.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
+			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
+
+			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "]", false)
+
+			callbacks.UpdateLicenseStatus("Invalid")
+			dialogs.ShowLicenseError()
+
+			return
+		} else {
+			utils.Println("Valid license found! This copy of FSKneeboard is licensed to: " + drmData.Email())
+			utils.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
+			utils.Println("")
+
+			logger.LogInfo("Valid license found, details: email [" + drmData.Email() + "]", false)
+			callbacks.UpdateLicenseStatus("Valid")
+		}
+	} else {
+		logger.LogInfo("FSKneeboard FREE started...", false)
+
+		utils.Println("=== INFO: How to Support the Development of FSKneeboard")
+		utils.Println("Thanks for trying FSKneeboard FREE!")
+		utils.Println("Please checkout https://fskneeboard.com and purchase FSKneeboard PRO to unlock all features the extension has to offer.")
+		utils.Println("")
+
+		callbacks.UpdateLicenseStatus("TRIAL (FSKneeboard FREE)")
+	}
 
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
