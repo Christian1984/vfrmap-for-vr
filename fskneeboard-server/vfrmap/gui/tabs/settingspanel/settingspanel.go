@@ -23,7 +23,6 @@ var msfsVersionOptions = []string{msfsVersionOptionWinstore, msfsVersionOptionSt
 var msfsVersionBinding = binding.NewString()
 
 var msfsAutostartBinding = binding.NewBool()
-//var serverAutostartBinding = binding.NewBool()
 
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
@@ -58,10 +57,6 @@ func UpdateMsfsVersionStatus(steam bool) {
 func UpdateMsfsAutostartStatus(autostart bool) {
 	msfsAutostartBinding.Set(autostart)
 }
-
-/*func UpdateServerAutostartStatus(autostart bool) {
-	serverAutostartBinding.Set(autostart)
-}*/
 
 func UpdateLogLevelStatus(level string) {
 	lowerLevel := strings.ToLower(level)
@@ -122,18 +117,6 @@ func SettingsPanel() *fyne.Container {
 
 		dbmanager.StoreMsfsAutostart()
 	}))
-
-	// server autostart select
-	/*serverAutostartLabel := widget.NewLabel("FSKneeboard Server Autostart")
-	serverAutostartCb := widget.NewCheckWithData("Start Server when FSKneeboard starts", serverAutostartBinding)
-
-	serverAutostartBinding.AddListener(binding.NewDataListener(func() {
-		serverAutostart, _ := serverAutostartBinding.Get()
-		globals.ServerAutostart = serverAutostart
-		logger.LogInfo("Server Autostart updated: " + strconv.FormatBool(serverAutostart), false)
-
-		dbmanager.StoreServerAutostart()
-	}))*/
 
 	// set autosave properties
 	autosaveLabel := widget.NewLabel("Autosave Interval [minutes]")
@@ -224,7 +207,6 @@ func SettingsPanel() *fyne.Container {
 		3,
 		msfsVersionLabel, msfsVersionSelect, widget.NewLabel(""),
 		msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
-		//serverAutostartLabel, serverAutostartCb, widget.NewLabel(""),
 		autosaveLabel, autosaveSelect, autosaveOpenFolderBtn,
 		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
 	)
