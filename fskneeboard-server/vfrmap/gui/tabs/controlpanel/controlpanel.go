@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"os/exec"
 	"strconv"
+	"time"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -25,7 +26,8 @@ var autosaveBinding = binding.NewString()
 
 var msfsStartedBinding = binding.NewBool()
 var newVersionAvailableBinding = binding.NewBool()
-var proVersionBinding = binding.NewBool()
+
+var freeImages []fyne.Resource
 
 func UpdateServerStatus(status string) {
 	serverStatusBinding.Set(status)
@@ -47,10 +49,6 @@ func UpdateNewVersionAvailable(value bool) {
 	newVersionAvailableBinding.Set(value)
 }
 
-func UpdateProVersionStatus(pro bool) {
-	proVersionBinding.Set(pro)
-}
-
 func UpdateAutosaveStatus(interval int) {
 	intervalString := "Off"
 
@@ -59,6 +57,25 @@ func UpdateAutosaveStatus(interval int) {
 	}
 
 	autosaveBinding.Set(intervalString)
+}
+
+var imageIndex = 0
+
+func initImageRotation(image *canvas.Image) {
+	if len(freeImages) == 0 || globals.Pro {
+		return
+	}
+
+	go func() {
+		for {
+			time.Sleep(10 * time.Second)
+	
+			imageIndex = (imageIndex + 1) % len(freeImages)
+
+			image.Resource = freeImages[imageIndex]
+			image.Refresh()
+		}
+	}()
 }
 
 func ControlPanel() *fyne.Container {
@@ -131,8 +148,26 @@ func ControlPanel() *fyne.Container {
 	freeLabel3 := canvas.NewText("and unlock ALL features today!", textColor)
 	freeLabel3.Alignment = fyne.TextAlignCenter
 
-	freeImage := canvas.NewImageFromFile("res/pro-img-1.jpg")
+	freeImage1, err := fyne.LoadResourceFromPath("res/pro-img-1.jpg")
+	if err == nil {
+		freeImages = append(freeImages, freeImage1)
+	}
+
+	if !globals.Pro {
+		freeImage2, err := fyne.LoadResourceFromPath("res/pro-img-2.jpg")
+		if err == nil {
+			freeImages = append(freeImages, freeImage2)
+		}
+	
+		freeImage3, err := fyne.LoadResourceFromPath("res/pro-img-3.jpg")
+		if err == nil {
+			freeImages = append(freeImages, freeImage3)
+		}
+	}
+
+	freeImage := canvas.NewImageFromResource(freeImage1)
 	freeImage.FillMode = canvas.ImageFillOriginal
+	initImageRotation(freeImage)
 
 	learnMoreUrl, _ := url.Parse("https://fskneeboard.com/compare")
 	learnMoreLink := widget.NewHyperlink("Learn more about FSKneeboard PRO", learnMoreUrl)
@@ -162,10 +197,7 @@ func ControlPanel() *fyne.Container {
 	backgroundColor := canvas.NewRectangle(color.RGBA{30, 30, 30, 255})
 	right := container.NewMax(backgroundColor, rightCenter)
 
-	proVersionBinding.AddListener(binding.NewDataListener(func() {
-		isPro, _ := proVersionBinding.Get()
-		right.Hidden = isPro
-	}))
+	right.Hidden = globals.Pro
 
 	// layout
 	border := layout.NewBorderLayout(top, bottom, nil, right)

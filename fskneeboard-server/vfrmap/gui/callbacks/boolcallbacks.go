@@ -29,9 +29,3 @@ var MsfsAutostartChangedCallback func(bool)
 func MsfsAutostartChanged(autostart bool) {
 	runBoolCallback(autostart, MsfsAutostartChangedCallback)
 }
-
-var ProVersionChangedCallback func(bool)
-
-func ProVersionChanged(pro bool) {
-	runBoolCallback(pro, ProVersionChangedCallback)
-}

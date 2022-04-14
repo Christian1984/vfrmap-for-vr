@@ -149,8 +149,6 @@ func initFsk() {
 		utils.Println("")
 	}
 
-	callbacks.ProVersionChanged(globals.Pro)
-
 	// starting FSKneeboard Server
 	go server.StartFskServer()
 }
@@ -161,7 +159,6 @@ func registerGuiCallbacks() {
 	callbacks.UpdateServerStatusCallback = controlpanel.UpdateServerStatus
 	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus
 	callbacks.UpdateLicenseStatusCallback = controlpanel.UpdateLicenseStatus
-	callbacks.ProVersionChangedCallback = controlpanel.UpdateProVersionStatus
 
 	callbacks.UpdateLogLevelStatusCallback = settingspanel.UpdateLogLevelStatus
 
