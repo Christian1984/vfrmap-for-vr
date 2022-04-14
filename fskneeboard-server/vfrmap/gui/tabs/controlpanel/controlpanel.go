@@ -21,7 +21,6 @@ var msfsConnectionBinding = binding.NewString()
 var licenseBinding = binding.NewString()
 var autosaveBinding = binding.NewString()
 
-var serverStartedBinding = binding.NewBool()
 var msfsStartedBinding = binding.NewBool()
 var newVersionAvailableBinding = binding.NewBool()
 
@@ -35,10 +34,6 @@ func UpdateMsfsConnectionStatus(status string) {
 
 func UpdateLicenseStatus(status string) {
 	licenseBinding.Set(status)
-}
-
-func UpdateServerStarted(value bool) {
-	serverStartedBinding.Set(value)
 }
 
 func UpdateMsfsStarted(value bool) {
@@ -89,18 +84,6 @@ func ControlPanel() *fyne.Container {
 	middle := container.NewCenter(grid)
 
 	// top
-	/*startServerBtn := widget.NewButtonWithIcon("Start FSKneeboard Server", theme.MediaPlayIcon(), func() {
-		console.ConsoleLogLn("Starting Server...")
-		go server.StartFskServer()
-	})
-	startServerBtn.Hidden = true //temporary until permanent removal
-
-	stopServerBtn := widget.NewButtonWithIcon("Stop FSKneeboard Server", theme.MediaStopIcon(), func() {
-		console.ConsoleLogLn("Stopping Server...")
-		go server.StopFskServer()
-	})
-	stopServerBtn.Hidden = true //temporary until permanent removal*/
-
 	launchSimBtn := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
 		console.ConsoleLogLn("Launching MSFS...")
 		go msfsinterfacing.StartMsfs()
@@ -115,20 +98,6 @@ func ControlPanel() *fyne.Container {
 			launchSimBtn.Enable()
 		}
 	}))
-
-	/*serverStartedBinding.AddListener(binding.NewDataListener(func() {
-		serverStarted, _ := serverStartedBinding.Get()
-
-		if (serverStarted) {
-			startServerBtn.Disable()
-			stopServerBtn.Enable()
-		} else {
-			startServerBtn.Enable()
-			stopServerBtn.Disable()
-		}
-	}))*/
-
-	//top := container.NewHBox(startServerBtn, stopServerBtn, launchSimBtn)
 	top := container.NewHBox(launchSimBtn)
 	
 	// bottom

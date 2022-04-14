@@ -5,7 +5,6 @@ package main
 import (
 	"flag"
 	"strconv"
-	"time"
 
 	"vfrmap-for-vr/_vendor/premium/common"
 	"vfrmap-for-vr/_vendor/premium/drm"
@@ -112,7 +111,7 @@ func initFsk() {
 		globals.DrmValid = drmData.Valid()
 
 		if !globals.DrmValid {
-			utils.Println("\nWARNING: You do not have a valid license to run FSKneeboard PRO!")
+			utils.Println("WARNING: You do not have a valid license to run FSKneeboard PRO!")
 			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
 
 			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "]", false)
@@ -166,7 +165,6 @@ func registerGuiCallbacks() {
 	callbacks.UpdateAutosaveStatusCallbacks = append(callbacks.UpdateAutosaveStatusCallbacks, controlpanel.UpdateAutosaveStatus)
 	callbacks.UpdateAutosaveStatusCallbacks = append(callbacks.UpdateAutosaveStatusCallbacks, settingspanel.UpdateAutosaveStatus)
 
-	callbacks.UpdateServerStartedCallback = controlpanel.UpdateServerStarted
 	callbacks.UpdateMsfsStartedCallback = controlpanel.UpdateMsfsStarted
 	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
 
@@ -225,8 +223,6 @@ func main() {
 
 	gui.InitGui()
 	registerGuiCallbacks()
-
-	time.Sleep(1 * time.Second)
 
 	initFsk()
 

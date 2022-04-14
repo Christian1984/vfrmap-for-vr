@@ -6,12 +6,6 @@ func runBoolCallback(value bool, callback func(bool)) {
 	}
 }
 
-var UpdateServerStartedCallback func(bool)
-
-func UpdateServerStarted(status bool) {
-	runBoolCallback(status, UpdateServerStartedCallback)
-}
-
 var UpdateMsfsStartedCallback func(bool)
 
 func UpdateMsfsStarted(status bool) {
