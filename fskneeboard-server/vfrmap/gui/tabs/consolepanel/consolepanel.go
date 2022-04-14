@@ -1,4 +1,4 @@
-package console
+package consolepanel
 
 import (
 	"vfrmap-for-vr/vfrmap/logger"
@@ -37,7 +37,7 @@ func ConsoleLogLn(message string) {
 	ConsoleLog(message + "\n")
 }
 
-func Console() *fyne.Container {
+func ConsolePanel() *fyne.Container {
 	logger.LogDebug("Initializing Console Panel...", false)
 
 	// console

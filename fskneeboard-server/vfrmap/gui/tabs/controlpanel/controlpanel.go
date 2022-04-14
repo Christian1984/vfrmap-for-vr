@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
-	"vfrmap-for-vr/vfrmap/gui/tabs/console"
 	"vfrmap-for-vr/vfrmap/logger"
 
 	"fyne.io/fyne/v2"
@@ -85,7 +84,6 @@ func ControlPanel() *fyne.Container {
 
 	// top
 	launchSimBtn := widget.NewButtonWithIcon("Launch Flight Simulator", theme.UploadIcon(), func() {
-		console.ConsoleLogLn("Launching MSFS...")
 		go msfsinterfacing.StartMsfs()
 	})
 

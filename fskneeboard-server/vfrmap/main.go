@@ -14,7 +14,7 @@ import (
 	"vfrmap-for-vr/vfrmap/gui"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
-	"vfrmap-for-vr/vfrmap/gui/tabs/console"
+	"vfrmap-for-vr/vfrmap/gui/tabs/consolepanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/hotkeyspanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/settingspanel"
@@ -154,7 +154,7 @@ func initFsk() {
 }
 
 func registerGuiCallbacks() {
-	utils.GuiPrintCallback = console.ConsoleLog
+	utils.GuiPrintCallback = consolepanel.ConsoleLog
 
 	callbacks.UpdateServerStatusCallback = controlpanel.UpdateServerStatus
 	callbacks.UpdateMsfsConnectionStatusCallback = controlpanel.UpdateMsfsConnectionStatus

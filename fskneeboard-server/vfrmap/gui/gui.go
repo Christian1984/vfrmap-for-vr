@@ -3,10 +3,11 @@ package gui
 import (
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
-	"vfrmap-for-vr/vfrmap/gui/tabs/console"
+	"vfrmap-for-vr/vfrmap/gui/tabs/consolepanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/hotkeyspanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/settingspanel"
+	"vfrmap-for-vr/vfrmap/gui/tabs/supportpanel"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/utils"
 
@@ -41,7 +42,8 @@ func InitGui() {
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
 		container.NewTabItem("Hotkeys", hotkeyspanel.HotkeysPanel()),
 		//container.NewTabItem("PDF Import", widget.NewLabel("//TODO")),
-		container.NewTabItem("Console", console.Console()),
+		container.NewTabItem("Console", consolepanel.ConsolePanel()),
+		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
 	)
 
 	logger.LogDebug("Tabs initialized", false)
