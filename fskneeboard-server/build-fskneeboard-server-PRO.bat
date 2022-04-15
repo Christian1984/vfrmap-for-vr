@@ -17,6 +17,7 @@ go generate -v .\vfrmap\html\fontawesome
 go generate -v .\vfrmap\html\leafletjs
 go generate -v .\vfrmap\html\freemium
 go generate -v .\vfrmap\html\premium
+go generate -v .\vfrmap\gui\res
 go generate -v .\simconnect\
 
 date /t>date.txt
