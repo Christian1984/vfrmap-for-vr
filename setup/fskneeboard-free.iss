@@ -43,8 +43,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\dist\free\fskneeboard-server\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\free\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\free\README.pdf"; DestDir: "{app}"; Flags: ignoreversion isreadme
-Source: "..\dist\free\fskneeboard-server\fskneeboard-autostart-steam.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\dist\free\fskneeboard-server\fskneeboard-autostart-windows-store.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\free\fskneeboard-server\repair-fskneeboard.bat"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\layout.json"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard"; Flags: ignoreversion
 Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\manifest.json"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard"; Flags: ignoreversion
@@ -57,9 +56,8 @@ Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\ht
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\FSKneeboard\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppExeName}"
-Name: "{autoprograms}\FSKneeboard\{#MyAppName} + MSFS (Windows Store)"; Filename: "{app}\fskneeboard-autostart-windows-store.bat"; IconFilename: "{app}\{#MyAppExeName}"
-Name: "{autoprograms}\FSKneeboard\{#MyAppName} + MSFS (Steam)"; Filename: "{app}\fskneeboard-autostart-steam.bat"; IconFilename: "{app}\{#MyAppExeName}"
+Name: "{autoprograms}\FSKneeboard\Start {#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppExeName}"
+Name: "{autoprograms}\FSKneeboard\Repair {#MyAppName}"; Filename: "{app}\repair-fskneeboard.bat"; IconFilename: "{app}\{#MyAppExeName}"
 Name: "{autoprograms}\FSKneeboard\Docs - Readme"; Filename: "{app}\README.pdf"
 Name: "{autoprograms}\FSKneeboard\Docs - Changelog"; Filename: "{app}\CHANGELOG.md"
 Name: "{autoprograms}\FSKneeboard\Web - Join us on Discord"; Filename: "https://discord.fskneeboard.com"
