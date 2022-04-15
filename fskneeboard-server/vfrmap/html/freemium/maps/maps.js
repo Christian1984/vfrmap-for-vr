@@ -608,8 +608,8 @@ function loadStoredState() {
                     /* ignore silently */
                 }
             }
-            
-            if (data.rubberband_visibility != null) {
+
+            if (data.rubberband_visibility != null && data.rubberband_visibility != "") {
                 rubberband_visibility = data.rubberband_visibility != "true";
                 toggle_rubberband();
             }
@@ -961,7 +961,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.document.addEventListener("keydown", (e) => {
         Logger.logDebug("maps.js => keydown event registered: [" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");
-        console.log(e);
         dispatch_keyevent(e);
     });
 
