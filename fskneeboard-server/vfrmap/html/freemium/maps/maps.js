@@ -249,6 +249,15 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
+    const otm = new L.TileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        subdomains: ["a", "b", "c"]
+    });
+
     const airac = calculate_airac_cycle();
 
     const ofm = new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=" + airac + "/aero/latest", {
@@ -317,6 +326,7 @@ function initMap() {
 
     const baseMaps = {
         "OpenStreetMap": osm,
+        "OpenTopoMap": otm,
         "Stamen Terrain": stamen_terrain,
         "Stamen Toner": stamen_black_white,
         "Stamen Water": stamen_water,
