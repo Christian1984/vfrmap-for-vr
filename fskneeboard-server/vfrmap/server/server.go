@@ -207,6 +207,10 @@ func StartFskServer() {
 	}
 
 	ws := websockets.New()
+
+	hotkeysWs := websockets.New()
+	hotkeys.Ws = hotkeysWs
+
 	notepadWs := websockets.New()
 	globals.Notepad = notepad.New(notepadWs)
 
@@ -341,6 +345,7 @@ func StartFskServer() {
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
+		http.HandleFunc("/hotkeysWs", hotkeysWs.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkeys.ServeMasterHotkey)
 		http.HandleFunc("/log/", logger.LogController)

@@ -269,6 +269,8 @@ function reset_stretch() {
 }
 
 function request_hotkey() {
+    Logger.logDebug("index.js => requesting hotkey configuration...");
+
     var xhr = new XMLHttpRequest();
     var url = "/hotkey";
     xhr.open("GET", url, true);
@@ -276,7 +278,10 @@ function request_hotkey() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
+                Logger.logDebug("index.js => received hotkey configuration: " + xhr.responseText);
+
                 var json = JSON.parse(xhr.responseText);
+
                 if (json && json.keycode != null) {
                     const msg = JSON.stringify({
                         type: "HotkeyConfiguration",
@@ -391,6 +396,23 @@ function init() {
     }
 
     request_hotkey();
+
+    // subscribe to websocket
+    const ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/hotkeysWs");
+    ws.onopen = function() {
+        Logger.logDebug("index.js => connection to /hotkeysWs websocket opened");
+    };
+    ws.onclose = function() {
+        Logger.logDebug("index.js => connection to /hotkeysWs websocket closed");
+    };
+    ws.onmessage = e => {
+        Logger.logDebug("index.js => received message from /hotkeysWs websocket: " + e.data);
+        const msg = JSON.parse(e.data);
+
+        if (msg.msg) {
+            request_hotkey();
+        }
+    };
 
     window.document.addEventListener("keydown", (e) => {
         Logger.logDebug("index.js => keydown event registered, e.key=[" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");

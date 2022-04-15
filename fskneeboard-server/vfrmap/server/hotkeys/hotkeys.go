@@ -6,7 +6,20 @@ import (
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/utils"
+	"vfrmap-for-vr/vfrmap/websockets"
 )
+
+var Ws *websockets.Websocket
+
+func NotifyHotkeysUpdated() {
+	if Ws != nil {
+		logger.LogDebug("Broadcasting hotkeys update!", false)
+	
+		Ws.Broadcast(map[string]interface{}{
+			"msg": "hotkeys updated",
+		})
+	}
+}
 
 func ServeMasterHotkey(w http.ResponseWriter, r *http.Request) {
 	logger.LogDebug("ServeMasterHotkey called!", false)

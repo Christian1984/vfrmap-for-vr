@@ -5,6 +5,7 @@ import (
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/logger"
+	"vfrmap-for-vr/vfrmap/server/hotkeys"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -51,7 +52,6 @@ func HotkeysPanel() *fyne.Container {
 	// grid and centerContainer
 	labelNotes := widget.NewLabel("IMPORTANT NOTES:\n" + 
 		"- In order for the hotkeys to work, you have to manually open the FSKneeboard panel at least once per flight!\n" +
-		"- Please completely close and re-open your FSKneeboard ingame panel after changing any hotkeys!\n" +
 		"- Use your HOTAS software to map these hotkeys to your HOTAS!\n")
 
 	// master switch
@@ -62,6 +62,7 @@ func HotkeysPanel() *fyne.Container {
 		value, _ := masterShiftModifierBinding.Get()
 		globals.MasterHotkey.ShiftKey = value
 		dbmanager.StoreMasterHotkeyShiftModifier()
+		hotkeys.NotifyHotkeysUpdated()
 	}))
 
 	masterCtrlCb := widget.NewCheckWithData("Ctrl", masterCtrlModifierBinding)
@@ -69,6 +70,7 @@ func HotkeysPanel() *fyne.Container {
 		value, _ := masterCtrlModifierBinding.Get()
 		globals.MasterHotkey.CtrlKey = value
 		dbmanager.StoreMasterHotkeyCtrlModifier()
+		hotkeys.NotifyHotkeysUpdated()
 	}))
 
 	masterAltCb := widget.NewCheckWithData("Alt", masterAltModifierBinding)
@@ -76,6 +78,7 @@ func HotkeysPanel() *fyne.Container {
 		value, _ := masterAltModifierBinding.Get()
 		globals.MasterHotkey.AltKey = value
 		dbmanager.StoreMasterHotkeyAltModifier()
+		hotkeys.NotifyHotkeysUpdated()
 	}))
 
 	masterHotkey := widget.NewSelect(keyOptions, func(s string) {
@@ -86,6 +89,7 @@ func HotkeysPanel() *fyne.Container {
 
 		globals.MasterHotkey.SetKey(dbmanager.SanitizeHotkey(key))
 		dbmanager.StoreMasterHotkeyKey()
+		hotkeys.NotifyHotkeysUpdated()
 
 		if strings.ToUpper(key) != strings.ToUpper(masterHotkey.Selected) {
 			logger.LogDebug("masterKeyBinding changed: [" + key + "]; updating ui select element...", false)
