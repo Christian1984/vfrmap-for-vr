@@ -3,6 +3,7 @@ package gui
 import (
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
+	"vfrmap-for-vr/vfrmap/gui/res"
 	"vfrmap-for-vr/vfrmap/gui/tabs/consolepanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/hotkeyspanel"
@@ -24,10 +25,11 @@ func InitGui() {
 	a := app.New()
 
 	logger.LogDebug("Loading icon...", false)
-	r, err := fyne.LoadResourceFromPath("icon.png")
+	iconAsset, err := res.Asset("icon.png")
 	if err == nil {
+		iconResource := fyne.NewStaticResource("icon.png", iconAsset)
 		logger.LogDebug("Icon loaded", false)
-		a.SetIcon(r)
+		a.SetIcon(iconResource)
 	} else {
 		logger.LogWarn("Icon could not be loaded!", false)
 	}

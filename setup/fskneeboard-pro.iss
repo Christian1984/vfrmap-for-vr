@@ -43,7 +43,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\dist\pro\fskneeboard-server\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\README.pdf"; DestDir: "{app}"; Flags: ignoreversion isreadme
-Source: "..\dist\pro\fskneeboard-server\icon.png"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\copy-your-license-file-here.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-steam.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\pro\fskneeboard-server\fskneeboard-autostart-windows-store.bat"; DestDir: "{app}"; Flags: ignoreversion
