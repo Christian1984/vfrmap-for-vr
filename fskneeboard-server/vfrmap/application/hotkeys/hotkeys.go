@@ -31,5 +31,5 @@ func (hc *Hotkey) SetKey(key string) {
 func New(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) Hotkey {
 	upperKey := strings.ToUpper(key)
 	keyCode := sanitizedKeycode(upperKey)
-	return Hotkey{shiftModifier, ctrlModifier, altModifier, keyCode, upperKey}
+	return Hotkey{ShiftKey: shiftModifier, CtrlKey: ctrlModifier, AltKey: altModifier, KeyCode: keyCode, Key: upperKey}
 }
