@@ -23,7 +23,6 @@ let markerTeleport;
 let markerIcon;
 let popup;
 let ws;
-//let plane_popup;
 let teleport_popup;
 let waypoints;
 let follow_plane = false;
@@ -157,8 +156,6 @@ function updateMap(msg) {
 
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
-
-    //plane_popup.pos.innerText = Number(pos.lat).toFixed(6) + "," + Number(pos.lng).toFixed(6);
 
     update_wind_indicator(msg.wind_direction, msg.wind_velocity);
 
@@ -347,7 +344,6 @@ function initMap() {
     });
 
     marker.addTo(map);
-    //marker.bindPopup(L.popup({autoPan: false}).setLatLng(pos).setContent(plane_popup.main));
 
     let markerPos = L.latLng(0,0);
     markerTeleport = L.marker(markerPos, {});
@@ -470,13 +466,6 @@ function teleport_here() {
 }
 
 function set_follow(follow) {
-    /*if (follow) {
-        plane_popup.follow.innerText = "don't follow plane";
-    }
-    else {
-        plane_popup.follow.innerText = "follow plane";
-    }*/
-
     follow_plane = follow;
     store_data("b_follow", follow, false);
 
@@ -935,13 +924,6 @@ function hide_premium_info(hide = true) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    /*plane_popup = {
-        main: document.getElementById("plane-popup"),
-        pos: document.getElementById("plane-popup-pos"),
-        gmap: document.getElementById("plane-popup-gmap"),
-        follow: document.getElementById("plane-popup-follow"),
-    };*/
-
     teleport_popup = {
         main: document.getElementById("teleport-popup"),
         submit: document.getElementById("teleport-popup-submit"),
