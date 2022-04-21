@@ -599,6 +599,8 @@ It also allows you start your local copy of Microsoft Flight Simulator as long a
 
 If a new version of FSKneeboard is available, a notification on the bottom of the window will let you know.
 
+<div style="page-break-after: always;"></div>
+
 ### Settings Panel
 
 The settings panel is where you can configure general settings that control the behaviour of FSKneeboard.
@@ -618,6 +620,8 @@ The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
 - The "Autosave Interval" allows you to configure an interval (in minutes) for creating backup "snapshots" of your flight simulator sessions as described [here](#flight-simulator-autostart).
 
+<div style="page-break-after: always;"></div>
+
 #### Log Level
 
 - The "Log Level" will be "Off" by default. If you run into any issues while using FSKneeboard and want to report a bug, it makes sense to set this to "Debug" and then reproduce the bug you want to report. That way, I will have detailed information that can use to assess and analyze what is going on. You will, hopefully, not need this setting on a daily basis :-)
@@ -635,6 +639,8 @@ For now, there is only one hotkey available, which enables you to toggle the vis
 You can customize your hotkey by selecting any letter from the dropdown menu and also toggle modifiers (by clicking the checkboxes next to them), so that your custom keyboard shortcut does not interfere with any other hotkeys that may have been configured elsewhere in the Simulator.
 
 Select `[Off]` to completely deactivate the hotkey in question.
+
+<div style="page-break-after: always;"></div>
 
 ### Console Panel
 
@@ -764,8 +770,6 @@ Great work, guys! Thanks for sharing your work with us!!!
 Licenses for 3rd party software and libraries can be found in the [license folder](https://github.com/Christian1984/vfrmap-for-vr/tree/master/licenses)
 
 ---
-
-<div style="page-break-after: always;"></div>
 
 # Releases and Downloads
 
