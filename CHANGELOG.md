@@ -1,5 +1,19 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.7.0
+
+## MAJOR:
+
+- FSKneeboard Core Application now ships with a Graphical User Interface (GUI)
+- improved the performance of the waypoint and track calculations, which directly improves the detection and performance of click and drag events on the map and overall system load
+- added opentopomap as an additional map provider
+
+# MINOR:
+
+- added a new start menu item which allows users to reset the local FSKneeboard database to "factory settings"
+
+---
+
 # v1.6.1
 
 ## MAJOR:
