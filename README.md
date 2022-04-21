@@ -408,7 +408,7 @@ In order to launch FSKneeboard, you need to do two things:
 ## Starting The FSKneeboard Core Application
 
 - Step 1: Run `fskneeboard.exe` by clicking either the approprite desktop icon or selecting it from the start menu. This will bring up the FSKneeboard core application's desktop window. FSKneeboard will now wait for Microsoft Flight Simulator and connect to it.
-- Step 2: Start Microsoft Flight Simulator. You can do this by either clicking the appropriate icon on your desktop or by clicking the "Launch Flight Simulator" button on the FSKneeboard Control Panel. This requires you to first configure the version of your copy of Flight Simulator through the Settings Panel, as described [here](//TODO).
+- Step 2: Start Microsoft Flight Simulator. You can do this by either clicking the appropriate icon on your desktop or by clicking the "Launch Flight Simulator" button on the FSKneeboard Control Panel. This requires you to first configure the version of your copy of Flight Simulator through the Settings Panel, as described [here](#flight-simulator-autostart).
 - Step 3: Open up the ingame panel once inside the sim (like you would do with other ingame panels like the ATC or weather panel etc.)
 - Step 4: Place the FSKneeboard Panel conveniently in your VR space
 - Step 5: Click "Center Airplane" to initially center the map on your airplane
@@ -560,7 +560,7 @@ You can also connect a tablet computer to FSKneeboard (see [Connecting to FSKnee
 
 Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
 
-Please configure the autosave interval through the server GUI as outlined [here](//TODO).
+Please configure the autosave interval through the server GUI as outlined [here](#autosave-1).
 
 FSKneeboard automatically deletes older snapshots and keeps only the latest 5.
 
@@ -572,7 +572,7 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 > - This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
 > - When the panel is hidden via the hotkey it is technically still there in your 3D space. Any attempt to control cockpit instrumentation that is hidden "behind" your invisible kneeboard will not work. The panel still intercepts your 3D cursor. Please make sure to position your kneeboard panel in a way that would allow you to interact with your cockpit instrumentation all the time, no matter if the panel is hidden or not!
 
-You can define a master hotkey to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured through the server GUI as described [here](//TODO).
+You can define a master hotkey to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured through the server GUI as described [here](#hotkeys-panel).
 
 When inside the game, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
 
@@ -617,7 +617,7 @@ The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
 ### Autosave
 
-- The "Autosave Interval" allows you to configure an interval (in minutes) for creating backup "snapshots" of your flight simulator sessions as described [here](//TODO).
+- The "Autosave Interval" allows you to configure an interval (in minutes) for creating backup "snapshots" of your flight simulator sessions as described [here](#flight-simulator-autostart).
 
 ### Log Level
 
@@ -631,7 +631,7 @@ The hotkeys panel allows you to setup hotkey(s) to use with FSKneeboard.
 
 *FSKneeboard - Hotkeys Panel*
 
-For now, there is only one hotkey available, which enables you to toggle the visibility the FSKneeboard ingame panel inside Flight Simulator. This feature is somewhat experimental, though, as described [here](//TODO).
+For now, there is only one hotkey available, which enables you to toggle the visibility the FSKneeboard ingame panel inside Flight Simulator. This feature is somewhat experimental, though, as described [here](#hotkey-experimental).
 
 You can customize your hotkey by selecting any letter from the dropdown menu and also toggle modifiers (by clicking the checkboxes next to them), so that your custom keyboard shortcut does not interfere with any other hotkeys that may have been configured elsewhere in the Simulator.
 
