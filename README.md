@@ -610,16 +610,16 @@ The settings panel is where you can configure general settings that control the 
 
 The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
-### Flight Simulator Autostart
+#### Flight Simulator Autostart
 
 - Under "Flight Simulator Version", please tell FSKneeboard if you have installed the Steam or Windows Store version of Microsoft Flight Simulator. This will FSKneeboard tell where to look for and how to start Flight Simulator when you either click the "Launch Flight Simulator" button on the Control Panel or activate the autostart option
 - Under "Flight Simulator Autostart" you can enable or disable whether FSKneeboard should automatically launch your copy of Microsoft Flight Simulator when you start FSKneeboard
 
-### Autosave
+#### Autosave
 
 - The "Autosave Interval" allows you to configure an interval (in minutes) for creating backup "snapshots" of your flight simulator sessions as described [here](#flight-simulator-autostart).
 
-### Log Level
+#### Log Level
 
 - The "Log Level" will be "Off" by default. If you run into any issues while using FSKneeboard and want to report a bug, it makes sense to set this to "Debug" and then reproduce the bug you want to report. That way, I will have detailed information that can use to assess and analyze what is going on. You will, hopefully, not need this setting on a daily basis :-)
 
@@ -635,7 +635,7 @@ For now, there is only one hotkey available, which enables you to toggle the vis
 
 You can customize your hotkey by selecting any letter from the dropdown menu and also toggle modifiers (by clicking the checkboxes next to them), so that your custom keyboard shortcut does not interfere with any other hotkeys that may have been configured elsewhere in the Simulator.
 
-Select [off] to completely deactivate the hotkey in question.
+Select `[Off]` to completely deactivate the hotkey in question.
 
 ### Console Panel
 
