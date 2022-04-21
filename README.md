@@ -32,11 +32,10 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 10. [Usage](#usage)
 11. [Advanced Usage](#advanced-usage)
 12. [Troubleshooting](#troubleshooting)
-13. [Roadmap](#roadmap)
-14. [Attribution](#attribution)
-15. [Releases and Downloads](#releases-and-downloads)
-16. [How to Contribute?](#how-to-contribute)
-17. [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected)
+13. [Attribution](#attribution)
+14. [Releases and Downloads](#releases-and-downloads)
+15. [How to Contribute?](#how-to-contribute)
+16. [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected)
 
 ---
 
@@ -722,23 +721,6 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 ---
 
-# Roadmap
-
-Here's a list of features that I've planned to implement in the foreseeable future:
-
-- Integrate Navigraph and Little Nav Map (if feasible)
-- Integrate a vPilot interface for better accessibility of ATC in VR
-- Integration for Glasscockpit panels (like the G-1000)
-- Extend the chart viewer to also read txt-files
-- Embed Twitch Chat / Discord / YouTube(?)
-
-And here are some wishes from the community that I have to check for feasibility as soon as I get to it:
-
-- Is it possible to add frequencies (such as VOR/DME/Comm)?
-- Is it possible to change airport elevation data from [m] to [ft]?
-
----
-
 # Attribution
 
 This project uses forks of two amazing community projects. Without them, it would have taken me an incredible amount of time building this thing all on my own. Hence, I want to thank the two:
@@ -762,18 +744,18 @@ Great work, guys! Thanks for sharing your work with us!!!
 - [openAIP](https://www.openaip.net)
 - [open flightmaps](https://www.openflightmaps.org/)
 
-## Framework and Libraries
+### Framework and Libraries
 
 - [Leaflet JS](https://github.com/Leaflet/Leaflet)
 - [JavaScript-MD](https://github.com/blueimp/JavaScript-MD5)
 - [BoltDB](https://github.com/boltdb/bolt)
 - [fyne](https://github.com/fyne-io/fyne)
 
-### Sample Documents
+### (PRO) Sample Documents
 
 - The Traffic Pattern Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Airport_Traffic_Pattern_from_AIM_4-3-2.svg)
-- (PRO) The Weather Forecast Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Aviation_weather_forecast_chart.png)
-- (PRO) The Approach Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Mdwild31c.JPG)
+- The Weather Forecast Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Aviation_weather_forecast_chart.png)
+- The Approach Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Mdwild31c.JPG)
 
 ---
 
@@ -787,7 +769,7 @@ Licenses for 3rd party software and libraries can be found in the [license folde
 
 # Releases and Downloads
 
-Program zips of FSKneeboard FREE are released and uploaded [here](https://github.com/Christian1984/vfrmap-for-vr/releases).
+Program zips and installers of FSKneeboard FREE are released and uploaded [here](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
 If you decide to support the development of this mod by buying a copy of FSKneeboard PRO [here](https://fskneeboard.com/buy-now) you will be emailed a link where you can download the FSKneeboard PRO binaries.
 
