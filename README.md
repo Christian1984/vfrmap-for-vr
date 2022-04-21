@@ -405,24 +405,15 @@ In order to launch FSKneeboard, you need to do two things:
 1. Launch the FSKneeboard local server application by clicking the FSKneeboard icon on your desktop or launch fskneeboard.exe from your command line and...
 2. ... open the actual FSKneeboard ingame panel inside MSFS.
 
-## Launching the FSKneeboard Server and Automatically Run MSFS
+## Starting The FSKneeboard Core Application
 
-- Depending on where you have purchased Microsoft Flight Simulator, you may use launch FSKneeboard's starting:
-    - `fskneeboard-autostart-windows-store.bat` for owners who have purchased via Windows Store (which simply calls `fskneeboard.exe --winstorefs`), or
-    - `fskneeboard-autostart-steam.bat` for owners who have purchased via Steam (which simply calls `fskneeboard.exe --steamfs`)
+- Step 1: Run `fskneeboard.exe` by clicking either the approprite desktop icon or selecting it from the start menu. This will bring up the FSKneeboard core application's desktop window. FSKneeboard will now wait for Microsoft Flight Simulator and connect to it.
+- Step 2: Start Microsoft Flight Simulator. You can do this by either clicking the appropriate icon on your desktop or by clicking the "Launch Flight Simulator" button on the FSKneeboard Control Panel. This requires you to first configure the version of your copy of Flight Simulator through the Settings Panel, as described [here](//TODO).
+- Step 3: Open up the ingame panel once inside the sim (like you would do with other ingame panels like the ATC or weather panel etc.)
+- Step 4: Place the FSKneeboard Panel conveniently in your VR space
+- Step 5: Click "Center Airplane" to initially center the map on your airplane
 
-![FSKneeboard - Autostart Scripts](screenshots/fskneeboard-autostart-shortcuts.png)
-
-*FSKneeboard - Autostart Scripts*
-
-- If you encounter any errors or unexpected behaviour, simply run `fskneeboard.exe`. This has the autostart feature disabled by default. FSKneeboard will now wait until you have started Flight Simulator **manually**!
-- Open up the ingame panel once inside the sim (like you would do for ATC etc.)
-- Place conveniently in your VR space
-- Click "Center Airplane" to initially center the map on your airplane.
-
-<div style="page-break-after: always;"></div>
-
-## Bring Up The FSKneeboard Panel in VR
+## How To Bring Up The FSKneeboard Panel in VR
 
 In order to open up the actual FSKneeboard panel inside MSFS, first enter VR mode. Next, hit the `[TAB]` key to bring up the ingame toolbar and click the FSKneeboard icon to bring up the ingame panel.
 
@@ -561,19 +552,17 @@ You can also connect a tablet computer to FSKneeboard (see [Connecting to FSKnee
 
 > REMARKS:
 > 
-> Please make sure to NOT launch fskneeboard with the --autosave option when you are planning to go on a bush trip! It seems that once a flight is saved via SimConnect (which is the interface that FSKneeboard uses internally to communicate with MSFS), Flight Simulator falls flat on its face when trying to properly save the Bush Trip progress. Both MSFS and FSKneeboard will in fact continue to save the flight; but unfortunately as a free flight, not as a bush trip flight, which leads to conflicts when trying to load the flight back up...
+> Please make sure to FULLY DEACTIVATE the autosave feature when you are planning to go on a bush trip! It seems that once a flight is saved via SimConnect (which is the interface that FSKneeboard uses internally to communicate with MSFS), Flight Simulator falls flat on its face when trying to properly save the Bush Trip progress.
+> 
+> Both MSFS and FSKneeboard will in fact continue to save the flight; but unfortunately as a free flight, not as a bush trip flight, which leads to conflicts when trying to load the flight back up...
 > 
 > MSFS does automatically save your bush trip progress automatically, anyway, so you don't need FSKneeboard's autosave in that particular scenario!
 
-Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional (or even frequent) crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
+Autosave is a feature that allows you to automatically create "snapshots" of your flights on predefined intervals. This is especially useful if you happen to encounter occasional crashes to desktop (CTDs) with Microsoft Flight Simulator in VR.
 
-Simply run FSKneeboard with the flag `--autosave [number]` to create a snapshot every `[number]` minutes. For example, run `fskneeboard.exe --autosave 5` to create one savegame every 5 minutes.
+Please configure the autosave interval through the server GUI as outlined [here](//TODO).
 
-![Autosave Shortcut](screenshots/fskneeboard-autosave.png)
-
-*Autosave Shortcut*
-
-FSKneeboard automatically deletes older snapshots and keep only the latest 5.
+FSKneeboard automatically deletes older snapshots and keeps only the latest 5.
 
 If you need to restore a flight, you can find your autosaves inside your FSKneeboard-Server folder in the subdirectory `autosave`, e.g. `C:\Tools\fskneeboard\autosave`.
 
@@ -583,22 +572,9 @@ If you need to restore a flight, you can find your autosaves inside your FSKneeb
 > - This feature is an experimental feature. It's not bulletproof and may require some tweaking in the future. Use it at your own discretion and please provide feedback!
 > - When the panel is hidden via the hotkey it is technically still there in your 3D space. Any attempt to control cockpit instrumentation that is hidden "behind" your invisible kneeboard will not work. The panel still intercepts your 3D cursor. Please make sure to position your kneeboard panel in a way that would allow you to interact with your cockpit instrumentation all the time, no matter if the panel is hidden or not!
 
-You can define one of three hotkeys to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured by starting FSKneeboard with the `--hotkey [number]` with `[number]` having the following meaning:
+You can define a master hotkey to toggle the visibility of the FSKneeboard ingame panel. The hotkey can be configured through the server GUI as described [here](//TODO).
 
-- `--hotkey 1` => `[Alt]+F`
-- `--hotkey 2` => `[Alt]+K`
-- `--hotkey 3` => `[Alt]+T`
-- `--hotkey 4` => `[Ctrl]+[Shift]+F`
-- `--hotkey 5` => `[Ctrl]+[Shift]+K`
-- `--hotkey 6` => `[Ctrl]+[Shift]+T`
-
-For example, launch `fskneeboard.exe --hotkey 1` to setup `[ALT]+F` as your FSKneeboard hotkey.
-
-![Hotkey Shortcut](screenshots/fskneeboard-hotkey.png)
-
-*Hotkey Shortcut*
-
-When ingame, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
+When inside the game, you'll have to open the FSKneeboard panel ONCE by clicking it on the toolbar. For the rest of the flight, you can use the configured hotkey to toggle the panel's visibility as desired.
 
 If you like, you can use your HOTAS configuration software to map this hotkey/shortcut to any button on your HOTAS.
 
@@ -608,9 +584,76 @@ If you like, you can use your HOTAS configuration software to map this hotkey/sh
 
 # Advanced Usage
 
+## Configuring FSKneeboard
+
+Most features of FSKneeboard can be configured through the server's graphical user interface (GUI). The GUI has five Panels:
+
+### Control Panel
+
+![FSKneeboard - Control Panel](screenshots/fskneeboard-gui-controlpanel-170.png)
+
+*FSKneeboard - Control Panel*
+
+The control panel offers a general overview over the status of the FSKneeboard server component.
+
+It also allows you start your local copy of Microsoft Flight Simulator as long as you have configured your Flight Simulator version on the Settings Panel.
+
+If a new version of FSKneeboard is available, a notification on the bottom of the window will let you know.
+
+### Settings Panel
+
+The settings panel is where you can configure general settings that control the behaviour of FSKneeboard.
+
+![FSKneeboard - Settings Panel](screenshots/fskneeboard-gui-settingspanel-170.png)
+
+*FSKneeboard - Settings Panel*
+
+The main sections here cover **MSFS autostart**, **autosave** and **logging**.
+
+### Flight Simulator Autostart
+
+- Under "Flight Simulator Version", please tell FSKneeboard if you have installed the Steam or Windows Store version of Microsoft Flight Simulator. This will FSKneeboard tell where to look for and how to start Flight Simulator when you either click the "Launch Flight Simulator" button on the Control Panel or activate the autostart option
+- Under "Flight Simulator Autostart" you can enable or disable whether FSKneeboard should automatically launch your copy of Microsoft Flight Simulator when you start FSKneeboard
+
+### Autosave
+
+- The "Autosave Interval" allows you to configure an interval (in minutes) for creating backup "snapshots" of your flight simulator sessions as described [here](//TODO).
+
+### Log Level
+
+- The "Log Level" will be "Off" by default. If you run into any issues while using FSKneeboard and want to report a bug, it makes sense to set this to "Debug" and then reproduce the bug you want to report. That way, I will have detailed information that can use to assess and analyze what is going on. You will, hopefully, not need this setting on a daily basis :-)
+
+### Hotkeys Panel
+
+The hotkeys panel allows you to setup hotkey(s) to use with FSKneeboard.
+
+![FSKneeboard - Hotkeys Panel](screenshots/fskneeboard-gui-hotkeyspanel-170.png)
+
+*FSKneeboard - Hotkeys Panel*
+
+For now, there is only one hotkey available, which enables you to toggle the visibility the FSKneeboard ingame panel inside Flight Simulator. This feature is somewhat experimental, though, as described [here](//TODO).
+
+You can customize your hotkey by selecting any letter from the dropdown menu and also toggle modifiers (by clicking the checkboxes next to them), so that your custom keyboard shortcut does not interfere with any other hotkeys that may have been configured elsewhere in the Simulator.
+
+Select [off] to completely deactivate the hotkey in question.
+
+### Console Panel
+
+The console window is mainly used for debugging purposes. It shows a bunch of detailed information about the active FSKneeboard session.
+
+![FSKneeboard - Console Panel](screenshots/fskneeboard-gui-consolepanel-170.png)
+
+*FSKneeboard - Console Panel*
+
+### Support Panel
+
+Finally, there is the support panel which offers some links to the FSKneeboard troubleshooting guide (which is part of this document you are reading right now) as well as to our community Discord.
+
+<div style="page-break-after: always;"></div>
+
 ## Connecting to FSKneeboard With Your Browser, a Second PC or Tablet
 
-You can also connect to FSKneeboard with your browser outside of MSFS or even a second device. When starting FSKneeboard (and after connecting to MSFS) you will receive some information like this in the application window:
+You can also connect to FSKneeboard with your browser outside of MSFS or even a second device. When starting FSKneeboard (and after connecting to MSFS) you will receive some information like this in the **Console Panel's** output:
 
 ```
 === INFO: Connecting Your Tablet
@@ -619,8 +662,10 @@ Besides using the FSKneeboard ingame panel from within Flight Simulator
 you can also connect to FSKneeboard with your tablet or web browser.
 To do so please enter follwing IP address and port into the address bar.
 
-FSKneeboard Server-Address: 192.168.178.5:3000
+FSKneeboard Server-Address: 192.168.178.5:9000
 ```
+
+This IP address and port are also shown on the **Control Panel** when FSKneeboard is connected.
 
 Simply take that IP-address and port information and type it into the address bar of your browser on your local machine, your laptop or tablet (which has to be on the same WIFI, obviously).
 
@@ -628,14 +673,10 @@ Simply take that IP-address and port information and type it into the address ba
 
 The FSKneeboard server can be started with several commandline arguments to further customize its behaviour. In general, all you need to do is add them behind your "fskneeboard.exe" shortcut.
 
-- `--autosave [number]`: Automatically create snapshots/savegames of your flights every `[number]` minutes.
-- `--hotkey [number]`: Enable the hotkey feature and set it to Alt+F `[number] = 1`, Alt+K `[number] = 2` or Alt+T `[number] = 3`.
-- `--log [level]`: Set log level and enable logging to file. `[level]` can be any of `debug | info | warn | error | off` (defaults to `off`). Use together with flag `--verbose` to also log to `stdout`.
+- `--log [level]`: Set log level and enable logging to file. `[level]` can be any of `debug | info | warn | error | off` (defaults to `off`). Use together with flag `--verbose` to also log to `stdout`. This will override/adjust the settings previously set through the GUI. Also, if you encounter issues during FSKneeboard startup, running `fskneeboard.exe --log debug` is the way to go!
 - `--verbose`: Enable verbose mode.
-- `--winstorefs`: Start FSKneeboard together with your Flight Simulator purchased via Windows Store.
-- `--steamfs`: Start FSKneeboard together with your Flight Simulator purchased via Steam.
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
-- `--quietshutdown`: Prevent FSKneeboard from showing a "Press ENTER to continue..." prompt after disconnecting from MSFS
+- `--quietshutdown`: Prevent FSKneeboard from showing a prompt after disconnecting from MSFS
 
 ![Quietshutdown Shortcut](screenshots/fskneeboard-quietshutdown.png)
 
@@ -677,21 +718,19 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 > You can always reach out to me via Discord, which is the fastest way to get in touch. Please visit https://discord.fskneeboard.com to get support.
 > 
-> Also, you can run `fskneeboard.exe --log debug` to make FSKneeboard write a detailed log which will help me to analyze what might be going wrong on your end. Please do not share this log publicly, as it may contain your email address!
+> Also, you can run `fskneeboard.exe --log debug` to make FSKneeboard write a detailed log which will help me to analyze what might be going wrong on your end. Please DO NOT share this log publicly, as it may contain your email address and other license information!
 
 ---
 
 # Roadmap
 
-Here's a list of features that I've planned to implement in the foreseeable future: 
+Here's a list of features that I've planned to implement in the foreseeable future:
 
-- Migrate the entire server component from GO to .NET to mitigate false virus alerts
 - Integrate Navigraph and Little Nav Map (if feasible)
 - Integrate a vPilot interface for better accessibility of ATC in VR
 - Integration for Glasscockpit panels (like the G-1000)
 - Extend the chart viewer to also read txt-files
 - Embed Twitch Chat / Discord / YouTube(?)
-- (... This could be your wish :-) ...)
 
 And here are some wishes from the community that I have to check for feasibility as soon as I get to it:
 
