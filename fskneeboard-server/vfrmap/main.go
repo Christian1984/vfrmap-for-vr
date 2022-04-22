@@ -34,7 +34,7 @@ var noupdatecheck bool
 func initFsk() {
 	utils.Println("Initializing FSKneeboard Core Application...")
 
-	utils.Printf("\n"+globals.ProductName+" - Server\n  Website: https://fskneeboard.com\n  Discord: https://discord.fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", buildVersion, buildTime)
+	utils.Printf("\n"+globals.ProductName+" - Server\n  Website: https://fskneeboard.com\n  Discord: https://discord.fskneeboard.com\n  Readme:  https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md\n  Issues:  https://github.com/Christian1984/vfrmap-for-vr/issues\n  Version: %s (%s)\n\n", globals.BuildVersion, buildTime)
 
 	callbacks.NewVersionAvailable(false)
 
@@ -42,7 +42,7 @@ func initFsk() {
 		logger.LogInfo("Running Update-Check...", false)
 
 		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
-		uc.CheckForUpdate(buildVersion)
+		uc.CheckForUpdate(globals.BuildVersion)
 
 		if uc.UpdateAvailable {
 			callbacks.NewVersionAvailable(true)
@@ -185,6 +185,8 @@ func main() {
 		globals.ProductName += " FREE"
 		globals.DownloadLink = globals.DownloadLinkFree
 	}
+
+	globals.BuildVersion = buildVersion
 
 	// flags to respect always
 	flag.BoolVar(&globals.DevMode, "dev", false, "enable dev mode, i.e. no running msfs required")

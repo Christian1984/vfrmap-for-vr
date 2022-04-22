@@ -11,7 +11,10 @@ var DownloadLink string
 
 var Quietshutdown bool
 var DevMode bool
+
 var ProductName string
+var BuildVersion string
+
 var AutosaveInterval int
 var HttpListen string
 var LogLevel string

@@ -34,7 +34,7 @@ func InitGui() {
 		logger.LogWarn("Icon could not be loaded!", false)
 	}
 
-	title := globals.ProductName
+	title := globals.ProductName + " v" + globals.BuildVersion
 
 	w = a.NewWindow(title)
 
