@@ -17,9 +17,6 @@ func (_ FS) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "leaflet.js":
 		w.Header().Set("Content-Type", "text/javascript")
 		w.Write(MustAsset("leaflet.js"))
-	case "leaflet.rotatedMarker.js":
-		w.Header().Set("Content-Type", "text/javascript")
-		w.Write(MustAsset("leaflet.rotatedMarker.js"))
 	case "leaflet-rotate.js":
 		w.Header().Set("Content-Type", "text/javascript")
 		w.Write(MustAsset("leaflet-rotate.js"))
