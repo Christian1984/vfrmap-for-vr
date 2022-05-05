@@ -152,7 +152,7 @@ function update_wind_indicator(dir, vel) {
 function updateMap(msg) {
     const pos = L.latLng(msg.latitude, msg.longitude);
     marker.setLatLng(pos);
-    marker.setRotationAngle(msg.heading);
+    marker.setRotation(msg.heading * L.DomUtil.DEG_TO_RAD);
 
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
@@ -318,7 +318,14 @@ function initMap() {
         center: pos,
         zoom: 10,
         attributionControl: false,
-        zoomControl: false
+        zoomControl: false,
+        rotate: true,
+        touchRotate: false,
+        rotateControl: {
+            closeOnZeroBearing: false,
+            position: "bottomright"
+        },
+        bearing: 30
     });
 
     const baseMaps = {
@@ -339,8 +346,8 @@ function initMap() {
 
     marker = L.marker(pos, {
         icon: icons.planes.black,
-        rotationAngle: 0,
-        rotationOrigin: "center",
+        rotation: 0,
+        rotateWithView: true
     });
 
     marker.addTo(map);

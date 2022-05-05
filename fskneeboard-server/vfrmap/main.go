@@ -47,8 +47,8 @@ func initFsk() {
 		if uc.UpdateAvailable {
 			callbacks.NewVersionAvailable(true)
 
-			logger.LogInfo("New Version found:\n" + uc.Message, false)
-			
+			logger.LogInfo("New Version found:\n"+uc.Message, false)
+
 			utils.Println(uc.Message)
 			utils.Println("")
 		} else {
@@ -66,7 +66,7 @@ func initFsk() {
 
 		logger.LogError("WARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...", true)
 		dialogs.ShowErrorAndExit("Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running!")
-		} else {
+	} else {
 		logger.LogInfo("Established connection with local FSKneeboard database!", false)
 
 		utils.Println("Established connection with local FSKneeboard database!")
@@ -114,7 +114,7 @@ func initFsk() {
 			utils.Println("WARNING: You do not have a valid license to run FSKneeboard PRO!")
 			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
 
-			logger.LogWarn("No valid license found, details: email [" + drmData.Email() + "]", false)
+			logger.LogWarn("No valid license found, details: email ["+drmData.Email()+"]", false)
 
 			callbacks.UpdateLicenseStatus("Invalid")
 			dialogs.ShowLicenseError()
@@ -125,7 +125,7 @@ func initFsk() {
 			utils.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
 			utils.Println("")
 
-			logger.LogInfo("Valid license found, details: email [" + drmData.Email() + "]", false)
+			logger.LogInfo("Valid license found, details: email ["+drmData.Email()+"]", false)
 			callbacks.UpdateLicenseStatus("Valid")
 		}
 	} else {
@@ -141,7 +141,7 @@ func initFsk() {
 
 	// starting Flight Simulator
 	utils.Println("=== INFO: Flight Simulator Autostart")
-	if (globals.MsfsAutostart) {
+	if globals.MsfsAutostart {
 		msfsinterfacing.StartMsfs()
 	} else {
 		logger.LogInfo("MSFS autostart disabled!", false)
@@ -205,23 +205,22 @@ func main() {
 	// init logger
 	logger.Init(globals.LogLevel, globals.Verbose)
 	logger.TryCreateLogFile()
-	
+
 	/*
-	logger.LogMessage("OFF-Test", logger.Off, "", false)
-	logger.LogDebug("DEBUG-Test", false)
-	logger.LogInfo("INFO-Test", false)
-	logger.LogWarn("WARN-Test", false)
-	logger.LogError("ERROR-Test", false)
+		logger.LogMessage("OFF-Test", logger.Off, "", false)
+		logger.LogDebug("DEBUG-Test", false)
+		logger.LogInfo("INFO-Test", false)
+		logger.LogWarn("WARN-Test", false)
+		logger.LogError("ERROR-Test", false)
 	*/
 
-
-	logger.LogInfo("FSKneeboard started with params\n" + 
-		"\tverbose:          " + strconv.FormatBool(globals.Verbose) + "\n" +
-		"\tlog:              " + globals.LogLevel + "\n" +
-		"\tlisten:           " + globals.HttpListen + "\n" +
-		"\tdev:              " + strconv.FormatBool(globals.DevMode) + "\n" +
-		"\tnoupdatecheck:    " + strconv.FormatBool(noupdatecheck) + "\n" +
-		"\tquietshutdown:    " + strconv.FormatBool(globals.Quietshutdown) + "\n", false)
+	logger.LogInfo("FSKneeboard started with params\n"+
+		"\tverbose:          "+strconv.FormatBool(globals.Verbose)+"\n"+
+		"\tlog:              "+globals.LogLevel+"\n"+
+		"\tlisten:           "+globals.HttpListen+"\n"+
+		"\tdev:              "+strconv.FormatBool(globals.DevMode)+"\n"+
+		"\tnoupdatecheck:    "+strconv.FormatBool(noupdatecheck)+"\n"+
+		"\tquietshutdown:    "+strconv.FormatBool(globals.Quietshutdown)+"\n", false)
 
 	gui.InitGui()
 	registerGuiCallbacks()

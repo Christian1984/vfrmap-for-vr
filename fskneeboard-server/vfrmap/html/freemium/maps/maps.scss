@@ -78,14 +78,20 @@ body {
     justify-content: center;
 }
 
-.leaflet-control-layers {
+.leaflet-control {
     border: none !important;
     background-color: rgba($bg-primary, 0.9);
     background-clip: unset !important;
     
-    > .leaflet-control-layers-toggle {
+    > a {
         border-radius: 5px !important;
+        background-color: unset;
         color: $color-primary;
+
+        &:hover {
+            background-color: $bg-secondary;
+            color: $color-secondary;
+        }
     }
 }
 
