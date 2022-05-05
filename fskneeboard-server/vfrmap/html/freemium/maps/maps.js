@@ -38,6 +38,9 @@ let last_report = {};
 const initial_pos = L.latLng(50.8694,7.1389);
 const autoremoval_proximity_threshold = 0.5; //miles
 
+const bearingBuffer = [];
+const bearingBufferMaxSize = 10;
+
 let wind_indicator;
 let wind_indicator_arrow;
 let wind_indicator_direction;
@@ -149,10 +152,41 @@ function update_wind_indicator(dir, vel) {
     }
 }
 
+function median(input){
+    if(input.length ===0) return 0;
+
+    const values = JSON.parse(JSON.stringify(input));
+    values.sort(function(a,b){
+      return a-b;
+    });
+  
+    var half = Math.floor(values.length / 2);
+    
+    return values[half];
+    /*if (values.length % 2)
+      return values[half];
+    
+    return (values[half - 1] + values[half]) / 2.0;*/
+  }
+
 function updateMap(msg) {
     const pos = L.latLng(msg.latitude, msg.longitude);
     marker.setLatLng(pos);
     marker.setRotation(msg.heading * L.DomUtil.DEG_TO_RAD);
+
+    bearingBuffer.push(msg.heading);
+
+    if (bearingBuffer.length > bearingBufferMaxSize) {
+        bearingBuffer.shift();
+    }
+
+    const bearing = median(bearingBuffer);
+
+    console.log("Bearing: " + msg.heading);
+    console.log("bearingBuffer: " + bearingBuffer);
+    console.log("Median: " + bearing);
+
+    map.setBearing(-bearing);
 
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
