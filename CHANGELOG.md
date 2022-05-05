@@ -8,7 +8,7 @@
 - improved the performance of the waypoint and track calculations, which directly improves the detection and performance of click and drag events on the map and overall system load
 - added opentopomap as an additional map provider
 
-# MINOR:
+## MINOR:
 
 - added a new start menu item which allows users to reset the local FSKneeboard database to "factory settings"
 
