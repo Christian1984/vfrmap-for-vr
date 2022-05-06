@@ -6,6 +6,12 @@ const MODES = {
     teleport: 2,
 }
 
+const BEARING_MODES = {
+    north_up: 0,
+    track_up: 1,
+    manual: 2,
+}
+
 const AC_TYPE = {
     airplane: 0,
     helicopter: 1,
@@ -38,6 +44,8 @@ let last_report = {};
 const initial_pos = L.latLng(50.8694,7.1389);
 const autoremoval_proximity_threshold = 0.5; //miles
 
+let manualBearingControl;
+let bearingMode = BEARING_MODES.north_up;
 const bearingBuffer = [];
 const bearingBufferMaxSize = 10;
 
@@ -174,20 +182,6 @@ function updateMap(msg) {
     marker.setLatLng(pos);
     marker.setRotation(msg.heading * L.DomUtil.DEG_TO_RAD);
 
-    bearingBuffer.push(msg.heading);
-
-    if (bearingBuffer.length > bearingBufferMaxSize) {
-        bearingBuffer.shift();
-    }
-
-    const bearing = median(bearingBuffer);
-
-    console.log("Bearing: " + msg.heading);
-    console.log("bearingBuffer: " + bearingBuffer);
-    console.log("Median: " + bearing);
-
-    map.setBearing(-bearing);
-
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
 
@@ -196,6 +190,8 @@ function updateMap(msg) {
     if (follow_plane) {
         map.panTo(pos);
     }
+
+    updateBearing();
 }
 
 ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/ws");
@@ -208,6 +204,14 @@ ws.onclose = function() {
 ws.onmessage = function(e) {
     const msg = JSON.parse(e.data);
     last_report = msg;
+
+    if (bearingBuffer != null) {
+        bearingBuffer.push(msg.heading);
+    
+        if (bearingBuffer.length > bearingBufferMaxSize) {
+            bearingBuffer.shift();
+        }
+    }
 
     if (map != null) {
         updateMap(msg);
@@ -238,6 +242,51 @@ function updateIcon() {
     marker.setIcon(currentIcon);
 
     set_airplane_marker_visibility(ac_visibility_options.ac_visibility);
+}
+
+function updateBearingModeButtons() {
+    switch(bearingMode) {
+        case BEARING_MODES.manual:
+            const rb_manual = document.querySelector("#map-bearing-manual");
+            if (rb_manual) rb_manual.click();
+            break;
+        case BEARING_MODES.track_up:
+            const rb_track_up = document.querySelector("#map-bearing-track-up");
+            if (rb_track_up) rb_track_up.click();
+            break;
+        default: // north up
+            const rb_north_up = document.querySelector("#map-bearing-north-up");
+            if (rb_north_up) rb_north_up.click();
+            break;
+    }
+}
+
+function updateManualBearingControlsVisibility() {
+    if (!manualBearingControl) return;
+
+    if (bearingMode == BEARING_MODES.manual) {
+        manualBearingControl.classList.remove("hidden");
+        return;
+    }
+
+    manualBearingControl.classList.add("hidden");
+}
+
+function updateBearing() {
+    switch(bearingMode) {
+        case BEARING_MODES.north_up:
+            map.setBearing(0);
+            break;
+        case BEARING_MODES.track_up:
+            const bearing = median(bearingBuffer);
+        
+            //console.log("Bearing: " + msg.heading);
+            //console.log("bearingBuffer: " + bearingBuffer);
+            //console.log("Median: " + bearing);
+
+            map.setBearing(-bearing);
+            break;
+    }
 }
 
 function calculate_airac_cycle() {
@@ -359,7 +408,7 @@ function initMap() {
             closeOnZeroBearing: false,
             position: "bottomright"
         },
-        bearing: 30
+        bearing: 0
     });
 
     const baseMaps = {
@@ -438,6 +487,9 @@ function initMap() {
     });
 
     map.whenReady(function() {
+        manualBearingControl = document.querySelector(".leaflet-control-rotate");
+        updateManualBearingControlsVisibility();
+
         registerHandlers();
         loadStoredState();
         activate_default_mode();
@@ -584,6 +636,10 @@ function save_ac_visibility() {
     store_data("ac_visibility_options", JSON.stringify(ac_visibility_options));
 }
 
+function saveBearingMode() {
+    store_data("bearing_mode", bearingMode);
+}
+
 function save_rubberband_visibility() {
     store_data("rubberband_visibility", rubberband_visibility);
 }
@@ -617,6 +673,7 @@ function loadStoredState() {
 
     let remote_key_array = [
         "ac_visibility_options",
+        "bearing_mode",
         "rubberband_visibility",
         "n_active_map",
         "wind_indicator_visibility"
@@ -633,6 +690,23 @@ function loadStoredState() {
                 try {
                     ac_visibility_options = JSON.parse(data.ac_visibility_options);
                     updateIcon();
+                }
+                catch(e) {
+                    /* ignore silently */
+                }
+            }
+
+            if (data.bearing_mode != null) {
+                try {
+                    const value = parseInt(data.bearing_mode);
+                    
+                    if (!isNaN(value)) {
+                        bearingMode = value;
+                    }
+
+                    updateBearingModeButtons();
+                    updateManualBearingControlsVisibility();
+                    updateBearing();
                 }
                 catch(e) {
                     /* ignore silently */
@@ -876,6 +950,31 @@ function registerHandlers() {
         });
     }
 
+    const bearing_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='map-bearing']");
+    for (let i = 0; i < bearing_control_btns.length; i++) {
+        bearing_control_btns[i].addEventListener("click", () => {
+            switch (bearing_control_btns[i].value) {
+                case "manual":
+                    bearingMode = BEARING_MODES.manual;
+                    break;
+                case "track-up":
+                    bearingMode = BEARING_MODES.track_up;
+                    break;
+                default:
+                    bearingMode = BEARING_MODES.north_up;
+            }
+
+            if (map) {
+                map.touchRotate.disable();
+                map.compassBearing.disable();
+            }
+
+            updateManualBearingControlsVisibility();
+            updateBearing();
+            saveBearingMode();
+        });
+    }
+
     const wind_indicator_btn = document.querySelector("#wind-indicator-toggle");
     if (wind_indicator_btn) {
         wind_indicator_btn.addEventListener("change", () => {
@@ -910,6 +1009,14 @@ function registerHandlers() {
         premium_info_close.addEventListener("click", (e) => {
             e.preventDefault();
             hide_premium_info();
+        });
+    }
+
+    const rotateControlToggle = document.querySelector("a.leaflet-control-rotate-toggle");
+    if (rotateControlToggle) {
+        rotateControlToggle.addEventListener("click", () => {
+            map.touchRotate.disable();
+            map.compassBearing.disable();
         });
     }
 }
