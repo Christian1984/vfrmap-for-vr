@@ -4,6 +4,7 @@ const MODES = {
     add_track_markers: 0,
     delete_track_markers: 1,
     teleport: 2,
+    off: 3
 }
 
 const BEARING_MODES = {
@@ -913,17 +914,19 @@ function registerHandlers() {
                 case "remove-marker":
                     mode_options.mode = MODES.delete_track_markers;
                     break;
-                default:
+                case "teleport":
                     mode_options.mode = MODES.teleport;
+                    break;
+                default:
+                    mode_options.mode = MODES.off;
             }
 
             if (mode_options.mode != MODES.teleport) {
-                if (!waypoints.is_mode_available()) {
+                hide_teleport_marker();
+
+                if (mode_options.mode != MODES.off && !waypoints.is_mode_available()) {
                     waypoints.activate_mode_failed(hide_premium_info);
                     activate_default_mode();
-                }
-                else {
-                    hide_teleport_marker();
                 }
             }
         });
