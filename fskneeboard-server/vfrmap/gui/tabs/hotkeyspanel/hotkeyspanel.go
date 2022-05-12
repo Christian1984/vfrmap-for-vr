@@ -47,10 +47,10 @@ func UpdateMasterHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier
 }
 
 func HotkeysPanel() *fyne.Container {
-	logger.LogDebug("Initializing Hotkeys Panel...", false)
+	logger.LogDebugVerboseOverride("Initializing Hotkeys Panel...", false)
 
 	// grid and centerContainer
-	labelNotes := widget.NewLabel("IMPORTANT NOTES:\n" + 
+	labelNotes := widget.NewLabel("IMPORTANT NOTES:\n" +
 		"- In order for the hotkeys to work, you have to manually open the FSKneeboard panel at least once per flight!\n" +
 		"- Use your HOTAS software to map these hotkeys to your HOTAS!\n")
 
@@ -92,14 +92,14 @@ func HotkeysPanel() *fyne.Container {
 		hotkeys.NotifyHotkeysUpdated()
 
 		if strings.ToUpper(key) != strings.ToUpper(masterHotkey.Selected) {
-			logger.LogDebug("masterKeyBinding changed: [" + key + "]; updating ui select element...", false)
+			logger.LogDebugVerboseOverride("masterKeyBinding changed: ["+key+"]; updating ui select element...", false)
 			if len(key) == 1 {
 				masterHotkey.SetSelected(strings.ToUpper(key))
 			} else {
 				masterHotkey.SetSelected(keyOptions[0])
 			}
 		} else {
-			logger.LogDebug("masterKeyBinding change listener: ui select element already up to date => [" + key + "]", false)
+			logger.LogDebugVerboseOverride("masterKeyBinding change listener: ui select element already up to date => ["+key+"]", false)
 		}
 	}))
 	masterKeyBinding.Set(keyOptions[0])
@@ -109,7 +109,7 @@ func HotkeysPanel() *fyne.Container {
 		masterLabel, container.NewHBox(masterShiftCb, masterCtrlCb, masterAltCb), masterHotkey,
 		//msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
 	)
-	
+
 	labelSpoiler := widget.NewLabel("(more hotkeys coming soon...)")
 
 	vBox := container.NewVBox(
@@ -121,7 +121,7 @@ func HotkeysPanel() *fyne.Container {
 	)
 	centerContainer := container.NewCenter(vBox)
 
-	logger.LogDebug("Hotkeys Panel initialized", false)
+	logger.LogDebugVerboseOverride("Hotkeys Panel initialized", false)
 
 	return centerContainer
 

@@ -28,7 +28,7 @@ func DbConnect() error {
 func initBucket(name string, tx *bolt.Tx) error {
 	_, err := tx.CreateBucketIfNotExists([]byte(name))
 	if err != nil {
-		logger.LogError("Cannot create bucket " + name + " in db " + boltFileName + ", details: " + err.Error(), false)
+		logger.LogErrorVerboseOverride("Cannot create bucket "+name+" in db "+boltFileName+", details: "+err.Error(), false)
 		return fmt.Errorf("Cannot create bucket: %s", err)
 	}
 	return nil
@@ -55,10 +55,10 @@ func DbClose() {
 }
 
 func dbWrite(bucket string, key string, value string) {
-	logger.LogDebug("Storing data: [" + key + "]=[" + value + "] in bucket [" + bucket + "]", false)
+	logger.LogDebugVerboseOverride("Storing data: ["+key+"]=["+value+"] in bucket ["+bucket+"]", false)
 
 	if db == nil {
-		logger.LogDebug("DB not initialized! Cannot store value for [" + key + "]", false)
+		logger.LogDebugVerboseOverride("DB not initialized! Cannot store value for ["+key+"]", false)
 	} else {
 		db.Update(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte(bucket))
@@ -69,22 +69,22 @@ func dbWrite(bucket string, key string, value string) {
 }
 
 func dbRead(bucket string, key string) string {
-	logger.LogDebug("Reading data for key [" + key + "] from bucket [" + bucket + "]", false)
+	logger.LogDebugVerboseOverride("Reading data for key ["+key+"] from bucket ["+bucket+"]", false)
 
 	var out *string
 
 	if db == nil {
-		logger.LogDebug("DB not initialized! Cannot read value for [" + key + "]", false)
+		logger.LogDebugVerboseOverride("DB not initialized! Cannot read value for ["+key+"]", false)
 	} else {
 		db.View(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte(bucket))
 			v := b.Get([]byte(key))
-	
+
 			outs := string(v[:])
 			out = &outs
-	
-			logger.LogDebug("[" + key + "] is: [" + *out + "]", false)
-	
+
+			logger.LogDebugVerboseOverride("["+key+"] is: ["+*out+"]", false)
+
 			return nil
 		})
 	}
@@ -107,4 +107,3 @@ func DbWriteSettings(key string, value string) {
 func DbReadSettings(key string) string {
 	return dbRead(serverSettingsBucket, key)
 }
-

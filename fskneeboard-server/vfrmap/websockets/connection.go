@@ -26,7 +26,7 @@ const (
 
 var (
 	newline  = []byte{'\n'}
-	space	= []byte{' '}
+	space    = []byte{' '}
 	upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
@@ -34,14 +34,14 @@ var (
 )
 
 type ReceiveMessage struct {
-	Message	[]byte
+	Message    []byte
 	Connection *Connection
 }
 
 type Connection struct {
-	socket	*Websocket
-	conn	  *websocket.Conn
-	Send	  chan []byte
+	socket    *Websocket
+	conn      *websocket.Conn
+	Send      chan []byte
 	SendQueue chan []byte
 }
 
@@ -81,7 +81,7 @@ func (c *Connection) readPump() {
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 		c.socket.ReceiveMessages <- ReceiveMessage{
-			Message:	message,
+			Message:    message,
 			Connection: c,
 		}
 	}
@@ -139,7 +139,7 @@ func (c *Connection) writePump() {
 
 			if err := w.Close(); err != nil {
 				utils.Println(err)
-				logger.LogError(err.Error(), false)
+				logger.LogErrorVerboseOverride(err.Error(), false)
 				return
 			}
 		case <-ticker.C:

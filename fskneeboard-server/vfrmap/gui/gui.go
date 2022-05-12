@@ -24,21 +24,21 @@ func InitGui() {
 
 	a := app.New()
 
-	logger.LogDebug("Loading icon...", false)
+	logger.LogDebugVerboseOverride("Loading icon...", false)
 	iconAsset, err := res.Asset("icon.png")
 	if err == nil {
 		iconResource := fyne.NewStaticResource("icon.png", iconAsset)
-		logger.LogDebug("Icon loaded", false)
+		logger.LogDebugVerboseOverride("Icon loaded", false)
 		a.SetIcon(iconResource)
 	} else {
-		logger.LogWarn("Icon could not be loaded!", false)
+		logger.LogWarnVerboseOverride("Icon could not be loaded!", false)
 	}
 
 	title := globals.ProductName + " v" + globals.BuildVersion
 
 	w = a.NewWindow(title)
 
-	logger.LogDebug("Initializing tabs...", false)
+	logger.LogDebugVerboseOverride("Initializing tabs...", false)
 	tabs := container.NewAppTabs(
 		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
@@ -48,7 +48,7 @@ func InitGui() {
 		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
 	)
 
-	logger.LogDebug("Tabs initialized", false)
+	logger.LogDebugVerboseOverride("Tabs initialized", false)
 
 	w.SetContent(tabs)
 	w.Resize(fyne.NewSize(800, 600))
@@ -58,7 +58,7 @@ func InitGui() {
 
 func ShowAndRun() {
 	if w != nil {
-		logger.LogDebug("Showing window...", false)
+		logger.LogDebugVerboseOverride("Showing window...", false)
 		w.ShowAndRun()
 	}
 }

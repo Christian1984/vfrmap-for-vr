@@ -321,7 +321,7 @@ function calculate_airac_cycle() {
 function initMap() {
     let pos = initial_pos;
 
-    const osm = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    const osm = new L.TileLayer("http://localhost:9000/maptilecache/osm/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,

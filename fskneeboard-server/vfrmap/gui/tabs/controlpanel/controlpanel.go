@@ -85,7 +85,7 @@ func initImageRotation(image *canvas.Image) {
 	go func() {
 		for {
 			time.Sleep(10 * time.Second)
-	
+
 			imageIndex = (imageIndex + 1) % len(freeImages)
 
 			image.Resource = freeImages[imageIndex]
@@ -95,7 +95,7 @@ func initImageRotation(image *canvas.Image) {
 }
 
 func ControlPanel() *fyne.Container {
-	logger.LogDebug("Initializing Control Panel...", false)
+	logger.LogDebugVerboseOverride("Initializing Control Panel...", false)
 
 	//middle
 	serverStatusLabel := widget.NewLabel("Server Status")
@@ -138,7 +138,7 @@ func ControlPanel() *fyne.Container {
 		}
 	}))
 	top := container.NewHBox(launchSimBtn)
-	
+
 	// bottom
 	updateInfoLabel := widget.NewLabel("A new version of FSKneeboard is available.")
 	downloadUpdateBtn := widget.NewButtonWithIcon("Download Now", theme.DownloadIcon(), func() {
@@ -155,21 +155,21 @@ func ControlPanel() *fyne.Container {
 	backgroundColor := canvas.NewRectangle(color.RGBA{30, 30, 30, 255})
 	right := container.NewMax(backgroundColor)
 
-	if (!globals.Pro) {
+	if !globals.Pro {
 		textColor := color.RGBA{255, 191, 0, 255}
-	
+
 		freeLabel1 := canvas.NewText("  Thanks For Trying FSKneeboard FREE  ", textColor)
 		freeLabel1.TextStyle.Bold = true
 		freeLabel1.Alignment = fyne.TextAlignCenter
-		
+
 		freeLabel2 := canvas.NewText("Support the development", textColor)
 		freeLabel2.Alignment = fyne.TextAlignCenter
-		
+
 		freeLabel3 := canvas.NewText("and unlock ALL features today!", textColor)
 		freeLabel3.Alignment = fyne.TextAlignCenter
-	
+
 		initImageArray()
-	
+
 		var freeImage *canvas.Image
 
 		if len(freeImages) > 0 {
@@ -177,18 +177,18 @@ func ControlPanel() *fyne.Container {
 			freeImage.FillMode = canvas.ImageFillOriginal
 			initImageRotation(freeImage)
 		}
-	
+
 		learnMoreUrl, _ := url.Parse("https://fskneeboard.com/compare")
 		learnMoreLink := widget.NewHyperlink("Learn more about FSKneeboard PRO", learnMoreUrl)
 		learnMoreLink.Alignment = fyne.TextAlignCenter
-	
+
 		orLabel := canvas.NewText("or", textColor)
 		orLabel.Alignment = fyne.TextAlignCenter
-	
+
 		buyUrl, _ := url.Parse("https://fskneeboard.com/buy-now")
 		buyLink := widget.NewHyperlink("BUY NOW", buyUrl)
 		buyLink.Alignment = fyne.TextAlignCenter
-	
+
 		rightVBox := container.NewVBox(
 			freeLabel1,
 			canvas.NewRectangle(textColor),
@@ -199,8 +199,8 @@ func ControlPanel() *fyne.Container {
 			orLabel,
 			buyLink,
 		)
-		
-		rightCenter := container.NewCenter(rightVBox)	
+
+		rightCenter := container.NewCenter(rightVBox)
 		right.Add(rightCenter)
 	}
 
@@ -210,7 +210,7 @@ func ControlPanel() *fyne.Container {
 	border := layout.NewBorderLayout(top, bottom, nil, right)
 	resContainer := container.New(border, top, bottom, right, middle)
 
-	logger.LogDebug("Control Panel initialized", false)
+	logger.LogDebugVerboseOverride("Control Panel initialized", false)
 
 	return resContainer
 }

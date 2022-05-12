@@ -11,14 +11,14 @@ import (
 )
 
 type StorageData struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	Key    string `json:"key"`
+	Value  string `json:"value"`
 	Sender string `json:"sender,omitempty"`
 }
 
 type StorageDataSet struct {
 	DataSets []StorageData `json:"data"`
-	Sender string `json:"sender,omitempty"`
+	Sender   string        `json:"sender,omitempty"`
 }
 
 type StorageDataKeysArray struct {
@@ -27,7 +27,7 @@ type StorageDataKeysArray struct {
 
 func DataController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
-		logger.LogError("Method "+r.Method+" not allowed!", false)
+		logger.LogErrorVerboseOverride("Method "+r.Method+" not allowed!", false)
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
 	}
@@ -39,7 +39,7 @@ func DataController(w http.ResponseWriter, r *http.Request) {
 		key := r.URL.Query().Get("key")
 
 		if len(strings.TrimSpace(key)) == 0 {
-			logger.LogError("Property \"key\" must NOT be empty!", false)
+			logger.LogErrorVerboseOverride("Property \"key\" must NOT be empty!", false)
 			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 			return
 		}
@@ -52,15 +52,15 @@ func DataController(w http.ResponseWriter, r *http.Request) {
 		var storageData StorageData
 		sdErr := json.NewDecoder(r.Body).Decode(&storageData)
 		if sdErr != nil {
-			logger.LogError("Error in dataController POST method: "+sdErr.Error(), true)
+			logger.LogErrorVerboseOverride("Error in dataController POST method: "+sdErr.Error(), true)
 			http.Error(w, sdErr.Error(), http.StatusBadRequest)
 			return
 		}
 
-		logger.LogDebug("Received StorageData: key=["+strings.TrimSpace(storageData.Key)+"], value=["+strings.TrimSpace(storageData.Value)+"]", false)
+		logger.LogDebugVerboseOverride("Received StorageData: key=["+strings.TrimSpace(storageData.Key)+"], value=["+strings.TrimSpace(storageData.Value)+"]", false)
 
 		if len(strings.TrimSpace(storageData.Key)) == 0 {
-			logger.LogError("Property \"key\" must NOT be empty!", false)
+			logger.LogErrorVerboseOverride("Property \"key\" must NOT be empty!", false)
 			http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 			return
 		}
@@ -91,7 +91,7 @@ func DataController(w http.ResponseWriter, r *http.Request) {
 
 func DataSetController(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet && r.Method != http.MethodPost {
-		logger.LogError("Method "+r.Method+" not allowed!", false)
+		logger.LogErrorVerboseOverride("Method "+r.Method+" not allowed!", false)
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
 	}
@@ -102,25 +102,25 @@ func DataSetController(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		keysString := r.URL.Query().Get("keys")
 
-		logger.LogDebug("Received Keys for data retrieval (raw): "+keysString, false)
+		logger.LogDebugVerboseOverride("Received Keys for data retrieval (raw): "+keysString, false)
 
 		keys := StorageDataKeysArray{}
 		jsonErr := json.Unmarshal([]byte(keysString), &keys.Keys)
 
 		if jsonErr != nil {
-			logger.LogError("Error in dataSetController GET method: "+jsonErr.Error(), true)
+			logger.LogErrorVerboseOverride("Error in dataSetController GET method: "+jsonErr.Error(), true)
 			http.Error(w, jsonErr.Error(), http.StatusBadRequest)
 			return
 		}
 
-		logger.LogDebug("Extracted "+strconv.Itoa(len(keys.Keys))+" keys for data retrieval:", false)
+		logger.LogDebugVerboseOverride("Extracted "+strconv.Itoa(len(keys.Keys))+" keys for data retrieval:", false)
 		for _, key := range keys.Keys {
-			logger.LogDebug("  key=["+strings.TrimSpace(key)+"]", false)
+			logger.LogDebugVerboseOverride("  key=["+strings.TrimSpace(key)+"]", false)
 		}
 
 		for _, key := range keys.Keys {
 			if len(strings.TrimSpace(key)) == 0 {
-				logger.LogError("Property \"key\" must NOT be empty!", false)
+				logger.LogErrorVerboseOverride("Property \"key\" must NOT be empty!", false)
 				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 				return
 			}
@@ -138,19 +138,19 @@ func DataSetController(w http.ResponseWriter, r *http.Request) {
 		var storageDataSet StorageDataSet
 		sdErr := json.NewDecoder(r.Body).Decode(&storageDataSet)
 		if sdErr != nil {
-			logger.LogError("Error in dataSetController POST method: "+sdErr.Error(), false)
+			logger.LogErrorVerboseOverride("Error in dataSetController POST method: "+sdErr.Error(), false)
 			http.Error(w, sdErr.Error(), http.StatusBadRequest)
 			return
 		}
 
-		logger.LogDebug("Received "+strconv.Itoa(len(storageDataSet.DataSets))+" StorageDataSet for storage:", false)
+		logger.LogDebugVerboseOverride("Received "+strconv.Itoa(len(storageDataSet.DataSets))+" StorageDataSet for storage:", false)
 		for _, ds := range storageDataSet.DataSets {
-			logger.LogDebug("StorageData: key=["+strings.TrimSpace(ds.Key)+"], value=["+strings.TrimSpace(ds.Value)+"]", false)
+			logger.LogDebugVerboseOverride("StorageData: key=["+strings.TrimSpace(ds.Key)+"], value=["+strings.TrimSpace(ds.Value)+"]", false)
 		}
 
 		for _, ds := range storageDataSet.DataSets {
 			if len(strings.TrimSpace(ds.Key)) == 0 {
-				logger.LogError("Property \"key\" must NOT be empty!", false)
+				logger.LogErrorVerboseOverride("Property \"key\" must NOT be empty!", false)
 				http.Error(w, "Property \"key\" must NOT be empty!", http.StatusBadRequest)
 				return
 			}

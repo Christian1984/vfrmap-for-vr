@@ -38,7 +38,7 @@ func ConsoleLogLn(message string) {
 }
 
 func ConsolePanel() *fyne.Container {
-	logger.LogDebug("Initializing Console Panel...", false)
+	logger.LogDebugVerboseOverride("Initializing Console Panel...", false)
 
 	// console
 	consoleBinding = binding.NewString()
@@ -54,7 +54,7 @@ func ConsolePanel() *fyne.Container {
 	}))
 
 	middle := container.NewMax(consoleScroll)
-	
+
 	// bottom
 	clearLogBtn := widget.NewButtonWithIcon("Clear Console Output", theme.ContentClearIcon(), func() {
 		ClearConsole()
@@ -63,13 +63,13 @@ func ConsolePanel() *fyne.Container {
 	scrollToBottomCb := widget.NewCheckWithData("Enable Autoscroll", autoScrollBinding)
 
 	scrollToBottomCb.SetChecked(true)
-	
+
 	bottom := container.NewHBox(clearLogBtn, scrollToBottomCb)
 
 	border := layout.NewBorderLayout(nil, bottom, nil, nil)
 	resContainer := container.New(border, bottom, middle)
 
-	logger.LogDebug("Console Panel initialized", false)
+	logger.LogDebugVerboseOverride("Console Panel initialized", false)
 
 	return resContainer
 }
@@ -77,7 +77,7 @@ func ConsolePanel() *fyne.Container {
 func conditionalAutoScroll() {
 	autoScroll, _ := autoScrollBinding.Get()
 
-	if (autoScroll && consoleScroll != nil) {
+	if autoScroll && consoleScroll != nil {
 		consoleScroll.ScrollToBottom()
 	}
 }

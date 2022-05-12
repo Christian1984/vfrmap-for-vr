@@ -39,7 +39,7 @@ func initFsk() {
 	callbacks.NewVersionAvailable(false)
 
 	if !noupdatecheck {
-		logger.LogInfo("Running Update-Check...", false)
+		logger.LogInfoVerboseOverride("Running Update-Check...", false)
 
 		uc := updatechecker.New("Christian1984", "vfrmap-for-vr", "FSKneeboard", common.DOWNLOAD_LINK, 3, false)
 		uc.CheckForUpdate(globals.BuildVersion)
@@ -47,12 +47,12 @@ func initFsk() {
 		if uc.UpdateAvailable {
 			callbacks.NewVersionAvailable(true)
 
-			logger.LogInfo("New Version found:\n"+uc.Message, false)
+			logger.LogInfoVerboseOverride("New Version found:\n"+uc.Message, false)
 
 			utils.Println(uc.Message)
 			utils.Println("")
 		} else {
-			logger.LogInfo("Could not find a new version!", false)
+			logger.LogInfoVerboseOverride("Could not find a new version!", false)
 		}
 	} else {
 		callbacks.NewVersionAvailable(false)
@@ -64,10 +64,10 @@ func initFsk() {
 	if db_err != nil {
 		utils.Println("")
 
-		logger.LogError("WARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...", true)
+		logger.LogErrorVerboseOverride("WARNING: Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running! Shutting down...", true)
 		dialogs.ShowErrorAndExit("Cannot connect to local FSKneeboard database. Please make sure that there's no other instance of FSKneeboard running!")
 	} else {
-		logger.LogInfo("Established connection with local FSKneeboard database!", false)
+		logger.LogInfoVerboseOverride("Established connection with local FSKneeboard database!", false)
 
 		utils.Println("Established connection with local FSKneeboard database!")
 		dbmanager.DbInit()
@@ -104,7 +104,7 @@ func initFsk() {
 
 	// check license
 	if globals.Pro {
-		logger.LogInfo("FSKneeboard PRO started. Checking license information...", false)
+		logger.LogInfoVerboseOverride("FSKneeboard PRO started. Checking license information...", false)
 
 		utils.Println("=== INFO: License")
 		drmData := drm.New()
@@ -114,7 +114,7 @@ func initFsk() {
 			utils.Println("WARNING: You do not have a valid license to run FSKneeboard PRO!")
 			utils.Println("Please purchase a license at https://fskneeboard.com/buy-now and place your fskneeboard.lic-file in the same directory as fskneeboard.exe.")
 
-			logger.LogWarn("No valid license found, details: email ["+drmData.Email()+"]", false)
+			logger.LogWarnVerboseOverride("No valid license found, details: email ["+drmData.Email()+"]", false)
 
 			callbacks.UpdateLicenseStatus("Invalid")
 			dialogs.ShowLicenseError()
@@ -125,11 +125,11 @@ func initFsk() {
 			utils.Println("Thanks for purchasing FSKneeboard PRO and supporting the development of this mod!")
 			utils.Println("")
 
-			logger.LogInfo("Valid license found, details: email ["+drmData.Email()+"]", false)
+			logger.LogInfoVerboseOverride("Valid license found, details: email ["+drmData.Email()+"]", false)
 			callbacks.UpdateLicenseStatus("Valid")
 		}
 	} else {
-		logger.LogInfo("FSKneeboard FREE started...", false)
+		logger.LogInfoVerboseOverride("FSKneeboard FREE started...", false)
 
 		utils.Println("=== INFO: How to Support the Development of FSKneeboard")
 		utils.Println("Thanks for trying FSKneeboard FREE!")
@@ -144,7 +144,7 @@ func initFsk() {
 	if globals.MsfsAutostart {
 		msfsinterfacing.StartMsfs()
 	} else {
-		logger.LogInfo("MSFS autostart disabled!", false)
+		logger.LogInfoVerboseOverride("MSFS autostart disabled!", false)
 		utils.Println("MSFS autostart disabled! Please configure your version of Flight Simulator and enable autostart in the settings section.")
 		utils.Println("")
 	}
@@ -214,7 +214,7 @@ func main() {
 		logger.LogError("ERROR-Test", false)
 	*/
 
-	logger.LogInfo("FSKneeboard started with params\n"+
+	logger.LogInfoVerboseOverride("FSKneeboard started with params\n"+
 		"\tverbose:          "+strconv.FormatBool(globals.Verbose)+"\n"+
 		"\tlog:              "+globals.LogLevel+"\n"+
 		"\tlisten:           "+globals.HttpListen+"\n"+

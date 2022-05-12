@@ -7,6 +7,7 @@
 /dist
 fskneeboard-server/charts/**/*.PNG
 fskneeboard-server/logs/*
+maptilecache/
 .env
 fskneeboard.exe
 vfrmap-for-vr-win64.zip

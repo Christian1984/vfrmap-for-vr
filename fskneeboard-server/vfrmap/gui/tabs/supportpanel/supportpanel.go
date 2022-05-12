@@ -10,14 +10,14 @@ import (
 )
 
 func SupportPanel() *fyne.Container {
-	logger.LogDebug("Initializing Support Panel...", false)
+	logger.LogDebugVerboseOverride("Initializing Support Panel...", false)
 
 	docsUrl, _ := url.Parse("https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#troubleshooting")
 	discordUrl, _ := url.Parse("https://discord.fskneeboard.com")
 
 	introLabel := widget.NewLabel("If you encounter any problems, please try this:")
 	introLabel.Alignment = fyne.TextAlignCenter
-	
+
 	docsLabel := widget.NewLabel("Step 1: Please check out the FSKneeboard manual, especially the troubleshooting section here...")
 	docsLink := widget.NewHyperlink("Read the FSKneeboard Troubleshooting Guide", docsUrl)
 
@@ -41,7 +41,7 @@ func SupportPanel() *fyne.Container {
 	)
 	centerContainer := container.NewCenter(vBox)
 
-	logger.LogDebug("Support Panel initialized", false)
+	logger.LogDebugVerboseOverride("Support Panel initialized", false)
 
 	return centerContainer
 

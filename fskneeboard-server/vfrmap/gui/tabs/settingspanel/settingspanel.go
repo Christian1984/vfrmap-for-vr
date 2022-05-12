@@ -69,7 +69,7 @@ func UpdateLogLevelStatus(level string) {
 }
 
 func SettingsPanel() *fyne.Container {
-	logger.LogDebug("Initializing Settings Panel...", false)
+	logger.LogDebugVerboseOverride("Initializing Settings Panel...", false)
 
 	// MSFS version select
 	msfsVersionLabel := widget.NewLabel("Flight Simulator Version")
@@ -85,20 +85,19 @@ func SettingsPanel() *fyne.Container {
 
 		if selected == msfsVersionOptionWinstore {
 			globals.WinstoreFs = true
-			logger.LogInfo("Selected MSFS Version: Windows Store", false)
+			logger.LogInfoVerboseOverride("Selected MSFS Version: Windows Store", false)
 		} else if selected == msfsVersionOptionSteam {
 			globals.SteamFs = true
-			logger.LogInfo("Selected MSFS Version: Steam", false)
+			logger.LogInfoVerboseOverride("Selected MSFS Version: Steam", false)
 		} else {
 			return
 		}
 
-		
 		if strings.ToLower(selected) != strings.ToLower(msfsVersionSelect.Selected) {
-			logger.LogDebug("msfsVersionBinding changed: [" + selected + "]; updating ui select element...", false)
+			logger.LogDebugVerboseOverride("msfsVersionBinding changed: ["+selected+"]; updating ui select element...", false)
 			msfsVersionSelect.SetSelected(selected)
 		} else {
-			logger.LogDebug("msfsVersionBinding change listener: ui select element already up to date => [" + selected + "]", false)
+			logger.LogDebugVerboseOverride("msfsVersionBinding change listener: ui select element already up to date => ["+selected+"]", false)
 		}
 
 		dbmanager.StoreMsfsVersion()
@@ -113,7 +112,7 @@ func SettingsPanel() *fyne.Container {
 	msfsAutostartBinding.AddListener(binding.NewDataListener(func() {
 		msfsAutostart, _ := msfsAutostartBinding.Get()
 		globals.MsfsAutostart = msfsAutostart
-		logger.LogInfo("MSFS Autostart updated: " + strconv.FormatBool(msfsAutostart), false)
+		logger.LogInfoVerboseOverride("MSFS Autostart updated: "+strconv.FormatBool(msfsAutostart), false)
 
 		dbmanager.StoreMsfsAutostart()
 	}))
@@ -131,7 +130,7 @@ func SettingsPanel() *fyne.Container {
 		autosaveString, bindingErr := autosaveBinding.Get()
 
 		if bindingErr != nil {
-			logger.LogError(bindingErr.Error(), false)
+			logger.LogErrorVerboseOverride(bindingErr.Error(), false)
 		}
 
 		if autosaveString != "Off" && !globals.Pro {
@@ -142,10 +141,10 @@ func SettingsPanel() *fyne.Container {
 		for _, v := range autosaveOptions {
 			if strings.ToLower(v) == strings.ToLower(autosaveString) {
 				if strings.ToLower(autosaveString) != strings.ToLower(autosaveSelect.Selected) {
-					logger.LogDebug("autosaveBinding changed: [" + autosaveString + "]; updating ui select element...", false)
+					logger.LogDebugVerboseOverride("autosaveBinding changed: ["+autosaveString+"]; updating ui select element...", false)
 					autosaveSelect.SetSelected(autosaveString)
 				} else {
-					logger.LogDebug("autosaveBinding change listener: ui select element already up to date => [" + autosaveString + "]", false)
+					logger.LogDebugVerboseOverride("autosaveBinding change listener: ui select element already up to date => ["+autosaveString+"]", false)
 				}
 				break
 			}
@@ -195,10 +194,10 @@ func SettingsPanel() *fyne.Container {
 		}
 
 		if strings.ToLower(loglevelString) != strings.ToLower(loglevelSelect.Selected) {
-			logger.LogDebug("loglevelBinding changed: [" + loglevelString + "]; updating ui select element...", false)
+			logger.LogDebugVerboseOverride("loglevelBinding changed: ["+loglevelString+"]; updating ui select element...", false)
 			loglevelSelect.SetSelected(loglevelOptions[matchIndex])
 		} else {
-			logger.LogDebug("loglevelBinding change listener: ui select element already up to date => [" + loglevelString + "]", false)
+			logger.LogDebugVerboseOverride("loglevelBinding change listener: ui select element already up to date => ["+loglevelString+"]", false)
 		}
 
 		globals.LogLevel = strings.ToLower(loglevelString)
@@ -222,7 +221,7 @@ func SettingsPanel() *fyne.Container {
 	vBox := container.NewVBox(grid, logevelWarningLabel)
 	centerContainer := container.NewCenter(vBox)
 
-	logger.LogDebug("Settings Panel initialized", false)
+	logger.LogDebugVerboseOverride("Settings Panel initialized", false)
 
 	return centerContainer
 }

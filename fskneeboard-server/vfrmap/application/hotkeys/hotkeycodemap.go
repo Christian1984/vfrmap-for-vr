@@ -113,7 +113,7 @@ func keycode(key string) int {
 
 func key(keycode int) string {
 	if len(keycodeMap) == 0 {
-		logger.LogDebug("Initializing keycodeMap...", false)
+		logger.LogDebugVerboseOverride("Initializing keycodeMap...", false)
 		for k, v := range keyMap {
 			keycodeMap[v] = k
 		}

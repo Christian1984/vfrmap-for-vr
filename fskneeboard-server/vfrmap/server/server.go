@@ -32,6 +32,8 @@ import (
 	"vfrmap-for-vr/vfrmap/server/hotkeys"
 	"vfrmap-for-vr/vfrmap/utils"
 	"vfrmap-for-vr/vfrmap/websockets"
+
+	"github.com/Christian1984/go-maptilecache"
 )
 
 var started = false
@@ -117,7 +119,7 @@ func ShutdownWithPrompt() {
 
 func UpdateAutosaveInterval(verbose bool) {
 	if autosaveTick != nil {
-		logger.LogDebug("Autosave interval updated: Stopping old timer...", false)
+		logger.LogDebugVerboseOverride("Autosave interval updated: Stopping old timer...", false)
 		autosaveTick.Stop()
 	}
 
@@ -130,14 +132,14 @@ func UpdateAutosaveInterval(verbose bool) {
 			utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
 		}
 
-		logger.LogInfo("Autosave interval updated: Creating new ticker with an interval of " + strconv.Itoa(globals.AutosaveInterval) + " minutes", false)
+		logger.LogInfoVerboseOverride("Autosave interval updated: Creating new ticker with an interval of "+strconv.Itoa(globals.AutosaveInterval)+" minutes", false)
 		autosaveTick = time.NewTicker(time.Duration(globals.AutosaveInterval) * time.Minute)
 	} else {
 		if verbose {
 			utils.Println("Autosave deactivated. Please configure the autosave interval in the settings section.")
 		}
 
-		logger.LogInfo("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
+		logger.LogInfoVerboseOverride("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
 		autosaveTick = time.NewTicker(9999 * time.Minute)
 	}
 
@@ -146,11 +148,35 @@ func UpdateAutosaveInterval(verbose bool) {
 	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
 }
 
+func initCache(ttl time.Duration, root string, provider string, url string) {
+	c, err := maptilecache.New([]string{root, provider}, url, []string{}, ttl, "")
+	if err == nil {
+		c.Logger.LogDebugFunc = logger.LogDebug
+		c.Logger.LogInfoFunc = logger.LogInfo
+		c.Logger.LogWarnFunc = logger.LogWarn
+		c.Logger.LogErrorFunc = logger.LogError
+
+		if globals.WipeCache {
+			c.WipeCache()
+		}
+	} else {
+		logger.LogError("An error was raised during the initialization of maptilecache [" + provider + "], reason: " + err.Error())
+	}
+
+}
+
+func initMaptileCache() {
+	ttl := 90 * 24 * time.Hour
+	globalRoot := "maptilecache"
+
+	initCache(ttl, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+}
+
 func StartFskServer() {
 	if globals.Pro && !globals.DrmValid {
 		dialogs.ShowLicenseError()
 		utils.Println("WARNING: Cannot start FSKneeboard server, reason: no valid license found!")
-		logger.LogWarn("Cannot start server, reason: no valid license found", false)
+		logger.LogWarnVerboseOverride("Cannot start server, reason: no valid license found", false)
 		return
 	}
 
@@ -162,7 +188,7 @@ func StartFskServer() {
 
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)
-	
+
 	time.Sleep(1 * time.Second)
 
 	exePath, _ := os.Executable()
@@ -171,7 +197,7 @@ func StartFskServer() {
 	var s *simconnect.SimConnect
 	var err error
 
-	logger.LogInfo("Waiting for Flight Simulator...", false)
+	logger.LogInfoVerboseOverride("Waiting for Flight Simulator...", false)
 	utils.Println("")
 	utils.Print("Waiting for Flight Simulator..")
 	callbacks.UpdateServerStatus("Waiting for Flight Simulator...")
@@ -185,7 +211,7 @@ func StartFskServer() {
 		if err != nil {
 
 			if globals.DevMode {
-				logger.LogInfo("Running with --dev: Not connected to Flight Simulator!", false)
+				logger.LogInfoVerboseOverride("Running with --dev: Not connected to Flight Simulator!", false)
 				utils.Println("")
 				utils.Println("Running with --dev: Not connected to Flight Simulator!!!")
 				utils.Println("")
@@ -197,7 +223,7 @@ func StartFskServer() {
 
 			time.Sleep(5 * time.Second)
 		} else if s != nil {
-			logger.LogInfo("Connected to Flight Simulator!", false)
+			logger.LogInfoVerboseOverride("Connected to Flight Simulator!", false)
 			utils.Println("")
 			utils.Println("Connected to Flight Simulator!")
 			utils.Println("")
@@ -225,21 +251,21 @@ func StartFskServer() {
 		err = s.RegisterDataDefinition(report)
 		if err != nil {
 			utils.Println(err)
-			logger.LogError("s.RegisterDataDefinition(report) failed, reason: " + err.Error(), false)
+			logger.LogErrorVerboseOverride("s.RegisterDataDefinition(report) failed, reason: "+err.Error(), false)
 			dialogs.ShowErrorAndExit("Communication with Flight Simulator failed!")
 		}
 
 		err = s.RegisterDataDefinition(trafficReport)
 		if err != nil {
 			utils.Println(err)
-			logger.LogError("s.RegisterDataDefinition(trafficReport) failed, reason: " + err.Error(), false)
+			logger.LogErrorVerboseOverride("s.RegisterDataDefinition(trafficReport) failed, reason: "+err.Error(), false)
 			dialogs.ShowErrorAndExit("Communication with Flight Simulator failed!")
 		}
 
 		err = s.RegisterDataDefinition(teleportReport)
 		if err != nil {
 			utils.Println(err)
-			logger.LogError("s.RegisterDataDefinition(teleportReport) failed, reason: " + err.Error(), false)
+			logger.LogErrorVerboseOverride("s.RegisterDataDefinition(teleportReport) failed, reason: "+err.Error(), false)
 			dialogs.ShowErrorAndExit("Communication with Flight Simulator failed!")
 		}
 
@@ -342,6 +368,8 @@ func StartFskServer() {
 			<-ch
 		}
 
+		initMaptileCache()
+
 		chartServer := http.FileServer(http.Dir("./charts"))
 
 		http.HandleFunc("/ws", ws.Serve)
@@ -369,11 +397,11 @@ func StartFskServer() {
 		// connect tablet etc.
 		ip, addr_err := utils.GetOutboundIP()
 		server_addr_arr := strings.Split(globals.HttpListen, ":")
-		port := server_addr_arr[len(server_addr_arr) - 1]
+		port := server_addr_arr[len(server_addr_arr)-1]
 
-		if (addr_err == nil && ip != nil) {
+		if addr_err == nil && ip != nil {
 			connectInfo := ip.To4().String() + ":" + port
-			logger.LogInfo("FSKneeboard available at: " + connectInfo, false)
+			logger.LogInfoVerboseOverride("FSKneeboard available at: "+connectInfo, false)
 			utils.Println("=== INFO: Connecting Your Tablet")
 			utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
 			utils.Println("FSKneeboard Server-Address: " + connectInfo)
@@ -384,7 +412,7 @@ func StartFskServer() {
 
 		err := http.ListenAndServe(globals.HttpListen, nil)
 		if err != nil {
-			logger.LogError("FSKneeboard Server could not be started! Reason: " + err.Error(), false)
+			logger.LogErrorVerboseOverride("FSKneeboard Server could not be started! Reason: "+err.Error(), false)
 			dialogs.ShowErrorAndExit("FSKneeboard Server could not be started!\nPlease close ALL running instances of FSKneeboard an try again.")
 		}
 	}()
@@ -430,8 +458,8 @@ func StartFskServer() {
 					// skip error, means no new messages?
 					continue
 				} else {
-					if (!loggedGetNextDispatchError) {
-						logger.LogError(fmt.Sprintf("GetNextDispatch error: %d %s", r1, err), false)
+					if !loggedGetNextDispatchError {
+						logger.LogErrorVerboseOverride(fmt.Sprintf("GetNextDispatch error: %d %s", r1, err), false)
 						loggedGetNextDispatchError = true
 					}
 
@@ -458,7 +486,7 @@ func StartFskServer() {
 					recvOpen.SimConnectVersionMinor,
 					recvOpen.SimConnectBuildMajor,
 					recvOpen.SimConnectBuildMinor)
-				logger.LogInfo("Connected to MSFS, details:" + fsInfo, false)
+				logger.LogInfoVerboseOverride("Connected to MSFS, details:"+fsInfo, false)
 				utils.Println(fsInfo + "\n")
 				utils.Printf("Ready... Please leave this window open during your Flight Simulator session. Have a safe flight :-)\n\n")
 
@@ -489,9 +517,9 @@ func StartFskServer() {
 					report = (*Report)(ppData)
 
 					/*
-					if verbose {
-						utils.Printf("REPORT: %#v\n", report)
-					}
+						if verbose {
+							utils.Printf("REPORT: %#v\n", report)
+						}
 					*/
 
 					ws.Broadcast(map[string]interface{}{

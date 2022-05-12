@@ -13,8 +13,8 @@ var Ws *websockets.Websocket
 
 func NotifyHotkeysUpdated() {
 	if Ws != nil {
-		logger.LogDebug("Broadcasting hotkeys update!", false)
-	
+		logger.LogDebugVerboseOverride("Broadcasting hotkeys update!", false)
+
 		Ws.Broadcast(map[string]interface{}{
 			"msg": "hotkeys updated",
 		})
@@ -22,7 +22,7 @@ func NotifyHotkeysUpdated() {
 }
 
 func ServeMasterHotkey(w http.ResponseWriter, r *http.Request) {
-	logger.LogDebug("ServeMasterHotkey called!", false)
+	logger.LogDebugVerboseOverride("ServeMasterHotkey called!", false)
 
 	responseJson, jsonErr := json.Marshal(globals.MasterHotkey)
 
