@@ -4,6 +4,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/Christian1984/go-maptilecache v0.1.1 h1:me7qgDBfZIqkMXCNl9aJLDJFnDmGFaQLY7Vj4bUYfEg=
 github.com/Christian1984/go-maptilecache v0.1.1/go.mod h1:Wk4xdC73BG4Vy7fV1YFngEbcRzxLkLx8YrDhJGHarFo=
+github.com/Christian1984/go-maptilecache v0.1.2 h1:C5gaiC2sAEVQdBnRiqL8pd6BxNRDfOz/wsuv8wfQ11Q=
+github.com/Christian1984/go-maptilecache v0.1.2/go.mod h1:Wk4xdC73BG4Vy7fV1YFngEbcRzxLkLx8YrDhJGHarFo=
 github.com/Christian1984/go-update-checker v0.0.3 h1:a1FAbgD+39arSavXMmbgO9z8aDbqMyUPoxIhg/Xbpyk=
 github.com/Christian1984/go-update-checker v0.0.3/go.mod h1:Up9ZfTcgLcnmENqGaIW4n4nK7xN0SXL9bFZUcRycOSA=
 github.com/Kodeworks/golang-image-ico v0.0.0-20141118225523-73f0f4cfade9/go.mod h1:7uhhqiBaR4CpN0k9rMjOtjpcfGd6DG2m04zQxKnWQ0I=

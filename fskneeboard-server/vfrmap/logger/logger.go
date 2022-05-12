@@ -147,7 +147,7 @@ func LogInfoVerbose(message string, verboseOverride bool) {
 }
 
 func LogInfo(message string) {
-	LogInfoVerboseOverride(message, true)
+	LogInfoVerboseOverride(message, false)
 }
 
 // WARN
@@ -160,7 +160,7 @@ func LogWarnVerbose(message string) {
 }
 
 func LogWarn(message string) {
-	LogWarnVerboseOverride(message, true)
+	LogWarnVerboseOverride(message, false)
 }
 
 // ERROR
@@ -173,7 +173,7 @@ func LogErrorVerbose(message string) {
 }
 
 func LogError(message string) {
-	LogErrorVerboseOverride(message, true)
+	LogErrorVerboseOverride(message, false)
 }
 
 // controller methods

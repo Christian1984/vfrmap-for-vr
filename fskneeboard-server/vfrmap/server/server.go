@@ -149,16 +149,21 @@ func UpdateAutosaveInterval(verbose bool) {
 }
 
 func initCache(ttl time.Duration, root string, provider string, url string) {
-	c, err := maptilecache.New([]string{root, provider}, url, []string{}, ttl, "")
+	c, err := maptilecache.NewWithLogger(
+		[]string{root, provider}, url,
+		[]string{}, ttl, "",
+		logger.LogDebug,
+		logger.LogInfo,
+		logger.LogWarn,
+		logger.LogError,
+	)
 	if err == nil {
-		c.Logger.LogDebugFunc = logger.LogDebug
-		c.Logger.LogInfoFunc = logger.LogInfo
-		c.Logger.LogWarnFunc = logger.LogWarn
-		c.Logger.LogErrorFunc = logger.LogError
-
 		if globals.WipeCache {
 			c.WipeCache()
+		} else {
+			c.ValidateCache(true)
 		}
+
 	} else {
 		logger.LogError("An error was raised during the initialization of maptilecache [" + provider + "], reason: " + err.Error())
 	}
