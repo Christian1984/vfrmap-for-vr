@@ -4,7 +4,8 @@
   "description": "This project (formerly known as VFR Map For VR) adds a helpful ingame panel to your flight simulator which brings",
   "main": "index.js",
   "scripts": {
-    "build-panel": "webpack --config=webpack.panel.conf.js"
+    "build-panel": "webpack --config=webpack.panel.conf.js",
+    "build-server": "webpack --config=webpack.server.conf.js"
   },
   "repository": {
     "type": "git",
