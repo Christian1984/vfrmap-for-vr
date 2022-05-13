@@ -56,62 +56,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
             this.initialize();
         }
     }
-    isDebugEnabled() {
-        var self = this;
-        if (typeof g_modDebugMgr != "undefined") {
-            g_modDebugMgr.AddConsole(null);
-            g_modDebugMgr.AddDebugButton("Identifier", function() {
-                //console.log('Identifier');
-                //console.log(self.instrumentIdentifier);
-            });
-            g_modDebugMgr.AddDebugButton("TemplateID", function() {
-                //console.log('TemplateID');
-                //console.log(self.templateID);
-            });
-            g_modDebugMgr.AddDebugButton("Source", function() {
-                //console.log('Source');
-                //console.log(window.document.documentElement.outerHTML);
-            });
-            g_modDebugMgr.AddDebugButton("close", function() {
-                //console.log('close');
-                if (self.ingameUi) {
-                    //console.log('ingameUi');
-                    self.ingameUi.closePanel();
-                }
-            });
-            this.initialize();
-        } else {
-            Include.addScript("/JS/debug.js", function () {
-                if (typeof g_modDebugMgr != "undefined") {
-                    g_modDebugMgr.AddConsole(null);
-                    g_modDebugMgr.AddDebugButton("Identifier", function() {
-                        //console.log('Identifier');
-                        //console.log(self.instrumentIdentifier);
-                    });
-                    g_modDebugMgr.AddDebugButton("TemplateID", function() {
-                        //console.log('TemplateID');
-                        //console.log(self.templateID);
-                    });
-                    g_modDebugMgr.AddDebugButton("Source", function() {
-                        //console.log('Source');
-                        //console.log(window.document.documentElement.outerHTML);
-                    });
-                    g_modDebugMgr.AddDebugButton("close", function() {
-                        //console.log('close');
-                        if (self.ingameUi) {
-                            //console.log('ingameUi');
-                            self.ingameUi.closePanel();
-                        }
-                    });
-                    self.initialize();
-                } else {
-                    setTimeout(() => {
-                        self.isDebugEnabled();
-                    }, 2000);
-                }
-            });
-        }
-    }
 
     collapse(collapsed) {
         if (collapsed) {
@@ -125,7 +69,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
     }
 
     toggle_collapse() {
-        //console.log("FSKneeboard.js => toggle_collapse() called!");
         this.collapse(!this.collapsed);
     }
 
@@ -157,15 +100,11 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         var self = this;
 
         window.addEventListener("message", (e) => {
-            //console.log("FSKneeboard.js => message event listener, received message: " + e.data);
-
             try {
                 const data = JSON.parse(e.data);
 
                 switch (data.type) {
                     case "KeyboardEvent":
-                        //console.log("FSKneeboard.js => message event listener, received KeyboardEvent: " + JSON.stringify(data));
-
                         if (self.collapse_hotkey == -1) return;
 
                         if (data.data.type == "keydown"
@@ -179,7 +118,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                         break;
 
                     case "HotkeyConfiguration":
-                        //console.log("FSKneeboard.js => message event listener, received HotkeyConfiguration: " + JSON.stringify(data));
                         self.collapse_hotkey = data.data.keyCode;
                         self.collapse_altKey = data.data.altKey;
                         self.collapse_ctrlKey = data.data.ctrlKey;
@@ -260,17 +198,13 @@ window.customElements.define("ingamepanel-custom", IngamePanelFSKneeboardPanel);
 myCheckAutoload();
 
 if (parent && parent.window && parent.window.test_environment) {
-    parent.document.addEventListener('testReady', function (e) { 
-        //console.log("iframe => testReady");
+    parent.document.addEventListener('testReady', function () {
         uis = document.querySelectorAll("ingame-ui");
 
         for (let ui of uis) {
-            //console.log("ui", typeof(ui));
-
             const event = new Event('panelActive');
             setTimeout(() => {
                 ui.dispatchEvent(event);
-                //console.log("Event dispatched...");
             }, 250);
         }
     }, false);
