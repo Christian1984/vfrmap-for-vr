@@ -1,3 +1,5 @@
+import "./FSKneeboardPanel.scss"
+
 let MyTemplateElement;
 let myCheckAutoload;
 

@@ -1,3 +1,5 @@
+node_modules/
+
 **/_Temp/
 **/_vendor/*/
 **/autosave/*.FLT
@@ -5,9 +7,13 @@
 **/autosave/*.SPB
 **/autosave/*.WPR
 /dist
+
 fskneeboard-server/charts/**/*.PNG
 fskneeboard-server/logs/*
-maptilecache/
+fskneeboard-server/maptilecache/
+
+fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/FSKneeboardPanel/
+
 .env
 fskneeboard.exe
 vfrmap-for-vr-win64.zip
