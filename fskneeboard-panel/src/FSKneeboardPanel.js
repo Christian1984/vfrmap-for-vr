@@ -184,5 +184,3 @@ if (parent && parent.window && parent.window.test_environment) {
         }
     }, false);
 }
-
-

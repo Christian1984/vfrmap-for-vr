@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     mode: "production",
-    //devtool: "source-map",
+    devtool: "source-map",
     entry: {
         FSKneeboardPanel: path.resolve(__dirname, "fskneeboard-panel", "src", "FSKneeboardPanel.js"),
     },
@@ -27,7 +27,7 @@ module.exports = {
             filename: "[name].html",
             inject: "head",
             template: path.resolve(__dirname, "fskneeboard-panel", "src", "FSKneeboardPanel.html"),
-            //chunks: ["FSKneeboardPanel"]
+            chunks: ["FSKneeboardPanel"]
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css'
@@ -35,13 +35,16 @@ module.exports = {
     ],
     module: {
         rules: [
-            /*
             {
                 test: /\.(js|jsx)$/,
                 exclude: /[\\/]node_modules[\\/]/,
-                use: ["babel-loader"]
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
             },
-            */
             {
                 test: /\.s[ac]ss$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
@@ -49,14 +52,14 @@ module.exports = {
         ]
     },
     optimization: {
-        /*minimize: true,
+        minimize: true,
         minimizer: [
             new TerserPlugin({
                 parallel: true,
                 terserOptions: {
                     mangle: true,
                 }
-            }),
-        ],*/
+            })
+        ]
     },
 }
