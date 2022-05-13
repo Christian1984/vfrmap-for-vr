@@ -680,6 +680,7 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 - `--log [level]`: Set log level and enable logging to file. `[level]` can be any of `debug | info | warn | error | off` (defaults to `off`). Use together with flag `--verbose` to also log to `stdout`. This will override/adjust the settings previously set through the GUI. Also, if you encounter issues during FSKneeboard startup, running `fskneeboard.exe --log debug` is the way to go!
 - `--verbose`: Enable verbose mode.
+- `--wipemaptilecaches`: Remove all cached map tiles from the internal map tile cache
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
 - `--quietshutdown`: Prevent FSKneeboard from showing a prompt after disconnecting from MSFS
 

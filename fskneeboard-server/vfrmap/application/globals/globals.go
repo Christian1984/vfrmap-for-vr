@@ -31,4 +31,4 @@ var Verbose bool
 
 var Notepad notepad.Notepad
 
-var WipeCache bool
+var WipeMaptileCaches bool

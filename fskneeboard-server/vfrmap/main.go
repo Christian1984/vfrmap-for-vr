@@ -193,6 +193,7 @@ func main() {
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")
 	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
+	flag.BoolVar(&globals.WipeMaptileCaches, "wipemaptilecaches", false, "wipe maptile caches")
 
 	// flags to compare against stored values
 	flag.StringVar(&globals.LogLevel, "log", "off", "set log level (debug | info | error)")

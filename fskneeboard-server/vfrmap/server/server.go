@@ -156,10 +156,10 @@ func initCache(ttl time.Duration, root string, provider string, url string, expe
 		logger.LogInfo,
 		logger.LogWarn,
 		logger.LogError,
-		1*time.Minute,
+		5*time.Minute,
 	)
 	if err == nil {
-		if globals.WipeCache {
+		if globals.WipeMaptileCaches {
 			c.WipeCache()
 		} else {
 			c.ValidateCache(true)
@@ -171,7 +171,7 @@ func initCache(ttl time.Duration, root string, provider string, url string, expe
 }
 
 func initMaptileCache() {
-	ttl := 90 * 24 * time.Hour
+	ttl := 45 * 24 * time.Hour
 	globalRoot := "maptilecache"
 
 	initCache(ttl, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", []string{})
