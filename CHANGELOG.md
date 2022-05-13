@@ -1,5 +1,21 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.8.0
+
+## MAJOR:
+
+- added "north up", "track up" and "manual map rotation" options to the map module
+- added an "Disable Tools" option to the map module's mode selector
+- added scale to map
+- added a local tile cache for the map module to reduce network traffic
+
+## MINOR:
+
+- added a prompt that enables the user to either keep or remove FSKneeboard user data (settings, license file, logs, cached data etc.) upon uninstall
+- disabled responsive layout ("horizontal menus")
+
+---
+
 # v1.7.0
 
 ## MAJOR:
