@@ -208,3 +208,5 @@ begin
   S := S + 'Join us on Discord at https://discord.fskneeboard.com';
   Result := S;
 end;
+
+#include "fskneeboard-common.iss"
