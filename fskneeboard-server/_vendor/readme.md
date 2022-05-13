@@ -17,8 +17,7 @@ Contains Javascript code from C:\Program Files\WindowsApps\Microsoft.FlightSimul
 ## Folder leafletjs
 
 - Must contain leafletjs
-- Must contain leaflet.rotatedMarker.js from https://github.com/bbecquet/Leaflet.RotatedMarker
-- Must contain leaflet-rotate.js from https://www.npmjs.com/package/leaflet-rotate
+- Must contain leaflet-rotate.js from https://www.npmjs.com/package/leaflet-rotate (https://github.com/Raruto/leaflet-rotate)
 
 ## Folder premium_src
 

@@ -730,10 +730,10 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 # Attribution
 
-This project uses forks of two amazing community projects. Without them, it would have taken me an incredible amount of time building this thing all on my own. Hence, I want to thank the two:
+This project was inspired by two amazing community projects. Without them, it would have taken me an incredible amount of time building the initial version of this mod on my own. Hence, I want to thank the two for the "headstart":
 
 - The original server was forked from [lian/msfs2020-go](https://github.com/lian/msfs2020-go).
-- The original client/ingame panel was forked from [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
+- The original client/ingame panel was inspired by [bymaximus/msfs2020-toolbar-window-template](https://github.com/bymaximus/msfs2020-toolbar-window-template).
 
 Great work, guys! Thanks for sharing your work with us!!!
 
@@ -754,9 +754,12 @@ Great work, guys! Thanks for sharing your work with us!!!
 ### Framework and Libraries
 
 - [Leaflet JS](https://github.com/Leaflet/Leaflet)
+- [Leaflet Rotate](https://github.com/Raruto/leaflet-rotate)
 - [JavaScript-MD](https://github.com/blueimp/JavaScript-MD5)
 - [BoltDB](https://github.com/boltdb/bolt)
 - [fyne](https://github.com/fyne-io/fyne)
+- [go-maptilecache](https://github.com/Christian1984/go-maptilecache)
+- [go-update-checker](https://github.com/Christian1984/go-update-checker)
 
 ### (PRO) Sample Documents
 
