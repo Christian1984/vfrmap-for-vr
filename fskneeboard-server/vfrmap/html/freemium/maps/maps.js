@@ -321,6 +321,7 @@ function calculate_airac_cycle() {
 function initMap() {
     let pos = initial_pos;
 
+    // base maps
     const osm = new L.TileLayer("http://localhost:9000/maptilecache/osm/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
@@ -330,7 +331,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const otm = new L.TileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+    const otm = new L.TileLayer("http://localhost:9000/maptilecache/otm/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -339,9 +340,46 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
+    const stamen_black_white = new L.TileLayer("http://localhost:9000/maptilecache/stamenbw/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        subdomains: ["a", "b", "c"]
+    });
+
+    const stamen_terrain = new L.TileLayer("http://localhost:9000/maptilecache/stament/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        subdomains: ["a", "b", "c"]
+    });
+
+    const stamen_water = new L.TileLayer("http://localhost:9000/maptilecache/stamenw/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        subdomains: ["a", "b", "c"]
+    });
+
+    const carto_dark = new L.TileLayer("http://localhost:9000/maptilecache/cartod/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        subdomains: ["a", "b", "c"]
+    });
+
+    // nav overlays
     const airac = calculate_airac_cycle();
 
-    const ofm = new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=" + airac + "/aero/latest", {
+    const ofm = new L.TileLayer("http://localhost:9000/maptilecache/ofm/{s}/{z}/{y}/{x}/?path=" + airac + "/aero/latest", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -349,7 +387,7 @@ function initMap() {
         format: "image/png"
     });
 
-    const openaip_cached_basemap = new L.TileLayer("http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", {
+    const openaip_cached_basemap = new L.TileLayer("http://localhost:9000/maptilecache/oaip/{s}/{z}/{y}/{x}/", {
         maxZoom: 14,
         minZoom: 4,
         tileSize: map_resolution.tile_size,
@@ -359,42 +397,6 @@ function initMap() {
         subdomains: "12",
         format: "image/png",
         transparent: true
-    });
-
-    const stamen_black_white = new L.TileLayer("http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        subdomains: ["a", "b", "c"]
-    });
-
-    const stamen_terrain = new L.TileLayer("http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        subdomains: ["a", "b", "c"]
-    });
-
-    const stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        subdomains: ["a", "b", "c"]
-    });
-
-    const carto_dark = new L.TileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        subdomains: ["a", "b", "c"]
     });
 
     map = new L.Map("map", {

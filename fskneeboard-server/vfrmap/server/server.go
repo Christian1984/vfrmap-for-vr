@@ -148,14 +148,15 @@ func UpdateAutosaveInterval(verbose bool) {
 	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
 }
 
-func initCache(ttl time.Duration, root string, provider string, url string) {
-	c, err := maptilecache.NewWithLogger(
+func initCache(ttl time.Duration, root string, provider string, url string, expectedParams []string) {
+	c, err := maptilecache.New(
 		[]string{root, provider}, url,
-		[]string{}, ttl, "",
+		expectedParams, ttl, "",
 		logger.LogDebug,
 		logger.LogInfo,
 		logger.LogWarn,
 		logger.LogError,
+		1*time.Minute,
 	)
 	if err == nil {
 		if globals.WipeCache {
@@ -163,7 +164,6 @@ func initCache(ttl time.Duration, root string, provider string, url string) {
 		} else {
 			c.ValidateCache(true)
 		}
-
 	} else {
 		logger.LogError("An error was raised during the initialization of maptilecache [" + provider + "], reason: " + err.Error())
 	}
@@ -174,7 +174,15 @@ func initMaptileCache() {
 	ttl := 90 * 24 * time.Hour
 	globalRoot := "maptilecache"
 
-	initCache(ttl, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+	initCache(ttl, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", []string{})
+	initCache(ttl, globalRoot, "otm", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", []string{})
+	initCache(ttl, globalRoot, "stamenbw", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", []string{})
+	initCache(ttl, globalRoot, "stament", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", []string{})
+	initCache(ttl, globalRoot, "stamenw", "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", []string{})
+	initCache(ttl, globalRoot, "cartod", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", []string{})
+
+	initCache(ttl, globalRoot, "ofm", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", []string{"path"})
+	initCache(ttl, globalRoot, "oaip", "http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", []string{})
 }
 
 func StartFskServer() {
