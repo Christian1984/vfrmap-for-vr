@@ -4,6 +4,7 @@ var
   MaptileFolder: String;
   ChartsFolder: String;
   AutosaveFolder: String;
+  LogsFolder: String;
   DbFile: String;
   DbLockFile: String;
   LicenseFile: String;
@@ -14,6 +15,7 @@ begin
     MaptileFolder := ExpandConstant('{app}\maptilecache');
     ChartsFolder := ExpandConstant('{app}\charts');
     AutosaveFolder := ExpandConstant('{app}\autosave');
+    LogsFolder := ExpandConstant('{app}\logs');
     DbFile := ExpandConstant('{app}\fskneeboard.db');
     DbLockFile := ExpandConstant('{app}\fskneeboard.db.lock');
     LicenseFile := ExpandConstant('{app}\fskneeboard.lic');
@@ -27,6 +29,8 @@ begin
         DelTree(ChartsFolder, True, True, True);
       if DirExists(AutosaveFolder) then
         DelTree(AutosaveFolder, True, True, True);
+      if DirExists(LogsFolder) then
+        DelTree(LogsFolder, True, True, True);
 
       DeleteFile(DbFile);
       DeleteFile(DbLockFile);
