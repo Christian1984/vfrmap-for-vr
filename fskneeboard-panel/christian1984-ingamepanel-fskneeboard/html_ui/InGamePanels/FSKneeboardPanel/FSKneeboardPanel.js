@@ -7,17 +7,9 @@ try {
 catch (e) {
     if (parent && parent.window && parent.window.test_environment) {
         MyTemplateElement = class extends HTMLElement {
-            constructor(args) {
-                super(args);
-            }
-    
-            connectedCallback() {
-    
-            }
-    
-            disconnectedCallback() {
-                
-            }
+            constructor(args) { super(args); }
+            connectedCallback() {}
+            disconnectedCallback() {}
         }
     }
 }
@@ -36,25 +28,13 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         super(...arguments);
 
         this.panelActive = false;
-        this.started = false;
         this.ingameUi = null;
-        this.busy = false;
-        this.debugEnabled = false;
 
         this.collapsed = false;
         this.collapse_hotkey = -1;
         this.collapse_altKey = false;
         this.collapse_ctrlKey = false;
         this.collapse_shiftKey = false;
-
-        if (this.debugEnabled) {
-            var self = this;
-            setTimeout(() => {
-                self.isDebugEnabled();
-            }, 1000);
-        } else {
-            this.initialize();
-        }
     }
 
     collapse(collapsed) {
@@ -176,13 +156,6 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                 });
             }
         } , 0);
-    }
-
-    initialize() {
-        if (this.started) {
-            return;
-        }
-        this.started = true;
     }
 
     disconnectedCallback() {
