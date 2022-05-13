@@ -322,7 +322,7 @@ function initMap() {
     let pos = initial_pos;
 
     // base maps
-    const osm = new L.TileLayer("http://localhost:9000/maptilecache/osm/{s}/{z}/{y}/{x}/", {
+    const osm = new L.TileLayer("/maptilecache/osm/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -331,7 +331,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const otm = new L.TileLayer("http://localhost:9000/maptilecache/otm/{s}/{z}/{y}/{x}/", {
+    const otm = new L.TileLayer("/maptilecache/otm/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -340,7 +340,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_black_white = new L.TileLayer("http://localhost:9000/maptilecache/stamenbw/{s}/{z}/{y}/{x}/", {
+    const stamen_black_white = new L.TileLayer("/maptilecache/stamenbw/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -349,7 +349,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_terrain = new L.TileLayer("http://localhost:9000/maptilecache/stament/{s}/{z}/{y}/{x}/", {
+    const stamen_terrain = new L.TileLayer("/maptilecache/stament/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -358,7 +358,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_water = new L.TileLayer("http://localhost:9000/maptilecache/stamenw/{s}/{z}/{y}/{x}/", {
+    const stamen_water = new L.TileLayer("/maptilecache/stamenw/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -367,7 +367,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const carto_dark = new L.TileLayer("http://localhost:9000/maptilecache/cartod/{s}/{z}/{y}/{x}/", {
+    const carto_dark = new L.TileLayer("/maptilecache/cartod/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -379,15 +379,15 @@ function initMap() {
     // nav overlays
     const airac = calculate_airac_cycle();
 
-    const ofm = new L.TileLayer("http://localhost:9000/maptilecache/ofm/{s}/{z}/{y}/{x}/?path=" + airac + "/aero/latest", {
-        maxZoom: 18,
-        minZoom: 2,
+    const ofm = new L.TileLayer("/maptilecache/ofm/{s}/{z}/{y}/{x}/?path=" + airac + "/aero/latest", {
+        maxZoom: 12,
+        minZoom: 7,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png"
     });
 
-    const openaip_cached_basemap = new L.TileLayer("http://localhost:9000/maptilecache/oaip/{s}/{z}/{y}/{x}/", {
+    const openaip_cached_basemap = new L.TileLayer("/maptilecache/oaip/{s}/{z}/{y}/{x}/", {
         maxZoom: 14,
         minZoom: 4,
         tileSize: map_resolution.tile_size,
