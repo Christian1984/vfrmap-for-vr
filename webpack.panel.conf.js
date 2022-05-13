@@ -1,10 +1,10 @@
 const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = {
+const commonConfig = require("./webpack.common.conf");
+
+module.exports = merge(commonConfig, {
     mode: "production",
     devtool: "source-map",
     entry: {
@@ -22,44 +22,11 @@ module.exports = {
         )
     },
     plugins: [
-        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             filename: "[name].html",
             inject: "head",
             template: path.resolve(__dirname, "fskneeboard-panel", "src", "FSKneeboardPanel.html"),
             chunks: ["FSKneeboardPanel"]
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css'
-        }),
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /[\\/]node_modules[\\/]/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            },
-            {
-                test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-            }
-        ]
-    },
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new TerserPlugin({
-                parallel: true,
-                terserOptions: {
-                    mangle: true,
-                }
-            })
-        ]
-    },
-}
+        })
+    ]
+});
