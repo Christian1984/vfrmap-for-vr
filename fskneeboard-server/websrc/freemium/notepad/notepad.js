@@ -1,3 +1,6 @@
+import "../../common/common.scss";
+import "./notepad.scss";
+
 let loaded = false;
 
 window.addEventListener("message", (m) => {
