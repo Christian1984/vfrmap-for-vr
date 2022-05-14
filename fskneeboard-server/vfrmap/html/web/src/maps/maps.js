@@ -1,5 +1,17 @@
 "use strict";
 
+
+import "../common/mainmenu.scss";
+import "../common/submenu.scss";
+import "../common/dialogs.scss";
+import "./maps.scss";
+
+import "../common/md5.min.js";
+import "../common/sender.js";
+import "../common/logger.js";
+import "../common/common.js";
+import "./maps.js";
+
 const MODES = {
     add_track_markers: 0,
     delete_track_markers: 1,

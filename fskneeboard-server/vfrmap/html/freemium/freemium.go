@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-//go:generate go-bindata -pkg freemium -o bindata.go -modtime 1 -prefix "maps" "maps"
+//go:generate go-bindata -pkg freemium -o bindata.go -modtime 1 -prefix "maps/dist" "maps/dist"
 
 type FS struct {
 }
