@@ -1,3 +1,11 @@
+import "./index.scss";
+import "./mainmenu.css";
+
+import "./md5.min.js";
+import "./sender.js";
+import "./logger.js";
+import "./common.js";
+
 const zoom_modification_factor = 1.05;
 const brightness_modification = 10;
 

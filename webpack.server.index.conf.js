@@ -8,12 +8,13 @@ module.exports = merge(commonConfig, {
     mode: "production",
     devtool: "source-map",
     entry: {
-        root: path.resolve(
+        index: path.resolve(
             __dirname,
             "fskneeboard-server",
             "vfrmap",
             "html",
-            "websrc",
+            "web",
+            "src",
             "index.js"
         ),
     },
@@ -23,7 +24,9 @@ module.exports = merge(commonConfig, {
             __dirname,
             "fskneeboard-server",
             "vfrmap",
-            "html"
+            "html",
+            "web",
+            "dist"
         )
     },
     plugins: [
@@ -35,10 +38,10 @@ module.exports = merge(commonConfig, {
                 "fskneeboard-server",
                 "vfrmap",
                 "html",
-                "websrc",
+                "web",
+                "src",
                 "index.html"
-            ),
-            chunks: ["root"]
+            )
         })
     ]
 });

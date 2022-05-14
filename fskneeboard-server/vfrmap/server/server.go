@@ -1,6 +1,6 @@
 package server
 
-//go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html ../html
+//go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html/web/dist ../html/web/dist
 
 import (
 	"context"
@@ -334,7 +334,7 @@ func StartFskServer() {
 				w.Write([]byte{})
 				return
 			}
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "web", "dist", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
 		}
 

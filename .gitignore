@@ -6,7 +6,7 @@ node_modules/
 **/autosave/*.FSSAVE
 **/autosave/*.SPB
 **/autosave/*.WPR
-/dist
+/dist/
 
 fskneeboard-server/charts/**/*.PNG
 fskneeboard-server/logs/*
