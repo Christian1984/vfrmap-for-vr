@@ -1,6 +1,6 @@
 package server
 
-//go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html/web/dist ../html/web/dist
+//go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html/webdist ../html/webdist
 
 import (
 	"context"

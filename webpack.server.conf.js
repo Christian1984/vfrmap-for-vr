@@ -14,10 +14,7 @@ const indexConfig = merge(baseConfig, {
         index: path.resolve(
             __dirname,
             "fskneeboard-server",
-            "vfrmap",
-            "html",
-            "web",
-            "src",
+            "websrc",
             "index",
             "index.js"
         ),
@@ -29,8 +26,7 @@ const indexConfig = merge(baseConfig, {
             "fskneeboard-server",
             "vfrmap",
             "html",
-            "web",
-            "dist"
+            "webdist"
         )
     },
     plugins: [
@@ -40,10 +36,7 @@ const indexConfig = merge(baseConfig, {
             template: path.resolve(
                 __dirname,
                 "fskneeboard-server",
-                "vfrmap",
-                "html",
-                "web",
-                "src",
+                "websrc",
                 "index",
                 "index.html"
             )
@@ -56,10 +49,7 @@ const mapsConfig = merge(baseConfig, {
         maps: path.resolve(
             __dirname,
             "fskneeboard-server",
-            "vfrmap",
-            "html",
-            "web",
-            "src",
+            "websrc",
             "maps",
             "maps.js"
         ),
@@ -73,7 +63,7 @@ const mapsConfig = merge(baseConfig, {
             "html",
             "freemium",
             "maps",
-            "dist"
+            "webdist"
         )
     },
     plugins: [
@@ -83,10 +73,7 @@ const mapsConfig = merge(baseConfig, {
             template: path.resolve(
                 __dirname,
                 "fskneeboard-server",
-                "vfrmap",
-                "html",
-                "web",
-                "src",
+                "websrc",
                 "maps",
                 "maps.html"
             )
@@ -94,4 +81,4 @@ const mapsConfig = merge(baseConfig, {
     ]
 });
 
-module.exports = [indexConfig];
+module.exports = [indexConfig, mapsConfig];

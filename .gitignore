@@ -7,6 +7,7 @@ node_modules/
 **/autosave/*.SPB
 **/autosave/*.WPR
 dist/
+webdist/
 
 fskneeboard-server/charts/**/*.PNG
 fskneeboard-server/logs/*
