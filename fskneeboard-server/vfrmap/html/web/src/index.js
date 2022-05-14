@@ -1,5 +1,5 @@
 import "./index.scss";
-import "./mainmenu.css";
+import "./mainmenu.scss";
 
 import "./md5.min.js";
 import "./sender.js";

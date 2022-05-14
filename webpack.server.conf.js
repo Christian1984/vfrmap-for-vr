@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const commonConfig = require("./webpack.common.conf");
 
-module.exports = merge(commonConfig, {
+const indexConfig = merge(commonConfig, {
     mode: "production",
     devtool: "source-map",
     entry: {
@@ -45,3 +45,5 @@ module.exports = merge(commonConfig, {
         })
     ]
 });
+
+module.exports = [indexConfig];
