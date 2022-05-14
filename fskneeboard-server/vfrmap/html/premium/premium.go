@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-//go:generate go-bindata -pkg premium -o bindata.go -modtime 1 -prefix "../../../_vendor/premium" "../../../_vendor/premium"
+//go:generate go-bindata -pkg premium -o bindata.go -modtime 1 -prefix "../../../_vendor/premium/webdist" "../../../_vendor/premium/webdist"
 
 type FS struct {
 }

@@ -9,12 +9,13 @@ const baseConfig = merge(commonConfig, {
     devtool: "source-map",
 });
 
+const websrcBasePath = path.resolve(__dirname, "fskneeboard-server", "websrc");
+const freemiumBasePath = path.resolve(websrcBasePath, "freemium");
+
 const indexConfig = merge(baseConfig, {
     entry: {
         index: path.resolve(
-            __dirname,
-            "fskneeboard-server",
-            "websrc",
+            websrcBasePath,
             "index",
             "index.js"
         ),
@@ -34,9 +35,7 @@ const indexConfig = merge(baseConfig, {
             filename: "[name].html",
             inject: "body",
             template: path.resolve(
-                __dirname,
-                "fskneeboard-server",
-                "websrc",
+                websrcBasePath,
                 "index",
                 "index.html"
             )
@@ -47,9 +46,7 @@ const indexConfig = merge(baseConfig, {
 const mapsConfig = merge(baseConfig, {
     entry: {
         maps: path.resolve(
-            __dirname,
-            "fskneeboard-server",
-            "websrc",
+            websrcBasePath,
             "maps",
             "maps.js"
         ),
@@ -71,9 +68,7 @@ const mapsConfig = merge(baseConfig, {
             filename: "[name].html",
             inject: "body",
             template: path.resolve(
-                __dirname,
-                "fskneeboard-server",
-                "websrc",
+                websrcBasePath,
                 "maps",
                 "maps.html"
             )
@@ -81,4 +76,56 @@ const mapsConfig = merge(baseConfig, {
     ]
 });
 
-module.exports = [indexConfig, mapsConfig];
+const freemiumConfig = merge(baseConfig, {
+    entry: {
+        charts: path.resolve(
+            freemiumBasePath,
+            "charts",
+            "charts.js"
+        ),
+        notepad: path.resolve(
+            freemiumBasePath,
+            "notepad",
+            "notepad.js"
+        ),
+        waypoints: path.resolve(
+            freemiumBasePath,
+            "waypoints",
+            "waypoints.js"
+        )
+    },
+    output: {
+        filename: "[name].js",
+        path: path.resolve(
+            __dirname,
+            "fskneeboard-server",
+            "_vendor",
+            "premium",
+            "webdist"
+        )
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: "[name].html",
+            inject: "body",
+            template: path.resolve(
+                freemiumBasePath,
+                "charts",
+                "charts.html"
+            ),
+            chunks: ["charts"]
+        }),
+        new HtmlWebpackPlugin({
+            filename: "[name].html",
+            inject: "body",
+            template: path.resolve(
+                freemiumBasePath,
+                "notepad",
+                "notepad.html"
+            ),
+            chunks: ["notepad"]
+        })
+    ]
+});
+
+module.exports = [indexConfig, mapsConfig, freemiumConfig];
