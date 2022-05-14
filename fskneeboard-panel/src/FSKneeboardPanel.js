@@ -174,7 +174,7 @@ myCheckAutoload();
 
 if (parent && parent.window && parent.window.test_environment) {
     parent.document.addEventListener('testReady', function () {
-        uis = document.querySelectorAll("ingame-ui");
+        const uis = document.querySelectorAll("ingame-ui");
 
         for (let ui of uis) {
             const event = new Event('panelActive');
