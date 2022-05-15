@@ -2,7 +2,16 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = {
+const devConfig = {
+    mode: "development",
+    devtool: "source-map",
+}
+
+const prodConfig = {
+    mode: "production",
+}
+
+const commonConfig = {
     plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
@@ -39,3 +48,5 @@ module.exports = {
         ]
     },
 }
+
+module.exports = { commonConfig, devConfig, prodConfig };

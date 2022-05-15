@@ -2,7 +2,7 @@ const path = require("path");
 const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const commonConfig = require("./webpack.common.conf");
+const { commonConfig } = require("./webpack.common.conf");
 
 const baseConfig = merge(commonConfig, {
     mode: "production",
