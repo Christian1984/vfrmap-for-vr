@@ -1,13 +1,20 @@
 @ECHO off
 SET noguiflag=
 IF %1.==gui. SET noguiflag=-H=windowsgui
-IF %1.==dev. GOTO build
 
 ECHO copy premium modules...
 del /s /q _vendor\premium\*.* >nul 2>&1
 rmdir /s /q _vendor\premium\ >nul 2>&1
-npm run build-server-pro
 robocopy _vendor\premium_src\gosrc _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
+
+IF %1.==dev. GOTO webpack-build-dev
+
+:webpack-build
+call npm run build-server-pro
+GOTO build
+
+:webpack-build-dev
+call npm run build-server-pro-dev
 
 :build
 ECHO generate bindata...
