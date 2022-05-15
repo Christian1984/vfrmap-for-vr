@@ -8,13 +8,16 @@ module.exports = merge(devConfig, panelBaseConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(
-            __dirname, "..",
-            "fskneeboard-panel",
+            process.env.LOCALAPPDATA,
+            "Packages",
+            "Microsoft.FlightSimulator_8wekyb3d8bbwe",
+            "LocalCache",
+            "Packages",
+            "Community",
             "christian1984-ingamepanel-fskneeboard",
             "html_ui",
             "InGamePanels",
-            "FSKneeboardPanel",
-            "dev"
+            "FSKneeboardPanel"
         ),
         clean: true
     }

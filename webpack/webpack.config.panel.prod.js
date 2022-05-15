@@ -7,7 +7,7 @@ const { prodConfig } = require("./webpack.config.common");
 module.exports = merge(prodConfig, panelBaseConfig, {
     output: {
         filename: "[name].js",
-        path: path.resolve( // TODO: this should be the community folder
+        path: path.resolve(
             __dirname, "..",
             "fskneeboard-panel",
             "christian1984-ingamepanel-fskneeboard",
