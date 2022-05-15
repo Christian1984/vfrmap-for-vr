@@ -10,7 +10,7 @@ const panelBaseConfig = merge(commonConfig, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: "[name].html",
+            filename: "FSKneeboardPanel.html",
             inject: "head",
             template: path.resolve(__dirname, "fskneeboard-panel", "src", "FSKneeboardPanel.html"),
             chunks: ["FSKneeboardPanel"]
