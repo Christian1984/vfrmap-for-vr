@@ -4,32 +4,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const { commonConfig } = require("./webpack.config.common");
 
-const baseConfig = merge(commonConfig, {
-    mode: "production",
-    devtool: "source-map",
-});
-
 const websrcBasePath = path.resolve(__dirname, "fskneeboard-server", "websrc");
-const freemiumBasePath = path.resolve(websrcBasePath, "freemium");
 
-const freemiumConfig = merge(baseConfig, {
-    entry: {
-        charts: path.resolve(
-            freemiumBasePath,
-            "charts",
-            "charts.js"
-        ),
-        notepad: path.resolve(
-            freemiumBasePath,
-            "notepad",
-            "notepad.js"
-        ),
-        waypoints: path.resolve(
-            freemiumBasePath,
-            "waypoints",
-            "waypoints.js"
-        ),
-    },
+const freemiumBaseConfig = merge(commonConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(
@@ -39,30 +16,10 @@ const freemiumConfig = merge(baseConfig, {
             "premium",
             "webdist"
         )
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            filename: "charts.html",
-            inject: "body",
-            template: path.resolve(
-                freemiumBasePath,
-                "template.html"
-            ),
-            chunks: ["charts"]
-        }),
-        new HtmlWebpackPlugin({
-            filename: "notepad.html",
-            inject: "body",
-            template: path.resolve(
-                freemiumBasePath,
-                "template.html"
-            ),
-            chunks: ["notepad"]
-        })
-    ]
+    }
 });
 
-const indexConfig = merge(baseConfig, {
+const indexBaseConfig = merge(commonConfig, {
     entry: {
         index: path.resolve(
             websrcBasePath,
@@ -93,7 +50,7 @@ const indexConfig = merge(baseConfig, {
     ]
 });
 
-const mapsConfig = merge(baseConfig, {
+const mapsBaseConfig = merge(commonConfig, {
     entry: {
         maps: path.resolve(
             websrcBasePath,
@@ -126,4 +83,4 @@ const mapsConfig = merge(baseConfig, {
     ]
 });
 
-module.exports = [freemiumConfig, indexConfig, mapsConfig];
+module.exports = { freemiumBaseConfig, indexBaseConfig, mapsBaseConfig, websrcBasePath };

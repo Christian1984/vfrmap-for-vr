@@ -6,7 +6,10 @@
   "scripts": {
     "build-panel": "webpack --config=webpack.config.panel.prod.js",
     "build-panel-dev": "webpack --config=webpack.config.panel.dev.js",
-    "build-server": "webpack --config=webpack.config.server.js"
+    "build-server-free": "webpack --config=webpack.config.server.free.prod.js",
+    "build-server-free-dev": "webpack --config=webpack.config.server.free.dev.js",
+    "build-server-pro": "webpack --config=webpack.config.server.pro.prod.js",
+    "build-server-pro-dev": "webpack --config=webpack.config.server.pro.dev.js"
   },
   "repository": {
     "type": "git",
