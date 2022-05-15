@@ -1,8 +1,8 @@
 const path = require("path");
 const { merge } = require("webpack-merge");
 
-const { panelBaseConfig } = require("./webpack.panel.base.conf");
-const { devConfig } = require("./webpack.common.conf");
+const { panelBaseConfig } = require("./webpack.config.panel.base");
+const { devConfig } = require("./webpack.config.common");
 
 module.exports = merge(devConfig, panelBaseConfig, {
     output: {

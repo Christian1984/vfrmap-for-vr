@@ -2,7 +2,7 @@ const path = require("path");
 const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const { commonConfig } = require("./webpack.common.conf");
+const { commonConfig } = require("./webpack.config.common");
 
 const baseConfig = merge(commonConfig, {
     mode: "production",
@@ -42,12 +42,22 @@ const freemiumConfig = merge(baseConfig, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: "[name].html",
+            filename: "charts.html",
             inject: "body",
             template: path.resolve(
                 freemiumBasePath,
                 "template.html"
-            )
+            ),
+            chunks: ["charts"]
+        }),
+        new HtmlWebpackPlugin({
+            filename: "notepad.html",
+            inject: "body",
+            template: path.resolve(
+                freemiumBasePath,
+                "template.html"
+            ),
+            chunks: ["notepad"]
         })
     ]
 });
@@ -72,14 +82,13 @@ const indexConfig = merge(baseConfig, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: "[name].html",
+            filename: "index.html",
             inject: "body",
             template: path.resolve(
                 websrcBasePath,
                 "index",
                 "index.html"
-            ),
-            chunks: ["index"]
+            )
         })
     ]
 });
@@ -106,14 +115,13 @@ const mapsConfig = merge(baseConfig, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: "[name].html",
+            filename: "maps.html",
             inject: "body",
             template: path.resolve(
                 websrcBasePath,
                 "maps",
                 "maps.html"
-            ),
-            chunks: ["maps"]
+            )
         })
     ]
 });
