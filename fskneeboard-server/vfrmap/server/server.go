@@ -334,19 +334,19 @@ func StartFskServer() {
 				w.Write([]byte{})
 				return
 			}
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "web", "dist", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "webdist", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
 		}
 
 		freemium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", "webdist", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, freemium.MustAsset(requestedResource))
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/")
-			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
+			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", "webdist", requestedResource)
 			sendResponse(w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
 		}
 
