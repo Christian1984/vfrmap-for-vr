@@ -6,12 +6,13 @@ IF %1.==dev. GOTO build
 ECHO copy freemium modules...
 del /s /q _vendor\premium\*.* >nul 2>&1
 rmdir /s /q _vendor\premium\ >nul 2>&1
-robocopy freemium_src _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
-call npx sass -q .
+npm run build-server-free
+robocopy freemium_src\gosrc _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
 
 :build
 ECHO generate bindata...
 go generate -v .\vfrmap\
+go generate -v .\vfrmap\server
 go generate -v .\vfrmap\html\fontawesome
 go generate -v .\vfrmap\html\leafletjs
 go generate -v .\vfrmap\html\freemium
