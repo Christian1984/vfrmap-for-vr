@@ -6,13 +6,13 @@ const { commonConfig } = require("./webpack.config.common");
 
 const panelBaseConfig = merge(commonConfig, {
     entry: {
-        FSKneeboardPanel: path.resolve(__dirname, "fskneeboard-panel", "src", "FSKneeboardPanel.js"),
+        FSKneeboardPanel: path.resolve(__dirname, "..", "fskneeboard-panel", "src", "FSKneeboardPanel.js"),
     },
     plugins: [
         new HtmlWebpackPlugin({
             filename: "FSKneeboardPanel.html",
             inject: "head",
-            template: path.resolve(__dirname, "fskneeboard-panel", "src", "FSKneeboardPanel.html"),
+            template: path.resolve(__dirname, "..", "fskneeboard-panel", "src", "FSKneeboardPanel.html"),
             chunks: ["FSKneeboardPanel"]
         })
     ]

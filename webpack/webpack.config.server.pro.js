@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const { freemiumBaseConfig } = require("./webpack.config.server.base");
 
-const premiumBasePath = path.resolve(__dirname, "fskneeboard-server", "_vendor", "premium_src", "websrc");
+const premiumBasePath = path.resolve(__dirname, "..", "fskneeboard-server", "_vendor", "premium_src", "websrc");
 
 const proConfig = merge(freemiumBaseConfig, {
     entry: {

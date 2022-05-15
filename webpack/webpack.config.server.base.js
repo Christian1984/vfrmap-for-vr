@@ -4,18 +4,19 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const { commonConfig } = require("./webpack.config.common");
 
-const websrcBasePath = path.resolve(__dirname, "fskneeboard-server", "websrc");
+const websrcBasePath = path.resolve(__dirname, "..", "fskneeboard-server", "websrc");
 
 const freemiumBaseConfig = merge(commonConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(
-            __dirname,
+            __dirname, "..",
             "fskneeboard-server",
             "_vendor",
             "premium",
             "webdist"
-        )
+        ),
+        clean: true
     }
 });
 
@@ -30,12 +31,13 @@ const indexBaseConfig = merge(commonConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(
-            __dirname,
+            __dirname, "..",
             "fskneeboard-server",
             "vfrmap",
             "html",
             "webdist"
-        )
+        ),
+        clean: true
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -61,14 +63,15 @@ const mapsBaseConfig = merge(commonConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve(
-            __dirname,
+            __dirname, "..",
             "fskneeboard-server",
             "vfrmap",
             "html",
             "freemium",
             "maps",
             "webdist"
-        )
+        ),
+        clean: true
     },
     plugins: [
         new HtmlWebpackPlugin({

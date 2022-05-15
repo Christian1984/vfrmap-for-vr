@@ -8,12 +8,13 @@ module.exports = merge(prodConfig, panelBaseConfig, {
     output: {
         filename: "[name].js",
         path: path.resolve( // TODO: this should be the community folder
-            __dirname,
+            __dirname, "..",
             "fskneeboard-panel",
             "christian1984-ingamepanel-fskneeboard",
             "html_ui",
             "InGamePanels",
             "FSKneeboardPanel"
-        )
+        ),
+        clean: true
     },
 });
