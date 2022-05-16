@@ -319,23 +319,28 @@ func StartFskServer() {
 
 		sendResponse := func(w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte, assetErr error) {
 			contentType := getContentType(requestedResource)
+			logger.LogDebug("Resource [" + requestedResource + "] with MIME-type [" + contentType + "] requested!")
+
 			setHeaders(contentType, w)
 
-			if _, err = os.Stat(filePath); os.IsNotExist(err) {
-				logger.LogDebugVerboseOverride("Resource ["+requestedResource+"] not found in local file system!", true)
+			if info, err := os.Stat(filePath); os.IsNotExist(err) {
+				logger.LogDebug("Resource [" + requestedResource + "] not found in local file system! Serving embedded resource...")
 
 				if assetErr != nil {
-					logger.LogErrorVerboseOverride("Embedded resource ["+requestedResource+"] not found!", true)
+					logger.LogError("Embedded resource [" + requestedResource + "] not found!")
 					http.Error(w, assetErr.Error(), http.StatusNotFound)
 				} else {
+					logger.LogDebug(fmt.Sprintf("Serving embedded resource [%s], %d Bytes total", requestedResource, len(asset)))
 					w.Write(asset)
 				}
 			} else {
+				logger.LogDebug(fmt.Sprintf("Serving resource [%s] from local file system, %d Bytes total", requestedResource, info.Size()))
 				http.ServeFile(w, r, filePath)
 			}
 		}
 
 		index := func(w http.ResponseWriter, r *http.Request) {
+			logger.LogDebug("Request to index handler: " + r.URL.Path)
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/")
 			if requestedResource == "" {
 				requestedResource = "index.html"
@@ -349,6 +354,8 @@ func StartFskServer() {
 		}
 
 		freemium := func(w http.ResponseWriter, r *http.Request) {
+			logger.LogDebug("Request to freemium handler: " + r.URL.Path)
+
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
 			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", "webdist", requestedResource)
 			asset, assetErr := freemium.Asset(requestedResource)
@@ -356,6 +363,8 @@ func StartFskServer() {
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
+			logger.LogDebug("Request to premium handler: " + r.URL.Path)
+
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/")
 			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", "webdist", requestedResource)
 			asset, assetErr := premium.Asset(requestedResource)
