@@ -20,7 +20,7 @@ const premiumConfig = merge(freemiumBaseConfig, {
         ),
         waypoints: path.resolve(
             premiumBasePath,
-            "waypoints",
+            "maps",
             "waypoints.js"
         ),
     },
