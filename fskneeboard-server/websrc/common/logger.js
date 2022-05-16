@@ -1,4 +1,5 @@
-// depends on sender.js
+import SENDER_ID from "./sender";
+
 const LogLevel = {
     DEBUG: "debug",
     INFO: "info",
@@ -11,7 +12,7 @@ let LoggerLevel = undefined;
 let LoggerInitCalled = false;
 let LoggerQueue = [];
 
-class Logger {
+export default class Logger {
     static init() {
         LoggerInitCalled = true;
 
@@ -153,7 +154,3 @@ class Logger {
         Logger.logMessage(message, LogLevel.ERROR);
     }
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-    Logger.logDebug("logger.js => DOMContentLoaded fired!");
-});

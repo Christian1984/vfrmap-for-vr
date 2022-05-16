@@ -1,4 +1,6 @@
-// depends on sender.js
+import SENDER_ID from "./sender";
+import Logger from "./logger";
+
 const keycode_map = {
     8: "Backspace",
     13: "Enter",
@@ -266,6 +268,12 @@ function hide_confirm_dialog(wrapper_selector, hide) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    Logger.logDebug("common.js => DOMContentLoaded fired!");
-});
+export { 
+    dispatch_keyevent,
+    get_key_from_keycode,
+    hide_confirm_dialog,
+    store_data,
+    retrieve_data,
+    store_data_set,
+    retrieve_data_set
+};

@@ -6,11 +6,9 @@ import "../common/submenu.scss";
 import "../common/dialogs.scss";
 import "./maps.scss";
 
-import "../common/md5.min.js";
-import "../common/sender.js";
-import "../common/logger.js";
-import "../common/common.js";
-import "./maps.js";
+import Logger from "../common/logger.js";
+import Waypoints from "../freemium/waypoints/waypoints";
+import { dispatch_keyevent, hide_confirm_dialog, store_data, store_data_set, retrieve_data_set } from "../common/common.js";
 
 const MODES = {
     add_track_markers: 0,

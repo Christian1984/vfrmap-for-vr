@@ -1,6 +1,5 @@
-// depends on md5.min.js
+import md5 from "md5";
+
 const SENDER_ID = md5(Math.floor(Math.random() * Number.MAX_VALUE).toString());
 
-document.addEventListener("DOMContentLoaded", function() {
-    Logger.logDebug("sender.js => DOMContentLoaded fired!");
-});
+export default SENDER_ID;
