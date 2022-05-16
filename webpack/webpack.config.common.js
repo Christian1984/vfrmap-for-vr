@@ -4,18 +4,13 @@ const TerserPlugin = require("terser-webpack-plugin");
 const devConfig = {
     mode: "development",
     devtool: "source-map",
+    optimization: {
+        minimize: false
+    }
 }
 
 const prodConfig = {
     mode: "production",
-}
-
-const commonConfig = {
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].css'
-        }),
-    ],
     module: {
         rules: [
             {
@@ -27,10 +22,6 @@ const commonConfig = {
                         presets: ['@babel/preset-env']
                     }
                 }
-            },
-            {
-                test: /\.s[ac]ss$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
             }
         ]
     },
@@ -44,7 +35,23 @@ const commonConfig = {
                 }
             })
         ]
-    },
+    }
+}
+
+const commonConfig = {
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        }),
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.s[ac]ss$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+            }
+        ]
+    }
 }
 
 module.exports = { commonConfig, devConfig, prodConfig };
