@@ -17,12 +17,7 @@ const proConfig = merge(freemiumBaseConfig, {
             premiumBasePath,
             "notepad",
             "notepad.js"
-        ),
-        waypoints: path.resolve(
-            premiumBasePath,
-            "waypoints",
-            "waypoints.js"
-        ),
+        )
     },
     plugins: [
         new HtmlWebpackPlugin({

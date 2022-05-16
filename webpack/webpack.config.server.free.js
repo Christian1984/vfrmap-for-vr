@@ -17,12 +17,7 @@ const freeConfig = merge(freemiumBaseConfig, {
             freemiumBasePath,
             "notepad",
             "notepad.js"
-        ),
-        waypoints: path.resolve(
-            freemiumBasePath,
-            "waypoints",
-            "waypoints.js"
-        ),
+        )
     },
     plugins: [
         new HtmlWebpackPlugin({
