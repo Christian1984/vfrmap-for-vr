@@ -2,11 +2,11 @@ const path = require("path");
 const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const { freemiumBaseConfig } = require("./webpack.config.server.base");
+const { freemiumBaseConfig, mapsBaseConfig } = require("./webpack.config.server.base");
 
 const premiumBasePath = path.resolve(__dirname, "..", "fskneeboard-server", "_vendor", "premium_src", "websrc");
 
-const proConfig = merge(freemiumBaseConfig, {
+const premiumConfig = merge(freemiumBaseConfig, {
     entry: {
         charts: path.resolve(
             premiumBasePath,
@@ -48,4 +48,14 @@ const proConfig = merge(freemiumBaseConfig, {
     ]
 });
 
-module.exports = { proConfig };
+const mapsProConfig = merge(mapsBaseConfig, {
+    entry: {
+        maps: path.resolve(
+            premiumBasePath,
+            "maps",
+            "maps.js"
+        ),
+    },
+});
+
+module.exports = { premiumConfig, mapsProConfig };

@@ -1,4 +1,4 @@
-class Waypoints {
+export default class Waypoints {
     constructor() {
         //intentionally left empty
     }
@@ -51,5 +51,3 @@ class Waypoints {
         //intentionally left empty
     }
 }
-
-export { Waypoints }

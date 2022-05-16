@@ -2,11 +2,11 @@ const path = require("path");
 const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const { freemiumBaseConfig, websrcBasePath } = require("./webpack.config.server.base");
+const { freemiumBaseConfig, mapsBaseConfig, websrcBasePath } = require("./webpack.config.server.base");
 
 const freemiumBasePath = path.resolve(websrcBasePath, "freemium");
 
-const freeConfig = merge(freemiumBaseConfig, {
+const freemiumConfig = merge(freemiumBaseConfig, {
     entry: {
         charts: path.resolve(
             freemiumBasePath,
@@ -46,4 +46,14 @@ const freeConfig = merge(freemiumBaseConfig, {
     ]
 });
 
-module.exports = { freeConfig };
+const mapsFreeConfig = merge(mapsBaseConfig, {
+    entry: {
+        maps: path.resolve(
+            websrcBasePath,
+            "maps",
+            "maps.js"
+        ),
+    },
+});
+
+module.exports = { freemiumConfig, mapsFreeConfig };

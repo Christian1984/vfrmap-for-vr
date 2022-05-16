@@ -53,13 +53,6 @@ const indexBaseConfig = merge(commonConfig, {
 });
 
 const mapsBaseConfig = merge(commonConfig, {
-    entry: {
-        maps: path.resolve(
-            websrcBasePath,
-            "maps",
-            "maps.js"
-        ),
-    },
     output: {
         filename: "[name].js",
         path: path.resolve(
