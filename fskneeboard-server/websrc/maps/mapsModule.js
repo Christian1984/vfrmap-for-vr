@@ -6,6 +6,9 @@ import "../common/submenu.scss";
 import "../common/dialogs.scss";
 import "./maps.scss";
 
+import L from "leaflet";
+import "leaflet-rotate";
+
 import Logger from "../common/logger.js";
 import { dispatch_keyevent, hide_confirm_dialog, store_data, store_data_set, retrieve_data_set } from "../common/common.js";
 
@@ -38,8 +41,8 @@ const AC_COLOR = {
 let map;
 let marker;
 let markerTeleport;
-let markerIcon;
-let popup;
+let markerIcon; // TODO
+let popup; // TODO
 let ws;
 let teleport_popup;
 let waypoints;
@@ -123,10 +126,10 @@ const icons = {
     }
 }
 
-let currentIconGroup = icons.planes;
-let currentIcon = currentIconGroup.black;
+let currentIconGroup = icons.planes; // TODO
+let currentIcon = currentIconGroup.black; // TODO
 
-function open_in_google_maps() {
+function open_in_google_maps() { // TODO
     const url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
     window.open(url,"_blank");
 }
