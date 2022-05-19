@@ -26,6 +26,7 @@ import (
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
 	"vfrmap-for-vr/vfrmap/html/freemium"
+	"vfrmap-for-vr/vfrmap/html/leafletjs"
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server/hotkeys"
@@ -417,6 +418,7 @@ func StartFskServer() {
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
 		http.HandleFunc("/premium/flightplan", flightplan)
+		http.Handle("/leafletjs/", http.StripPrefix("/leafletjs/", leafletjs.FS{}))
 		http.Handle("/fontawesome/", http.StripPrefix("/fontawesome/", fontawesome.FS{}))
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
 		http.HandleFunc("/", index)
