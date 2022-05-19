@@ -6,6 +6,8 @@ const FileManagerPlugin = require("filemanager-webpack-plugin");
 
 const { commonConfig } = require("./webpack.config.common");
 
+const panelSrcPath = path.resolve(__dirname, "..", "fskneeboard-panel", "src");
+
 const panelDistPath = path.resolve(
     __dirname, "..",
     "fskneeboard-panel",
@@ -30,7 +32,7 @@ const communityFolderPanelPath = path.resolve(
 
 const panelBaseConfig = merge(commonConfig, {
     entry: {
-        FSKneeboardPanel: path.resolve(__dirname, "..", "fskneeboard-panel", "src", "FSKneeboardPanel.js"),
+        FSKneeboardPanel: path.resolve(panelSrcPath, "FSKneeboardPanel.js"),
     },
     output: {
         filename: "[name].js",
@@ -41,13 +43,20 @@ const panelBaseConfig = merge(commonConfig, {
         new HtmlWebpackPlugin({
             filename: "FSKneeboardPanel.html",
             inject: "head",
-            template: path.resolve(__dirname, "..", "fskneeboard-panel", "src", "FSKneeboardPanel.html"),
+            template: path.resolve(panelSrcPath, "FSKneeboardPanel.html"),
             chunks: ["FSKneeboardPanel"]
         }),
         new FileManagerPlugin({
             events: {
                 onStart: {
-                    delete: [communityFolderPanelPath],
+                    delete: [
+                        {
+                          source: communityFolderPanelPath,
+                          options: {
+                            force: true,
+                          },
+                        },
+                    ]
                 },
                 onEnd: {
                     copy: [
@@ -62,4 +71,4 @@ const panelBaseConfig = merge(commonConfig, {
     ]
 });
 
-module.exports = { panelBaseConfig }
+module.exports = { panelBaseConfig, panelSrcPath, panelDistPath }
