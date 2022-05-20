@@ -428,6 +428,7 @@ function initMap() {
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
+    L.control.scale().addTo(map);
 
     marker = L.marker(pos, {
         icon: icons.planes.black,
