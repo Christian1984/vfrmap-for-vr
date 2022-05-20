@@ -142,6 +142,10 @@ function hide_wind_indicator(hide = true) {
 }
 
 function update_wind_indicator() {
+    if (wind_indicator_gauge != null) {
+        wind_indicator_gauge.style.transform = "rotate(" + map.getBearing() + "deg)";
+    }
+
     if (last_report.wind_direction == null || last_report.wind_velocity == null) {
         if (wind_indicator_arrow != null) {
             wind_indicator_arrow.classList.add("hidden");
@@ -156,10 +160,6 @@ function update_wind_indicator() {
         }
     }
     else {
-        if (wind_indicator_gauge != null) {
-            wind_indicator_gauge.style.transform = "rotate(" + map.getBearing() + "deg)";
-        }
-
         if (wind_indicator_arrow != null) {
             wind_indicator_arrow.classList.remove("hidden");
             wind_indicator_arrow.style.transform = "rotate(" + last_report.wind_direction + "deg)";
