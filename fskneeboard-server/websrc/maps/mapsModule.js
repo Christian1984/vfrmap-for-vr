@@ -62,6 +62,7 @@ const bearingBuffer = [];
 const bearingBufferMaxSize = 10;
 
 let wind_indicator;
+let wind_indicator_gauge;
 let wind_indicator_arrow;
 let wind_indicator_direction;
 let wind_indicator_velocity;
@@ -142,8 +143,8 @@ function hide_wind_indicator(hide = true) {
     }
 }
 
-function update_wind_indicator(dir, vel) {
-    if (dir == null || vel == null) {
+function update_wind_indicator() {
+    if (last_report.wind_direction == null || last_report.wind_velocity == null) {
         if (wind_indicator_arrow != null) {
             wind_indicator_arrow.classList.add("hidden");
         }
@@ -157,17 +158,21 @@ function update_wind_indicator(dir, vel) {
         }
     }
     else {
+        if (wind_indicator_gauge != null) {
+            wind_indicator_gauge.style.transform = "rotate(" + map.getBearing() + "deg)";
+        }
+
         if (wind_indicator_arrow != null) {
             wind_indicator_arrow.classList.remove("hidden");
-            wind_indicator_arrow.style.transform = "rotate(" + dir + "deg)";
+            wind_indicator_arrow.style.transform = "rotate(" + last_report.wind_direction + "deg)";
         }
 
         if (wind_indicator_direction != null) {
-            wind_indicator_direction.innerText = dir;
+            wind_indicator_direction.innerText = last_report.wind_direction;
         }
 
         if (wind_indicator_velocity != null) {
-            wind_indicator_velocity.innerText = vel;
+            wind_indicator_velocity.innerText = last_report.wind_velocity;
         }
     }
 }
@@ -189,21 +194,20 @@ function median(input){
     return (values[half - 1] + values[half]) / 2.0;*/
   }
 
-function updateMap(msg) {
-    const pos = L.latLng(msg.latitude, msg.longitude);
+function updateMap() {
+    const pos = L.latLng(last_report.latitude, last_report.longitude);
     marker.setLatLng(pos);
-    marker.setRotation(msg.heading * L.DomUtil.DEG_TO_RAD);
+    marker.setRotation(last_report.heading * L.DomUtil.DEG_TO_RAD);
 
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
-
-    update_wind_indicator(msg.wind_direction, msg.wind_velocity);
 
     if (follow_plane) {
         map.panTo(pos);
     }
 
     updateBearing();
+    update_wind_indicator();
 }
 
 ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/ws");
@@ -226,7 +230,7 @@ ws.onmessage = function(e) {
     }
 
     if (map != null) {
-        updateMap(msg);
+        updateMap();
     }
 };
 
@@ -500,6 +504,11 @@ function initMap() {
         updateIcon();
     });
 
+    map.on("rotate", function() {
+        console.log("rotate, bearing: " + map.getBearing()); // TODO
+        update_wind_indicator();
+    });
+
     map.whenReady(function() {
         manualBearingControl = document.querySelector(".leaflet-control-rotate");
         updateManualBearingControlsVisibility();
@@ -507,6 +516,8 @@ function initMap() {
         registerHandlers();
         loadStoredState();
         activate_default_mode();
+
+        update_wind_indicator();
     });
 
     window.addEventListener("resize", () => {
@@ -559,7 +570,7 @@ function hide_teleport_marker() {
     markerTeleport.closePopup();
 }
 
-function teleport_here() {
+function teleport_here() { // TODO
     const msg = JSON.stringify(
         {
             "type": "teleport",
@@ -582,7 +593,7 @@ function set_follow(follow) {
     }
 }
 
-function toggle_follow() {
+function toggle_follow() { // TODO
     set_follow(!follow_plane);
 }
 
@@ -1103,6 +1114,7 @@ function onDomContentLoaded(waypointsClass) {
     });
 
     wind_indicator = document.getElementById("wind-indicator");
+    wind_indicator_gauge = document.getElementById("wind-indicator-gauge");
     wind_indicator_arrow = document.getElementById("wind-indicator-arrow");
     wind_indicator_direction = document.getElementById("wind-indicator-direction");
     wind_indicator_velocity = document.getElementById("wind-indicator-velocity");
