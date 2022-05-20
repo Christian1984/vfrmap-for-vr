@@ -99,6 +99,12 @@ body {
     bottom: 0;
 }
 
+#wind-indicator-arrow {
+    svg:first-child {
+        transform: scale(0.75);
+    }
+}
+
 #wind-indicator-north-wrapper {
     justify-content: flex-start;
 

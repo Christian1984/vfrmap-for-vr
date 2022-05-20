@@ -505,7 +505,6 @@ function initMap() {
     });
 
     map.on("rotate", function() {
-        console.log("rotate, bearing: " + map.getBearing()); // TODO
         update_wind_indicator();
     });
 
@@ -517,6 +516,7 @@ function initMap() {
         loadStoredState();
         activate_default_mode();
 
+        //last_report = { wind_direction: 45, wind_velocity: 10 }; // TODO
         update_wind_indicator();
     });
 
