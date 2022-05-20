@@ -1115,4 +1115,4 @@ function onDomContentLoaded(waypointsClass) {
     initMap();
 }
 
-export { onDomContentLoaded };
+export { onDomContentLoaded, MODES };
