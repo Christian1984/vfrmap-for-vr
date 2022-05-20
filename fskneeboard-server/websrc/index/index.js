@@ -1,3 +1,9 @@
+import "./index.scss";
+import "../common/mainmenu.scss";
+
+import Logger from "../common/logger.js";
+import { store_data, retrieve_data, retrieve_data_set } from "../common/common.js";
+
 const zoom_modification_factor = 1.05;
 const brightness_modification = 10;
 
@@ -11,7 +17,7 @@ const switch_map = document.getElementById("switch_map");
 const switch_charts = document.getElementById("switch_charts");
 const switch_notepad = document.getElementById("switch_notepad");
 
-const temp = document.getElementById("temp");
+const temp = document.getElementById("temp"); // TODO
 
 const red_light = document.getElementById("red_light");
 
@@ -26,7 +32,7 @@ const zoom_reset = document.getElementById("zoom_reset");
 
 const stretch = document.getElementById("stretch");
 const unstretch = document.getElementById("unstretch");
-const reset_stretch_button = document.getElementById("reset-stretch");
+const reset_stretch_button = document.getElementById("reset-stretch"); // TODO
 
 let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;

@@ -1,17 +1,25 @@
 @ECHO off
 SET noguiflag=
 IF %1.==gui. SET noguiflag=-H=windowsgui
-IF %1.==dev. GOTO build
 
 ECHO copy freemium modules...
 del /s /q _vendor\premium\*.* >nul 2>&1
 rmdir /s /q _vendor\premium\ >nul 2>&1
-robocopy freemium_src _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
-call npx sass -q .
+robocopy freemium_src\gosrc _vendor\premium /MIR /XD .git /s /e /NFL /NDL /NJH /NJS /nc /ns /np
+
+IF %1.==dev. GOTO webpack-build-dev
+
+:webpack-build
+call npm run build-server-free
+GOTO build
+
+:webpack-build-dev
+call npm run build-server-free-dev
 
 :build
 ECHO generate bindata...
 go generate -v .\vfrmap\
+go generate -v .\vfrmap\server
 go generate -v .\vfrmap\html\fontawesome
 go generate -v .\vfrmap\html\leafletjs
 go generate -v .\vfrmap\html\freemium

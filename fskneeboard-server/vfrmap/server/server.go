@@ -1,6 +1,6 @@
 package server
 
-//go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html ../html
+//go:generate go-bindata -pkg server -o bindata.go -modtime 1 -prefix ../html/webdist ../html/webdist
 
 import (
 	"context"
@@ -302,6 +302,8 @@ func StartFskServer() {
 				return "text/javascript"
 			case "html":
 				return "text/html"
+			case "map":
+				return "application/json"
 			default:
 				return "text/plain"
 			}
@@ -315,18 +317,30 @@ func StartFskServer() {
 			w.Header().Set("Content-Type", contentType)
 		}
 
-		sendResponse := func(w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte) {
+		sendResponse := func(w http.ResponseWriter, r *http.Request, filePath string, requestedResource string, asset []byte, assetErr error) {
 			contentType := getContentType(requestedResource)
+			logger.LogDebug("Resource [" + requestedResource + "] with MIME-type [" + contentType + "] requested!")
+
 			setHeaders(contentType, w)
 
-			if _, err = os.Stat(filePath); os.IsNotExist(err) {
-				w.Write(asset)
+			if info, err := os.Stat(filePath); os.IsNotExist(err) {
+				logger.LogDebug("Resource [" + requestedResource + "] not found in local file system! Serving embedded resource...")
+
+				if assetErr != nil {
+					logger.LogError("Embedded resource [" + requestedResource + "] not found!")
+					http.Error(w, assetErr.Error(), http.StatusNotFound)
+				} else {
+					logger.LogDebug(fmt.Sprintf("Serving embedded resource [%s], %d Bytes total", requestedResource, len(asset)))
+					w.Write(asset)
+				}
 			} else {
+				logger.LogDebug(fmt.Sprintf("Serving resource [%s] from local file system, %d Bytes total", requestedResource, info.Size()))
 				http.ServeFile(w, r, filePath)
 			}
 		}
 
 		index := func(w http.ResponseWriter, r *http.Request) {
+			logger.LogDebug("Request to index handler: " + r.URL.Path)
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/")
 			if requestedResource == "" {
 				requestedResource = "index.html"
@@ -334,20 +348,27 @@ func StartFskServer() {
 				w.Write([]byte{})
 				return
 			}
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", requestedResource)
-			sendResponse(w, r, filePath, requestedResource, MustAsset(filepath.Base(filePath)))
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "webdist", requestedResource)
+			asset, assetErr := Asset(filepath.Base(filePath))
+			sendResponse(w, r, filePath, requestedResource, asset, assetErr)
 		}
 
 		freemium := func(w http.ResponseWriter, r *http.Request) {
+			logger.LogDebug("Request to freemium handler: " + r.URL.Path)
+
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/freemium/")
-			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", requestedResource)
-			sendResponse(w, r, filePath, requestedResource, freemium.MustAsset(requestedResource))
+			filePath := filepath.Join(filepath.Dir(exePath), "vfrmap", "html", "freemium", "maps", "webdist", requestedResource)
+			asset, assetErr := freemium.Asset(requestedResource)
+			sendResponse(w, r, filePath, requestedResource, asset, assetErr)
 		}
 
 		premium := func(w http.ResponseWriter, r *http.Request) {
+			logger.LogDebug("Request to premium handler: " + r.URL.Path)
+
 			requestedResource := strings.TrimPrefix(r.URL.Path, "/premium/")
-			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", requestedResource)
-			sendResponse(w, r, filePath, requestedResource, premium.MustAsset(requestedResource))
+			filePath := filepath.Join(filepath.Dir(exePath), "_vendor", "premium", "webdist", requestedResource)
+			asset, assetErr := premium.Asset(requestedResource)
+			sendResponse(w, r, filePath, requestedResource, asset, assetErr)
 		}
 
 		chartsIndex := func(w http.ResponseWriter, r *http.Request) {

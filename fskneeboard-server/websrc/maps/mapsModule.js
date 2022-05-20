@@ -1,5 +1,16 @@
 "use strict";
 
+
+import "../common/mainmenu.scss";
+import "../common/submenu.scss";
+import "../common/dialogs.scss";
+import "./maps.scss";
+
+import Logger from "../common/logger.js";
+import { dispatch_keyevent, hide_confirm_dialog, store_data, store_data_set, retrieve_data_set } from "../common/common.js";
+
+let Waypoints;
+
 const MODES = {
     add_track_markers: 0,
     delete_track_markers: 1,
@@ -1076,7 +1087,9 @@ function hide_premium_info(hide = true) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+function onDomContentLoaded(waypointsClass) {
+    Waypoints = waypointsClass;
+
     teleport_popup = {
         main: document.getElementById("teleport-popup"),
         submit: document.getElementById("teleport-popup-submit"),
@@ -1100,4 +1113,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     initMap();
-});
+}
+
+export { onDomContentLoaded };

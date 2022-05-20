@@ -1,7 +1,12 @@
+import "../../common/common.scss";
+import "./notepad.scss";
+
+import Logger from "./../../common/logger";
+
 let loaded = false;
 
 window.addEventListener("message", (m) => {
-    iframe = document.querySelector("iframe");
+    const iframe = document.querySelector("iframe");
     if (iframe) {
         if (m.data == "load" && !loaded) {
             iframe.src = "https://fskneeboard.com/notes-ingame/";
