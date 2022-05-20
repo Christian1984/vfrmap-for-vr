@@ -74,6 +74,10 @@ export default class Logger {
         return false;
     }
 
+    static getSenderId() {
+        return SENDER_ID;
+    }
+
     static enqueueLog(message, level) {
         LoggerQueue.push({message: message, level: level});
     }
