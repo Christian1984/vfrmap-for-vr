@@ -150,7 +150,7 @@ function store_data_set(key_string_value_array, remote = true) {
             }
         };
     
-        for (kv of key_string_value_array) {
+        for (const kv of key_string_value_array) {
             if (kv.value.toString != null) {
                 kv.value = kv.value.toString();
             }
