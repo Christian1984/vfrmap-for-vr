@@ -561,7 +561,7 @@ func StartFskServer() {
 						"latitude":       report.Latitude,
 						"longitude":      report.Longitude,
 						"altitude":       fmt.Sprintf("%.0f", report.Altitude),
-						"heading":        int(report.Heading),
+						"heading":        report.Heading,
 						"airspeed":       fmt.Sprintf("%.0f", report.Airspeed),
 						"airspeed_true":  fmt.Sprintf("%.0f", report.AirspeedTrue),
 						"vertical_speed": fmt.Sprintf("%.0f", report.VerticalSpeed),

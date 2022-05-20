@@ -58,8 +58,6 @@ const autoremoval_proximity_threshold = 0.5; //miles
 
 let manualBearingControl;
 let bearingMode = BEARING_MODES.north_up;
-const bearingBuffer = [];
-const bearingBufferMaxSize = 10;
 
 let wind_indicator;
 let wind_indicator_gauge;
@@ -221,14 +219,6 @@ ws.onmessage = function(e) {
     const msg = JSON.parse(e.data);
     last_report = msg;
 
-    if (bearingBuffer != null) {
-        bearingBuffer.push(msg.heading);
-    
-        if (bearingBuffer.length > bearingBufferMaxSize) {
-            bearingBuffer.shift();
-        }
-    }
-
     if (map != null) {
         updateMap();
     }
@@ -294,13 +284,7 @@ function updateBearing() {
             map.setBearing(0);
             break;
         case BEARING_MODES.track_up:
-            const bearing = median(bearingBuffer);
-        
-            //console.log("Bearing: " + msg.heading);
-            //console.log("bearingBuffer: " + bearingBuffer);
-            //console.log("Median: " + bearing);
-
-            map.setBearing(-bearing);
+            map.setBearing(-last_report.heading);
             break;
     }
 }
