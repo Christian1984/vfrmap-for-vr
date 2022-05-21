@@ -20,6 +20,9 @@ func (_ FS) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "leaflet-rotate.js":
 		w.Header().Set("Content-Type", "text/javascript")
 		w.Write(MustAsset("leaflet-rotate.js"))
+	case "leaflet.nauticscale.min.js":
+		w.Header().Set("Content-Type", "text/javascript")
+		w.Write(MustAsset("leaflet.nauticscale.min.js"))
 	case "images/layers-2x.png":
 		w.Header().Set("Content-Type", "image/png")
 		w.Write(MustAsset("images/layers-2x.png"))

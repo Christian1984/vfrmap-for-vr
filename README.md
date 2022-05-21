@@ -755,6 +755,7 @@ Great work, guys! Thanks for sharing your work with us!!!
 
 - [Leaflet JS](https://github.com/Leaflet/Leaflet)
 - [Leaflet Rotate](https://github.com/Raruto/leaflet-rotate)
+- [Leaflet Nautiscale](https://github.com/PowerPan/leaflet.nauticscale)
 - [JavaScript-MD](https://github.com/blueimp/JavaScript-MD5)
 - [BoltDB](https://github.com/boltdb/bolt)
 - [fyne](https://github.com/fyne-io/fyne)

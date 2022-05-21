@@ -428,7 +428,12 @@ function initMap() {
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
-    L.control.scale().addTo(map);
+
+    map.addControl(new L.Control.ScaleNautic({
+        metric: false,
+        imperial: false,
+        nautic: true
+    }));
 
     marker = L.marker(pos, {
         icon: icons.planes.black,

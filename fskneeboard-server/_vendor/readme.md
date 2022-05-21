@@ -18,6 +18,7 @@ Contains Javascript code from C:\Program Files\WindowsApps\Microsoft.FlightSimul
 
 - Must contain leafletjs
 - Must contain leaflet-rotate.js from https://www.npmjs.com/package/leaflet-rotate (https://github.com/Raruto/leaflet-rotate)
+- - Must contain leaflet.nautiscale (https://github.com/PowerPan/leaflet.nauticscale)
 
 ## Folder premium_src
 
