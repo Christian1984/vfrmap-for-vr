@@ -18,12 +18,6 @@
         <div id="map"></div>
 
         <div style="display:none;">
-            <div id="plane-popup">
-                <p><h3 id="plane-popup-pos"></h3></p>
-                <p><button id="plane-popup-gmap" onclick="open_in_google_maps();">open in google maps</button></p>
-                <p><button id="plane-popup-follow" onclick="toggle_follow();"></button></p>
-            </div>
-
             <div id="teleport-popup">
                 <table>
                     <tr class="border-bottom">
@@ -36,7 +30,7 @@
                         <td></td><td><input type="range" id="teleport-popup-altitude-slider" min="-1000" max="50000" step="100"></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><button type="button" id="teleport-popup-submit" onclick="teleport_here();"><i class="fas fa-magic"></i> Teleport here!</button></td>
+                        <td colspan="2"><button type="button" id="teleport-popup-submit"><i class="fas fa-magic"></i> Teleport here!</button></td>
                     </tr>
                 </table>
             </div>

@@ -17,8 +17,6 @@ const switch_map = document.getElementById("switch_map");
 const switch_charts = document.getElementById("switch_charts");
 const switch_notepad = document.getElementById("switch_notepad");
 
-const temp = document.getElementById("temp"); // TODO
-
 const red_light = document.getElementById("red_light");
 
 const brightness_down = document.getElementById("brightness_down");
@@ -32,7 +30,7 @@ const zoom_reset = document.getElementById("zoom_reset");
 
 const stretch = document.getElementById("stretch");
 const unstretch = document.getElementById("unstretch");
-const reset_stretch_button = document.getElementById("reset-stretch"); // TODO
+const stretch_reset = document.getElementById("stretch_reset");
 
 let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;

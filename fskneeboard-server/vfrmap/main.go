@@ -194,12 +194,10 @@ func main() {
 	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.BoolVar(&globals.WipeMaptileCaches, "wipemaptilecaches", false, "wipe maptile caches")
+	flag.BoolVar(&globals.Quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
 
 	// flags to compare against stored values
 	flag.StringVar(&globals.LogLevel, "log", "off", "set log level (debug | info | error)")
-
-	// TODO: flags to check if required
-	flag.BoolVar(&globals.Quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
 
 	flag.Parse()
 

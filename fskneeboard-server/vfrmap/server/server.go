@@ -607,7 +607,7 @@ func StartFskServer() {
 			// drain and skip
 
 		case m := <-ws.ReceiveMessages:
-			utils.Println("ws.ReceiveMessages!")
+			//utils.Println("ws.ReceiveMessages!")
 			if s == nil {
 				continue
 			}

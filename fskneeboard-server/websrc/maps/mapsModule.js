@@ -506,7 +506,6 @@ function initMap() {
         loadStoredState();
         activate_default_mode();
 
-        //last_report = { wind_direction: 45, wind_velocity: 10 }; // TODO
         update_wind_indicator();
     });
 
@@ -560,7 +559,7 @@ function hide_teleport_marker() {
     markerTeleport.closePopup();
 }
 
-function teleport_here() { // TODO
+function teleport_here() {
     const msg = JSON.stringify(
         {
             "type": "teleport",
@@ -581,10 +580,6 @@ function set_follow(follow) {
         ac_visibility_options.ac_visibility = follow
         save_ac_visibility();
     }
-}
-
-function toggle_follow() { // TODO
-    set_follow(!follow_plane);
 }
 
 function set_airplane_marker_visibility(visible) {
@@ -758,6 +753,11 @@ function loadStoredState() {
 }
 
 function registerHandlers() {
+    const teleportHereHandler = document.querySelector("#teleport-popup-submit");
+    if (teleportHereHandler) {
+        teleportHereHandler.addEventListener("click", teleport_here);
+    }
+
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
     for (let i = 0; i < nav_data_cbs.length; i++) {
         nav_data_cbs[i].addEventListener("change", () => {
