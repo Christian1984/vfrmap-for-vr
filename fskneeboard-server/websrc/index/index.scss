@@ -11,12 +11,32 @@ html, body {
     overflow: hidden; /* prevents "pull to reload" in Safari */
 }
 
+#content_wrap {
+    left: $width-collapsed;
+    bottom: 0;
+}
+
 #custom_panel_toolbar {
+    top: 0;
     left: 0;
     bottom: 0;
 
+    width: $width-collapsed;
+
     > ul {
         > li {
+            &:nth-child(4) {
+                margin-top: auto;
+            }
+
+            > span {
+                height: 1.25rem;
+
+                &.active {
+                    border-right-color: $color-highlight;
+                }
+            }
+
             span {
                 > svg {
                     font-size: $main-nav-font-size;
@@ -26,108 +46,19 @@ html, body {
             }
         }
     }
-}
 
-@media only screen and (max-width: $small-screen-width) {
-    #custom_panel_toolbar {
-        right: 0;
-        height: $width-collapsed;
-
-        &:hover {
-            height: $height-expanded;
-
-            > ul {
-                > li {
-                    > span {
-                        &.toolgroup {
-                            > span {
-                                display: unset;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+    &:hover {
+        width: $width-expanded;
+        
         > ul {
-            flex-direction: row;
-            justify-content: stretch;
-
             > li {
-                &:nth-child(4) {
-                    margin-left: auto;
-                }
-
                 > span {
-                    flex-direction: column;
-                    align-items: center;
-                    height: 100%;
-
-                    &.active {
-                        border-top-color: $color-highlight;
-                    }
-
-                    &.toolgroup {
-                        > span {
-                            margin-left: 0;
-
-                            &:nth-child(2) {
-                                margin-top: 1rem;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    #content_wrap {
-        bottom: $width-collapsed;
-        left: 0;
-    }
-}
-
-@media only screen and (min-width: $small-screen-width) {
-    #custom_panel_toolbar {
-        top: 0;
-        width: $width-collapsed;
-
-        &:hover {
-            width: $width-expanded;
-            
-            > ul {
-                > li {
                     > span {
-                        > span {
-                            display: unset;
-                        }
+                        display: unset;
                     }
                 }
             }
         }
-
-        > ul {
-            flex-direction: column;
-
-            > li {
-                &:nth-child(4) {
-                    margin-top: auto;
-                }
-                
-                > span {
-                    height: 1.25rem;
-
-                    &.active {
-                        border-right-color: $color-highlight;
-                    }
-                }
-            }
-        }
-    }
-
-    #content_wrap {
-        left: $width-collapsed;
-        bottom: 0;
     }
 }
 

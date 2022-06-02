@@ -1,10 +1,21 @@
 @import "consts";
 
 #submenu {
+    right: 0;
+    top: 0;
+    bottom: 0;
+
     z-index: 1000;
 
     > ul {
         > li {
+            &.marginator {
+                margin-top: $submenu-width / 2;
+            }
+    
+            &.big-marginator {
+                margin-top: auto;
+            }
 
             &:hover {
                 > span {
@@ -32,6 +43,7 @@
                     opacity: 0.7;
                     color: $color-secondary;
                     transition: width $transition-speed-fast ease;
+                    right: $submenu-width;
                 }
 
                 > span {
@@ -68,66 +80,6 @@
                         > svg {
                             color: $color-secondary;
                         }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (max-width: $small-screen-width - $width-collapsed) {
-    #submenu {
-        left: 0;
-        right: 0;
-        top: 0;
-
-        > ul {
-            flex-direction: row;
-
-            > li {
-                &.marginator {
-                    margin-left: $submenu-width / 2;
-                }
-
-                &.big-marginator {
-                    margin-left: auto;
-                }
-
-                > span {
-                    &.tooltip {
-                        top: $submenu-width;
-
-                        &.force-left {
-                            right: 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (min-width: $small-screen-width - $width-collapsed) {
-    #submenu {
-        right: 0;
-        top: 0;
-        bottom: 0;
-
-        > ul {
-            flex-direction: column;
-
-            > li {
-                &.marginator {
-                    margin-top: $submenu-width / 2;
-                }
-
-                &.big-marginator {
-                    margin-top: auto;
-                }
-
-                > span {
-                    &.tooltip {
-                        right: $submenu-width;
                     }
                 }
             }

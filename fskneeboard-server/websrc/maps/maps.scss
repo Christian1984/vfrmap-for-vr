@@ -31,6 +31,7 @@ body {
 #map {
     background-color: gray;
     flex-grow: 1;
+    margin-right: $submenu-width;
 }
 
 #teleport-popup {
@@ -323,20 +324,4 @@ input[type=radio] {
 
 .hidden {
     display: none !important;
-}
-
-@media only screen and (max-width: #{$small-screen-width - $width-collapsed}) {
-    #map {
-        margin-top: $submenu-width;
-    }
-
-    #wind-indicator {
-        top: calc(#{$submenu-width} + 10px);
-    }
-}
-
-@media only screen and (min-width: #{$small-screen-width - $width-collapsed}) {
-    #map {
-        margin-right: $submenu-width;
-    }
 }
