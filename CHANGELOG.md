@@ -4,7 +4,7 @@
 
 ## MAJOR:
 
-- added "north up", "track up" and "manual map rotation" options to the map module
+- added "North Up", "Track Up" and "Manual Map Rotation" options to the map module
 - added an "Disable Tools" option to the map module's mode selector
 - added scale to map
 - added a local tile cache for the map module to reduce network traffic
@@ -13,6 +13,7 @@
 
 - added a prompt that enables the user to either keep or remove FSKneeboard user data (settings, license file, logs, cached data etc.) upon uninstall
 - disabled responsive layout ("horizontal menus")
+- grouped icons together into fly-out submenus to make menu more "compact"
 
 ---
 
