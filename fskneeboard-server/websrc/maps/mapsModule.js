@@ -379,16 +379,16 @@ function initMap() {
     const airac = calculate_airac_cycle();
 
     const ofm = new L.TileLayer("/maptilecache/ofm/{s}/{z}/{y}/{x}/?path=" + airac + "/aero/latest", {
-        maxZoom: 12,
-        minZoom: 7,
+        maxZoom: 18,
+        minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png"
     });
 
     const openaip_cached_basemap = new L.TileLayer("/maptilecache/oaip/{s}/{z}/{y}/{x}/", {
-        maxZoom: 14,
-        minZoom: 4,
+        maxZoom: 18,
+        minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         tms: true,
