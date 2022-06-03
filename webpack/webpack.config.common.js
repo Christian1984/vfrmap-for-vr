@@ -32,7 +32,8 @@ const prodConfig = {
                 parallel: true,
                 terserOptions: {
                     mangle: true,
-                }
+                },
+                extractComments: false,
             })
         ]
     }
