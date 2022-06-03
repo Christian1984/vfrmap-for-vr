@@ -39,12 +39,27 @@
         <nav id="submenu">
             <ul>
                 <li>
-                    <span class="tooltip">Load Flightplan</span>
-                    <span><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span></span>
+                    <span class="tooltip">Center A/C</span>
+                    <span><span id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span></span>
                 </li>
                 <li>
-                    <span class="tooltip">Remove All Waypoints</span>
-                    <span><span id="trash-waypoints"><i class="fas fa-trash"></i></span></span>
+                    <span class="flyout-menu children-3">
+                        <ul>
+                            <li>
+                                <span class="tooltip">Load Flightplan</span>
+                                <span><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span></span>
+                            </li>
+                            <li>
+                                <span class="tooltip">Remove All Waypoints</span>
+                                <span><span id="trash-waypoints"><i class="fas fa-trash"></i></span></span>
+                            </li>
+                            <li>
+                                <span class="tooltip">Find Location</span>
+                                <span><span id="search-map"><i class="fas fa-search-location"></i></span></span>
+                            </li>
+                        </ul>
+                    </span>
+                    <span><span id="map-zoom-in"><i class="fas fa-wrench"></i></span></span>
                 </li>
                 
                 <li class="marginator">
@@ -64,30 +79,7 @@
                     <span><input type="radio" id="mode-off" name="mode-controls" value="off" /><label for="mode-off"><i class="fas fa-power-off"></i></label></span>
                 </li>
 
-                <li class="marginator">
-                    <span class="tooltip">Find Location</span>
-                    <span><span id="search-map"><i class="fas fa-search-location"></i></span></span>
-                </li>
-
                 <li class="big-marginator">
-                    <span class="tooltip">Wind Indicator</span>
-                    <span><input type="checkbox" id="wind-indicator-toggle" checked /><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label></span>
-                </li>
-
-                <li class="marginator">
-                    <span class="tooltip">Hide Aircraft</span>
-                    <span><input type="radio" id="ac-visibility-none" name="ac-visibility" value="none" /><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label></span>
-                </li>
-                <li>
-                    <span class="tooltip">Icon: Airplane</span>
-                    <span><input type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked/><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label></span>
-                </li>
-                <li>
-                    <span class="tooltip">Icon: Helicopter</span>
-                    <span><input type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter" /><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label></span>
-                </li>
-
-                <li class="marginator">
                     <span class="tooltip">Zoom In</span>
                     <span><span id="map-zoom-in"><i class="fas fa-search-plus"></i></span></span>
                 </li>
@@ -97,28 +89,48 @@
                 </li>
 
                 <li class="marginator">
-                    <span class="flyout-menu">
+                    <span class="flyout-menu children-5">
                         <ul>
                             <li>
-                                <!--<span class="tooltip">North Up</span>-->
+                                <span class="tooltip">Hide Aircraft</span>
+                                <span><input type="radio" id="ac-visibility-none" name="ac-visibility" value="none" /><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label></span>
+                            </li>
+                            <li>
+                                <span class="tooltip">Icon: Airplane</span>
+                                <span><input type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked/><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label></span>
+                            </li>
+                            <li>
+                                <span class="tooltip">Icon: Helicopter</span>
+                                <span><input type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter" /><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label></span>
+                            </li>
+                            <li><span></span></li>
+                            <li>
+                                <span class="tooltip">Wind Indicator</span>
+                                <span><input type="checkbox" id="wind-indicator-toggle" checked /><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label></span>
+                            </li>
+                        </ul>
+                    </span>
+                    <span><span id="map-zoom-in"><i class="fas fa-eye"></i></span></span>
+                </li>
+
+                <li>
+                    <span class="flyout-menu children-3">
+                        <ul>
+                            <li>
+                                <span class="tooltip">North Up</span>
                                 <span><input type="radio" id="map-bearing-north-up" name="map-bearing" value="north-up" checked /><label for="map-bearing-north-up"><i class="fas fa-arrow-alt-circle-up"></i></label></span>
                             </li>
                             <li>
-                                <!--<span class="tooltip">Track Up</span>-->
+                                <span class="tooltip">Track Up</span>
                                 <span><input type="radio" id="map-bearing-track-up" name="map-bearing" value="track-up" /><label for="map-bearing-track-up"><i class="fas fa-plane fa-rotate-270"></i></label></span>
                             </li>
                             <li>
-                                <!--<span class="tooltip">Manual Rotation</span>-->
+                                <span class="tooltip">Manual Rotation</span>
                                 <span><input type="radio" id="map-bearing-manual" name="map-bearing" value="manual" /><label for="map-bearing-manual"><i class="fas fa-lock-open"></i></label></span>
                             </li>
                         </ul>
                     </span>
                     <span><span id="map-zoom-in"><i class="fas fa-compass"></i></span></span>
-                </li>
-
-                <li class="marginator">
-                    <span class="tooltip">Center A/C</span>
-                    <span><span id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span></span>
                 </li>
             </ul>
         </nav>

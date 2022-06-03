@@ -152,11 +152,11 @@ function update_wind_indicator() {
         }
 
         if (wind_indicator_direction != null) {
-            wind_indicator_direction.innerText = "N/A";
+            wind_indicator_direction.innerText = "-";
         }
 
         if (wind_indicator_velocity != null) {
-            wind_indicator_velocity.innerText = "N/A";
+            wind_indicator_velocity.innerText = "-";
         }
     }
     else {

@@ -17,20 +17,6 @@
                 margin-top: auto;
             }
 
-            &:hover {
-                > span {
-                    &.flyout-menu {
-                        transition-delay: 0ms;
-                        max-width: 100vw;
-                    }
-    
-                    &.tooltip {
-                        transition-delay: $tooltip-delay;
-                        width: $tooltip-width;
-                    }
-                } 
-            }
-
             > span {
                 width: $submenu-width;
                 height: $submenu-width;
@@ -52,13 +38,37 @@
                 &.flyout-menu {
                     justify-content: right;
 
-                    width: 100vw;
+                    width: auto;
                     max-width: 0;
                     transition: max-width $transition-speed-fast ease;
                     transition-delay: $tooltip-delay;
 
                     ul {
                         flex-direction: row;
+
+                        > li {
+                            >span {
+                                &.tooltip {
+                                    top: 0;
+                                }
+                            }
+                        }
+                    }
+
+                    &.children-3 {
+                        ul > li > span {
+                            &.tooltip {
+                                right: 3 * $submenu-width;
+                            }
+                        }
+                    }
+
+                    &.children-5 {
+                        ul > li > span {
+                            &.tooltip {
+                                right: 5 * $submenu-width;
+                            }
+                        }
                     }
                 }
 
@@ -105,6 +115,21 @@
                         }
                     }
                 }
+            }
+
+            &:hover {
+                > span {
+                    &.flyout-menu {
+                        transition-delay: 0ms;
+                        max-width: 100vw;
+                        overflow: visible;
+                    }
+    
+                    &.tooltip {
+                        transition-delay: $tooltip-delay;
+                        width: $tooltip-width;
+                    }
+                } 
             }
         }
     }
