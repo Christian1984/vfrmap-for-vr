@@ -17,6 +17,8 @@ GOTO build
 call npm run build-server-pro-dev
 
 :build
+IF %ERRORLEVEL% NEQ 0 GOTO err
+
 ECHO generate bindata...
 go generate -v .\vfrmap\
 go generate -v .\vfrmap\server
@@ -38,11 +40,18 @@ del versionstr.txt
 ECHO create winres meta data...
 cd vfrmap
 go-winres make --product-version=git-tag --file-version=git-tag
-cd ..
+IF %ERRORLEVEL% NEQ 0 GOTO err
 
 ECHO build project...
+cd ..
 go build -o fskneeboard.exe -ldflags "-s -w -X main.buildVersion=%versionstr% -X main.buildTime=%datestr% -X main.pro=true %noguiflag%" -v .\vfrmap\
+IF %ERRORLEVEL% NEQ 0 GOTO err
 
-ECHO cleanup...
-REM del /s /q _vendor\premium\*.* >nul 2>&1
-REM rmdir /s /q _vendor\premium\ >nul 2>&1
+GOTO fin
+
+:err
+ECHO Build of Server (PRO) failed! Aborting...
+EXIT 1
+
+:fin
+ECHO Build of Server (PRO) finished!

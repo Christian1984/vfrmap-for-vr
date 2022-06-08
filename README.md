@@ -14,7 +14,7 @@ I made this mod for myself and for now, it does exactly what I want. And since t
 
 If you like it, please let me know and share it with other VR pilots :-) Also, consider yourself invited to join me and the community on the [FSKneeboard Discord Server](https://discord.fskneeboard.com) at https://discord.fskneeboard.com
 
-*(\*) indicates "premium"-features that are available in FSKneeboard PRO, which is available for a Pay-What-You-Want-Price at https://fskneeboard.com/buy-now*
+(\*) indicates "premium"-features that are available in FSKneeboard PRO, which is available for a Pay-What-You-Want-Price at https://fskneeboard.com/buy-now
 
 ---
 
@@ -77,17 +77,13 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 
 # TL;DR
 
-The Mod consists of **TWO PARTS(!)**: a *server* and an *ingame-panel* that you need to install and run **BOTH**!
+The Mod consists of **TWO PARTS(!)**: a **server** and an **ingame-panel** that you need to install and run **BOTH**!
 
 **Please take the time to at least read the Installation and Usage sections below!!!**
 
 It's dead simple! But if you only install the panel to the community folder and ignore the server this mod won't run and may appear "broken" to you!
 
 **Some malware- and virus scanners detect FSKneeboard.exe as a virus! This is a false positive and known issue. Please read below ["HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?"](#help-why-does-my-virus-scanning-software-think-this-program-is-infected) to learn more!**
-
----
-
-<div style="page-break-after: always;"></div>
 
 # Support Your Modders :-)
 
@@ -355,15 +351,11 @@ Place the contents of `fskneeboard-server` file somewhere convenient (like `C:\T
 
 *Server Installation*
 
-<div style="page-break-after: always;"></div>
-
 Afterward, your `fskneeboard-server` folder should look like this:
 
 ![Server Installation - Done](screenshots/fskneeboard-install-server-2.png)
 
 *Server Installation - Done*
-
-<div style="page-break-after: always;"></div>
 
 If you have purchased FSKneeboard PRO make sure to also place your fskneeboard.lic-License file here! Your finished PRO-installation should look like this:
 
@@ -380,8 +372,6 @@ Place the folder `christian1984-ingamepanel-fskneeboard` in your MSFS community 
 ![Panel Installation](screenshots/fskneeboard-install-panel-1.png)
 
 *Panel Installation*
-
-<div style="page-break-after: always;"></div>
 
 When finished, your Community folder should look like this (though there may be more than one extension installed, obviously).
 
@@ -451,11 +441,23 @@ Owners of FSKneeboard PRO can also access the waypoint feature, which allows you
 - If you get in the proximity of less than 0.5 NM of any given waypoint it will automatically be removed from the map. The last waypoint on your track will not be removed automatically, however, so you can use it to find a mission target or destination.
 - You may click your own aircraft to toggle the "rubberband" that connects your airplane to the first waypoint.
 
+### Controls And Fly-Out Menus
+
+The map module provides a variety of controls to manage the module's state. All important functions are accessible either through the menu bar on the right hand side or by clicking or dragging and dropping various icons on the map itself. A general overview of these controls can be found in the following screenshot.
+
 ![Map Viewer](screenshots/fskneeboard-map-legend.png)
 
 *Map Viewer*
 
-<div style="page-break-after: always;"></div>
+If the FSKneeboard panel's height is decreased beyond a certain threshold, some of the menu items will be grouped together and moved to "fly-out menus". In order to access these grouped functions, simply hover your cursor over the corresponding icon. The menu will expand and reveal the individual functions.
+
+![Map Viewer With Fly-Out Menus](screenshots/fskneeboard-map-legend-fly-out-menus.png)
+
+*Map Viewer With Fly-Out Menus*
+
+### Map Rotation
+
+The map can be rotated wither facing north up, track up or manually. Simply select the corresponding option on the sidebar menu or fly-out menu. If you choose manual rotation, you can drag and drop on the little rotation widget in the bottom right corner to manually rotate the map to your liking.
 
 ### Loading a Flightplan (PRO)
 
@@ -487,13 +489,13 @@ FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format.
 
 *Charts Viewer*
 
+<div style="page-break-after: always;"></div>
+
 You can browse and access your charts folder by clicking the browse charts button in the toolbar. You can also use the left and right arrow buttons on the toolbar to browse the individual documents inside the current directory.
 
 ![Charts Viewer Document Browser](screenshots/fskneeboard-charts-browser.png)
 
 *Charts Viewer Document Browser*
-
-<div style="page-break-after: always;"></div>
 
 Make sure to place your charts inside the `charts` folder inside the server directory. You can also use subdirectories to organize your charts (to  checklists from approach charts for example).
 
@@ -564,6 +566,8 @@ Please configure the autosave interval through the server GUI as outlined [here]
 FSKneeboard automatically deletes older snapshots and keeps only the latest 5.
 
 If you need to restore a flight, you can find your autosaves inside your FSKneeboard-Server folder in the subdirectory `autosave`, e.g. `C:\Tools\fskneeboard\autosave`.
+
+<div style="page-break-after: always;"></div>
 
 ## Hotkey (Experimental)
 
@@ -689,6 +693,8 @@ The FSKneeboard server can be started with several commandline arguments to furt
 *Quietshutdown Shortcut*
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 # Troubleshooting
 
