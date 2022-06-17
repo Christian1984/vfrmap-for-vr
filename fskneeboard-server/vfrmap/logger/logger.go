@@ -142,7 +142,7 @@ func LogInfoVerboseOverride(message string, verboseOverride bool) {
 	LogMessage(message, Info, "", verboseOverride)
 }
 
-func LogInfoVerbose(message string, verboseOverride bool) {
+func LogInfoVerbose(message string) {
 	LogInfoVerboseOverride(message, true)
 }
 
