@@ -7,6 +7,7 @@ import (
 	"vfrmap-for-vr/vfrmap/gui/tabs/consolepanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/controlpanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/hotkeyspanel"
+	"vfrmap-for-vr/vfrmap/gui/tabs/pdfimportpanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/settingspanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/supportpanel"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -40,10 +41,11 @@ func InitGui() {
 
 	logger.LogDebugVerboseOverride("Initializing tabs...", false)
 	tabs := container.NewAppTabs(
+		container.NewTabItem("PDF Import", pdfimportpanel.PdfImportPanel()),
 		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
 		container.NewTabItem("Hotkeys", hotkeyspanel.HotkeysPanel()),
-		//container.NewTabItem("PDF Import", widget.NewLabel("//TODO")),
+		//container.NewTabItem("PDF Import", pdfimportpanel.PdfImportPanel()),
 		container.NewTabItem("Console", consolepanel.ConsolePanel()),
 		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
 	)
