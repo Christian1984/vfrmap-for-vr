@@ -18,7 +18,7 @@ func StartMsfs() {
 	if globals.SteamFs {
 		logger.LogInfoVerboseOverride("Starting Steam version of MSFS...", false)
 		utils.Println("\nStarting Flight Simulator via Steam... Just sit tight :-)")
-		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start steam://run/1250410")
+		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", []string{"/C", "start", "steam://run/1250410"}...)
 		fserr := cmd.Start()
 		if fserr != nil {
 			logger.LogWarnVerboseOverride("Steam version of MSFS could not be started, details: "+fserr.Error(), false)
@@ -29,7 +29,7 @@ func StartMsfs() {
 	} else if globals.WinstoreFs {
 		logger.LogInfoVerboseOverride("Starting Windows Store version of MSFS...", false)
 		utils.Println("\nStarting Flight Simulator... Just sit tight :-)")
-		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", "/C start shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App -FastLaunch")
+		cmd := exec.Command("C:\\Windows\\System32\\cmd.exe", []string{"/C", "start", "shell:AppsFolder\\Microsoft.FlightSimulator_8wekyb3d8bbwe!App", "-FastLaunch"}...)
 		fserr := cmd.Run()
 		if fserr != nil {
 			logger.LogWarnVerboseOverride("Windows Store version of MSFS could not be started, details: "+fserr.Error(), false)
