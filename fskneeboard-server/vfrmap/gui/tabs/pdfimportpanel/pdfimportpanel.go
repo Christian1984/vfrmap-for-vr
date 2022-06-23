@@ -2,6 +2,7 @@ package pdfimportpanel
 
 import (
 	"vfrmap-for-vr/_vendor/premium/charts"
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/logger"
 
 	"fyne.io/fyne/v2"
@@ -13,15 +14,39 @@ import (
 var importRunningBinding = binding.NewBool()
 
 func runImport() {
-	logger.LogInfoVerbose("Starting PDF import...") // TODO: show dialog
+	logger.LogInfoVerbose("Starting PDF import...")
 
-	err := charts.ImportPdfChart("charts\\!import", "charts\\imported", "test.pdf")
+	//err := charts.ImportPdfChart("charts\\!import", "charts\\imported", "test.pdf")
+	err := charts.ImportPdfFolder("charts\\!import", "charts\\imported")
+
+	importRunningBinding.Set(false)
 
 	if err != nil {
-		logger.LogErrorVerbose("Something went wrong, reason: " + err.Error()) // TODO: show dialog
+		logger.LogErrorVerbose("Something went wrong, reason: " + err.Error())
+		dialogs.ShowError("PDF Import failed! Please refer to the Console Panel and/or logs for details!")
 	} else {
-		logger.LogInfoVerbose("Import finished!") // TODO: show dialog
+		logger.LogInfoVerbose("Import finished!")
+		dialogs.ShowInformation("The PDF Import finished!")
 	}
+}
+
+func processGhostScriptDownloadPromptCallback(proceed bool) {
+	if !proceed {
+		importRunningBinding.Set(false)
+		return
+	}
+
+	downloadErr := charts.DownloadGhostscript()
+
+	if downloadErr != nil {
+		logger.LogErrorVerbose("Could not download ghostscript, reason: " + downloadErr.Error())
+		dialogs.ShowError("Could not download Ghostscript. Please refer to the Console Panel and/or logs for details!")
+		importRunningBinding.Set(false)
+		return
+	}
+
+	runImport()
+
 }
 
 func PdfImportPanel() *fyne.Container {
@@ -39,16 +64,8 @@ func PdfImportPanel() *fyne.Container {
 				runImport()
 			} else {
 				logger.LogWarnVerbose("Ghostscript not found!") // TODO
-				downloadErr := charts.DownloadGhostscript()
-
-				if downloadErr != nil {
-					logger.LogErrorVerbose("Could not download ghostscript, reason: " + downloadErr.Error()) // TODO
-				} else {
-					runImport()
-				}
+				dialogs.ShowGhostscriptDownloadPrompt(processGhostScriptDownloadPromptCallback)
 			}
-
-			importRunningBinding.Set(false)
 		}()
 	})
 
@@ -57,8 +74,8 @@ func PdfImportPanel() *fyne.Container {
 
 		if importRunning {
 			button.Disable()
-			progressBar.Start()
 			progressBar.Show()
+			progressBar.Start()
 		} else {
 			button.Enable()
 			progressBar.Stop()
@@ -72,5 +89,4 @@ func PdfImportPanel() *fyne.Container {
 	logger.LogDebug("PDF Import Panel initialized")
 
 	return centerContainer
-
 }

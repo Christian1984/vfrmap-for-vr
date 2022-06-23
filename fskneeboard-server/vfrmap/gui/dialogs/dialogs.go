@@ -9,12 +9,16 @@ import (
 
 var ParentWindow *fyne.Window
 
+func ShowInformation(message string) {
+	dialog.ShowInformation("Info", message, *ParentWindow)
+}
+
 func ShowError(message string) {
 	dialog.ShowInformation("Something Went Wrong", message, *ParentWindow)
 }
 
 func ShowErrorAndExit(message string) {
-	dialog.ShowConfirm("Something Went Wrong", message + "\nClick \"Yes\" to EXIT or \"No\" to CONTINUE (may result in an unstable experience)!", func(b bool) {
+	dialog.ShowConfirm("Something Went Wrong", message+"\nClick \"Yes\" to EXIT or \"No\" to CONTINUE (may result in an unstable experience)!", func(b bool) {
 		if b {
 			os.Exit(0)
 		}
@@ -26,7 +30,7 @@ func ShowLicenseError() {
 }
 
 func ShowProFeatureInfo(feature string) {
-	dialog.ShowInformation("PRO Feature", "PLEASE NOTE: '" + feature + "' is a feature available exclusively to FSKneeboard PRO supporters.\n\nPlease consider supporting the development of FSKneeboard\nby purchasing a license at https://fskneeboard.com/buy-now/", *ParentWindow)
+	dialog.ShowInformation("PRO Feature", "PLEASE NOTE: '"+feature+"' is a feature available exclusively to FSKneeboard PRO supporters.\n\nPlease consider supporting the development of FSKneeboard\nby purchasing a license at https://fskneeboard.com/buy-now/", *ParentWindow)
 }
 
 func ShowMsfsAutostartFailedError() {
@@ -38,5 +42,11 @@ func ShowMsfsShutdownInfoAndExit() {
 		if b {
 			os.Exit(0)
 		}
+	}, *ParentWindow)
+}
+
+func ShowGhostscriptDownloadPrompt(callback func(bool)) {
+	dialog.ShowConfirm("PDF Importer", "The PDF importer requires GhostScript in order to work. Do you want FSKneeboard to download Ghostscript and continue?", func(b bool) {
+		callback(b)
 	}, *ParentWindow)
 }
