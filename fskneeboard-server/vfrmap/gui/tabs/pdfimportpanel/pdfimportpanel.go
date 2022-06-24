@@ -19,8 +19,7 @@ var statusBinding = binding.NewString()
 func runImport() {
 	logger.LogInfoVerbose("Starting PDF import...")
 
-	//err := charts.ImportPdfChart("charts\\!import", "charts\\imported", "test.pdf")
-	err := charts.ImportPdfFolder("charts\\!import", "charts\\imported")
+	err := charts.ImportPdfFolder()
 
 	importRunningBinding.Set(false)
 
@@ -65,7 +64,7 @@ func PdfImportPanel() *fyne.Container {
 	})
 
 	openImportDirBtn := widget.NewButtonWithIcon("Open Import Directory", theme.FolderOpenIcon(), func() {
-
+		charts.OpenPdfSourceFolder()
 	})
 
 	top := container.NewHBox(refreshImportDirBtn, clearImportDirBtn, openImportDirBtn)
@@ -104,7 +103,7 @@ func PdfImportPanel() *fyne.Container {
 	}))
 
 	openOutputDirBtn := widget.NewButtonWithIcon("Open Output Directory", theme.FolderOpenIcon(), func() {
-
+		charts.OpenPdfOutFolder()
 	})
 
 	bottomButtons := container.NewHBox(startImportBtn, openOutputDirBtn)
