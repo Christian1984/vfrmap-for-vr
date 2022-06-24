@@ -59,6 +59,22 @@ func processGhostScriptDownloadPromptCallback(proceed bool) {
 	runImport()
 }
 
+func clearImportFolderPromptCallback(proceed bool) {
+	if proceed {
+		updateStatus("Clearing PDF import folder...")
+		err := charts.ClearPdfImportFolder()
+
+		if err != nil {
+			logger.LogErrorVerbose("Could not clear PDF import folder, reason: " + err.Error())
+			updateStatus("Clearing PDF import folder failed!")
+
+			dialogs.ShowError("PDF import folder could not be cleared. Please refer to the Console Panel and/or logs for details!")
+		}
+
+		updateStatus("PDF import folder cleared!")
+	}
+}
+
 func PdfImportPanel() *fyne.Container {
 	logger.LogDebug("Initializing PDF Import Panel...")
 
@@ -78,18 +94,7 @@ func PdfImportPanel() *fyne.Container {
 	})
 
 	clearImportDirBtn := widget.NewButtonWithIcon("Clear Import Directory", theme.ContentClearIcon(), func() {
-		//TODO: Dialog!
-		updateStatus("Clearing PDF import folder...")
-		err := charts.ClearPdfImportFolder()
-
-		if err != nil {
-			logger.LogErrorVerbose("Could not clear PDF import folder, reason: " + err.Error())
-			updateStatus("Clearing PDF import folder failed!")
-
-			dialogs.ShowError("PDF import folder could not be cleared. Please refer to the Console Panel and/or logs for details!")
-		}
-
-		updateStatus("PDF import folder cleared!")
+		dialogs.ShowClearImportFolderPrompt(clearImportFolderPromptCallback)
 	})
 
 	openImportDirBtn := widget.NewButtonWithIcon("Open Import Directory", theme.FolderOpenIcon(), func() {

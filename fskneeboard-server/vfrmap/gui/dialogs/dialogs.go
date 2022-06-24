@@ -50,3 +50,9 @@ func ShowGhostscriptDownloadPrompt(callback func(bool)) {
 		callback(b)
 	}, *ParentWindow)
 }
+
+func ShowClearImportFolderPrompt(callback func(bool)) {
+	dialog.ShowConfirm("PDF Importer", "This will delete all files and folders inside [FSKneeboard]\\charts\\!import - Do you want to proceed?", func(b bool) {
+		callback(b)
+	}, *ParentWindow)
+}
