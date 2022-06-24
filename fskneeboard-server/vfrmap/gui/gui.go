@@ -41,11 +41,10 @@ func InitGui() {
 
 	logger.LogDebugVerboseOverride("Initializing tabs...", false)
 	tabs := container.NewAppTabs(
-		container.NewTabItem("PDF Import", pdfimportpanel.PdfImportPanel()),
 		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
 		container.NewTabItem("Hotkeys", hotkeyspanel.HotkeysPanel()),
-		//container.NewTabItem("PDF Import", pdfimportpanel.PdfImportPanel()),
+		container.NewTabItem("PDF Import", pdfimportpanel.PdfImportPanel()),
 		container.NewTabItem("Console", consolepanel.ConsolePanel()),
 		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
 	)

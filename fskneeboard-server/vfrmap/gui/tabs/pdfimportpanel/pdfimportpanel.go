@@ -15,6 +15,7 @@ import (
 
 var importRunningBinding = binding.NewBool()
 var statusBinding = binding.NewString()
+var fileListBinding = binding.NewStringList()
 
 func updateStatus(status string) {
 	statusBinding.Set(status)
@@ -71,8 +72,29 @@ func clearImportFolderPromptCallback(proceed bool) {
 			dialogs.ShowError("PDF import folder could not be cleared. Please refer to the Console Panel and/or logs for details!")
 		}
 
+		go refreshImportDir()
+
 		updateStatus("PDF import folder cleared!")
 	}
+}
+
+func refreshImportDir() {
+	fileListBinding.Set([]string{})
+	list, err := charts.CreatePdfFileList()
+
+	if err != nil {
+		logger.LogErrorVerbose("Could not refresh PDF import folder, reason: " + err.Error())
+		updateStatus("Refreshing PDF import folder failed!")
+
+		dialogs.ShowError("PDF import folder could not be refreshed. Please refer to the Console Panel and/or logs for details!")
+	}
+
+	sList := []string{}
+	for _, info := range list {
+		sList = append(sList, info.FileName)
+	}
+
+	fileListBinding.Set(sList)
 }
 
 func PdfImportPanel() *fyne.Container {
@@ -80,17 +102,11 @@ func PdfImportPanel() *fyne.Container {
 
 	// top
 	refreshImportDirBtn := widget.NewButtonWithIcon("Refresh Import Directory", theme.ViewRefreshIcon(), func() {
-		updateStatus("Refreshing PDF import folder...")
-		err := charts.RefreshPdfImportFolder()
-
-		if err != nil {
-			logger.LogErrorVerbose("Could not refresh PDF import folder, reason: " + err.Error())
-			updateStatus("Refreshing PDF import folder failed!")
-
-			dialogs.ShowError("PDF import folder could not be refreshed. Please refer to the Console Panel and/or logs for details!")
-		}
-
-		updateStatus("PDF import folder refreshed!")
+		go func() {
+			updateStatus("Refreshing PDF import folder...")
+			refreshImportDir()
+			updateStatus("PDF import folder refreshed!")
+		}()
 	})
 
 	clearImportDirBtn := widget.NewButtonWithIcon("Clear Import Directory", theme.ContentClearIcon(), func() {
@@ -114,6 +130,8 @@ func PdfImportPanel() *fyne.Container {
 	startImportBtn := widget.NewButtonWithIcon("Start Import", theme.MediaPlayIcon(), func() {
 		go func() {
 			importRunningBinding.Set(true)
+
+			refreshImportDir()
 
 			if charts.HasGhostscript() {
 				runImport()
@@ -144,10 +162,8 @@ func PdfImportPanel() *fyne.Container {
 	bottom := container.NewVBox(progressBar, statusLabel, bottomButtons)
 
 	// middle
-	fileListData := binding.BindStringList(&[]string{"a", "string", "list"})
-
 	fileList := widget.NewListWithData(
-		fileListData,
+		fileListBinding,
 		func() fyne.CanvasObject {
 			return widget.NewLabel("template")
 		},
@@ -161,6 +177,8 @@ func PdfImportPanel() *fyne.Container {
 	// layout
 	border := layout.NewBorderLayout(top, bottom, nil, nil)
 	resContainer := container.New(border, top, bottom, fileList)
+
+	go refreshImportDir()
 
 	logger.LogDebug("PDF Import Panel initialized")
 
