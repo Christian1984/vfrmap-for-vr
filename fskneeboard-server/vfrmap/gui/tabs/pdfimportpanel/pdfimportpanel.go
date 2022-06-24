@@ -16,18 +16,27 @@ import (
 var importRunningBinding = binding.NewBool()
 var statusBinding = binding.NewString()
 
+func updateStatus(status string) {
+	statusBinding.Set(status)
+}
+
 func runImport() {
 	logger.LogInfoVerbose("Starting PDF import...")
+	updateStatus("Preparing PDF batch import...")
 
-	err := charts.ImportPdfFolder()
+	err := charts.ImportPdfFolder(updateStatus)
 
 	importRunningBinding.Set(false)
 
 	if err != nil {
 		logger.LogErrorVerbose("Something went wrong, reason: " + err.Error())
+		updateStatus("PDF batch import failed!")
+
 		dialogs.ShowError("PDF Import failed! Please refer to the Console Panel and/or logs for details!")
 	} else {
 		logger.LogInfoVerbose("Import finished!")
+		updateStatus("PDF batch import finished!")
+
 		dialogs.ShowInformation("The PDF Import finished!")
 	}
 }
@@ -55,22 +64,32 @@ func PdfImportPanel() *fyne.Container {
 
 	// top
 	refreshImportDirBtn := widget.NewButtonWithIcon("Refresh Import Directory", theme.ViewRefreshIcon(), func() {
+		updateStatus("Refreshing PDF import folder...")
 		err := charts.RefreshPdfImportFolder()
 
 		if err != nil {
 			logger.LogErrorVerbose("Could not refresh PDF import folder, reason: " + err.Error())
+			updateStatus("Refreshing PDF import folder failed!")
+
 			dialogs.ShowError("PDF import folder could not be refreshed. Please refer to the Console Panel and/or logs for details!")
 		}
 
+		updateStatus("PDF import folder refreshed!")
 	})
 
 	clearImportDirBtn := widget.NewButtonWithIcon("Clear Import Directory", theme.ContentClearIcon(), func() {
+		//TODO: Dialog!
+		updateStatus("Clearing PDF import folder...")
 		err := charts.ClearPdfImportFolder()
 
 		if err != nil {
 			logger.LogErrorVerbose("Could not clear PDF import folder, reason: " + err.Error())
+			updateStatus("Clearing PDF import folder failed!")
+
 			dialogs.ShowError("PDF import folder could not be cleared. Please refer to the Console Panel and/or logs for details!")
 		}
+
+		updateStatus("PDF import folder cleared!")
 	})
 
 	openImportDirBtn := widget.NewButtonWithIcon("Open Import Directory", theme.FolderOpenIcon(), func() {
