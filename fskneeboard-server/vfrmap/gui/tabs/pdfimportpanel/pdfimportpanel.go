@@ -8,10 +8,13 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
 var importRunningBinding = binding.NewBool()
+var statusBinding = binding.NewString()
 
 func runImport() {
 	logger.LogInfoVerbose("Starting PDF import...")
@@ -52,11 +55,30 @@ func processGhostScriptDownloadPromptCallback(proceed bool) {
 func PdfImportPanel() *fyne.Container {
 	logger.LogDebug("Initializing PDF Import Panel...")
 
+	// top
+	refreshImportDirBtn := widget.NewButtonWithIcon("Refresh Import Directory", theme.ViewRefreshIcon(), func() {
+
+	})
+
+	clearImportDirBtn := widget.NewButtonWithIcon("Clear Import Directory", theme.ContentClearIcon(), func() {
+
+	})
+
+	openImportDirBtn := widget.NewButtonWithIcon("Open Import Directory", theme.FolderOpenIcon(), func() {
+
+	})
+
+	top := container.NewHBox(refreshImportDirBtn, clearImportDirBtn, openImportDirBtn)
+
+	// bottom
 	progressBar := widget.NewProgressBarInfinite()
 	progressBar.Stop()
-	progressBar.Hide()
 
-	button := widget.NewButton("Import", func() {
+	statusLabel := widget.NewLabelWithData(statusBinding)
+	statusLabel.Alignment = fyne.TextAlignCenter
+	statusBinding.Set("Idle...")
+
+	startImportBtn := widget.NewButtonWithIcon("Start Import", theme.MediaPlayIcon(), func() {
 		go func() {
 			importRunningBinding.Set(true)
 
@@ -73,20 +95,41 @@ func PdfImportPanel() *fyne.Container {
 		importRunning, _ := importRunningBinding.Get()
 
 		if importRunning {
-			button.Disable()
-			progressBar.Show()
+			startImportBtn.Disable()
 			progressBar.Start()
 		} else {
-			button.Enable()
+			startImportBtn.Enable()
 			progressBar.Stop()
-			progressBar.Hide()
 		}
 	}))
 
-	vBox := container.NewVBox(progressBar, button)
-	centerContainer := container.NewCenter(vBox)
+	openOutputDirBtn := widget.NewButtonWithIcon("Open Output Directory", theme.FolderOpenIcon(), func() {
+
+	})
+
+	bottomButtons := container.NewHBox(startImportBtn, openOutputDirBtn)
+	bottom := container.NewVBox(progressBar, statusLabel, bottomButtons)
+
+	// middle
+	fileListData := binding.BindStringList(&[]string{"a", "string", "list"})
+
+	fileList := widget.NewListWithData(
+		fileListData,
+		func() fyne.CanvasObject {
+			return widget.NewLabel("template")
+		},
+		func(i binding.DataItem, o fyne.CanvasObject) {
+			o.(*widget.Label).Bind(i.(binding.String))
+		})
+	fileList.OnSelected = func(id widget.ListItemID) {
+		fileList.UnselectAll()
+	}
+
+	// layout
+	border := layout.NewBorderLayout(top, bottom, nil, nil)
+	resContainer := container.New(border, top, bottom, fileList)
 
 	logger.LogDebug("PDF Import Panel initialized")
 
-	return centerContainer
+	return resContainer
 }
