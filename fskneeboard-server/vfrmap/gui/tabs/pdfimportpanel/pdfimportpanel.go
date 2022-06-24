@@ -48,7 +48,6 @@ func processGhostScriptDownloadPromptCallback(proceed bool) {
 	}
 
 	runImport()
-
 }
 
 func PdfImportPanel() *fyne.Container {
@@ -56,11 +55,22 @@ func PdfImportPanel() *fyne.Container {
 
 	// top
 	refreshImportDirBtn := widget.NewButtonWithIcon("Refresh Import Directory", theme.ViewRefreshIcon(), func() {
+		err := charts.RefreshPdfImportFolder()
+
+		if err != nil {
+			logger.LogErrorVerbose("Could not refresh PDF import folder, reason: " + err.Error())
+			dialogs.ShowError("PDF import folder could not be refreshed. Please refer to the Console Panel and/or logs for details!")
+		}
 
 	})
 
 	clearImportDirBtn := widget.NewButtonWithIcon("Clear Import Directory", theme.ContentClearIcon(), func() {
+		err := charts.ClearPdfImportFolder()
 
+		if err != nil {
+			logger.LogErrorVerbose("Could not clear PDF import folder, reason: " + err.Error())
+			dialogs.ShowError("PDF import folder could not be cleared. Please refer to the Console Panel and/or logs for details!")
+		}
 	})
 
 	openImportDirBtn := widget.NewButtonWithIcon("Open Import Directory", theme.FolderOpenIcon(), func() {
