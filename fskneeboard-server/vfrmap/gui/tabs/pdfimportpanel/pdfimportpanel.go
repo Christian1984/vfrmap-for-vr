@@ -2,7 +2,9 @@ package pdfimportpanel
 
 import (
 	"vfrmap-for-vr/_vendor/premium/charts"
+	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
+	"vfrmap-for-vr/vfrmap/gui/tabs/panelcommons"
 	"vfrmap-for-vr/vfrmap/logger"
 
 	"fyne.io/fyne/v2"
@@ -161,24 +163,39 @@ func PdfImportPanel() *fyne.Container {
 	bottomButtons := container.NewHBox(startImportBtn, openOutputDirBtn)
 	bottom := container.NewVBox(progressBar, statusLabel, bottomButtons)
 
+	// border layout
+	border := layout.NewBorderLayout(top, bottom, nil, nil)
+	var resContainer *fyne.Container
+
 	// middle
-	fileList := widget.NewListWithData(
-		fileListBinding,
-		func() fyne.CanvasObject {
-			return widget.NewLabel("template")
-		},
-		func(i binding.DataItem, o fyne.CanvasObject) {
-			o.(*widget.Label).Bind(i.(binding.String))
-		})
-	fileList.OnSelected = func(id widget.ListItemID) {
-		fileList.UnselectAll()
+	if globals.Pro {
+		fileList := widget.NewListWithData(
+			fileListBinding,
+			func() fyne.CanvasObject {
+				return widget.NewLabel("template")
+			},
+			func(i binding.DataItem, o fyne.CanvasObject) {
+				o.(*widget.Label).Bind(i.(binding.String))
+			})
+		fileList.OnSelected = func(id widget.ListItemID) {
+			fileList.UnselectAll()
+		}
+
+		resContainer = container.New(border, top, bottom, fileList)
+	} else {
+		info := panelcommons.PremiumInfo()
+		resContainer = container.New(border, top, bottom, info)
 	}
 
-	// layout
-	border := layout.NewBorderLayout(top, bottom, nil, nil)
-	resContainer := container.New(border, top, bottom, fileList)
-
-	go refreshImportDir()
+	if globals.Pro {
+		go refreshImportDir()
+	} else {
+		refreshImportDirBtn.Disable()
+		clearImportDirBtn.Disable()
+		openImportDirBtn.Disable()
+		startImportBtn.Disable()
+		openOutputDirBtn.Disable()
+	}
 
 	logger.LogDebug("PDF Import Panel initialized")
 

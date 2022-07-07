@@ -1,18 +1,14 @@
 package controlpanel
 
 import (
-	"image/color"
-	"net/url"
 	"os/exec"
 	"strconv"
-	"time"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
-	"vfrmap-for-vr/vfrmap/gui/res"
+	"vfrmap-for-vr/vfrmap/gui/tabs/panelcommons"
 	"vfrmap-for-vr/vfrmap/logger"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/layout"
@@ -27,8 +23,6 @@ var autosaveBinding = binding.NewString()
 
 var msfsStartedBinding = binding.NewBool()
 var newVersionAvailableBinding = binding.NewBool()
-
-var freeImages []fyne.Resource
 
 func UpdateServerStatus(status string) {
 	serverStatusBinding.Set(status)
@@ -58,40 +52,6 @@ func UpdateAutosaveStatus(interval int) {
 	}
 
 	autosaveBinding.Set(intervalString)
-}
-
-func addImageResource(name string) {
-	asset, err := res.Asset(name)
-	if err == nil {
-		resource := fyne.NewStaticResource(name, asset)
-		freeImages = append(freeImages, resource)
-	}
-
-}
-
-func initImageArray() {
-	addImageResource("pro-img-1.jpg")
-	addImageResource("pro-img-2.jpg")
-	addImageResource("pro-img-3.jpg")
-}
-
-var imageIndex = 0
-
-func initImageRotation(image *canvas.Image) {
-	if len(freeImages) == 0 || globals.Pro {
-		return
-	}
-
-	go func() {
-		for {
-			time.Sleep(10 * time.Second)
-
-			imageIndex = (imageIndex + 1) % len(freeImages)
-
-			image.Resource = freeImages[imageIndex]
-			image.Refresh()
-		}
-	}()
 }
 
 func ControlPanel() *fyne.Container {
@@ -152,58 +112,7 @@ func ControlPanel() *fyne.Container {
 	}))
 
 	//right
-	backgroundColor := canvas.NewRectangle(color.RGBA{30, 30, 30, 255})
-	right := container.NewMax(backgroundColor)
-
-	if !globals.Pro {
-		textColor := color.RGBA{255, 191, 0, 255}
-
-		freeLabel1 := canvas.NewText("  Thanks For Trying FSKneeboard FREE  ", textColor)
-		freeLabel1.TextStyle.Bold = true
-		freeLabel1.Alignment = fyne.TextAlignCenter
-
-		freeLabel2 := canvas.NewText("Support the development", textColor)
-		freeLabel2.Alignment = fyne.TextAlignCenter
-
-		freeLabel3 := canvas.NewText("and unlock ALL features today!", textColor)
-		freeLabel3.Alignment = fyne.TextAlignCenter
-
-		initImageArray()
-
-		var freeImage *canvas.Image
-
-		if len(freeImages) > 0 {
-			freeImage = canvas.NewImageFromResource(freeImages[0])
-			freeImage.FillMode = canvas.ImageFillOriginal
-			initImageRotation(freeImage)
-		}
-
-		learnMoreUrl, _ := url.Parse("https://fskneeboard.com/compare")
-		learnMoreLink := widget.NewHyperlink("Learn more about FSKneeboard PRO", learnMoreUrl)
-		learnMoreLink.Alignment = fyne.TextAlignCenter
-
-		orLabel := canvas.NewText("or", textColor)
-		orLabel.Alignment = fyne.TextAlignCenter
-
-		buyUrl, _ := url.Parse("https://fskneeboard.com/buy-now")
-		buyLink := widget.NewHyperlink("BUY NOW", buyUrl)
-		buyLink.Alignment = fyne.TextAlignCenter
-
-		rightVBox := container.NewVBox(
-			freeLabel1,
-			canvas.NewRectangle(textColor),
-			freeLabel2,
-			freeLabel3,
-			freeImage,
-			learnMoreLink,
-			orLabel,
-			buyLink,
-		)
-
-		rightCenter := container.NewCenter(rightVBox)
-		right.Add(rightCenter)
-	}
-
+	right := panelcommons.PremiumInfo()
 	right.Hidden = globals.Pro
 
 	// layout

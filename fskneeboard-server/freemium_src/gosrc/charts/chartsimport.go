@@ -1,10 +1,16 @@
 package charts
 
-func ImportPdfChart(sourcePath string, targetBasePath string, filename string) error {
-	return nil
+type PdfFileInfo struct {
+	SourcePath string
+	TargetPath string
+	FileName   string
 }
 
-func ImportPdfFolder(path string) error {
+func CreatePdfFileList() ([]PdfFileInfo, error) {
+	return []PdfFileInfo{}, nil
+}
+
+func ImportPdfFolder(updateStatusCallback func(string)) error {
 	return nil
 }
 
@@ -13,5 +19,13 @@ func HasGhostscript() bool {
 }
 
 func DownloadGhostscript() error {
+	return nil
+}
+
+func OpenPdfSourceFolder() {}
+
+func OpenPdfOutFolder() {}
+
+func ClearPdfImportFolder() error {
 	return nil
 }
