@@ -183,7 +183,7 @@ func PdfImportPanel() *fyne.Container {
 
 		resContainer = container.New(border, top, bottom, fileList)
 	} else {
-		info := panelcommons.PremiumInfo()
+		info := panelcommons.PremiumInfo("The Charts Viewer and PDF Importer are available to PRO supporters!")
 		resContainer = container.New(border, top, bottom, info)
 	}
 

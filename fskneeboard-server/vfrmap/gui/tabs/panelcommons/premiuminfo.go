@@ -3,6 +3,7 @@ package panelcommons
 import (
 	"image/color"
 	"net/url"
+	"strings"
 	"time"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/res"
@@ -49,7 +50,7 @@ func initImageRotation(image *canvas.Image) {
 	}()
 }
 
-func PremiumInfo() *fyne.Container {
+func PremiumInfo(message string) *fyne.Container {
 	backgroundColor := canvas.NewRectangle(color.RGBA{30, 30, 30, 255})
 	infoContainer := container.NewMax(backgroundColor)
 
@@ -65,6 +66,9 @@ func PremiumInfo() *fyne.Container {
 
 		freeLabel3 := canvas.NewText("and unlock ALL features today!", textColor)
 		freeLabel3.Alignment = fyne.TextAlignCenter
+
+		messageLabel := canvas.NewText(message, textColor)
+		messageLabel.Alignment = fyne.TextAlignCenter
 
 		initImageArray()
 
@@ -90,13 +94,19 @@ func PremiumInfo() *fyne.Container {
 		rightVBox := container.NewVBox(
 			freeLabel1,
 			canvas.NewRectangle(textColor),
-			freeLabel2,
-			freeLabel3,
-			freeImage,
-			learnMoreLink,
-			orLabel,
-			buyLink,
 		)
+
+		if strings.TrimSpace(message) != "" {
+			rightVBox.Add(messageLabel)
+			rightVBox.Add(canvas.NewRectangle(textColor))
+		}
+
+		rightVBox.Add(freeLabel2)
+		rightVBox.Add(freeLabel3)
+		rightVBox.Add(freeImage)
+		rightVBox.Add(learnMoreLink)
+		rightVBox.Add(orLabel)
+		rightVBox.Add(buyLink)
 
 		rightCenter := container.NewCenter(rightVBox)
 		infoContainer.Add(rightCenter)

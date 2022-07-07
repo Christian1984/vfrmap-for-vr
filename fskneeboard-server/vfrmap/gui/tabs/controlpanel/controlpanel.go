@@ -112,7 +112,7 @@ func ControlPanel() *fyne.Container {
 	}))
 
 	//right
-	right := panelcommons.PremiumInfo()
+	right := panelcommons.PremiumInfo("")
 	right.Hidden = globals.Pro
 
 	// layout
