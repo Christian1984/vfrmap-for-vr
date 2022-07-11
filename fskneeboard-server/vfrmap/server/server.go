@@ -213,7 +213,7 @@ func StartFskServer() {
 	logger.LogInfoVerboseOverride("Waiting for Flight Simulator...", false)
 	utils.Println("")
 	utils.Print("Waiting for Flight Simulator..")
-	callbacks.UpdateServerStatus("Waiting for Flight Simulator...")
+	callbacks.UpdateServerStatus("Waiting for Flight Simulator...", "")
 	callbacks.UpdateMsfsConnectionStatus("Connecting...")
 
 	for true {
@@ -434,14 +434,14 @@ func StartFskServer() {
 		port := server_addr_arr[len(server_addr_arr)-1]
 
 		if addr_err == nil && ip != nil {
-			connectInfo := ip.To4().String() + ":" + port
+			connectInfo := "http://" + ip.To4().String() + ":" + port
 			logger.LogInfoVerboseOverride("FSKneeboard available at: "+connectInfo, false)
 			utils.Println("=== INFO: Connecting Your Tablet")
 			utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
 			utils.Println("FSKneeboard Server-Address: " + connectInfo)
 			utils.Println("")
 
-			callbacks.UpdateServerStatus("Ready at " + connectInfo)
+			callbacks.UpdateServerStatus("Ready at", connectInfo)
 		}
 
 		err := http.ListenAndServe(globals.HttpListen, nil)
@@ -587,7 +587,7 @@ func StartFskServer() {
 
 			case simconnect.RECV_ID_QUIT:
 				utils.Println("Flight Simulator was shut down. Exiting...")
-				callbacks.UpdateServerStatus("Not Running")
+				callbacks.UpdateServerStatus("Not Running", "")
 				callbacks.UpdateMsfsConnectionStatus("Not Connected")
 
 				ShutdownWithPrompt()

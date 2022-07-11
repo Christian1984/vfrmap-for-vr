@@ -1,8 +1,10 @@
 package controlpanel
 
 import (
+	"net/url"
 	"os/exec"
 	"strconv"
+	"strings"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/gui/tabs/panelcommons"
@@ -17,6 +19,7 @@ import (
 )
 
 var serverStatusBinding = binding.NewString()
+var serverAddressBinding = binding.NewString()
 var msfsConnectionBinding = binding.NewString()
 var licenseBinding = binding.NewString()
 var autosaveBinding = binding.NewString()
@@ -24,8 +27,9 @@ var autosaveBinding = binding.NewString()
 var msfsStartedBinding = binding.NewBool()
 var newVersionAvailableBinding = binding.NewBool()
 
-func UpdateServerStatus(status string) {
-	serverStatusBinding.Set(status)
+func UpdateServerStatus(statusMessage string, url string) {
+	serverStatusBinding.Set(statusMessage)
+	serverAddressBinding.Set(url)
 }
 
 func UpdateMsfsConnectionStatus(status string) {
@@ -61,6 +65,32 @@ func ControlPanel() *fyne.Container {
 	serverStatusLabel := widget.NewLabel("Server Status")
 	serverStatusBinding.Set("Not Running")
 	serverStatusValue := widget.NewLabelWithData(serverStatusBinding)
+	serverAddressValue := widget.NewHyperlink("Test", nil)
+	serverStatusHBox := container.NewHBox(serverStatusValue, serverAddressValue)
+
+	serverAddressBinding.AddListener(binding.NewDataListener(func() {
+		serverAddress, err := serverAddressBinding.Get()
+
+		if err == nil {
+			trimmedServerAddress := strings.TrimSpace(serverAddress)
+
+			if trimmedServerAddress == "" {
+				serverAddressValue.SetURL(nil)
+				serverAddressValue.Hide()
+			} else {
+				serverUrl, parseErr := url.Parse(serverAddress)
+
+				if parseErr != nil {
+					logger.LogWarnVerbose("Could not parse server address from string " + serverAddress + ", reason: " + parseErr.Error())
+				} else {
+					serverAddressValue.SetURL(serverUrl)
+					serverAddressValue.Show()
+				}
+			}
+
+			serverAddressValue.SetText(trimmedServerAddress)
+		}
+	}))
 
 	msfsConnectionLabel := widget.NewLabel("Flight Simulator")
 	msfsConnectionBinding.Set("Not Connected")
@@ -78,7 +108,7 @@ func ControlPanel() *fyne.Container {
 		2,
 		licenseLabel, licenseValue,
 		msfsConnectionLabel, msfsConnectionValue,
-		serverStatusLabel, serverStatusValue,
+		serverStatusLabel, serverStatusHBox,
 		autosaveLabel, autosaveValue,
 	)
 	middle := container.NewCenter(grid)
