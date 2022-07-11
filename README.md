@@ -765,6 +765,7 @@ Great work, guys! Thanks for sharing your work with us!!!
 - [JavaScript-MD](https://github.com/blueimp/JavaScript-MD5)
 - [BoltDB](https://github.com/boltdb/bolt)
 - [fyne](https://github.com/fyne-io/fyne)
+- [gopsutil](https://github.com/shirou/gopsutil)
 - [go-maptilecache](https://github.com/Christian1984/go-maptilecache)
 - [go-update-checker](https://github.com/Christian1984/go-update-checker)
 

@@ -59,7 +59,7 @@ func InitGui() {
 
 func ShowAndRun() {
 	if w != nil {
-		logger.LogDebugVerboseOverride("Showing window...", false)
+		logger.LogDebug("Showing window...")
 		w.ShowAndRun()
 	}
 }

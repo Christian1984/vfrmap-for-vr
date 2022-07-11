@@ -2,6 +2,7 @@ package logger
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +11,11 @@ import (
 	"time"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/utils"
+
+	"github.com/shirou/gopsutil/v3/cpu"
+	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v3/host"
+	"github.com/shirou/gopsutil/v3/mem"
 )
 
 type LogData struct {
@@ -46,17 +52,38 @@ func SetVerbose(verbose bool) {
 func TryCreateLogFile() {
 	if !hasOutputFile && ShouldLog(logLevel) {
 		CreateLogFile()
-		LogDebugVerboseOverride("Logfile created!", false)
+		LogDebug("Logfile created!")
+		LogSystemStats()
 	}
 }
 
+func LogSystemStats() {
+	start := time.Now()
+
+	v, _ := mem.VirtualMemory()
+	s, _ := mem.SwapMemory()
+	h, _ := host.Info()
+	c, _ := cpu.Info()
+	d, _ := disk.Usage("/")
+
+	LogInfo("SYSTEM INFO")
+	LogInfo(fmt.Sprintf("Virtual Memory: %s\n", v))
+	LogInfo(fmt.Sprintf("Swap Memory: %s\n", s))
+	LogInfo(fmt.Sprintf("Host: %s\n", h))
+	LogInfo(fmt.Sprintf("CPU: %s\n", c))
+	LogInfo(fmt.Sprintf("Disk: %s\n", d))
+
+	duration := time.Since(start)
+	LogInfo("END SYSTEM INFO, took " + duration.String())
+}
+
 func OpenLogFolder() {
-	LogDebugVerboseOverride("Trying to open log folder...", false)
+	LogDebug("Trying to open log folder...")
 
 	err := utils.OpenExplorer("logs")
 
 	if err != nil {
-		LogErrorVerboseOverride("Could not open log folder", false)
+		LogErrorVerbose("Could not open log folder")
 		dialogs.ShowError("Log folder could not be opened! Reason: " + err.Error())
 	}
 }

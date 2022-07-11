@@ -205,6 +205,14 @@ func main() {
 	logger.Init(globals.LogLevel, globals.Verbose)
 	logger.TryCreateLogFile()
 
+	logger.LogInfo("FSKneeboard started with params\n" +
+		"\tverbose:          " + strconv.FormatBool(globals.Verbose) + "\n" +
+		"\tlog:              " + globals.LogLevel + "\n" +
+		"\tlisten:           " + globals.HttpListen + "\n" +
+		"\tdev:              " + strconv.FormatBool(globals.DevMode) + "\n" +
+		"\tnoupdatecheck:    " + strconv.FormatBool(noupdatecheck) + "\n" +
+		"\tquietshutdown:    " + strconv.FormatBool(globals.Quietshutdown) + "\n")
+
 	/*
 		logger.LogMessage("OFF-Test", logger.Off, "", false)
 		logger.LogDebug("DEBUG-Test", false)
@@ -212,14 +220,6 @@ func main() {
 		logger.LogWarn("WARN-Test", false)
 		logger.LogError("ERROR-Test", false)
 	*/
-
-	logger.LogInfoVerboseOverride("FSKneeboard started with params\n"+
-		"\tverbose:          "+strconv.FormatBool(globals.Verbose)+"\n"+
-		"\tlog:              "+globals.LogLevel+"\n"+
-		"\tlisten:           "+globals.HttpListen+"\n"+
-		"\tdev:              "+strconv.FormatBool(globals.DevMode)+"\n"+
-		"\tnoupdatecheck:    "+strconv.FormatBool(noupdatecheck)+"\n"+
-		"\tquietshutdown:    "+strconv.FormatBool(globals.Quietshutdown)+"\n", false)
 
 	gui.InitGui()
 	registerGuiCallbacks()
