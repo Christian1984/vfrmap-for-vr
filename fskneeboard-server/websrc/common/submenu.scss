@@ -95,6 +95,22 @@
                     }
                 } 
             }
+
+            &.sliderItem {
+                height: $submenu-slider-height;
+
+                > span {
+                    height: $submenu-slider-height;
+
+                    input {
+                        display: block;
+                        margin: 0;
+                        transform-origin: left;
+                        transform: translateX(#{$submenu-width / 2}) rotate(90deg) translateX(-$submenu-width) ;
+                        width: $submenu-slider-height;
+                    }
+                }
+            }
         }
 
         .marginator,
