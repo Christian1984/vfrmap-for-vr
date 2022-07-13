@@ -161,11 +161,27 @@
                         margin-left: $submenu-width;
                     }
                 }
-        
+
+                &.children-2 {
+                    ul > li > span {
+                        &.tooltip {
+                            right: 2 * $submenu-width;
+                        }
+                    }
+                }
+
                 &.children-3 {
                     ul > li > span {
                         &.tooltip {
                             right: 3 * $submenu-width;
+                        }
+                    }
+                }
+
+                &.children-4 {
+                    ul > li > span {
+                        &.tooltip {
+                            right: 4 * $submenu-width;
                         }
                     }
                 }
