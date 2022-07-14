@@ -1,41 +1,7 @@
-import "shepherd.js/dist/css/shepherd.css";
-import "../common/tour.scss";
+import initTour from "../common/initTour";
 
-import Shepherd from "shepherd.js";
-
-Shepherd.on("complete", () => {
-    console.log("complete");
-    // TODO: trigger sub panel tours
-});
-
-const tour = () => {
-    const tour = new Shepherd.Tour({
-        useModalOverlay: true,
-        defaultStepOptions: {
-            cancelIcon: {
-                enabled: true
-            },
-            scrollTo: {
-                behavior: "smooth",
-                block: "center" 
-            },
-            buttons: [
-                {
-                    action() {
-                        return this.back();
-                    },
-                        classes: "shepherd-button-secondary",
-                        text: "Back"
-                },
-                {
-                    action() {
-                        return this.next();
-                    },
-                    text: "Next"
-                }
-            ]
-        }
-    });
+const mapsTour = () => {
+    const tour = initTour();
 
     tour.addStep({
         title: "VR Zoom Adjustment",
@@ -49,4 +15,4 @@ const tour = () => {
     tour.start();
 }
 
-export default tour;
+export default mapsTour;

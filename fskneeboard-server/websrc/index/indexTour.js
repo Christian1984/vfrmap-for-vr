@@ -1,5 +1,4 @@
-import "shepherd.js/dist/css/shepherd.css";
-import "../common/tour.scss";
+import initTour from "../common/initTour";
 
 import Shepherd from "shepherd.js";
 
@@ -20,33 +19,7 @@ Shepherd.on("complete", () => {
 });
 
 const tour = () => {
-    const tour = new Shepherd.Tour({
-        useModalOverlay: true,
-        defaultStepOptions: {
-            cancelIcon: {
-                enabled: true
-            },
-            scrollTo: {
-                behavior: "smooth",
-                block: "center" 
-            },
-            buttons: [
-                {
-                    action() {
-                        return this.back();
-                    },
-                        classes: "shepherd-button-secondary",
-                        text: "Back"
-                },
-                {
-                    action() {
-                        return this.next();
-                    },
-                    text: "Next"
-                }
-            ]
-        }
-    });
+    const tour = initTour();
 
     tour.addStep({
         title: "Welcome to FSKneeboard",
