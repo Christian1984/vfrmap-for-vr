@@ -8,6 +8,7 @@ import "./maps.scss";
 
 import Logger from "../common/logger.js";
 import { dispatch_keyevent, hide_confirm_dialog, store_data, store_data_set, retrieve_data_set } from "../common/common.js";
+import tour from "./mapsTour";
 
 let Waypoints;
 
@@ -1112,6 +1113,12 @@ function onDomContentLoaded(waypointsClass) {
     window.document.addEventListener("keydown", (e) => {
         Logger.logDebug("maps.js => keydown event registered: [" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");
         dispatch_keyevent(e);
+    });
+
+    window.addEventListener("message", (m) => {
+        if (m.data == "tour") {
+            tour();
+        }
     });
 
     initMap();

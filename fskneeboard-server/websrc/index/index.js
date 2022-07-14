@@ -448,6 +448,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     init();
+
+    // TODO: check if tour has run before (pro/free)
+    // TODO: notify server of tour started
     tour();
 });
-
