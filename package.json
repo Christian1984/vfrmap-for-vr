@@ -6,15 +6,12 @@
   "scripts": {
     "build-panel": "webpack --config=webpack/webpack.config.panel.prod.js",
     "build-panel-dev": "webpack --config=webpack/webpack.config.panel.dev.js",
-
     "build-server-free": "webpack --config=webpack/webpack.config.server.free.prod.js",
     "build-server-free-dev": "webpack --config=webpack/webpack.config.server.free.dev.js",
     "build-server-pro": "webpack --config=webpack/webpack.config.server.pro.prod.js",
     "build-server-pro-dev": "webpack --config=webpack/webpack.config.server.pro.dev.js",
-
     "watch-free": "webpack --watch --config=webpack/webpack.config.panel.dev.js --config=webpack/webpack.config.server.free.dev.js",
     "watch-pro": "webpack --watch --config=webpack/webpack.config.panel.dev.js --config=webpack/webpack.config.server.pro.dev.js",
-
     "build-readme": "md-to-pdf README.md --config-file readme-pdf-config.js",
     "watch-readme": "md-to-pdf README.md --config-file readme-pdf-config.js -w"
   },
@@ -48,6 +45,7 @@
     "font-awesome": "^4.7.0",
     "leaflet": "^1.8.0",
     "leaflet-rotate": "^0.1.4",
-    "md5": "^2.3.0"
+    "md5": "^2.3.0",
+    "shepherd.js": "^10.0.0"
   }
 }

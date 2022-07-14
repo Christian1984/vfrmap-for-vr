@@ -4,6 +4,8 @@ import "../common/mainmenu.scss";
 import Logger from "../common/logger.js";
 import { store_data, retrieve_data, retrieve_data_set } from "../common/common.js";
 
+import tour from "./indexTour";
+
 const zoom_modification_factor = 1.05;
 const brightness_modification = 10;
 
@@ -446,4 +448,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     init();
+    tour();
 });
+

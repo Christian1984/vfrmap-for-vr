@@ -48,7 +48,7 @@ const commonConfig = {
     module: {
         rules: [
             {
-                test: /\.s[ac]ss$/,
+                test: /(\.s[ac]ss|\.css)$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
             }
         ]
