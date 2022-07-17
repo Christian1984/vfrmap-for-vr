@@ -28,7 +28,10 @@ const initTour = () => {
                     },
                     text: "Next"
                 }
-            ]
+            ],
+            popperOptions: {
+                modifiers: [{ name: 'offset', options: { offset: [0, 12] } }]
+            }
         }
     });
 }

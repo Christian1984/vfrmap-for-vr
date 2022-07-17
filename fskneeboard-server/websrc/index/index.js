@@ -449,7 +449,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     init();
 
-    // TODO: check if tour has run before (pro/free)
+    // TODO: check if tour has run before
     // TODO: notify server of tour started
     tour();
+
+    // TODO: if tour ran before, notify clients to check if the should run their subtours
 });

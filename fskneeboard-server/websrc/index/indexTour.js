@@ -9,13 +9,14 @@ const triggerTour = (selector) => {
     }
 }
 
-Shepherd.on("complete", () => {
-    console.log("complete");
-    // TODO: trigger sub panel tours
-
+const triggerSubTours = () => {
     triggerTour("iframe_map");
     triggerTour("iframe_charts");
     triggerTour("iframe_notepad");
+}
+
+Shepherd.on("complete", () => {
+    triggerSubTours();
 });
 
 const tour = () => {

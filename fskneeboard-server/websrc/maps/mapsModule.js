@@ -1117,6 +1117,8 @@ function onDomContentLoaded(waypointsClass) {
 
     window.addEventListener("message", (m) => {
         if (m.data == "tour") {
+            // TODO: check if tour has run before
+            // TODO: notify server of tour started
             tour();
         }
     });
