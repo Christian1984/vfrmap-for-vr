@@ -16,13 +16,13 @@ const mapsTour = () => {
             on: "left"
         },
         when: {
-            hide: () => {
+            "before-hide": () => {
                 const layersList = document.querySelector(".leaflet-control-layers");
                 if (layersList) {
                     layersList.classList.remove("leaflet-control-layers-expanded")
                 }
             },
-            show: () => {
+            "before-show": () => {
                 const layersList = document.querySelector(".leaflet-control-layers");
                 if (layersList) {
                     layersList.classList.add("leaflet-control-layers-expanded")
@@ -64,7 +64,15 @@ const mapsTour = () => {
         /*attachTo: {
             element: ".leaflet-marker-icon",
             on: "top"
-        }*/
+        },*/
+        when: {
+            "before-show": () => {
+                const btn = document.querySelector("#ac-toggle-follow");
+                if (btn) {
+                    btn.click();
+                }
+            }
+        }
     });
 
     tour.addStep({
@@ -123,11 +131,7 @@ const mapsTour = () => {
 
     tour.addStep({
         title: "You're All Set",
-        text: "This concludes the tour of FSKneeboard's <b>Map Module</b>. You can now explore the map module on your own or visit the <b>Charts Viewer</b> or the <b>Notepad</b> to learn more about the other modules as well.", // TODO: restart info!
-        attachTo: {
-            element: "#tour-rotation",
-            on: "left"
-        },
+        text: "This concludes the tour of FSKneeboard's <b>Map Module</b>. You can now explore the <b>Map Module</b> on your own or visit the <b>Charts Viewer</b> or the <b>Notepad</b> to learn more about the other modules as well.<br /><br /><em>If you want to take the tour again, you can always restart it through the <b>Settings Dialog</b> in the <b>FSKneeboard Server GUI Window</b>.</em>",
         buttons: [
             {
                 action() {
