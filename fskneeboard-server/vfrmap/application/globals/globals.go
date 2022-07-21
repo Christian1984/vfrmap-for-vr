@@ -32,3 +32,8 @@ var Verbose bool
 var Notepad notepad.Notepad
 
 var WipeMaptileCaches bool
+
+var TourIndexStarted bool
+var TourMapStarted bool
+var TourChartsStarted bool
+var TourNotepadStarted bool

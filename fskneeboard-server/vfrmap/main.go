@@ -97,6 +97,9 @@ func initFsk() {
 	dbmanager.LoadMsfsAutostart()
 	callbacks.MsfsAutostartChanged(globals.MsfsAutostart)
 
+	// load tour state
+	dbmanager.LoadTourStates()
+
 	// load hotkeys
 	// master hotkey
 	dbmanager.LoadMasterHotkey()
