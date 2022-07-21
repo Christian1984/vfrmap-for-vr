@@ -8,7 +8,7 @@ const initTour = () => {
         useModalOverlay: true,
         defaultStepOptions: {
             cancelIcon: {
-                enabled: true
+                enabled: false
             },
             scrollTo: {
                 behavior: "smooth",
@@ -17,10 +17,17 @@ const initTour = () => {
             buttons: [
                 {
                     action() {
+                        return this.cancel();
+                    },
+                    classes: "shepherd-button-secondary",
+                    text: "Skip Tour"
+                },
+                {
+                    action() {
                         return this.back();
                     },
-                        classes: "shepherd-button-secondary",
-                        text: "Back"
+                    classes: "shepherd-button-secondary",
+                    text: "Back"
                 },
                 {
                     action() {

@@ -22,7 +22,7 @@ Shepherd.on("complete", () => {
 const tour = () => {
     const tour = initTour();
 
-    tour.addStep({
+    /*tour.addStep({
         title: "Welcome to FSKneeboard",
         text: "<b>Great you're here!</b> Let's take a quick look around to get you up to speed...<br /><br /><em>If you decide to skip the tour for now, you can always restart it through the <b>Settings Dialog</b> in the <b>FSKneeboard Server GUI Window</b>.</em>",
         buttons: [
@@ -85,7 +85,7 @@ const tour = () => {
             element: "#switch_map",
             on: "right"
         }
-    });
+    });*/
 
     tour.addStep({
         title: "What's Next?",

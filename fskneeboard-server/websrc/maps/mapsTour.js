@@ -6,6 +6,21 @@ const mapsTour = () => {
     tour.addStep({
         title: "Welcome to the Map Module",
         text: "Currently, you are looking at <b>FSKneeboard's Map Module</b>.<br /><br />It offers a fully-fledged moving map with several, <b>Highly Detailed Map Modes</b> and even <b>Navigation Overlays</b> for all your VFR navigation needs.<br /><br />If you have opted in to support FSKneeboard's development by purchasing a <b>PRO License</b>, you have access to even more features such as <b>Waypoints and Tracks</b> or the wonderful <b>Location Finder</b>.<br /><br/>Let's take a look around and familiarize ourselves with everything the <b>Map Module</b> has to offer...",
+        buttons: [
+            {
+                action() {
+                    return this.cancel();
+                },
+                    classes: "shepherd-button-secondary",
+                    text: "Skip Tour"
+            },
+            {
+                action() {
+                    return this.next();
+                },
+                text: "Next"
+            }
+        ]
     });
 
     tour.addStep({
