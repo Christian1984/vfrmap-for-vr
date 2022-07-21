@@ -164,7 +164,14 @@ const mapsTour = () => {
         ],
     });
 
-    tour.start();
+    fetch("/tour/mapStarted")
+        .then(resp => resp.text())
+        .then(t => {
+            if (t === "false") {
+                tour.start();
+            }
+        })
+        .catch(() => logger.logError("Could not load TourMapStatus!"));
 }
 
 export default mapsTour;

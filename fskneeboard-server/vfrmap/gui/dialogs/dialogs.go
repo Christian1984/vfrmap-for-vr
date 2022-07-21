@@ -45,6 +45,10 @@ func ShowMsfsShutdownInfoAndExit() {
 	}, *ParentWindow)
 }
 
+func ShowTourRestartedSuccessful() {
+	dialog.ShowInformation("Tour Restarted", "The tutorial tour for the FSKneeboard ingame panel was restarted.\nPlease close and re-open the ingame panel to take the tour.", *ParentWindow)
+}
+
 func ShowGhostscriptDownloadPrompt(callback func(bool)) {
 	dialog.ShowConfirm("PDF Importer", "The PDF importer requires GhostScript in order to work. Do you want FSKneeboard to download Ghostscript and continue?", func(b bool) {
 		callback(b)

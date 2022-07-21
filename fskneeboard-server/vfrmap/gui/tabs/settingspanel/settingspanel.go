@@ -27,8 +27,6 @@ var msfsAutostartBinding = binding.NewBool()
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
 
-var tourStartedBinding = binding.NewBool()
-
 var loglevelOptions = []string{
 	strings.Title(logger.Off),
 	strings.Title(logger.Debug),
@@ -216,28 +214,15 @@ func SettingsPanel() *fyne.Container {
 	restartTourBtn := widget.NewButton("Restart Tour", func() {
 		logger.LogDebug("Resetting ingame panel tour...")
 
-		tourStartedBinding.Set(false)
-
 		globals.TourIndexStarted = false
 		globals.TourMapStarted = false
 		globals.TourChartsStarted = false
 		globals.TourNotepadStarted = false
 
-		//dbmanager.StoreTourStates()
+		dbmanager.StoreTourStates()
+
+		dialogs.ShowTourRestartedSuccessful()
 	})
-
-	/*
-		tourStartedBinding.AddListener(binding.NewDataListener(func() {
-			tourStarted, _ := tourStartedBinding.Get()
-			if tourStarted {
-				restartTourBtn.Enable()
-			} else {
-				restartTourBtn.Disable()
-			}
-		}))
-
-		tourStartedBinding.Set(true) // remove
-	*/
 
 	// grid and centerContainer
 	grid := container.NewGridWithColumns(

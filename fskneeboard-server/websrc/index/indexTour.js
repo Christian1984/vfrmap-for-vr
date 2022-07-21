@@ -1,4 +1,5 @@
 import initTour from "../common/initTour";
+import logger from "../common/logger";
 
 import Shepherd from "shepherd.js";
 
@@ -22,7 +23,7 @@ Shepherd.on("complete", () => {
 const tour = () => {
     const tour = initTour();
 
-    /*tour.addStep({
+    tour.addStep({
         title: "Welcome to FSKneeboard",
         text: "<b>Great you're here!</b> Let's take a quick look around to get you up to speed...<br /><br /><em>If you decide to skip the tour for now, you can always restart it through the <b>Settings Dialog</b> in the <b>FSKneeboard Server GUI Window</b>.</em>",
         buttons: [
@@ -85,14 +86,24 @@ const tour = () => {
             element: "#switch_map",
             on: "right"
         }
-    });*/
+    });
 
     tour.addStep({
         title: "What's Next?",
         text: "Next, let's take a look at the individual modules!"
     });
 
-    tour.start();
+    fetch("/tour/indexStarted")
+        .then(resp => resp.text())
+        .then(t => {
+            if (t === "false") {
+                tour.start();
+            }
+            else {
+                setTimeout(triggerSubTours, 1000);
+            }
+        })
+        .catch(() => logger.logError("Could not load TourIndexStatus!"));
 }
 
 export default tour;
