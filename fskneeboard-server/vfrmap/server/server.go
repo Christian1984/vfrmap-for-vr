@@ -30,6 +30,7 @@ import (
 	"vfrmap-for-vr/vfrmap/html/premium"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server/hotkeys"
+	"vfrmap-for-vr/vfrmap/server/tour"
 	"vfrmap-for-vr/vfrmap/utils"
 	"vfrmap-for-vr/vfrmap/websockets"
 
@@ -410,6 +411,7 @@ func StartFskServer() {
 		http.HandleFunc("/hotkeysWs", hotkeysWs.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkeys.ServeMasterHotkey)
+		http.HandleFunc("/tour/", tour.ServeTourStatus)
 		http.HandleFunc("/log/", logger.LogController)
 		http.HandleFunc("/loglevel/", logger.LogLevelController)
 		http.HandleFunc("/data/", dbmanager.DataController)
