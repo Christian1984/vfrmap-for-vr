@@ -59,7 +59,7 @@ func UpdateAutosaveStatus(interval int) {
 }
 
 func ControlPanel() *fyne.Container {
-	logger.LogDebugVerboseOverride("Initializing Control Panel...", false)
+	logger.LogDebug("Initializing Control Panel...")
 
 	//middle
 	serverStatusLabel := widget.NewLabel("Server Status")

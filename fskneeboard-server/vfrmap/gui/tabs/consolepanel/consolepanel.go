@@ -38,7 +38,7 @@ func ConsoleLogLn(message string) {
 }
 
 func ConsolePanel() *fyne.Container {
-	logger.LogDebugVerboseOverride("Initializing Console Panel...", false)
+	logger.LogDebug("Initializing Console Panel...")
 
 	// console
 	consoleBinding = binding.NewString()

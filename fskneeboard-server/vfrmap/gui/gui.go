@@ -19,6 +19,11 @@ import (
 )
 
 var w fyne.Window
+var guiTourStartedBinding binding.NewBoolean()
+
+func UpdateGuiTourStarted(started bool) {
+	guiTourStartedBinding.Set(started)
+}
 
 func InitGui() {
 	utils.Println("Starting FSKneeboard GUI...")
@@ -40,7 +45,10 @@ func InitGui() {
 	w = a.NewWindow(title)
 
 	logger.LogDebugVerboseOverride("Initializing tabs...", false)
+	welcomeTab := conatiner.NewTabItem("Welcome", controlpanel.WelcomePanel());
+
 	tabs := container.NewAppTabs(
+		welcomeTab,
 		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
 		container.NewTabItem("Hotkeys", hotkeyspanel.HotkeysPanel()),
@@ -48,6 +56,16 @@ func InitGui() {
 		container.NewTabItem("Console", consolepanel.ConsolePanel()),
 		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
 	)
+
+	guiTourStartedBinding.AddListener(binding.NewDataListener(func() {
+		guiTourStarted, _ := guiTourStartedBinding.Get()
+
+		if guiTourStarted {
+			welcomeTab.Show()
+		} else {
+			welcomeTab.Hide()
+		}
+	}))
 
 	logger.LogDebugVerboseOverride("Tabs initialized", false)
 

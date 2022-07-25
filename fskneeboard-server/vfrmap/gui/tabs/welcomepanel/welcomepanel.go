@@ -1,16 +1,13 @@
-package supportpanel
+package welcomepanel
 
 import (
-	"net/url"
-	"vfrmap-for-vr/vfrmap/logger"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
-func SupportPanel() *fyne.Container {
-	logger.LogDebug("Initializing Support Panel...")
+func WelcomePanel() *fyne.Container {
+	logger.LogDebug("Initializing Welcome Panel...")
 
 	docsUrl, _ := url.Parse("https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#troubleshooting")
 	discordUrl, _ := url.Parse("https://discord.fskneeboard.com")
@@ -44,5 +41,4 @@ func SupportPanel() *fyne.Container {
 	logger.LogDebugVerboseOverride("Support Panel initialized", false)
 
 	return centerContainer
-
 }

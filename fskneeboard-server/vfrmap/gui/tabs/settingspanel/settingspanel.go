@@ -69,7 +69,7 @@ func UpdateLogLevelStatus(level string) {
 }
 
 func SettingsPanel() *fyne.Container {
-	logger.LogDebugVerboseOverride("Initializing Settings Panel...", false)
+	logger.LogDebug("Initializing Settings Panel...")
 
 	// MSFS version select
 	msfsVersionLabel := widget.NewLabel("Flight Simulator Version")

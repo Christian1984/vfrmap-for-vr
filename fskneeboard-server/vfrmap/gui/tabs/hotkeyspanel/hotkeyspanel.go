@@ -47,7 +47,7 @@ func UpdateMasterHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier
 }
 
 func HotkeysPanel() *fyne.Container {
-	logger.LogDebugVerboseOverride("Initializing Hotkeys Panel...", false)
+	logger.LogDebug("Initializing Hotkeys Panel...")
 
 	// grid and centerContainer
 	labelNotes := widget.NewLabel("IMPORTANT NOTES:\n" +
