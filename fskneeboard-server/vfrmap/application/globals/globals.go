@@ -37,3 +37,4 @@ var TourIndexStarted bool
 var TourMapStarted bool
 var TourChartsStarted bool
 var TourNotepadStarted bool
+var TourGuiStarted bool

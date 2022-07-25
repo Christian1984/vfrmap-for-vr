@@ -42,6 +42,7 @@ func StoreTourStates() {
 	DbWriteSettings("tourMapStarted", strconv.FormatBool(globals.TourMapStarted))
 	DbWriteSettings("tourChartsStarted", strconv.FormatBool(globals.TourChartsStarted))
 	DbWriteSettings("tourNotepadStarted", strconv.FormatBool(globals.TourNotepadStarted))
+	DbWriteSettings("tourGuiStarted", strconv.FormatBool(globals.TourGuiStarted))
 }
 
 func LoadTourStates() {
@@ -56,6 +57,9 @@ func LoadTourStates() {
 
 	tourChartsStarted, _ := strconv.ParseBool(DbReadSettings("tourChartsStarted"))
 	globals.TourChartsStarted = tourChartsStarted
+
+	tourGuiStarted, _ := strconv.ParseBool(DbReadSettings("tourGuiStarted"))
+	globals.TourGuiStarted = tourGuiStarted
 }
 
 // autosave

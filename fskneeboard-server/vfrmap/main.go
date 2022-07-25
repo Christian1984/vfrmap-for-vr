@@ -99,6 +99,7 @@ func initFsk() {
 
 	// load tour state
 	dbmanager.LoadTourStates()
+	callbacks.GuiTourStartedChanged(globals.tourGuiStarted)
 
 	// load hotkeys
 	// master hotkey
@@ -175,6 +176,8 @@ func registerGuiCallbacks() {
 	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
+
+	callbacks.GuiTourStartedChangedCallback = welcomepanel.UpdateGuiTourStarted
 }
 
 func main() {
