@@ -211,7 +211,7 @@ func SettingsPanel() *fyne.Container {
 
 	loglevelBinding.Set(globals.LogLevel)
 
-	restartTourLabel := widget.NewLabel("Tutorial Tour")
+	restartTourLabel := widget.NewLabel("Ingame Tutorial Tour")
 	restartTourBtn := widget.NewButton("Restart Tour", func() {
 		logger.LogDebug("Resetting ingame panel tour...")
 

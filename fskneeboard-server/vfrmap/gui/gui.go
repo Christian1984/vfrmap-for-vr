@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/res"
@@ -62,20 +61,23 @@ func InitGui() {
 
 	max := container.NewMax(tabs, welcome)
 
-	showGuiTourBinding.AddListener(binding.NewDataListener(func() {
-		showGuiTour, _ := showGuiTourBinding.Get()
+	/*
+		showGuiTourBinding.AddListener(binding.NewDataListener(func() {
+			showGuiTour, _ := showGuiTourBinding.Get()
 
-		if showGuiTour {
-			tabs.Hide()
-			welcome.Show()
+			if showGuiTour {
+				tabs.Hide()
+				welcome.Show()
 
-			globals.TourGuiStarted = true
-			dbmanager.StoreTourStates()
-		} else {
-			tabs.Show()
-			welcome.Hide()
-		}
-	}))
+				globals.TourGuiStarted = true
+				dbmanager.StoreTourStates()
+			} else {
+				tabs.Show()
+				welcome.Hide()
+			}
+		}))
+	*/
+
 	logger.LogDebugVerboseOverride("Tabs initialized", false)
 
 	w.SetContent(max)
