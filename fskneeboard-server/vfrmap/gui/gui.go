@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/res"
@@ -10,19 +11,21 @@ import (
 	"vfrmap-for-vr/vfrmap/gui/tabs/pdfimportpanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/settingspanel"
 	"vfrmap-for-vr/vfrmap/gui/tabs/supportpanel"
+	"vfrmap-for-vr/vfrmap/gui/tabs/welcomepanel"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/utils"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 )
 
 var w fyne.Window
-var guiTourStartedBinding binding.NewBoolean()
+var showGuiTourBinding = binding.NewBool()
 
-func UpdateGuiTourStarted(started bool) {
-	guiTourStartedBinding.Set(started)
+func UpdateShowGuiTour(show bool) {
+	showGuiTourBinding.Set(show)
 }
 
 func InitGui() {
@@ -45,10 +48,8 @@ func InitGui() {
 	w = a.NewWindow(title)
 
 	logger.LogDebugVerboseOverride("Initializing tabs...", false)
-	welcomeTab := conatiner.NewTabItem("Welcome", controlpanel.WelcomePanel());
 
 	tabs := container.NewAppTabs(
-		welcomeTab,
 		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
 		container.NewTabItem("Hotkeys", hotkeyspanel.HotkeysPanel()),
@@ -57,19 +58,27 @@ func InitGui() {
 		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
 	)
 
-	guiTourStartedBinding.AddListener(binding.NewDataListener(func() {
-		guiTourStarted, _ := guiTourStartedBinding.Get()
+	welcome := welcomepanel.WelcomePanel()
 
-		if guiTourStarted {
-			welcomeTab.Show()
+	max := container.NewMax(tabs, welcome)
+
+	showGuiTourBinding.AddListener(binding.NewDataListener(func() {
+		showGuiTour, _ := showGuiTourBinding.Get()
+
+		if showGuiTour {
+			tabs.Hide()
+			welcome.Show()
+
+			globals.TourGuiStarted = true
+			dbmanager.StoreTourStates()
 		} else {
-			welcomeTab.Hide()
+			tabs.Show()
+			welcome.Hide()
 		}
 	}))
-
 	logger.LogDebugVerboseOverride("Tabs initialized", false)
 
-	w.SetContent(tabs)
+	w.SetContent(max)
 	w.Resize(fyne.NewSize(800, 600))
 
 	dialogs.ParentWindow = &w

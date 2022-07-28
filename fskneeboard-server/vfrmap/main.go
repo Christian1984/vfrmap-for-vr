@@ -99,7 +99,7 @@ func initFsk() {
 
 	// load tour state
 	dbmanager.LoadTourStates()
-	callbacks.GuiTourStartedChanged(globals.tourGuiStarted)
+	callbacks.ShowGuiTourChanged(!globals.TourGuiStarted)
 
 	// load hotkeys
 	// master hotkey
@@ -177,7 +177,7 @@ func registerGuiCallbacks() {
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
 
-	callbacks.GuiTourStartedChangedCallback = welcomepanel.UpdateGuiTourStarted
+	callbacks.ShowGuiTourChangedCallback = gui.UpdateShowGuiTour
 }
 
 func main() {

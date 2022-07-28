@@ -6,6 +6,7 @@ import (
 	"vfrmap-for-vr/_vendor/premium/autosave"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/logger"
 	"vfrmap-for-vr/vfrmap/server"
@@ -210,7 +211,7 @@ func SettingsPanel() *fyne.Container {
 
 	loglevelBinding.Set(globals.LogLevel)
 
-	restartTourLabel := widget.NewLabel("Ingame Tutorial Tour")
+	restartTourLabel := widget.NewLabel("Tutorial Tour")
 	restartTourBtn := widget.NewButton("Restart Tour", func() {
 		logger.LogDebug("Resetting ingame panel tour...")
 
@@ -218,10 +219,12 @@ func SettingsPanel() *fyne.Container {
 		globals.TourMapStarted = false
 		globals.TourChartsStarted = false
 		globals.TourNotepadStarted = false
+		globals.TourGuiStarted = false
 
 		dbmanager.StoreTourStates()
 
 		dialogs.ShowTourRestartedSuccessful()
+		callbacks.ShowGuiTourChanged(true)
 	})
 
 	// grid and centerContainer

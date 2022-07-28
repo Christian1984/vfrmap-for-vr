@@ -1,6 +1,9 @@
 package welcomepanel
 
 import (
+	"vfrmap-for-vr/vfrmap/gui/callbacks"
+	"vfrmap-for-vr/vfrmap/logger"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
@@ -16,12 +19,8 @@ func WelcomePanel() *fyne.Container {
 	introLabel.Alignment = fyne.TextAlignCenter
 
 	dismissTourBtn := widget.NewButton("End Tour", func() {
-		logger.LogDebug("Dismissing gui tour...")
-
-		globals.TourIndexStarted = false
-		dbmanager.StoreTourStates()
-
-		callbacks.GuiTourStartedChangedCallback()
+		logger.LogDebugVerbose("Dismissing gui tour...")
+		callbacks.ShowGuiTourChangedCallback(false)
 	})
 
 	vBox := container.NewVBox(

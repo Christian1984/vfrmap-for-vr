@@ -30,8 +30,8 @@ func MsfsAutostartChanged(autostart bool) {
 	runBoolCallback(autostart, MsfsAutostartChangedCallback)
 }
 
-var GuiTourStartedChangedCallback func(bool)
+var ShowGuiTourChangedCallback func(bool)
 
-func GuiTourStartedChanged(tourStarted bool) {
-	runBoolCallback(tourStarted, GuiTourStartedChangedCallback)
+func ShowGuiTourChanged(show bool) {
+	runBoolCallback(show, ShowGuiTourChangedCallback)
 }
