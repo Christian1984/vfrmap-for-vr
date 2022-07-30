@@ -1,5 +1,25 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.9.0
+
+## MAJOR:
+
+- added a "product tour" to introduce new users to important core features of FSKneeboard
+- added favorites to the charts viewer so that users can open up to 5 charts and quickly navigate between them
+- added seamless charts rotation to charts viewer
+- added a PDF-to-PNG importer
+- improved charts viewer with zoom- and rotation settings on a per-chart-basis
+- improved map tile cache performance by adding an in-memory caching mechanism
+
+## MINOR:
+
+- added "clickable" link to the "Server Reaty at ..." label on the Control Panel
+- fixed the "FastLaunch" command line argument for the Windows Store MSFS autostarter
+- improved the layout of the charts viewer user interface
+- improved logging, added system stats to log output
+
+---
+
 # v1.8.0
 
 ## MAJOR:
