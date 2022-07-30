@@ -175,8 +175,17 @@ func initCache(ttl time.Duration, maxMemoryFootprint int, root string, provider 
 }
 
 func initMaptileCache() {
-	ttl := 45 * 24 * time.Hour
-	maxMemoryFootprint := 256 * 1024 * 1024
+	ttl := globals.MaptileCacheTimeToLiveDefault
+
+	cachesCount := 8
+	maxMemoryFootprint := globals.MaptileCacheMaxMemoryUsageDefault / cachesCount
+
+	if globals.MaptileCacheMaxMemoryUsage > 0 {
+		maxMemoryFootprint = globals.MaptileCacheMaxMemoryUsage / cachesCount
+	}
+
+	logger.LogInfo("Initializing " + strconv.Itoa(cachesCount) + " maptile caches with a max memory footprint of " + strconv.Itoa(maxMemoryFootprint) + " bytes per cache... (total of " + strconv.Itoa(globals.MaptileCacheMaxMemoryUsage) + " bytes)")
+
 	globalRoot := "maptilecache"
 
 	initCache(ttl, maxMemoryFootprint, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", []string{})

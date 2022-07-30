@@ -1,6 +1,9 @@
 package globals
 
-import "vfrmap-for-vr/_vendor/premium/notepad"
+import (
+	"time"
+	"vfrmap-for-vr/_vendor/premium/notepad"
+)
 
 var Pro bool
 
@@ -22,6 +25,11 @@ var LogLevel string
 var SteamFs bool
 var WinstoreFs bool
 var MsfsAutostart bool
+
+const MaptileCacheMaxMemoryUsageDefault int = 8 * 128 * 1024 * 1024
+const MaptileCacheTimeToLiveDefault time.Duration = 45 * 24 * time.Hour
+
+var MaptileCacheMaxMemoryUsage int
 
 var DisableTeleport = false
 
