@@ -281,7 +281,7 @@ There are two ways to install FSKneeboard on your system: With a fully automated
 
 Download the Installer-Executable (`Install-FSKneeboard-FREE-vX.Z.Y.exe`) from [the release section](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
->PLEASE NOTE: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version Installer!
+>Please Note: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version Installer!
 
 ### Step 1: Launch the Installer
 
@@ -319,7 +319,9 @@ At that stage, PRO supporters should have their license ready (usually somewhere
 
 *Locate your FSKneeboard PRO license file*
 
-> *Please note*: This step will be skipped if there is already a license file present in the intended installation directory (when updating, for example).
+> Please note: 
+>
+> This step will be skipped if there is already a license file present in the intended installation directory (when updating, for example).
 
 <div style="page-break-after: always;"></div>
 
@@ -343,7 +345,7 @@ Make sure to backup your license file and your charts folder, though, just to be
 
 Download the zip from [here](https://github.com/Christian1984/vfrmap-for-vr/releases).
 
->PLEASE NOTE: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version!
+>Please Note: PRO users will receive a separate download link upon purchasing their license to download the PRO-Version!
 
 ### Manually Installing the Server Component
 
@@ -481,7 +483,7 @@ The map can be rotated wither facing north up, track up or manually. Simply sele
 
 PRO users may also pull the currently loaded ingame-flightplan from their Flight Simulator onto the kneeboard by clicking the "cloud-icon" in the bottom left corner. This will load the flightplan you have created on the Worldmap screen before starting the flight. This will replace all manually placed waypoints on your map.
 
-> PLEASE NOTE:
+> Please Note:
 > 
 > When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
 
@@ -519,11 +521,13 @@ You can browse and access your charts folder by clicking the browse charts butto
 
 Make sure to place your charts inside the `charts` folder inside the server directory. You can also use subdirectories to organize your charts (to  checklists from approach charts for example).
 
-> *Please note*: Subfolders starting with an '!' will be ignored by the ingame panel's charts browser. This can be used to temporarily "deactivate" charts that you don't need on a particular flight. The `!import` folder (used by the [PDF Importer](#pdf-import-panel) will be ignored as well.
-
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
 
 *Charts Folder*
+
+> Please note: 
+>
+> Subfolders starting with an '!' will be ignored by the ingame panel's charts browser. This can be used to temporarily "deactivate" charts that you don't need on a particular flight. The `!import` folder (used by the [PDF Importer](#pdf-import-panel) will be ignored as well.
 
 <div style="page-break-after: always;"></div>
 
