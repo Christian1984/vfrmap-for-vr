@@ -13,7 +13,7 @@
 
 ## MINOR:
 
-- added "clickable" link to the "Server Reaty at ..." label on the Control Panel
+- added "clickable" link to the "Server Ready at ..." label on the Control Panel
 - fixed the "FastLaunch" command line argument for the Windows Store MSFS autostarter
 - improved the layout of the charts viewer user interface
 - improved logging, added system stats to log output

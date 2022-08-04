@@ -319,6 +319,8 @@ At that stage, PRO supporters should have their license ready (usually somewhere
 
 *Locate your FSKneeboard PRO license file*
 
+> *Please note*: This step will be skipped if there is already a license file present in the intended installation directory (when updating, for example).
+
 <div style="page-break-after: always;"></div>
 
 ### Step 5: Proceed
@@ -410,6 +412,16 @@ In order to open up the actual FSKneeboard panel inside MSFS, first enter VR mod
 
 *How to open the ingame panel (old icon)*
 
+## Take The Tour
+
+When you open the FSKneeboard ingame panel for the very first time, a guided tour will introduce you to all the features FSKneeboard adds to your flight simulator experience.
+
+![FSKneeboard - Take the Tour](screenshots/fskneeboard-guided-tour.png)
+
+Please take the time to take this tour, as it is aimed at providing answers to many of the [frequently asked questions](#troubleshooting) and giving you a head start without missing out on some of the "hidden features".
+
+If you would like to skip the tour for now, you can do that and [restart it later](#restart-ingame-tour) through the [Settings Panel](#restart-ingame-tour) when you are ready for it.
+
 ---
 
 <div style="page-break-after: always;"></div>
@@ -485,7 +497,7 @@ The location finder can be accessed via the search icon on the toolbar and allow
 
 FSKneeboard PRO contains a fully-fledged charts viewer for charts in png format. You can navigate the charts by either using the toolbar on the top or by dragging to pan the map around. You can also use your mouse wheel to zoom. 
 
-![Charts Viewer](screenshots/fskneeboard-charts-legend.png)
+![Charts Viewer](screenshots/fskneeboard-charts-legend-190.png)
 
 *Charts Viewer*
 
@@ -510,6 +522,8 @@ Your charts folder should look like this:
 ![Inside Your Charts Folder](screenshots/fskneeboard-pro-charts-2.png)
 
 *Inside Your Charts Folder*
+
+To add documents to your charts folder, you can simply copy and paste any .PNG image file from your computer into this folder. Alternatively, you can use FSKneeboard's [PDF Importer](#pdf-import-panel) as described [here](#pdf-import-panel)
 
 <div style="page-break-after: always;"></div>
 
@@ -601,6 +615,8 @@ The control panel offers a general overview over the status of the FSKneeboard s
 
 It also allows you start your local copy of Microsoft Flight Simulator as long as you have configured your Flight Simulator version on the Settings Panel.
 
+The *IP address* found in the **Server Status** row can be clicked to open FSKneeboard in your local web browser.
+
 If a new version of FSKneeboard is available, a notification on the bottom of the window will let you know.
 
 <div style="page-break-after: always;"></div>
@@ -609,7 +625,7 @@ If a new version of FSKneeboard is available, a notification on the bottom of th
 
 The settings panel is where you can configure general settings that control the behaviour of FSKneeboard.
 
-![FSKneeboard - Settings Panel](screenshots/fskneeboard-gui-settingspanel-170.png)
+![FSKneeboard - Settings Panel](screenshots/fskneeboard-gui-settingspanel-190.png)
 
 *FSKneeboard - Settings Panel*
 
@@ -619,6 +635,10 @@ The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
 - Under "Flight Simulator Version", please tell FSKneeboard if you have installed the Steam or Windows Store version of Microsoft Flight Simulator. This will FSKneeboard tell where to look for and how to start Flight Simulator when you either click the "Launch Flight Simulator" button on the Control Panel or activate the autostart option
 - Under "Flight Simulator Autostart" you can enable or disable whether FSKneeboard should automatically launch your copy of Microsoft Flight Simulator when you start FSKneeboard
+
+#### Restart Ingame Tour
+
+- Click this button to restart the guided tour inside the FSKneeboard ingame panel. If you missed out on it on your very first FSKneeboard experience (thought, you could figure it all out for yourself, eh?) click here to get a second chance.
 
 #### Autosave
 
@@ -645,6 +665,36 @@ You can customize your hotkey by selecting any letter from the dropdown menu and
 Select `[Off]` to completely deactivate the hotkey in question.
 
 <div style="page-break-after: always;"></div>
+
+### PDF Import Panel
+
+With the PDF import panel you can convert and import any PDF document (be it a chart, a checklist, notes etc.) into your [FSKneeboard charts folder](#charts-viewer).
+
+![FSKneeboard - PDF Import Panel](screenshots/fskneeboard-gui-pdfimportpanel-190.png)
+
+There are 3 buttons on the top that allow you to manage your chart import folder.
+
+- **Open Import Directory**: Click this button to open the *!import* directory. This is the folder where you can copy and paste all the PDF documents to which you want to import. Inside the *!import* directory you can also create subfolders to manage your imported documents properly.
+- **Refresh Import Directory**: After you have placed your PDF documents inside the *!import* folder, click this button to update the file list below.
+- **Clear Import Directory**: After all PDF files have been successfully imported, you can click this button to wipe the *!import* directory from any documents to make it ready for the next import.
+
+The middle section shows a list of all documents that reside inside your *!import* folder. If this list stays empty, make sure to click the *Open Import Directory* button first to verify that your files are in the correct folder. Then click *Refresh Import Directory*. *Please note: This list only acts as a tool for you to see which files FSKneeboard has detected in your !import folder. You CANNOT select or unselect any files here.*
+
+In the bottom section there are 2 more buttons:
+
+- **Start Import**: Click here to import the files that currently reside inside your *!import* folder.
+- **Open Output Directory**: Click here to open the *imported* directory. You can now grab your files from here and organize them inside your *charts* folder as you like (or simply leave them here).
+
+#### Downloading The PDF Importer Module
+
+If you are using the PDF importer for the very first time, you will be prompted to download the required import module, which is a separate module distributed under the AGPL license.
+
+![FSKneeboard - PDF Import Panel, Download Prompt](screenshots/fskneeboard-gui-pdfimportpanel-prompt-190.png)
+
+- Click **YES** to allow FSKneeboard to download the required files for you.
+- Click **NO** to prevent the automatic download and abort the import process. Alternatively, you can download the importer from [GitHub](https://github.com/Christian1984/pdf-importer/releases/tag/v1.1.1) and then manually place the downloaded files inside the folder *<FSKneeboard-Install-Directory>/pdf-importer*. Then start the import again.
+
+
 
 ### Console Panel
 
