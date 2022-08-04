@@ -511,6 +511,8 @@ You can browse and access your charts folder by clicking the browse charts butto
 
 Make sure to place your charts inside the `charts` folder inside the server directory. You can also use subdirectories to organize your charts (to  checklists from approach charts for example).
 
+> *Please note*: Subfolders starting with an '!' will be ignored by the ingame panel's charts browser. This can be used to temporarily "deactivate" charts that you don't need on a particular flight. The `!import` folder (used by the [PDF Importer](#pdf-import-panel) will be ignored as well.
+
 ![Charts Folder](screenshots/fskneeboard-pro-charts-1.png)
 
 *Charts Folder*
@@ -674,15 +676,15 @@ With the PDF import panel you can convert and import any PDF document (be it a c
 
 There are 3 buttons on the top that allow you to manage your chart import folder.
 
-- **Open Import Directory**: Click this button to open the *!import* directory. This is the folder where you can copy and paste all the PDF documents to which you want to import. Inside the *!import* directory you can also create subfolders to manage your imported documents properly.
-- **Refresh Import Directory**: After you have placed your PDF documents inside the *!import* folder, click this button to update the file list below.
-- **Clear Import Directory**: After all PDF files have been successfully imported, you can click this button to wipe the *!import* directory from any documents to make it ready for the next import.
+- **Open Import Directory**: Click this button to open the `!import` directory. This is the folder where you can copy and paste all the PDF documents to which you want to import. Inside the `!import` directory you can also create subfolders to manage your imported documents properly.
+- **Refresh File List**: After you have placed your PDF documents inside the `!import` folder, click this button to update the file list below.
+- **Clear Import Directory**: After all PDF files have been successfully imported, you can click this button to wipe the `!import` directory from any documents to make it ready for the next import.
 
-The middle section shows a list of all documents that reside inside your *!import* folder. If this list stays empty, make sure to click the *Open Import Directory* button first to verify that your files are in the correct folder. Then click *Refresh Import Directory*. *Please note: This list only acts as a tool for you to see which files FSKneeboard has detected in your !import folder. You CANNOT select or unselect any files here.*
+The middle section shows a list of all documents that reside inside your `!import` folder. If this list stays empty, make sure to click the *Open Import Directory* button first to verify that your files are in the correct folder. Then click *Refresh File List*. *Please note: This list only acts as a tool for you to see which files FSKneeboard has detected in your !import folder. You CANNOT select or unselect any files here.*
 
 In the bottom section there are 2 more buttons:
 
-- **Start Import**: Click here to import the files that currently reside inside your *!import* folder.
+- **Start Import**: Click here to import the files that currently reside inside your `!import` folder.
 - **Open Output Directory**: Click here to open the *imported* directory. You can now grab your files from here and organize them inside your *charts* folder as you like (or simply leave them here).
 
 #### Downloading The PDF Importer Module
