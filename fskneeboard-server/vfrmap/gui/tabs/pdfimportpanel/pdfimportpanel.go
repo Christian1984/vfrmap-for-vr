@@ -1,8 +1,8 @@
 package pdfimportpanel
 
 import (
-	"vfrmap-for-vr/_vendor/premium/charts"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/pdfimport"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/tabs/panelcommons"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -27,7 +27,7 @@ func runImport() {
 	logger.LogInfoVerbose("Starting PDF import...")
 	updateStatus("Preparing PDF batch import...")
 
-	err := charts.ImportPdfFolder(updateStatus)
+	err := pdfimport.ImportPdfFolder(updateStatus)
 
 	importRunningBinding.Set(false)
 
@@ -44,17 +44,20 @@ func runImport() {
 	}
 }
 
-func processGhostScriptDownloadPromptCallback(proceed bool) {
+func processImporterDownloadPromptCallback(proceed bool) {
 	if !proceed {
 		importRunningBinding.Set(false)
 		return
 	}
 
-	downloadErr := charts.DownloadGhostscript()
+	updateStatus("Downloading importer module...")
+
+	downloadErr := pdfimport.DownloadImporter()
 
 	if downloadErr != nil {
-		logger.LogErrorVerbose("Could not download ghostscript, reason: " + downloadErr.Error())
-		dialogs.ShowError("Could not download Ghostscript. Please refer to the Console Panel and/or logs for details!")
+		logger.LogErrorVerbose("Could not download the importer, reason: " + downloadErr.Error())
+		dialogs.ShowError("Could not download the importer. Please refer to the Console Panel and/or logs for details!")
+		updateStatus("Idle...")
 		importRunningBinding.Set(false)
 		return
 	}
@@ -65,7 +68,7 @@ func processGhostScriptDownloadPromptCallback(proceed bool) {
 func clearImportFolderPromptCallback(proceed bool) {
 	if proceed {
 		updateStatus("Clearing PDF import folder...")
-		err := charts.ClearPdfImportFolder()
+		err := pdfimport.ClearPdfImportFolder()
 
 		if err != nil {
 			logger.LogErrorVerbose("Could not clear PDF import folder, reason: " + err.Error())
@@ -82,7 +85,7 @@ func clearImportFolderPromptCallback(proceed bool) {
 
 func refreshImportDir() {
 	fileListBinding.Set([]string{})
-	list, err := charts.CreatePdfFileList()
+	list, err := pdfimport.CreatePdfFileList()
 
 	if err != nil {
 		logger.LogErrorVerbose("Could not refresh PDF import folder, reason: " + err.Error())
@@ -116,7 +119,7 @@ func PdfImportPanel() *fyne.Container {
 	})
 
 	openImportDirBtn := widget.NewButtonWithIcon("Open Import Directory", theme.FolderOpenIcon(), func() {
-		charts.OpenPdfSourceFolder()
+		pdfimport.OpenPdfSourceFolder()
 	})
 
 	top := container.NewHBox(refreshImportDirBtn, clearImportDirBtn, openImportDirBtn)
@@ -135,11 +138,11 @@ func PdfImportPanel() *fyne.Container {
 
 			refreshImportDir()
 
-			if charts.HasGhostscript() {
+			if pdfimport.HasImporter() {
 				runImport()
 			} else {
-				logger.LogWarnVerbose("Ghostscript not found!") // TODO
-				dialogs.ShowGhostscriptDownloadPrompt(processGhostScriptDownloadPromptCallback)
+				logger.LogWarnVerbose("Importer module not found!")
+				dialogs.ShowImporterDownloadPrompt(processImporterDownloadPromptCallback)
 			}
 		}()
 	})
@@ -157,7 +160,7 @@ func PdfImportPanel() *fyne.Container {
 	}))
 
 	openOutputDirBtn := widget.NewButtonWithIcon("Open Output Directory", theme.FolderOpenIcon(), func() {
-		charts.OpenPdfOutFolder()
+		pdfimport.OpenPdfOutFolder()
 	})
 
 	bottomButtons := container.NewHBox(startImportBtn, openOutputDirBtn)

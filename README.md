@@ -771,6 +771,10 @@ Great work, guys! Thanks for sharing your work with us!!!
 - [go-maptilecache](https://github.com/Christian1984/go-maptilecache)
 - [go-update-checker](https://github.com/Christian1984/go-update-checker)
 
+### Optional 3rd Party Modules
+
+- [PDF Importer](https://github.com/Christian1984/pdf-importer)
+
 ### (PRO) Sample Documents
 
 - The Traffic Pattern Sample Chart is in the public domain and sourced from [Wikimedia](https://commons.wikimedia.org/wiki/File:Airport_Traffic_Pattern_from_AIM_4-3-2.svg)
