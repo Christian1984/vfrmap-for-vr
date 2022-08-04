@@ -412,11 +412,15 @@ In order to open up the actual FSKneeboard panel inside MSFS, first enter VR mod
 
 *How to open the ingame panel (old icon)*
 
+<div style="page-break-after: always;"></div>
+
 ## Take The Tour
 
 When you open the FSKneeboard ingame panel for the very first time, a guided tour will introduce you to all the features FSKneeboard adds to your flight simulator experience.
 
 ![FSKneeboard - Take the Tour](screenshots/fskneeboard-guided-tour.png)
+
+*FSKneeboard Guided Tour*
 
 Please take the time to take this tour, as it is aimed at providing answers to many of the [frequently asked questions](#troubleshooting) and giving you a head start without missing out on some of the "hidden features".
 
@@ -433,6 +437,8 @@ If you would like to skip the tour for now, you can do that and [restart it late
 Depending on your personal preference and various external factors (like your 2D screen resolution, your MSFS window size, your supersampling settings) chances are the map inside your FSKneeboard panel may appear too small or to large, or in some cases even stretched in a weird way. In that case you may use FSKneeboard's dynamic resolution controls to adjust the panel's resolution to your personal preference.
 
 ![FSKneeboard - Dynamic Resolution Control](screenshots/fskneeboard-dynamic-resolution-controls.png)
+
+*Dynamic Resolution Control*
 
 If the map is hard to read and appears too small, no matter how far you have zoomed in or out, click the button with the four arrows pointing outwards **multiple times** to stepwise increase the size of the panel's content for better readability. If it appears too large, then click the button button with the arrows pointing inwards in the same fashion.
 
@@ -478,6 +484,8 @@ PRO users may also pull the currently loaded ingame-flightplan from their Flight
 > PLEASE NOTE:
 > 
 > When you change your flightplan by adding or removing waypoints through your ingame GPS, for example, these changes will not be reflected by the flightplan pulled from the Sim by this feature. For the time being, this is a known limitation of the feature. Please configure your flightplan before taking off on the Worldmap screen of MSFS.
+
+<div style="page-break-after: always;"></div>
 
 ### Location Finder (Experimental)
 
@@ -674,6 +682,8 @@ With the PDF import panel you can convert and import any PDF document (be it a c
 
 ![FSKneeboard - PDF Import Panel](screenshots/fskneeboard-gui-pdfimportpanel-190.png)
 
+*FSKneeboard - PDF Import Panel*
+
 There are 3 buttons on the top that allow you to manage your chart import folder.
 
 - **Open Import Directory**: Click this button to open the `!import` directory. This is the folder where you can copy and paste all the PDF documents to which you want to import. Inside the `!import` directory you can also create subfolders to manage your imported documents properly.
@@ -693,10 +703,10 @@ If you are using the PDF importer for the very first time, you will be prompted 
 
 ![FSKneeboard - PDF Import Panel, Download Prompt](screenshots/fskneeboard-gui-pdfimportpanel-prompt-190.png)
 
+*FSKneeboard - PDF Import Panel, Download Prompt*
+
 - Click **YES** to allow FSKneeboard to download the required files for you.
 - Click **NO** to prevent the automatic download and abort the import process. Alternatively, you can download the importer from [GitHub](https://github.com/Christian1984/pdf-importer/releases/tag/v1.1.1) and then manually place the downloaded files inside the folder *<FSKneeboard-Install-Directory>/pdf-importer*. Then start the import again.
-
-
 
 ### Console Panel
 
@@ -705,6 +715,8 @@ The console window is mainly used for debugging purposes. It shows a bunch of de
 ![FSKneeboard - Console Panel](screenshots/fskneeboard-gui-consolepanel-170.png)
 
 *FSKneeboard - Console Panel*
+
+<div style="page-break-after: always;"></div>
 
 ### Support Panel
 
