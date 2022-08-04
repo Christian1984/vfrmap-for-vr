@@ -17,6 +17,7 @@
 - fixed the "FastLaunch" command line argument for the Windows Store MSFS autostarter
 - improved the layout of the charts viewer user interface
 - improved logging, added system stats to log output
+- improved installer so that it will no longer ask for a license if it is already in the intended install directory
 
 ---
 
