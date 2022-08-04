@@ -106,11 +106,11 @@ func PdfImportPanel() *fyne.Container {
 	logger.LogDebug("Initializing PDF Import Panel...")
 
 	// top
-	refreshImportDirBtn := widget.NewButtonWithIcon("Refresh Import Directory", theme.ViewRefreshIcon(), func() {
+	refreshFileListBtn := widget.NewButtonWithIcon("Refresh File List", theme.ViewRefreshIcon(), func() {
 		go func() {
-			updateStatus("Refreshing PDF import folder...")
+			updateStatus("Refreshing file list...")
 			refreshImportDir()
-			updateStatus("PDF import folder refreshed!")
+			updateStatus("File list refreshed!")
 		}()
 	})
 
@@ -122,7 +122,7 @@ func PdfImportPanel() *fyne.Container {
 		pdfimport.OpenPdfSourceFolder()
 	})
 
-	top := container.NewHBox(refreshImportDirBtn, clearImportDirBtn, openImportDirBtn)
+	top := container.NewHBox(openImportDirBtn, refreshFileListBtn, clearImportDirBtn)
 
 	// bottom
 	progressBar := widget.NewProgressBarInfinite()
@@ -193,7 +193,7 @@ func PdfImportPanel() *fyne.Container {
 	if globals.Pro {
 		go refreshImportDir()
 	} else {
-		refreshImportDirBtn.Disable()
+		refreshFileListBtn.Disable()
 		clearImportDirBtn.Disable()
 		openImportDirBtn.Disable()
 		startImportBtn.Disable()
