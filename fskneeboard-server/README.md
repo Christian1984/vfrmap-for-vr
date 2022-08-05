@@ -20,6 +20,7 @@ The FSKneeboard server connects to MSFS 2020 via the simconnect package [fskneeb
   - add `C:\MinGW-w64\bin\` to PATH as described here https://dev.to/gamegods3/how-to-install-gcc-in-windows-10-the-easier-way-422j
 
 - copy required stuff to folder _vendor (see README.md there)
+- copy `application/secrets/secrets.go.example` to `application/secrets/secrets.go` and add your API keys
 - run build-fskneeboard-server-FREE.bat or build-fskneeboard-server-PRO.bat
 
 ## Why does my virus-scanning software think this program is infected?
