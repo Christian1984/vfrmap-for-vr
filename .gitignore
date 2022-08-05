@@ -17,6 +17,7 @@ fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/FSK
 pdf-importer/
 
 .env
+secrets.go
 fskneeboard.exe
 vfrmap-for-vr-win64.zip
 fskneeboard.exe
