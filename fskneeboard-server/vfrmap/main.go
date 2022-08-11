@@ -201,7 +201,7 @@ func main() {
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.BoolVar(&globals.WipeMaptileCaches, "wipemaptilecaches", false, "wipe maptile caches")
 	flag.BoolVar(&globals.Quietshutdown, "quietshutdown", false, "prevent FSKneeboard from showing a \"Press ENTER to continue...\" prompt after disconnecting from MSFS")
-	flag.IntVar(&globals.MaptileCacheMaxMemoryUsage, "maxramusage", globals.MaptileCacheMaxMemoryUsageDefault, "set the maximum RAM usage of the in-memory maptile chache")
+	flag.IntVar(&globals.MaptileCacheMaxMemoryUsage, "maxramusage", globals.MaptileCacheMaxMemoryUsageDefault, "set the maximum RAM usage of the in-memory maptile chache (in bytes)")
 
 	// flags to compare against stored values
 	flag.StringVar(&globals.LogLevel, "log", "off", "set log level (debug | info | error)")

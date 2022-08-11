@@ -22,6 +22,7 @@ import (
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/secrets"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
@@ -205,7 +206,7 @@ func initMaptileCache() {
 	initCache(ttl, globalRoot, "cartod", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 
 	initCache(ttl, globalRoot, "ofm", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip", "http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
 }
 
 func StartFskServer() {

@@ -26,7 +26,7 @@ var SteamFs bool
 var WinstoreFs bool
 var MsfsAutostart bool
 
-const MaptileCacheMaxMemoryUsageDefault int = 128 * 8 * 1024 * 1024
+const MaptileCacheMaxMemoryUsageDefault int = 512 * 1024 * 1024
 const MaptileCacheTimeToLiveDefault time.Duration = 45 * 24 * time.Hour
 
 var MaptileCacheMaxMemoryUsage int

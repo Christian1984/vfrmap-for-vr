@@ -392,7 +392,6 @@ function initMap() {
         minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        tms: true,
         //detectRetina: true,
         subdomains: "12",
         format: "image/png",

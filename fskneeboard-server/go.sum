@@ -18,6 +18,8 @@ github.com/Christian1984/go-maptilecache v1.0.0 h1:Lc+2VWcgIcejKExJAZBQa2+adMVYf
 github.com/Christian1984/go-maptilecache v1.0.0/go.mod h1:VxjoLjQ7IEmreos8s4Agm+AwQ5BJVdbkajg98kmgU7A=
 github.com/Christian1984/go-maptilecache v1.1.0 h1:42p02bfVd4Xld+bpWAu+awr0J5LU8tNKY5f8Qun5KbE=
 github.com/Christian1984/go-maptilecache v1.1.0/go.mod h1:VxjoLjQ7IEmreos8s4Agm+AwQ5BJVdbkajg98kmgU7A=
+github.com/Christian1984/go-maptilecache v1.1.1 h1:3AtDsVf+G2bqK4t4C3PP75DHlaR/+6YxuZvVWlzaNz0=
+github.com/Christian1984/go-maptilecache v1.1.1/go.mod h1:VxjoLjQ7IEmreos8s4Agm+AwQ5BJVdbkajg98kmgU7A=
 github.com/Christian1984/go-update-checker v0.0.3 h1:a1FAbgD+39arSavXMmbgO9z8aDbqMyUPoxIhg/Xbpyk=
 github.com/Christian1984/go-update-checker v0.0.3/go.mod h1:Up9ZfTcgLcnmENqGaIW4n4nK7xN0SXL9bFZUcRycOSA=
 github.com/Kodeworks/golang-image-ico v0.0.0-20141118225523-73f0f4cfade9/go.mod h1:7uhhqiBaR4CpN0k9rMjOtjpcfGd6DG2m04zQxKnWQ0I=
