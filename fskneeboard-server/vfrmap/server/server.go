@@ -149,16 +149,24 @@ func UpdateAutosaveInterval(verbose bool) {
 	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
 }
 
-func initCache(ttl time.Duration, maxMemoryFootprint int, root string, provider string, url string, expectedParams []string) {
-	c, err := maptilecache.New(
-		[]string{root, provider}, url,
-		expectedParams, ttl, maxMemoryFootprint, "",
-		logger.LogDebug,
-		logger.LogInfo,
-		logger.LogWarn,
-		logger.LogError,
-		5*time.Minute,
-	)
+func initCache(ttl time.Duration, root string, provider string, url string, apiKey string, forwardHeaders bool, expectedParams []string, sharedMemoryCache *maptilecache.SharedMemoryCache) {
+	cacheConfig := maptilecache.CacheConfig{
+		Route:             []string{root, provider},
+		UrlScheme:         url,
+		StructureParams:   expectedParams,
+		ApiKey:            apiKey,
+		ForwardHeaders:    forwardHeaders,
+		TimeToLive:        ttl,
+		SharedMemoryCache: sharedMemoryCache,
+		DebugLogger:       logger.LogDebug,
+		InfoLogger:        logger.LogInfo,
+		WarnLogger:        logger.LogWarn,
+		ErrorLogger:       logger.LogError,
+		StatsLogDelay:     5 * time.Minute,
+	}
+
+	c, err := maptilecache.New(cacheConfig)
+
 	if err == nil {
 		if globals.WipeMaptileCaches {
 			c.WipeCache()
@@ -177,26 +185,27 @@ func initCache(ttl time.Duration, maxMemoryFootprint int, root string, provider 
 func initMaptileCache() {
 	ttl := globals.MaptileCacheTimeToLiveDefault
 
-	cachesCount := 8
-	maxMemoryFootprint := globals.MaptileCacheMaxMemoryUsageDefault / cachesCount
-
-	if globals.MaptileCacheMaxMemoryUsage > 0 {
-		maxMemoryFootprint = globals.MaptileCacheMaxMemoryUsage / cachesCount
-	}
-
-	logger.LogInfo("Initializing " + strconv.Itoa(cachesCount) + " maptile caches with a max memory footprint of " + strconv.Itoa(maxMemoryFootprint) + " bytes per cache... (total of " + strconv.Itoa(globals.MaptileCacheMaxMemoryUsage) + " bytes)")
-
 	globalRoot := "maptilecache"
 
-	initCache(ttl, maxMemoryFootprint, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", []string{})
-	initCache(ttl, maxMemoryFootprint, globalRoot, "otm", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", []string{})
-	initCache(ttl, maxMemoryFootprint, globalRoot, "stamenbw", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", []string{})
-	initCache(ttl, maxMemoryFootprint, globalRoot, "stament", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", []string{})
-	initCache(ttl, maxMemoryFootprint, globalRoot, "stamenw", "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", []string{})
-	initCache(ttl, maxMemoryFootprint, globalRoot, "cartod", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", []string{})
+	sharedMemoryCacheConfig := maptilecache.SharedMemoryCacheConfig{
+		MaxSizeBytes:          globals.MaptileCacheMaxMemoryUsage,
+		EnsureMaxSizeInterval: 1 * time.Minute,
+		DebugLogger:           logger.LogDebug,
+		InfoLogger:            logger.LogInfo,
+		WarnLogger:            logger.LogWarn,
+		ErrorLogger:           logger.LogError,
+	}
+	sharedMemoryCache := maptilecache.NewSharedMemoryCache(sharedMemoryCacheConfig)
 
-	initCache(ttl, maxMemoryFootprint, globalRoot, "ofm", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", []string{"path"})
-	initCache(ttl, maxMemoryFootprint, globalRoot, "oaip", "http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", []string{})
+	initCache(ttl, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "otm", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stamenbw", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stament", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stamenw", "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "cartod", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+
+	initCache(ttl, globalRoot, "ofm", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip", "http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 }
 
 func StartFskServer() {
