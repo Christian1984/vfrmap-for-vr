@@ -387,7 +387,29 @@ function initMap() {
         format: "image/png"
     });
 
-    const openaip_cached_basemap = new L.TileLayer("/maptilecache/oaip/{s}/{z}/{y}/{x}/", {
+    const openaip_airports = new L.TileLayer("/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        //detectRetina: true,
+        subdomains: "12",
+        format: "image/png",
+        transparent: true
+    });
+
+    const openaip_airspaces = new L.TileLayer("/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        //detectRetina: true,
+        subdomains: "12",
+        format: "image/png",
+        transparent: true
+    });
+
+    const openaip_navaids = new L.TileLayer("/maptilecache/oaip-navaids/{s}/{z}/{y}/{x}/", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -423,8 +445,10 @@ function initMap() {
     };
 
     const overlayMaps = {
-        "openAIP (Worldwide)": openaip_cached_basemap,
-        "open flightmaps (Europe)": ofm
+        "open flightmaps (Europe)": ofm,
+        "openAIP Airports (Worldwide)": openaip_airports,
+        "openAIP Airspaces (Worldwide)": openaip_airspaces,
+        "openAIP Navaids (Worldwide)": openaip_navaids,
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);

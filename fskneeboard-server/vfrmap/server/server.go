@@ -206,7 +206,9 @@ func initMaptileCache() {
 	initCache(ttl, globalRoot, "cartod", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 
 	initCache(ttl, globalRoot, "ofm", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-airports", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-airspaces", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-navaids", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
 }
 
 func StartFskServer() {
