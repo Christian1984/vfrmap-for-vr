@@ -9,7 +9,8 @@
 - added seamless charts rotation to charts viewer
 - added a PDF-to-PNG importer
 - improved charts viewer with zoom- and rotation settings on a per-chart-basis
-- improved map tile cache performance by adding an in-memory caching mechanism
+- improved map tile cache performance by adding an in-memory caching mechanism and serving each cache on a separate host
+- fixed openAIP navigation map layer, enabled individual layers for different nav data (aiports, airspaces, navaids etc.)
 
 ## MINOR:
 
@@ -18,6 +19,7 @@
 - improved the layout of the charts viewer user interface
 - improved logging, added system stats to log output
 - improved installer so that it will no longer ask for a license if it is already in the intended install directory
+- improved repair FSKneeboard script by also clearing the maptile cache
 
 ---
 
