@@ -151,6 +151,7 @@ func UpdateAutosaveInterval(verbose bool) {
 
 func initCache(ttl time.Duration, root string, provider string, port string, url string, apiKey string, forwardHeaders bool, expectedParams []string, sharedMemoryCache *maptilecache.SharedMemoryCache) {
 	cacheConfig := maptilecache.CacheConfig{
+		Host:              "0.0.0.0",
 		Port:              port,
 		Route:             []string{root, provider},
 		UrlScheme:         url,

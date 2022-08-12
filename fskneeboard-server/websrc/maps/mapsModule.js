@@ -322,11 +322,12 @@ function initMap() {
     let pos = initial_pos;
 
     const hostArr = location.host.split(":");
-    if (hostArr.length > 1) {
-        const hostAddr = hostArr[0];
-        const loc = location.protocol + "//" + hostAddr;
-        log("loc: " + loc);
+    if (hostArr.length < 1) {
+        hostArr.push("localhost");
     }
+
+    const hostAddr = hostArr[0];
+    const loc = location.protocol + "//" + hostAddr;
 
     // base maps
     const osm = new L.TileLayer(loc + ":35302/maptilecache/osm/{s}/{z}/{y}/{x}/", {
