@@ -22,7 +22,6 @@ import (
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
-	"vfrmap-for-vr/vfrmap/application/secrets"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
@@ -150,8 +149,9 @@ func UpdateAutosaveInterval(verbose bool) {
 	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
 }
 
-func initCache(ttl time.Duration, root string, provider string, url string, apiKey string, forwardHeaders bool, expectedParams []string, sharedMemoryCache *maptilecache.SharedMemoryCache) {
+func initCache(ttl time.Duration, root string, provider string, port string, url string, apiKey string, forwardHeaders bool, expectedParams []string, sharedMemoryCache *maptilecache.SharedMemoryCache) {
 	cacheConfig := maptilecache.CacheConfig{
+		Port:              port,
 		Route:             []string{root, provider},
 		UrlScheme:         url,
 		StructureParams:   expectedParams,
@@ -163,7 +163,7 @@ func initCache(ttl time.Duration, root string, provider string, url string, apiK
 		InfoLogger:        logger.LogInfo,
 		WarnLogger:        logger.LogWarn,
 		ErrorLogger:       logger.LogError,
-		StatsLogDelay:     5 * time.Minute,
+		StatsLogDelay:     globals.MaptileCacheStatsLogDelay,
 	}
 
 	c, err := maptilecache.New(cacheConfig)
@@ -198,17 +198,17 @@ func initMaptileCache() {
 	}
 	sharedMemoryCache := maptilecache.NewSharedMemoryCache(sharedMemoryCacheConfig)
 
-	initCache(ttl, globalRoot, "osm", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "otm", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stamenbw", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stament", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stamenw", "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "cartod", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "osm", "35302", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "otm", "35303", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stamenbw", "35304", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stament", "35305", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stamenw", "35306", "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "cartod", "35307", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 
-	initCache(ttl, globalRoot, "ofm", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-airports", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-airspaces", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-navaids", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", secrets.API_KEY_OPENAIP, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "ofm", "35308", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-airports", "35309", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-airspaces", "35310", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-navaids", "35311", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
 }
 
 func StartFskServer() {

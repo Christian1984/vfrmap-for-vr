@@ -28,6 +28,9 @@ var MsfsAutostart bool
 
 const MaptileCacheMaxMemoryUsageDefault int = 512 * 1024 * 1024
 const MaptileCacheTimeToLiveDefault time.Duration = 45 * 24 * time.Hour
+const MaptileCacheStatsLogDelay = 5 * time.Minute
+
+var MaptileCacheOaipApiKey string
 
 var MaptileCacheMaxMemoryUsage int
 
