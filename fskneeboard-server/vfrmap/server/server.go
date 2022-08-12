@@ -210,6 +210,8 @@ func initMaptileCache() {
 	initCache(ttl, globalRoot, "oaip-airports", "35309", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "oaip-airspaces", "35310", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "oaip-navaids", "35311", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "oaip-reportingpoints", "35312", "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+	//initCache(ttl, globalRoot, "oaip-obstacles", "35313", "https://api.tiles.openaip.net/api/data/obstacles/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
 }
 
 func StartFskServer() {

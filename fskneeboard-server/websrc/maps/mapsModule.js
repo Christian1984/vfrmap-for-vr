@@ -400,8 +400,6 @@ function initMap() {
         minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        //detectRetina: true,
-        subdomains: "12",
         format: "image/png",
         transparent: true
     });
@@ -411,8 +409,6 @@ function initMap() {
         minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        //detectRetina: true,
-        subdomains: "12",
         format: "image/png",
         transparent: true
     });
@@ -422,11 +418,29 @@ function initMap() {
         minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        //detectRetina: true,
-        subdomains: "12",
         format: "image/png",
         transparent: true
     });
+
+    const openaip_reportingpoints = new L.TileLayer(loc + ":35312/maptilecache/oaip-reportingpoints/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        transparent: true
+    });
+
+    /*
+    const openaip_obstacles = new L.TileLayer(loc + ":35313/maptilecache/oaip-obstacles/{s}/{z}/{y}/{x}/", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+        transparent: true
+    });
+    */
 
     map = new L.Map("map", {
         layers: [ osm ],
@@ -457,6 +471,8 @@ function initMap() {
         "openAIP Airports (Worldwide)": openaip_airports,
         "openAIP Airspaces (Worldwide)": openaip_airspaces,
         "openAIP Navaids (Worldwide)": openaip_navaids,
+        "openAIP Reporting Points (Worldwide)": openaip_reportingpoints,
+        //"openAIP Obstacles (Worldwide)": openaip_obstacles,
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
