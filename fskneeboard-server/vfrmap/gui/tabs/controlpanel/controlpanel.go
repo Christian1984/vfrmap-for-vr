@@ -7,6 +7,7 @@ import (
 	"strings"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
+	"vfrmap-for-vr/vfrmap/application/pdfimport"
 	"vfrmap-for-vr/vfrmap/gui/tabs/panelcommons"
 	"vfrmap-for-vr/vfrmap/logger"
 
@@ -127,7 +128,12 @@ func ControlPanel() *fyne.Container {
 			launchSimBtn.Enable()
 		}
 	}))
-	top := container.NewHBox(launchSimBtn)
+
+	startPdfImporterBtn := widget.NewButtonWithIcon("Launch PDF Import Tool", theme.ComputerIcon(), func() {
+		go pdfimport.HandleImporterStart()
+	})
+
+	top := container.NewHBox(launchSimBtn, startPdfImporterBtn)
 
 	// bottom
 	updateInfoLabel := widget.NewLabel("A new version of FSKneeboard is available.")
