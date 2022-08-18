@@ -8,7 +8,7 @@
 - added favorites to the charts viewer so that users can open up to 5 charts and quickly navigate between them
 - added seamless charts rotation to charts viewer
 - added a PDF-to-PNG importer
-- improved charts viewer with zoom- and rotation settings on a per-chart-basis
+- improved charts viewer with zoom and rotation settings on a per-chart-basis
 - improved map tile cache performance by adding an in-memory caching mechanism and serving each cache on a separate host
 - fixed openAIP navigation map layer, enabled individual layers for different nav data (aiports, airspaces, navaids etc.)
 
