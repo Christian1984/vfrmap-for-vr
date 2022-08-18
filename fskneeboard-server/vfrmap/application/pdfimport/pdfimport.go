@@ -166,6 +166,11 @@ func DownloadImporter() error {
 		}
 	}
 
+	if !HasValidImporter() {
+		logger.LogError("Importer files could not be validated after downloading them!")
+		return errors.New("No valid importer tool found!")
+	}
+
 	logger.LogInfoVerbose("Importer successfully downloaded...")
 
 	return nil
