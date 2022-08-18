@@ -8,6 +8,7 @@ import (
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/application/pdfimport"
+	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/gui/tabs/panelcommons"
 	"vfrmap-for-vr/vfrmap/logger"
 
@@ -57,6 +58,22 @@ func UpdateAutosaveStatus(interval int) {
 	}
 
 	autosaveBinding.Set(intervalString)
+}
+
+func processImporterDownloadPromptCallback(proceed bool) {
+	if !proceed {
+		return
+	}
+
+	downloadErr := pdfimport.DownloadImporter()
+
+	if downloadErr != nil {
+		logger.LogErrorVerbose("Could not download the importer, reason: " + downloadErr.Error())
+		dialogs.ShowError("Could not download the importer. Please refer to the Console Panel and/or logs for details!")
+		return
+	}
+
+	pdfimport.StartImporter()
 }
 
 func ControlPanel() *fyne.Container {
@@ -130,7 +147,17 @@ func ControlPanel() *fyne.Container {
 	}))
 
 	startPdfImporterBtn := widget.NewButtonWithIcon("Launch PDF Import Tool", theme.ComputerIcon(), func() {
-		go pdfimport.HandleImporterStart()
+		if pdfimport.HasValidImporter() {
+			go func() {
+				err := pdfimport.StartImporter()
+				if err != nil {
+					//TODO: show error
+				}
+			}()
+			return
+		} else {
+			dialogs.ShowImporterDownloadPrompt(processImporterDownloadPromptCallback)
+		}
 	})
 
 	top := container.NewHBox(launchSimBtn, startPdfImporterBtn)

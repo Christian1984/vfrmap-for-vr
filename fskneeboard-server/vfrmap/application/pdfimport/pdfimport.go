@@ -42,23 +42,7 @@ func MakeBinFileInfo(filename string, checksum string) BinFileInfo {
 	return BinFileInfo{Url: importerBaseUrl + filename, FilePath: path, Checksum: checksum}
 }
 
-func HandleImporterStart() {
-	if !HasValidImporter() {
-		dlErr := DownloadImporter()
-
-		if dlErr != nil {
-			// TODO: show and log error
-		}
-	}
-
-	runErr := RunImporter()
-
-	if runErr != nil {
-		// TODO: show and log error
-	}
-}
-
-func RunImporter() error {
+func StartImporter() error {
 	logger.LogDebug("Enter RunImporter...")
 
 	absInFolder, _ := filepath.Abs("charts\\!import")

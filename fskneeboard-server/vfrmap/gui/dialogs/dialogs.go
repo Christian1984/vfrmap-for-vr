@@ -50,13 +50,7 @@ func ShowTourRestartedSuccessful() {
 }
 
 func ShowImporterDownloadPrompt(callback func(bool)) {
-	dialog.ShowConfirm("PDF Importer", "FSKneeboard's PDF importer requires an external converter in order to work.\nDo you want FSKneeboard to download the converter and continue?", func(b bool) {
-		callback(b)
-	}, *ParentWindow)
-}
-
-func ShowClearImportFolderPrompt(callback func(bool)) {
-	dialog.ShowConfirm("PDF Importer", "This will delete all files and folders inside [FSKneeboard]\\charts\\!import - Do you want to proceed?", func(b bool) {
+	dialog.ShowConfirm("PDF Importer", "FSKneeboard's PDF Import Tool is a separate application that needs to be download first.\nDo you want FSKneeboard to download the converter and continue?\n\n(Alternatively, you may refer to the FSKneeboard documentation to install the Import Tool manually.)", func(b bool) {
 		callback(b)
 	}, *ParentWindow)
 }
