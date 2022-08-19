@@ -53,8 +53,14 @@ func ShowTourRestartedSuccessful() {
 	dialog.ShowInformation("Tour Restarted", "The tutorial tour for the FSKneeboard ingame panel was restarted.\nPlease close and re-open the ingame panel to take the tour.", *ParentWindow)
 }
 
-func ShowImporterDownloadPrompt(callback func(bool)) {
-	dialog.ShowConfirm("PDF Importer", "FSKneeboard's PDF Import Tool is a separate application that needs to be download first.\nDo you want FSKneeboard to download the converter and continue?\n\n(Alternatively, you may refer to the FSKneeboard documentation to install the Import Tool manually.)", func(b bool) {
+func ShowImporterDownloadPrompt(showFreeUserInfo bool, callback func(bool)) {
+	freeUserInfo := ""
+
+	if showFreeUserInfo {
+		freeUserInfo = "\n\n==============================\nFREE USERS, PLEASE NOTE:\n\nThe charts imported with the PDF Importer Tool are supposed to be viewed with the\nFSKneeboard Charts Viewer, which is only available to PRO supporters.\nFREE users may download and use the tool (and the source code),\nbut cannot view the imported charts inside FSKneeboard!\n==============================\n"
+	}
+
+	dialog.ShowConfirm("PDF Importer", "FSKneeboard's PDF Importer Tool is a separate application that needs to be download first."+freeUserInfo+"\nDo you want FSKneeboard to download the importer tool and continue?\n\n(Alternatively, you may refer to the FSKneeboard documentation to install the FSKneeboard Importer Tool manually.)", func(b bool) {
 		callback(b)
 	}, *ParentWindow)
 }

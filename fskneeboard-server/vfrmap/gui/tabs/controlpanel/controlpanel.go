@@ -61,6 +61,14 @@ func UpdateAutosaveStatus(interval int) {
 	autosaveBinding.Set(intervalString)
 }
 
+func startImporter() {
+	err := pdfimport.StartImporter()
+	if err != nil {
+		logger.LogErrorVerbose("Could not start the importer tool, reason: " + err.Error())
+		dialogs.ShowError("Could not start the importer tool. Please refer to the Console Panel and/or logs for details!")
+	}
+}
+
 func processImporterDownloadPromptCallback(proceed bool) {
 	if !proceed {
 		return
@@ -101,7 +109,7 @@ func processImporterDownloadPromptCallback(proceed bool) {
 		return
 	}
 
-	pdfimport.StartImporter()
+	startImporter()
 }
 
 func ControlPanel() *fyne.Container {
@@ -174,17 +182,11 @@ func ControlPanel() *fyne.Container {
 		}
 	}))
 
-	startPdfImporterBtn := widget.NewButtonWithIcon("Launch PDF Import Tool", theme.ComputerIcon(), func() {
+	startPdfImporterBtn := widget.NewButtonWithIcon("Launch PDF Importer Tool", theme.ComputerIcon(), func() {
 		if pdfimport.HasValidImporter() {
-			go func() {
-				err := pdfimport.StartImporter()
-				if err != nil {
-					//TODO: show error
-				}
-			}()
-			return
+			startImporter()
 		} else {
-			dialogs.ShowImporterDownloadPrompt(processImporterDownloadPromptCallback)
+			dialogs.ShowImporterDownloadPrompt(!globals.Pro, processImporterDownloadPromptCallback)
 		}
 	})
 
