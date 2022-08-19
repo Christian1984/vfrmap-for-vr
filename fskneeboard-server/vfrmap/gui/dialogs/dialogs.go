@@ -9,6 +9,10 @@ import (
 
 var ParentWindow *fyne.Window
 
+func ShowProgress(message string) *dialog.ProgressDialog {
+	return dialog.NewProgress("Please wait...", message, *ParentWindow)
+}
+
 func ShowInformation(message string) {
 	dialog.ShowInformation("Info", message, *ParentWindow)
 }

@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
 	"vfrmap-for-vr/vfrmap/application/pdfimport"
@@ -65,9 +66,36 @@ func processImporterDownloadPromptCallback(proceed bool) {
 		return
 	}
 
+	progressDialog := dialogs.ShowProgress("Downloading...")
+	var val float64 = 0
+
+	ticker := time.NewTicker(50 * time.Millisecond)
+	done := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				if val >= 1 {
+					val = 0
+				}
+				val = val + 0.01
+
+				progressDialog.SetValue(val)
+			case <-done:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
+	progressDialog.Show()
+
 	downloadErr := pdfimport.DownloadImporter()
 
-	if downloadErr != nil {
+	progressDialog.Hide()
+	close(done)
+
+	if downloadErr != nil || !pdfimport.HasValidImporter() {
 		logger.LogErrorVerbose("Could not download the importer, reason: " + downloadErr.Error())
 		dialogs.ShowError("Could not download the importer. Please refer to the Console Panel and/or logs for details!")
 		return

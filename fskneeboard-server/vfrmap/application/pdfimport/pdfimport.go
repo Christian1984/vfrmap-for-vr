@@ -16,19 +16,22 @@ var importToolBasePath, _ = filepath.Abs("pdf-importer")
 
 var importToolPath, _ = filepath.Abs(importToolBasePath + "\\" + "pdf-importer.exe")
 
-const importerBaseUrl = "https://github.com/Christian1984/pdf-import-tool/releases/download/v0.0.1/"
+const importerBaseUrl = "https://github.com/Christian1984/pdf-import-tool/releases/download/v1.0.0/"
 
 type BinFileInfo struct {
 	Url      string
 	FilePath string
 	Checksum string
+	Required bool
 }
 
 var DownloadFiles = []BinFileInfo{
-	MakeBinFileInfo("pdf-importer.exe", ""),
-	MakeBinFileInfo("gswin64c.exe", ""),
-	MakeBinFileInfo("gsdll64.dll", ""),
-	MakeBinFileInfo("THIRD-PARTY-LICENSE.md", ""),
+	MakeBinFileInfo("pdf-importer.exe", "620dbf8905e3a40bacf6d8982a7f49de", true),
+	MakeBinFileInfo("gswin64c.exe", "92e8ca9e4cee86db431a6d24c2af380f", true),
+	MakeBinFileInfo("gsdll64.dll", "6b98f56fdd31be73a52778003d11a7c7", true),
+	MakeBinFileInfo("GHOSTSCRIPT-AGPL-LICENSE.md", "", false),
+	MakeBinFileInfo("LICENSE.md", "", false),
+	MakeBinFileInfo("thirdparty.htm", "", false),
 }
 
 type PdfFileInfo struct {
@@ -37,9 +40,9 @@ type PdfFileInfo struct {
 	FileName   string
 }
 
-func MakeBinFileInfo(filename string, checksum string) BinFileInfo {
+func MakeBinFileInfo(filename string, checksum string, required bool) BinFileInfo {
 	path, _ := filepath.Abs(importToolBasePath + "\\" + filename)
-	return BinFileInfo{Url: importerBaseUrl + filename, FilePath: path, Checksum: checksum}
+	return BinFileInfo{Url: importerBaseUrl + filename, FilePath: path, Checksum: checksum, Required: required}
 }
 
 func StartImporter() error {
@@ -60,7 +63,7 @@ func StartImporter() error {
 	cmd := exec.Command(importToolPath, cmdParams...)
 	logger.LogDebug("Import command is: " + cmd.String())
 
-	startErr := cmd.Run()
+	startErr := cmd.Start()
 
 	if startErr != nil {
 		logger.LogErrorVerbose("Could not start PDF-Import-Tool, reason: " + startErr.Error())
@@ -129,11 +132,15 @@ func checksumValid(fi BinFileInfo) bool {
 	isHashString := fmt.Sprintf("%x", isHash)
 	logger.LogDebugVerbose("File " + fi.FilePath + " has md5 hash of [" + isHashString + "], expected hash is [" + fi.Checksum + "]")
 
-	return true
+	return isHashString == fi.Checksum
 }
 
 func HasValidImporter() bool {
 	for _, fi := range DownloadFiles {
+		if !fi.Required {
+			continue
+		}
+
 		if !fileExists(fi.FilePath) {
 			logger.LogWarnVerbose("Local importer binaries not found or incomplete, file: " + fi.FilePath)
 			return false
