@@ -5,6 +5,7 @@ var
   ChartsFolder: String;
   AutosaveFolder: String;
   LogsFolder: String;
+  PdfImporterFolder: String;
   DbFile: String;
   DbLockFile: String;
   LicenseFile: String;
@@ -16,6 +17,7 @@ begin
     ChartsFolder := ExpandConstant('{app}\charts');
     AutosaveFolder := ExpandConstant('{app}\autosave');
     LogsFolder := ExpandConstant('{app}\logs');
+    PdfImporterFolder := ExpandConstant('{app}\pdf-importer');
     DbFile := ExpandConstant('{app}\fskneeboard.db');
     DbLockFile := ExpandConstant('{app}\fskneeboard.db.lock');
     LicenseFile := ExpandConstant('{app}\fskneeboard.lic');
@@ -31,6 +33,8 @@ begin
         DelTree(AutosaveFolder, True, True, True);
       if DirExists(LogsFolder) then
         DelTree(LogsFolder, True, True, True);
+      if DirExists(PdfImporterFolder) then
+        DelTree(PdfImporterFolder, True, True, True);
 
       DeleteFile(DbFile);
       DeleteFile(DbLockFile);
