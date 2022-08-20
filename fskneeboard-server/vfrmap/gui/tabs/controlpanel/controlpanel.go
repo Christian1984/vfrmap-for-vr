@@ -61,6 +61,16 @@ func UpdateAutosaveStatus(interval int) {
 	autosaveBinding.Set(intervalString)
 }
 
+func validateImporter() bool {
+	progressDialog := dialogs.ProgressDialog("Validating Importer...", 10*time.Millisecond)
+
+	progressDialog.Show()
+	valid := pdfimport.HasValidImporter()
+	progressDialog.Hide()
+
+	return valid
+}
+
 func startImporter() {
 	err := pdfimport.StartImporter()
 	if err != nil {
@@ -74,36 +84,13 @@ func processImporterDownloadPromptCallback(proceed bool) {
 		return
 	}
 
-	progressDialog := dialogs.ShowProgress("Downloading...")
-	var val float64 = 0
-
-	ticker := time.NewTicker(50 * time.Millisecond)
-	done := make(chan struct{})
-	go func() {
-		for {
-			select {
-			case <-ticker.C:
-				if val >= 1 {
-					val = 0
-				}
-				val = val + 0.01
-
-				progressDialog.SetValue(val)
-			case <-done:
-				ticker.Stop()
-				return
-			}
-		}
-	}()
+	progressDialog := dialogs.ProgressDialog("Downloading...", 50*time.Millisecond)
 
 	progressDialog.Show()
-
 	downloadErr := pdfimport.DownloadImporter()
-
 	progressDialog.Hide()
-	close(done)
 
-	if downloadErr != nil || !pdfimport.HasValidImporter() {
+	if downloadErr != nil || !validateImporter() {
 		logger.LogErrorVerbose("Could not download the importer, reason: " + downloadErr.Error())
 		dialogs.ShowError("Could not download the importer. Please refer to the Console Panel and/or logs for details!")
 		return
@@ -183,7 +170,7 @@ func ControlPanel() *fyne.Container {
 	}))
 
 	startPdfImporterBtn := widget.NewButtonWithIcon("Launch PDF Importer Tool", theme.ComputerIcon(), func() {
-		if pdfimport.HasValidImporter() {
+		if validateImporter() {
 			startImporter()
 		} else {
 			dialogs.ShowImporterDownloadPrompt(!globals.Pro, processImporterDownloadPromptCallback)

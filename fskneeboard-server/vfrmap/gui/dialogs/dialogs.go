@@ -2,6 +2,7 @@ package dialogs
 
 import (
 	"os"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
@@ -9,8 +10,34 @@ import (
 
 var ParentWindow *fyne.Window
 
-func ShowProgress(message string) *dialog.ProgressDialog {
-	return dialog.NewProgress("Please wait...", message, *ParentWindow)
+func ProgressDialog(message string, progressDelay time.Duration) *dialog.ProgressDialog {
+	dialog := dialog.NewProgress("Please wait...", message, *ParentWindow)
+
+	var val float64 = 0
+
+	ticker := time.NewTicker(progressDelay)
+	done := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				if val >= 1 {
+					val = 0
+				}
+				val = val + 0.01
+
+				dialog.SetValue(val)
+			case <-done:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
+	dialog.SetOnClosed(func() {
+		close(done)
+	})
+	return dialog
 }
 
 func ShowInformation(message string) {
