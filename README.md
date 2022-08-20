@@ -525,11 +525,11 @@ Make sure to place your charts inside the `charts` folder inside the server dire
 
 *Charts Folder*
 
+<div style="page-break-after: always;"></div>
+
 > Please note: 
 >
-> Subfolders starting with an '!' will be ignored by the ingame panel's charts browser. This can be used to temporarily "deactivate" charts that you don't need on a particular flight. The `!import` folder (used by the [PDF Importer](#pdf-import-panel) will be ignored as well.
-
-<div style="page-break-after: always;"></div>
+> Subfolders starting with an '!' will be ignored by the ingame panel's charts browser. This can be used to temporarily "deactivate" charts that you don't need on a particular flight. The `!import` folder (used by the [PDF Importer Tool](#pdf-importer-tool) will be ignored as well.
 
 Your charts folder should look like this:
 
@@ -537,7 +537,7 @@ Your charts folder should look like this:
 
 *Inside Your Charts Folder*
 
-To add documents to your charts folder, you can simply copy and paste any .PNG image file from your computer into this folder. Alternatively, you can use FSKneeboard's [PDF Importer](#pdf-import-panel) as described [here](#pdf-import-panel)
+To add documents to your charts folder, you can simply copy and paste any .PNG image file from your computer into this folder. Alternatively, you can use FSKneeboard's [PDF Importer Tool](#pdf-importer-tool) as described [here](#pdf-importer-tool)
 
 <div style="page-break-after: always;"></div>
 
@@ -576,6 +576,46 @@ You can take up to 5 notes at a time and switch between them using the index but
 ## Taking Notes With Tablet Computers
 
 You can also connect a tablet computer to FSKneeboard (see [Connecting to FSKneeboard With Your Browser, a Second PC or Tablet](#connecting-to-fskneeboard-with-your-browser-a-second-pc-or-tablet) below) and take notes with your fingers. Notes will be instantly synced across devices, allowing you to take notes with your actual, physical tablet right on your knee and have them transferred over into your VR cockpit!
+
+## PDF Importer Tool
+
+With the PDF importer you can convert and import any PDF document (be it a chart, a checklist, notes etc.) into your [FSKneeboard charts folder](#charts-viewer). To start the PDF Importer Tool, click the button labelled Launch PDF Importer Tool which can be found on the [Control Panel](#control-panel).
+
+![FSKneeboard - PDF Import Panel](screenshots/fskneeboard-gui-pdfimporter-190.png)
+
+*FSKneeboard - PDF Importer*
+
+### Downloading The PDF Importer Tool
+
+The FSKneeboard Importer Tool is a separate application and does NOT come preinstalled with FSKneeboard itself. (This descision had to be made due to licensing implications.) If you are using the PDF Importer Tool for the very first time, you will be prompted to download the required application, which is a separate module distributed under the AGPL license.
+
+![FSKneeboard - PDF Import Panel, Download Prompt](screenshots/fskneeboard-gui-pdfimporter-prompt-190.png)
+
+*FSKneeboard - PDF Import Panel, Download Prompt*
+
+- Click **YES** to allow FSKneeboard to download the required files for you.
+- Click **NO** to prevent the automatic download and abort the import process. Alternatively, you can download the importer from [GitHub](https://github.com/Christian1984/pdf-import-tool/releases/tag/v1.0.0) and then manually place the downloaded files inside the folder _<FSKneeboard-Install-Directory>/pdf-importer_. Then start the import again.
+
+### Importing PDF Documents Into FSKneeboard
+
+There are 3 buttons on the top that allow you to manage your chart import folder.
+
+- **Open Import Directory**: Click this button to open the `!import` directory. This is the folder where you can copy and paste all the PDF documents to which you want to import. Inside the `!import` directory you can also create subfolders to manage your imported documents properly.
+- **Refresh File List**: After you have placed your PDF documents inside the `!import` folder, click this button to update the file list below.
+- **Clear Import Directory**: After all PDF files have been successfully imported, you can click this button to wipe the `!import` directory from any documents to make it ready for the next import.
+
+The middle section shows a list of all documents that reside inside your `!import` folder. If this list stays empty, make sure to click the **Open Import Directory** button first to verify that your files are in the correct folder. Then click **Refresh File List**.
+
+> Please note: This list only acts as a tool for you to see which files FSKneeboard has detected in your !import folder. You CANNOT select or unselect any files here.
+
+In the bottom section there are 2 more buttons:
+
+- **Start Import**: Click here to import the files that currently reside inside your `!import` folder.
+- **Open Output Directory**: Click here to open the _imported_ directory. You can now grab your files from here and organize them inside your _charts_ folder as you like (or simply leave them here).
+
+> REMARKS:
+> 
+> Please note that FREE users may also download and use the importer tool. The tool itself is free software and the tool's source code is open source and available under the GNU Affero General Public License for anyone to tinker with, learn from and build upon. The [FSKneeboard Charts Viewer](#charts-viewer) itself, that most people are going to use the imported charts with, is, however, only available to PRO supporters.
 
 ## Autosave
 
@@ -629,7 +669,7 @@ The control panel offers a general overview over the status of the FSKneeboard s
 
 It also allows you start your local copy of Microsoft Flight Simulator as long as you have configured your Flight Simulator version on the Settings Panel.
 
-The *IP address* found in the **Server Status** row can be clicked to open FSKneeboard in your local web browser.
+The **IP address** found in the **Server Status** row can be clicked to open FSKneeboard in your local web browser.
 
 If a new version of FSKneeboard is available, a notification on the bottom of the window will let you know.
 
@@ -679,38 +719,6 @@ You can customize your hotkey by selecting any letter from the dropdown menu and
 Select `[Off]` to completely deactivate the hotkey in question.
 
 <div style="page-break-after: always;"></div>
-
-### PDF Import Panel
-
-With the PDF import panel you can convert and import any PDF document (be it a chart, a checklist, notes etc.) into your [FSKneeboard charts folder](#charts-viewer).
-
-![FSKneeboard - PDF Import Panel](screenshots/fskneeboard-gui-pdfimportpanel-190.png)
-
-*FSKneeboard - PDF Import Panel*
-
-There are 3 buttons on the top that allow you to manage your chart import folder.
-
-- **Open Import Directory**: Click this button to open the `!import` directory. This is the folder where you can copy and paste all the PDF documents to which you want to import. Inside the `!import` directory you can also create subfolders to manage your imported documents properly.
-- **Refresh File List**: After you have placed your PDF documents inside the `!import` folder, click this button to update the file list below.
-- **Clear Import Directory**: After all PDF files have been successfully imported, you can click this button to wipe the `!import` directory from any documents to make it ready for the next import.
-
-The middle section shows a list of all documents that reside inside your `!import` folder. If this list stays empty, make sure to click the *Open Import Directory* button first to verify that your files are in the correct folder. Then click *Refresh File List*. *Please note: This list only acts as a tool for you to see which files FSKneeboard has detected in your !import folder. You CANNOT select or unselect any files here.*
-
-In the bottom section there are 2 more buttons:
-
-- **Start Import**: Click here to import the files that currently reside inside your `!import` folder.
-- **Open Output Directory**: Click here to open the *imported* directory. You can now grab your files from here and organize them inside your *charts* folder as you like (or simply leave them here).
-
-#### Downloading The PDF Importer Module
-
-If you are using the PDF importer for the very first time, you will be prompted to download the required import module, which is a separate module distributed under the AGPL license.
-
-![FSKneeboard - PDF Import Panel, Download Prompt](screenshots/fskneeboard-gui-pdfimportpanel-prompt-190.png)
-
-*FSKneeboard - PDF Import Panel, Download Prompt*
-
-- Click **YES** to allow FSKneeboard to download the required files for you.
-- Click **NO** to prevent the automatic download and abort the import process. Alternatively, you can download the importer from [GitHub](https://github.com/Christian1984/pdf-importer/releases/tag/v1.1.1) and then manually place the downloaded files inside the folder *<FSKneeboard-Install-Directory>/pdf-importer*. Then start the import again.
 
 ### Console Panel
 
@@ -794,7 +802,7 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 ## "I've placed my pdf-charts in the charts directory but I can't see them inside the sim!"
 
-> Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. FSKneeboards [PDF Converter](#pdf-import-panel) does that for you. Also, there is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
+> Due to the limited capabilities of the browser engine that is embedded in Flight Simulator, the charts viewer can only display charts in png format. You will have to convert your charts. FSKneeboards [PDF Converter](#pdf-importer-tool) does that for you. Also, there is a multitude of pdf-to-png converters available online for free. Alternatively, you may want to take a look at GIMP, which is a freeware that also enables you to convert pdf files to png locally. If you know about other options, please reach out and let me know so that I can add them to this readme file.
 
 ## "The OpenAIP map layer doesn't work!"
 
@@ -846,7 +854,7 @@ Great work, guys! Thanks for sharing your work with us!!!
 
 ### Optional 3rd Party Modules
 
-- [PDF Importer](https://github.com/Christian1984/pdf-importer)
+- [PDF Importer Tool](https://github.com/Christian1984/pdf-import-tool)
 
 ### (PRO) Sample Documents
 
