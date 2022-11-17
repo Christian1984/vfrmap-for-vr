@@ -16,7 +16,8 @@ const MODES = {
     add_track_markers: 0,
     delete_track_markers: 1,
     teleport: 2,
-    off: 3
+    add_tool_pin: 3,
+    off: 4
 }
 
 const BEARING_MODES = {
@@ -518,9 +519,13 @@ function initMap() {
     });
 
     map.on("click", function(e) {
+        console.log(mode_options.mode);
         switch(mode_options.mode) {
             case MODES.add_track_markers:
                 waypoints.add_marker(e.latlng);
+                break;
+            case MODES.add_tool_pin:
+                waypoints.add_tool_pin(e.latlng);
                 break;
             case MODES.teleport:
                 set_teleport_marker(e.latlng);
@@ -972,6 +977,9 @@ function registerHandlers() {
             switch (mode_control_btns[i].value) {
                 case "add-marker":
                     mode_options.mode = MODES.add_track_markers;
+                    break;
+                case "add-tool-pin":
+                    mode_options.mode = MODES.add_tool_pin;
                     break;
                 case "remove-marker":
                     mode_options.mode = MODES.delete_track_markers;

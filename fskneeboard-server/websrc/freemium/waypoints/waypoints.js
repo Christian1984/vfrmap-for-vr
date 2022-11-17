@@ -35,6 +35,10 @@ export default class Waypoints {
         //intentionally left empty
     }
 
+    add_tool_pin() {
+        //intentionally left empty
+    }
+
     has_waypoints() {
         return false;
     }
