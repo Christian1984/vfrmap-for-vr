@@ -572,7 +572,7 @@ function initMap() {
 
         reloadTimeout = setTimeout(() => {
             Logger.logDebug("maps.js => reloadTimeout fired!");
-            waypoints.load_trackdata();
+            waypoints.load_state();
         }, reloadDelay);
     });
 }
@@ -799,7 +799,7 @@ function loadStoredState() {
             }
         
             update_visibility_buttons();
-            waypoints.load_trackdata();
+            waypoints.load_state();
         }
     );
 
@@ -958,7 +958,8 @@ function registerHandlers() {
     if (confirm_trash_waypoints_btn) {
         confirm_trash_waypoints_btn.addEventListener("click", () => {
             if (waypoints.is_mode_available()) {
-                waypoints.clear_track(true);
+                waypoints.clear_track(true, true);
+                waypoints.clear_measure_tool_data(true, true);
             }
             hide_trash_waypoints_confirm_dialog();
         });

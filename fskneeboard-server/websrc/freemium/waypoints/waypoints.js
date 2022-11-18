@@ -11,7 +11,15 @@ export default class Waypoints {
         show_infobox_callback(false);
     }
 
+    load_measure_tool() {
+        //intentionally left empty
+    }
+
     load_trackdata() {
+        //intentionally left empty
+    }
+
+    load_state() {
         //intentionally left empty
     }
 
@@ -24,6 +32,10 @@ export default class Waypoints {
     }
     
     set_rubberband_visibility() {
+        //intentionally left empty
+    }
+
+    clear_measure_tool_data() {
         //intentionally left empty
     }
 
