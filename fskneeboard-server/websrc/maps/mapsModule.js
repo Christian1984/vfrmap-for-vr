@@ -519,7 +519,6 @@ function initMap() {
     });
 
     map.on("click", function(e) {
-        console.log(mode_options.mode);
         switch(mode_options.mode) {
             case MODES.add_track_markers:
                 waypoints.add_marker(e.latlng);
