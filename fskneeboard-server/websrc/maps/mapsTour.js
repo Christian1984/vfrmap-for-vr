@@ -91,8 +91,18 @@ const mapsTour = () => {
     });
 
     tour.addStep({
-        title: "Remove Waypoints",
-        text: "Click this icon to activate the <b>Remove Waypoint Mode</b>. Next, click any waypoint to remove it from your current flight plan.<br /><br />FYI: The <b>Active Waypoint</b> of your current flight plan will get removed automatically once you arrive at a close proximity of that waypoint (i.e. less than .5 NM).",
+        title: "Add Measurement Tool Pins (PRO)",
+        text: "Click here to activate the <b>Add Measurement Tool Pins Mode</b>. You can now click anywhere on the map to create up to 3 \"tool pins\".<br /><br />Distances and directions between two markers will automatically be drawn and calculated. Once you place the third pin, FSKneeboard will also calculate the angle between the \"rulers\".",
+        attachTo: {
+            element: "#tour-add-tool-pin",
+            on: "left"
+        }
+    });
+
+
+    tour.addStep({
+        title: "Remove Waypoints and Tool Pins (PRO)",
+        text: "Click this icon to activate the <b>Remove Waypoints and Tool Pins Mode</b>. Next, click any waypoint or tool pin to remove it from your current flight plan.<br /><br />FYI: The <b>Active Waypoint</b> of your current flight plan will get removed automatically once you arrive at a close proximity of that waypoint (i.e. less than .5 NM).",
         attachTo: {
             element: "#tour-remove-waypoints",
             on: "left"
