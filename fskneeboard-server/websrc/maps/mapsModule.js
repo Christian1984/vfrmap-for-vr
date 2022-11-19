@@ -40,8 +40,6 @@ const AC_COLOR = {
 let map;
 let marker;
 let markerTeleport;
-let markerIcon;
-let popup;
 let ws;
 let teleport_popup;
 let waypoints;
@@ -58,6 +56,11 @@ let last_report = {};
 const initial_pos = L.latLng(50.8694,7.1389);
 const autoremoval_proximity_threshold = 0.5; //miles
 
+let trail_hd_primary = [];
+let trail_hd_secondary = [];
+let trail_sd = [];
+const trail = L.polyline([], { color: "red", dashArray: "1, 10" });
+
 let manualBearingControl;
 let bearingMode = BEARING_MODES.north_up;
 
@@ -68,7 +71,8 @@ let wind_indicator_direction;
 let wind_indicator_velocity;
 
 let reloadTimeout = undefined;
-const reloadDelay = 250;
+const RELOAD_DELAY = 250;
+const TRAIL_UPDATE_INTERVAL_MS = 5000;
 
 const map_resolutions = {
     high: {
@@ -202,6 +206,9 @@ function updateMap() {
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
 
+    trail_hd_primary.push(pos);
+    trail.setLatLngs([trail_hd_primary, trail_hd_secondary, trail_sd]);
+
     if (follow_plane) {
         map.panTo(pos);
     }
@@ -225,6 +232,28 @@ ws.onmessage = function(e) {
         updateMap();
     }
 };
+
+function updateDummyData() {
+    last_report.longitude += (Math.random() - 0.25) * 0.01;
+    last_report.latitude += (Math.random() - 0.25) * 0.01;
+    //last_report.heading += 1;
+
+    if (map != null) {
+        updateMap()
+    }
+}
+
+function initDummyRun() {
+    last_report = {
+        latitude: 0,
+        longitude: 0,
+        heading: 0
+    }
+
+    setInterval(() => updateDummyData(), 25);
+}
+
+initDummyRun();
 
 function updateIcon() {
     let iconType = icons.planes;
@@ -501,6 +530,9 @@ function initMap() {
 
     waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold, 1000);
 
+    trail.addTo(map);
+    setInterval(() => update_polyline_data(), TRAIL_UPDATE_INTERVAL_MS);
+
     marker.on("click", function() {
         toggle_rubberband();
     });
@@ -572,7 +604,7 @@ function initMap() {
         reloadTimeout = setTimeout(() => {
             Logger.logDebug("maps.js => reloadTimeout fired!");
             waypoints.load_state();
-        }, reloadDelay);
+        }, RELOAD_DELAY);
     });
 }
 
@@ -704,6 +736,20 @@ function saveBearingMode() {
 
 function save_rubberband_visibility() {
     store_data("rubberband_visibility", rubberband_visibility);
+}
+
+function update_polyline_data() {
+    const tmp = trail_hd_secondary;
+    trail_hd_secondary = trail_hd_primary;
+    trail_hd_primary = [];
+
+    if (tmp.length == 0) return;
+
+    if (trail_sd.length == 0) {
+        trail_sd.push(tmp[0]);
+    }
+
+    trail_sd.push(tmp[tmp.length - 1]);
 }
 
 function loadStoredState() {
