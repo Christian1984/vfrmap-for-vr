@@ -193,8 +193,15 @@
                         }
                     }
                 }
+
+                &.children-6 {
+                    ul > li > span {
+                        &.tooltip {
+                            right: 6 * $submenu-width;
+                        }
+                    }
+                }
             }
-    
         }
 
         &:hover {

@@ -56,10 +56,16 @@ let last_report = {};
 const initial_pos = L.latLng(50.8694,7.1389);
 const autoremoval_proximity_threshold = 0.5; //miles
 
-let trail_hd_primary = [];
-let trail_hd_secondary = [];
+let trail_hd = [];
 let trail_sd = [];
-const trail = L.polyline([], { color: "red", dashArray: "1, 10" });
+const TRAIL_HD_BUFFER_SIZE = 5000;
+const TRAIL_UPDATE_INTERVAL_MS = 2000;
+const TRAIL_MIN_DST_M = 50;
+const trail = L.polyline([], { 
+    color: "red",
+    weight: 1,
+    //dashArray: "1, 10"
+});
 
 let manualBearingControl;
 let bearingMode = BEARING_MODES.north_up;
@@ -72,7 +78,6 @@ let wind_indicator_velocity;
 
 let reloadTimeout = undefined;
 const RELOAD_DELAY = 250;
-const TRAIL_UPDATE_INTERVAL_MS = 5000;
 
 const map_resolutions = {
     high: {
@@ -136,6 +141,18 @@ function open_in_google_maps() {
     window.open(url,"_blank");
 }
 
+function hide_trail(hide = true) {
+    if (!map || !trail) return;
+
+    if (hide) {
+        trail.removeFrom(map);
+    }
+    else {
+        trail.addTo(map);
+    }
+
+}
+
 function hide_wind_indicator(hide = true) {
     if (wind_indicator == null) return;
 
@@ -147,7 +164,7 @@ function hide_wind_indicator(hide = true) {
     }
 }
 
-function update_wind_indicator() {
+function updateWindIndicator() {
     if (wind_indicator_gauge != null) {
         wind_indicator_gauge.style.transform = "rotate(" + map.getBearing() + "deg)";
     }
@@ -206,15 +223,36 @@ function updateMap() {
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
 
-    trail_hd_primary.push(pos);
-    trail.setLatLngs([trail_hd_primary, trail_hd_secondary, trail_sd]);
+    if (trail_hd.length == 0) {
+        trail_hd.push(pos);
+    }
+    else {
+        const latest = trail_hd[trail_hd.length - 1];
+        const dst = latest.distanceTo(pos);
+
+        if (dst >= TRAIL_MIN_DST_M) {
+            trail_hd.push(pos);
+        }
+    }
+
+    if (trail_hd.length > TRAIL_HD_BUFFER_SIZE) {
+        const oldest_hd = trail_hd.shift();
+        if (trail_sd.length < 2) {
+            trail_sd.push(oldest_hd);
+        }
+        else {
+            trail_sd[trail_sd.length - 1] = oldest_hd;
+        }
+    }
+
+    trail.setLatLngs([trail_sd, trail_hd]);
 
     if (follow_plane) {
         map.panTo(pos);
     }
 
     updateBearing();
-    update_wind_indicator();
+    updateWindIndicator();
 }
 
 ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/ws");
@@ -233,9 +271,19 @@ ws.onmessage = function(e) {
     }
 };
 
+/*
+let dummyV = 0.001;
+let dummyH = Math.PI / 4;
+const deltaDummyH = 0.01;
+
 function updateDummyData() {
-    last_report.longitude += (Math.random() - 0.25) * 0.01;
-    last_report.latitude += (Math.random() - 0.25) * 0.01;
+    dummyH += Math.random() * 3 * deltaDummyH - deltaDummyH;
+
+    last_report.longitude += dummyV * Math.sin(dummyH);
+    last_report.latitude += dummyV * Math.cos(dummyH);
+    last_report.heading = dummyH * 180 / Math.PI;
+    //last_report.longitude += (Math.random() - 0.25) * 0.005;
+    //last_report.latitude += (Math.random() - 0.25) * 0.005;
     //last_report.heading += 1;
 
     if (map != null) {
@@ -254,6 +302,7 @@ function initDummyRun() {
 }
 
 initDummyRun();
+*/
 
 function updateIcon() {
     let iconType = icons.planes;
@@ -531,7 +580,7 @@ function initMap() {
     waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold, 1000);
 
     trail.addTo(map);
-    setInterval(() => update_polyline_data(), TRAIL_UPDATE_INTERVAL_MS);
+    setInterval(() => update_trail_sd_legs(), TRAIL_UPDATE_INTERVAL_MS);
 
     marker.on("click", function() {
         toggle_rubberband();
@@ -579,7 +628,7 @@ function initMap() {
     });
 
     map.on("rotate", function() {
-        update_wind_indicator();
+        updateWindIndicator();
     });
 
     map.whenReady(function() {
@@ -590,7 +639,7 @@ function initMap() {
         loadStoredState();
         activate_default_mode();
 
-        update_wind_indicator();
+        updateWindIndicator();
     });
 
     window.addEventListener("resize", () => {
@@ -738,18 +787,13 @@ function save_rubberband_visibility() {
     store_data("rubberband_visibility", rubberband_visibility);
 }
 
-function update_polyline_data() {
-    const tmp = trail_hd_secondary;
-    trail_hd_secondary = trail_hd_primary;
-    trail_hd_primary = [];
+function update_trail_sd_legs() {
+    //console.log("update_trail_sd_legs: hd.length", trail_hd.length, "- sd.length", trail_sd.length);
 
-    if (tmp.length == 0) return;
+    if (trail_sd.length == 0) return;
 
-    if (trail_sd.length == 0) {
-        trail_sd.push(tmp[0]);
-    }
-
-    trail_sd.push(tmp[tmp.length - 1]);
+    const keyframe = trail_sd[trail_sd.length - 1];
+    trail_sd.push(keyframe);
 }
 
 function loadStoredState() {
@@ -784,7 +828,8 @@ function loadStoredState() {
         "bearing_mode",
         "rubberband_visibility",
         "n_active_map",
-        "wind_indicator_visibility"
+        "wind_indicator_visibility",
+        "trail_visibility"
     ];
 
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
@@ -841,6 +886,12 @@ function loadStoredState() {
             const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
             if (data.wind_indicator_visibility != null && data.wind_indicator_visibility == "false" && wind_indicator_toggle != null) {
                 wind_indicator_toggle.click();
+            }
+
+            console.log("data.trail_visibility", data.trail_visibility);
+            const trail_toggle = document.querySelector("#trail-toggle");
+            if (data.trail_visibility != null && data.trail_visibility == "false" && trail_toggle != null) {
+                trail_toggle.click();
             }
         
             update_visibility_buttons();
@@ -1099,6 +1150,14 @@ function registerHandlers() {
         wind_indicator_btn.addEventListener("change", () => {
             hide_wind_indicator(!wind_indicator_btn.checked);
             store_data("wind_indicator_visibility", wind_indicator_btn.checked);
+        })
+    }
+
+    const trail_btn = document.querySelector("#trail-toggle");
+    if (trail_btn) {
+        trail_btn.addEventListener("change", () => {
+            hide_trail(!trail_btn.checked);
+            store_data("trail_visibility", trail_btn.checked);
         })
     }
 
