@@ -138,7 +138,7 @@ const mapsTour = () => {
 
     tour.addStep({
         title: "Visibility Options",
-        text: "With these buttons you can set one of three <b>Visibility Options</b> for your aircraft's representation on the map <ul><li><i class='fas fa-eye-slash'></i> renders your own aircraft's position <b>invisible</b> for a real 'paper map on kneeboard' navigation experience</li><li><i class='fas fa-plane fa-flip-horizontal'></i> shows your aircraft's location represented by an <b>Aeroplane Icon</b></li><li><i class='fas fa-helicopter fa-flip-horizontal'></i> shows your aircraft's location represented by an <b>Helicopter Icon</b></li></ul>Finally, <i class='fas fa-wind'></i> allows you to show or hide the <b>Wind Indicator</b> in the upper left corner of the map module.",
+        text: "With these buttons you can set one of three <b>Visibility Options</b> for your aircraft's representation on the map <ul><li><i class='fas fa-eye-slash'></i> renders your own aircraft's position <b>invisible</b> for a real 'paper map on kneeboard' navigation experience</li><li><i class='fas fa-plane fa-flip-horizontal'></i> shows your aircraft's location represented by an <b>Aeroplane Icon</b></li><li><i class='fas fa-helicopter fa-flip-horizontal'></i> shows your aircraft's location represented by an <b>Helicopter Icon</b></li></ul>Below, you can see two toggles:<ul><li><i class='fas fa-wind'></i> allows you to show or hide the <b>Wind Indicator</b> in the upper left corner of the map module.</li><li><li><i class='fas fa-route'> toggles the visibility of the <b>Trail Line</b> that tracks the path you have travelled so far.</i></li></ul>",
         attachTo: {
             element: "#tour-visibility",
             on: "left"

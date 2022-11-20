@@ -271,20 +271,22 @@ ws.onmessage = function(e) {
     }
 };
 
-/*
 let dummyV = 0.001;
 let dummyH = Math.PI / 4;
+let turnLeft = true;
 const deltaDummyH = 0.01;
 
 function updateDummyData() {
-    dummyH += Math.random() * 3 * deltaDummyH - deltaDummyH;
+    if (Math.random() > 0.995) {
+        turnLeft = !turnLeft;
+    }
+
+    const dir = turnLeft ? -1 : 1;
+    dummyH += dir * (Math.random() * 3 * deltaDummyH - deltaDummyH);
 
     last_report.longitude += dummyV * Math.sin(dummyH);
     last_report.latitude += dummyV * Math.cos(dummyH);
     last_report.heading = dummyH * 180 / Math.PI;
-    //last_report.longitude += (Math.random() - 0.25) * 0.005;
-    //last_report.latitude += (Math.random() - 0.25) * 0.005;
-    //last_report.heading += 1;
 
     if (map != null) {
         updateMap()
@@ -293,16 +295,15 @@ function updateDummyData() {
 
 function initDummyRun() {
     last_report = {
-        latitude: 0,
-        longitude: 0,
+        latitude: initial_pos.lat,
+        longitude: initial_pos.lng,
         heading: 0
     }
 
     setInterval(() => updateDummyData(), 25);
 }
 
-initDummyRun();
-*/
+//initDummyRun();
 
 function updateIcon() {
     let iconType = icons.planes;
@@ -787,6 +788,15 @@ function save_rubberband_visibility() {
     store_data("rubberband_visibility", rubberband_visibility);
 }
 
+function clear_trail_data() {
+    trail_sd = [];
+    trail_hd = [];
+
+    trail.setLatLngs([trail_sd, trail_hd]);
+
+    // TODO: clear server side data
+}
+
 function update_trail_sd_legs() {
     //console.log("update_trail_sd_legs: hd.length", trail_hd.length, "- sd.length", trail_sd.length);
 
@@ -942,13 +952,7 @@ function registerHandlers() {
     const trash_waypoints_btn = document.querySelector("#trash-waypoints");
     if (trash_waypoints_btn) {
         trash_waypoints_btn.addEventListener("click", () => {
-            if (!waypoints.is_mode_available()) {
-                waypoints.activate_mode_failed(hide_premium_info);
-                activate_default_mode();
-            }
-            else {
-                hide_trash_waypoints_confirm_dialog(false);
-            }
+            hide_trash_waypoints_confirm_dialog(false);
         });
     }
 
@@ -1057,6 +1061,9 @@ function registerHandlers() {
                 waypoints.clear_track(true, true);
                 waypoints.clear_measure_tool_data(true, true);
             }
+
+            clear_trail_data();
+
             hide_trash_waypoints_confirm_dialog();
         });
     }
