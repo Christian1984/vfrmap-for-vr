@@ -6,6 +6,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
+	"math/rand"
 	"net/http"
 	"os"
 	"os/signal"
@@ -38,6 +40,7 @@ import (
 )
 
 var started = false
+var mockData = true
 var autosaveTick = time.NewTicker(9999 * time.Minute)
 
 type Report struct {
@@ -108,6 +111,51 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 
 	size := simconnect.DWORD(3 * 8) // 2 * 8 bytes
 	s.SetDataOnSimObject(defineID, simconnect.OBJECT_ID_USER, 0, 0, size, unsafe.Pointer(&buf[0]))
+}
+
+var mockV = 0.005
+var mockH = math.Pi / 4
+
+const keepTurnDirChance = 0.995
+const deltaMockH = 0.05
+
+var mockLat = 50.8694
+var mockLng = 7.1389
+var turnLeft = true
+
+func updateAndBroadcastMockData(ws *websockets.Websocket) {
+	if rand.Float32() > keepTurnDirChance {
+		turnLeft = !turnLeft
+	}
+
+	dir := 1.0
+	if turnLeft {
+		dir = -1.0
+	}
+
+	mockH += dir * (rand.Float64()*3*deltaMockH - deltaMockH)
+	hdgDeg := mockH * 180 / math.Pi
+
+	mockLng += mockV * math.Sin(mockH)
+	mockLat += mockV * math.Cos(mockH)
+
+	//fmt.Println("hdg:", hdgDeg, ", lat/lng:", mockLat, "/", mockLng)
+
+	ws.Broadcast(map[string]interface{}{
+		"type":           "plane",
+		"latitude":       mockLat,
+		"longitude":      mockLng,
+		"altitude":       fmt.Sprintf("%.0f", 5000.0),
+		"heading":        hdgDeg,
+		"airspeed":       fmt.Sprintf("%.0f", 500.0),
+		"airspeed_true":  fmt.Sprintf("%.0f", 500.0),
+		"vertical_speed": fmt.Sprintf("%.0f", 0.0),
+		"flaps":          fmt.Sprintf("%.0f", 0.0),
+		"trim":           fmt.Sprintf("%.1f", 0.0),
+		"rudder_trim":    fmt.Sprintf("%.1f", 0.0),
+		"wind_direction": fmt.Sprintf("%.0f", 0.0),
+		"wind_velocity":  fmt.Sprintf("%.0f", 10.0),
+	})
 }
 
 func ShutdownWithPrompt() {
@@ -499,11 +547,11 @@ func StartFskServer() {
 			}
 
 		case <-planePositionTick.C:
-			if s == nil {
-				continue
+			if mockData {
+				updateAndBroadcastMockData(ws)
+			} else if s == nil {
+				report.RequestData(s)
 			}
-
-			report.RequestData(s)
 
 		case <-trafficPositionTick.C:
 			if s == nil {
