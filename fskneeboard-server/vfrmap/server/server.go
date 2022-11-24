@@ -40,8 +40,35 @@ import (
 )
 
 var started = false
-var mockData = true
 var autosaveTick = time.NewTicker(9999 * time.Minute)
+
+var mockV = 0.005
+var mockH = math.Pi / 4
+
+const keepTurnDirChance = 0.995
+const deltaMockH = 0.05
+
+var mockLat = 50.8694
+var mockLng = 7.1389
+var turnLeft = true
+
+const trailDataHdCapacity = 3000
+const trailDataSdResolution = 20
+
+var trail = Trail{
+	TrailDataHd: []TrailDataPt{},
+	TrailDataSd: []TrailDataPt{},
+}
+
+type TrailDataPt struct {
+	Latitude  float64 `json:"lat"`
+	Longitude float64 `json:"lng"`
+}
+
+type Trail struct {
+	TrailDataHd []TrailDataPt `json:"TrailDataHd"`
+	TrailDataSd []TrailDataPt `json:"TrailDataSd"`
+}
 
 type Report struct {
 	simconnect.RecvSimobjectDataByType
@@ -64,6 +91,34 @@ func (r *Report) RequestData(s *simconnect.SimConnect) {
 	defineID := s.GetDefineID(r)
 	requestID := defineID
 	s.RequestDataOnSimObjectType(requestID, defineID, 0, simconnect.SIMOBJECT_TYPE_USER)
+}
+
+func (r *Report) MockData() {
+	if rand.Float32() > keepTurnDirChance {
+		turnLeft = !turnLeft
+	}
+
+	dir := 1.0
+	if turnLeft {
+		dir = -1.0
+	}
+
+	mockH += dir * (rand.Float64()*3*deltaMockH - deltaMockH)
+	hdgDeg := mockH * 180 / math.Pi
+
+	mockLng += mockV * math.Sin(mockH)
+	mockLat += mockV * math.Cos(mockH)
+
+	//fmt.Println("hdg:", hdgDeg, ", lat/lng:", mockLat, "/", mockLng)
+
+	r.Latitude = mockLat
+	r.Longitude = mockLng
+	r.Heading = hdgDeg
+
+	r.Altitude = 5000
+	r.Airspeed = 500
+	r.AirspeedTrue = 500
+	r.WindDirection = 10
 }
 
 type TrafficReport struct {
@@ -113,49 +168,45 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 	s.SetDataOnSimObject(defineID, simconnect.OBJECT_ID_USER, 0, 0, size, unsafe.Pointer(&buf[0]))
 }
 
-var mockV = 0.005
-var mockH = math.Pi / 4
-
-const keepTurnDirChance = 0.995
-const deltaMockH = 0.05
-
-var mockLat = 50.8694
-var mockLng = 7.1389
-var turnLeft = true
-
-func updateAndBroadcastMockData(ws *websockets.Websocket) {
-	if rand.Float32() > keepTurnDirChance {
-		turnLeft = !turnLeft
+func (r *Report) process(ws *websockets.Websocket) {
+	if r.Latitude == 0 && r.Longitude == 0 {
+		return
 	}
 
-	dir := 1.0
-	if turnLeft {
-		dir = -1.0
+	td := TrailDataPt{
+		Latitude:  r.Latitude,
+		Longitude: r.Longitude,
+	}
+	trail.TrailDataHd = append(trail.TrailDataHd, td)
+
+	if len(trail.TrailDataSd) == 0 {
+		trail.TrailDataSd = append(trail.TrailDataSd, td)
 	}
 
-	mockH += dir * (rand.Float64()*3*deltaMockH - deltaMockH)
-	hdgDeg := mockH * 180 / math.Pi
+	if len(trail.TrailDataHd) > trailDataHdCapacity {
+		trail.TrailDataSd = append(trail.TrailDataSd, trail.TrailDataHd[0])
+		trail.TrailDataHd = trail.TrailDataHd[trailDataSdResolution:]
 
-	mockLng += mockV * math.Sin(mockH)
-	mockLat += mockV * math.Cos(mockH)
-
-	//fmt.Println("hdg:", hdgDeg, ", lat/lng:", mockLat, "/", mockLng)
+		logger.LogInfoVerbose("len(trail.TrailDataHd)" + strconv.Itoa(len(trail.TrailDataHd)))
+		logger.LogInfoVerbose("len(trail.TrailDataSd)" + strconv.Itoa(len(trail.TrailDataSd)))
+	}
 
 	ws.Broadcast(map[string]interface{}{
 		"type":           "plane",
-		"latitude":       mockLat,
-		"longitude":      mockLng,
-		"altitude":       fmt.Sprintf("%.0f", 5000.0),
-		"heading":        hdgDeg,
-		"airspeed":       fmt.Sprintf("%.0f", 500.0),
-		"airspeed_true":  fmt.Sprintf("%.0f", 500.0),
-		"vertical_speed": fmt.Sprintf("%.0f", 0.0),
-		"flaps":          fmt.Sprintf("%.0f", 0.0),
-		"trim":           fmt.Sprintf("%.1f", 0.0),
-		"rudder_trim":    fmt.Sprintf("%.1f", 0.0),
-		"wind_direction": fmt.Sprintf("%.0f", 0.0),
-		"wind_velocity":  fmt.Sprintf("%.0f", 10.0),
+		"latitude":       r.Latitude,
+		"longitude":      r.Longitude,
+		"altitude":       fmt.Sprintf("%.0f", r.Altitude),
+		"heading":        r.Heading,
+		"airspeed":       fmt.Sprintf("%.0f", r.Airspeed),
+		"airspeed_true":  fmt.Sprintf("%.0f", r.AirspeedTrue),
+		"vertical_speed": fmt.Sprintf("%.0f", r.VerticalSpeed),
+		"flaps":          fmt.Sprintf("%.0f", r.Flaps),
+		"trim":           fmt.Sprintf("%.1f", r.Trim),
+		"rudder_trim":    fmt.Sprintf("%.1f", r.RudderTrim),
+		"wind_direction": fmt.Sprintf("%.0f", r.WindDirection),
+		"wind_velocity":  fmt.Sprintf("%.0f", r.WindVelocity),
 	})
+
 }
 
 func ShutdownWithPrompt() {
@@ -547,7 +598,8 @@ func StartFskServer() {
 
 		case <-planePositionTick.C:
 			if globals.MockData {
-				updateAndBroadcastMockData(ws)
+				report.MockData()
+				report.process(ws)
 			} else if s != nil {
 				report.RequestData(s)
 			}
@@ -633,21 +685,7 @@ func StartFskServer() {
 						}
 					*/
 
-					ws.Broadcast(map[string]interface{}{
-						"type":           "plane",
-						"latitude":       report.Latitude,
-						"longitude":      report.Longitude,
-						"altitude":       fmt.Sprintf("%.0f", report.Altitude),
-						"heading":        report.Heading,
-						"airspeed":       fmt.Sprintf("%.0f", report.Airspeed),
-						"airspeed_true":  fmt.Sprintf("%.0f", report.AirspeedTrue),
-						"vertical_speed": fmt.Sprintf("%.0f", report.VerticalSpeed),
-						"flaps":          fmt.Sprintf("%.0f", report.Flaps),
-						"trim":           fmt.Sprintf("%.1f", report.Trim),
-						"rudder_trim":    fmt.Sprintf("%.1f", report.RudderTrim),
-						"wind_direction": fmt.Sprintf("%.0f", report.WindDirection),
-						"wind_velocity":  fmt.Sprintf("%.0f", report.WindVelocity),
-					})
+					report.process(ws)
 
 				case s.DefineMap["TrafficReport"]:
 					trafficReport = (*TrafficReport)(ppData)

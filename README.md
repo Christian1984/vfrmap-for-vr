@@ -764,7 +764,7 @@ The FSKneeboard server can be started with several commandline arguments to furt
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
 - `--quietshutdown`: Prevent FSKneeboard from showing a prompt after disconnecting from MSFS.
 - `--maxramusage [number of bytes]`: Set the maximum memory footprint shared across all maptile caches to `[number of bytes]` bytes (defaults to 8 * 256 * 1024 * 1024 bytes, roughly 2 GB).
-- `--apikeyoaip [API KEY]`: Replace the "global" API key shared by all FSKneeboard with your own API key. You can obtain your own API key by [creating a new account with openAIP](https://www.openaip.net/new-account). Then [go here](https://www.openaip.net/users/clients#tab-clients) and request your API key by clicking the "+ REQUEST NEW API KEY HERE".
+- `--apikeyoaip [API KEY]`: Replace the "global" API key shared by all FSKneeboard users with your own API key. You can obtain your own API key by [creating a new account with openAIP](https://www.openaip.net/new-account). Then [go here](https://www.openaip.net/users/clients#tab-clients) and request your API key by clicking the "+ REQUEST NEW API KEY HERE".
 
 ![Quietshutdown Shortcut](screenshots/fskneeboard-quietshutdown.png)
 
