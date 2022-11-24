@@ -56,18 +56,13 @@ const trailDataHdCapacity = 3000
 const trailDataSdResolution = 20
 
 var trail = Trail{
-	TrailDataHd: []TrailDataPt{},
-	TrailDataSd: []TrailDataPt{},
-}
-
-type TrailDataPt struct {
-	Latitude  float64 `json:"lat"`
-	Longitude float64 `json:"lng"`
+	TrailDataHd: [][]float64{},
+	TrailDataSd: [][]float64{},
 }
 
 type Trail struct {
-	TrailDataHd []TrailDataPt `json:"TrailDataHd"`
-	TrailDataSd []TrailDataPt `json:"TrailDataSd"`
+	TrailDataHd [][]float64 `json:"TrailDataHd"`
+	TrailDataSd [][]float64 `json:"TrailDataSd"`
 }
 
 type Report struct {
@@ -168,14 +163,36 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 	s.SetDataOnSimObject(defineID, simconnect.OBJECT_ID_USER, 0, 0, size, unsafe.Pointer(&buf[0]))
 }
 
+func trailDataController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
+		return
+	}
+
+	responseJson, jsonErr := json.Marshal(trail)
+
+	if jsonErr != nil {
+		logger.LogError(jsonErr.Error())
+		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(responseJson))
+}
+
 func (r *Report) process(ws *websockets.Websocket) {
 	if r.Latitude == 0 && r.Longitude == 0 {
 		return
 	}
 
-	td := TrailDataPt{
-		Latitude:  r.Latitude,
-		Longitude: r.Longitude,
+	td := []float64{
+		math.Round(r.Latitude*10000) / 10000,
+		math.Round(r.Longitude*10000) / 10000,
 	}
 	trail.TrailDataHd = append(trail.TrailDataHd, td)
 
@@ -542,6 +559,7 @@ func StartFskServer() {
 		http.HandleFunc("/loglevel/", logger.LogLevelController)
 		http.HandleFunc("/data/", dbmanager.DataController)
 		http.HandleFunc("/dataSet/", dbmanager.DataSetController)
+		http.HandleFunc("/traildata/", trailDataController)
 		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)
