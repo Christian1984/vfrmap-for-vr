@@ -58,12 +58,12 @@ const autoremoval_proximity_threshold = 0.5; //miles
 
 let trail_hd = [];
 let trail_sd = [];
-const TRAIL_HD_BUFFER_SIZE = 5000;
+const TRAIL_HD_BUFFER_SIZE = 3000;
 const TRAIL_UPDATE_INTERVAL_MS = 2000;
 const TRAIL_MIN_DST_M = 50;
 const trail = L.polyline([], { 
-    color: "red",
-    weight: 1,
+    color: "#32cd32",
+    weight: 3,
     //dashArray: "1, 10"
 });
 
@@ -235,13 +235,14 @@ function updateMap() {
         }
     }
 
-    if (trail_hd.length > TRAIL_HD_BUFFER_SIZE) {
-        const oldest_hd = trail_hd.shift();
+    if (trail_hd.length > TRAIL_HD_BUFFER_SIZE && trail_hd.length > 1) {
+        trail_hd.shift(); // remove previously copied point (just moving this from hd to sd will leave a gap in the line!)
+        const second_oldest = trail_hd[0];
         if (trail_sd.length < 2) {
-            trail_sd.push(oldest_hd);
+            trail_sd.push(second_oldest);
         }
         else {
-            trail_sd[trail_sd.length - 1] = oldest_hd;
+            trail_sd[trail_sd.length - 1] = second_oldest;
         }
     }
 
