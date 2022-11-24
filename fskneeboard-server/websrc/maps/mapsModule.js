@@ -641,6 +641,7 @@ function initMap() {
 
         registerHandlers();
         loadStoredState();
+        loadTrailData();
         activate_default_mode();
 
         updateWindIndicator();
@@ -807,6 +808,33 @@ function update_trail_sd_legs() {
 
     const keyframe = trail_sd[trail_sd.length - 1];
     trail_sd.push(keyframe);
+}
+
+function loadTrailData() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/traildata", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                console.log("GET to /traildata responded with:", json)
+
+                if (json != null) {
+                    trail_hd = json.TrailDataHd.map(latlng => L.latLng(latlng));
+                    trail_sd = json.TrailDataSd.map(latlng => L.latLng(latlng));
+
+                    if (trail_hd.length > 0) {
+                        trail_sd.push(trail_hd[0])
+                    }
+
+                    trail.setLatLngs([trail_sd, trail_hd]);
+                }
+            }
+        }
+    };
+
+    xhr.send();
 }
 
 function loadStoredState() {

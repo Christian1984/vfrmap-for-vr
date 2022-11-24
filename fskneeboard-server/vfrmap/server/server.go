@@ -204,8 +204,8 @@ func (r *Report) process(ws *websockets.Websocket) {
 		trail.TrailDataSd = append(trail.TrailDataSd, trail.TrailDataHd[0])
 		trail.TrailDataHd = trail.TrailDataHd[trailDataSdResolution:]
 
-		logger.LogInfoVerbose("len(trail.TrailDataHd)" + strconv.Itoa(len(trail.TrailDataHd)))
-		logger.LogInfoVerbose("len(trail.TrailDataSd)" + strconv.Itoa(len(trail.TrailDataSd)))
+		//logger.LogInfoVerbose("len(trail.TrailDataHd)" + strconv.Itoa(len(trail.TrailDataHd)))
+		//logger.LogInfoVerbose("len(trail.TrailDataSd)" + strconv.Itoa(len(trail.TrailDataSd)))
 	}
 
 	ws.Broadcast(map[string]interface{}{
