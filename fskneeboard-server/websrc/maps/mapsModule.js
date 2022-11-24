@@ -798,7 +798,11 @@ function clear_trail_data() {
 
     trail.setLatLngs([trail_sd, trail_hd]);
 
-    // TODO: clear server side data
+    // clear server side data
+    let xhr = new XMLHttpRequest();
+    xhr.open("DELETE", "/traildata", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send();
 }
 
 function update_trail_sd_legs() {
@@ -818,7 +822,7 @@ function loadTrailData() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                console.log("GET to /traildata responded with:", json)
+                //console.log("GET to /traildata responded with:", json)
 
                 if (json != null) {
                     trail_hd = json.TrailDataHd.map(latlng => L.latLng(latlng));

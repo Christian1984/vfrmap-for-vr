@@ -164,25 +164,37 @@ func (r *TeleportRequest) SetData(s *simconnect.SimConnect) {
 }
 
 func trailDataController(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
+	if r.Method != http.MethodGet && r.Method != http.MethodDelete {
 		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
 		return
 	}
 
-	responseJson, jsonErr := json.Marshal(trail)
+	if r.Method == http.MethodGet {
+		responseJson, jsonErr := json.Marshal(trail)
 
-	if jsonErr != nil {
-		logger.LogError(jsonErr.Error())
-		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
-		return
+		if jsonErr != nil {
+			logger.LogError(jsonErr.Error())
+			http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(responseJson))
+	} else {
+		trail.TrailDataHd = [][]float64{}
+		trail.TrailDataSd = [][]float64{}
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(""))
 	}
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Set("Pragma", "no-cache")
-	w.Header().Set("Expires", "0")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(responseJson))
 }
 
 func (r *Report) process(ws *websockets.Websocket) {
