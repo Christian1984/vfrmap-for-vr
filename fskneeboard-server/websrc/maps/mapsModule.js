@@ -446,12 +446,12 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_water = new L.TileLayer(loc + ":3536/maptilecache/stamenw/{s}/{z}/{y}/{x}/", {
+    const stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
+        format: "image/jpeg",
         subdomains: ["a", "b", "c"]
     });
 

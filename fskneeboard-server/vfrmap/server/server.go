@@ -251,7 +251,6 @@ func initMaptileCache() {
 	initCache(ttl, globalRoot, "otm", "35303", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "stamenbw", "35304", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "stament", "35305", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stamenw", "35306", "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "cartod", "35307", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 
 	initCache(ttl, globalRoot, "ofm", "35308", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
