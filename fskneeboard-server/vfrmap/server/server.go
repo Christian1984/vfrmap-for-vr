@@ -546,9 +546,9 @@ func StartFskServer() {
 			}
 
 		case <-planePositionTick.C:
-			if mockData {
+			if globals.MockData {
 				updateAndBroadcastMockData(ws)
-			} else if s == nil {
+			} else if s != nil {
 				report.RequestData(s)
 			}
 

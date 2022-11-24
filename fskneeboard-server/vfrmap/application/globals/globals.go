@@ -14,6 +14,7 @@ var DownloadLink string
 
 var Quietshutdown bool
 var DevMode bool
+var MockData bool
 
 var ProductName string
 var BuildVersion string

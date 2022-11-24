@@ -272,6 +272,7 @@ ws.onmessage = function(e) {
     }
 };
 
+/*
 let dummyV = 0.001;
 let dummyH = Math.PI / 4;
 let turnLeft = true;
@@ -305,6 +306,7 @@ function initDummyRun() {
 }
 
 //initDummyRun();
+*/
 
 function updateIcon() {
     let iconType = icons.planes;
