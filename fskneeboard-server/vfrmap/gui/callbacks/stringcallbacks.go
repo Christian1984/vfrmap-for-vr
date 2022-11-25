@@ -23,3 +23,9 @@ var UpdateLogLevelStatusCallback func(string)
 func UpdateLogLevelStatus(status string) {
 	runStringCallback(status, UpdateLogLevelStatusCallback)
 }
+
+var UpdateOpenAipApiCallback func(string)
+
+func UpdateOpenAipApi(apiKey string) {
+	runStringCallback(apiKey, UpdateOpenAipApiCallback)
+}

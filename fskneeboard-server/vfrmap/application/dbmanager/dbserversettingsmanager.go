@@ -86,3 +86,13 @@ func LoadLogLevel() string {
 
 	return res
 }
+
+// openAPI
+func StoreOpenAipApiKey() {
+	DbWriteSettings("oaipApiKey", globals.OpenAipApiKey)
+}
+
+func LoadOpenAipApiKey() {
+	openAipApiKey := DbReadSettings("oaipApiKey")
+	globals.OpenAipApiKey = openAipApiKey
+}

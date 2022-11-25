@@ -28,6 +28,9 @@ var msfsAutostartBinding = binding.NewBool()
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
 
+var oaipApiKeyBinding = binding.NewString()
+var oaipCacheBinding = binding.NewBool()
+
 var loglevelOptions = []string{
 	strings.Title(logger.Off),
 	strings.Title(logger.Debug),
@@ -57,6 +60,10 @@ func UpdateMsfsVersionStatus(steam bool) {
 
 func UpdateMsfsAutostartStatus(autostart bool) {
 	msfsAutostartBinding.Set(autostart)
+}
+
+func UpdateOpenAipApiKey(apiKey string) {
+	oaipApiKeyBinding.Set(apiKey)
 }
 
 func UpdateLogLevelStatus(level string) {
@@ -228,7 +235,7 @@ func SettingsPanel() *fyne.Container {
 	})
 
 	// grid and centerContainer
-	grid := container.NewGridWithColumns(
+	generalGrid := container.NewGridWithColumns(
 		3,
 		msfsVersionLabel, msfsVersionSelect, widget.NewLabel(""),
 		msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
@@ -236,10 +243,47 @@ func SettingsPanel() *fyne.Container {
 		autosaveLabel, autosaveSelect, autosaveOpenFolderBtn,
 		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
 	)
-	vBox := container.NewVBox(grid, logevelWarningLabel)
-	centerContainer := container.NewCenter(vBox)
+
+	//API KEYS
+	// oaip api key
+	oaipApiKeyLabel := widget.NewLabel("openAIP.net")
+	oaipApiKeyInput := widget.NewEntryWithData(oaipApiKeyBinding)
+	oaipApiKeyInput.Validator = func(s string) error { return nil }
+
+	oaipApiKeyBinding.AddListener(binding.NewDataListener(func() {
+		oaipApiKey, _ := oaipApiKeyBinding.Get()
+		globals.OpenAipApiKey = oaipApiKey
+		logger.LogInfo("openAIP API key updated: " + oaipApiKey)
+
+		dbmanager.StoreOpenAipApiKey()
+	}))
+
+	apiKeysGrid := container.NewGridWithColumns(
+		3,
+		oaipApiKeyLabel, oaipApiKeyInput, widget.NewLabel(""),
+	)
+
+	generalLabel := widget.NewLabel("General")
+	generalLabel.TextStyle.Bold = true
+
+	apiKeysLabel := widget.NewLabel("API Keys")
+	apiKeysLabel.TextStyle.Bold = true
+
+	vBox := container.NewVBox(
+		widget.NewLabel(""),
+		generalLabel,
+		widget.NewSeparator(),
+		generalGrid,
+		logevelWarningLabel,
+		widget.NewLabel(""),
+		apiKeysLabel,
+		widget.NewSeparator(),
+		apiKeysGrid,
+	)
+	scroll := container.NewVScroll(vBox)
+	maxContainer := container.NewMax(scroll)
 
 	logger.LogDebugVerboseOverride("Settings Panel initialized", false)
 
-	return centerContainer
+	return maxContainer
 }

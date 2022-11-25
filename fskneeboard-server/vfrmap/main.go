@@ -102,6 +102,10 @@ func initFsk() {
 	dbmanager.LoadTourStates()
 	callbacks.ShowGuiTourChanged(!globals.TourGuiStarted)
 
+	//load apikeys
+	dbmanager.LoadOpenAipApiKey()
+	callbacks.UpdateOpenAipApi(globals.OpenAipApiKey)
+
 	// load hotkeys
 	// master hotkey
 	dbmanager.LoadMasterHotkey()
@@ -175,6 +179,8 @@ func registerGuiCallbacks() {
 
 	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
 	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
+
+	callbacks.UpdateOpenAipApiCallback = settingspanel.UpdateOpenAipApiKey
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
 
