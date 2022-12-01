@@ -17,6 +17,7 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/theme"
 )
 
 var w fyne.Window
@@ -48,12 +49,12 @@ func InitGui() {
 	logger.LogDebugVerboseOverride("Initializing tabs...", false)
 
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Control Panel", controlpanel.ControlPanel()),
+		container.NewTabItemWithIcon("Home", theme.HomeIcon(), controlpanel.ControlPanel()),
 		container.NewTabItem("Settings", settingspanel.SettingsPanel()),
 		container.NewTabItem("Hotkeys", hotkeyspanel.HotkeysPanel()),
 		//container.NewTabItem("PDF Import", pdfimportpanel.PdfImportPanel()),
 		container.NewTabItem("Console", consolepanel.ConsolePanel()),
-		container.NewTabItem("Get Support", supportpanel.SupportPanel()),
+		container.NewTabItemWithIcon("", theme.HelpIcon(), supportpanel.SupportPanel()),
 	)
 
 	welcome := welcomepanel.WelcomePanel()
