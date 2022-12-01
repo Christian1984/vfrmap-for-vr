@@ -25,7 +25,8 @@ type LogData struct {
 }
 
 const (
-	Debug string = "debug"
+	Silly string = "silly"
+	Debug        = "debug"
 	Info         = "info"
 	Warn         = "warn"
 	Error        = "error"
@@ -116,6 +117,10 @@ func ShouldLog(level string) bool {
 	var configuredLevel = strings.ToLower(logLevel)
 	var thisLevel = strings.ToLower(level)
 
+	if configuredLevel == Silly && (thisLevel == Silly || thisLevel == Debug || thisLevel == Info || thisLevel == Warn || thisLevel == Error) {
+		return true
+	}
+
 	if configuredLevel == Debug && (thisLevel == Debug || thisLevel == Info || thisLevel == Warn || thisLevel == Error) {
 		return true
 	}
@@ -149,6 +154,19 @@ func LogMessage(message string, level string, sender string, verboseOverride boo
 	if ShouldLog(level) && hasOutputFile {
 		log.Println(logString)
 	}
+}
+
+// SILLY
+func LogSillyVerboseOverride(message string, verboseOverride bool) {
+	LogMessage(message, Silly, "", verboseOverride)
+}
+
+func LogSillyVerbose(message string) {
+	LogSillyVerboseOverride(message, true)
+}
+
+func LogSilly(message string) {
+	LogSillyVerboseOverride(message, false)
 }
 
 // DEBUG

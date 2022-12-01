@@ -1,6 +1,7 @@
 import SENDER_ID from "./sender";
 
 const LogLevel = {
+    SILLY: "silly",
     DEBUG: "debug",
     INFO: "info",
     WARN: "warn",
@@ -24,7 +25,7 @@ export default class Logger {
                 if (xhr.status === 200) {
                     const levelToLower = xhr.responseText.toLowerCase();
 
-                    if (levelToLower == LogLevel.DEBUG || levelToLower == LogLevel.INFO || levelToLower == LogLevel.WARN || levelToLower == LogLevel.ERROR || levelToLower == LogLevel.OFF) {
+                    if (levelToLower == LogLevel.SILLY || levelToLower == LogLevel.DEBUG || levelToLower == LogLevel.INFO || levelToLower == LogLevel.WARN || levelToLower == LogLevel.ERROR || levelToLower == LogLevel.OFF) {
                         LoggerLevel = levelToLower;
                         Logger.logInfo("Client LogLevel received and set to [" + levelToLower + "]");
 
@@ -33,6 +34,7 @@ export default class Logger {
 
                         /*
                         Logger.logMessage("OFF-Test", LogLevel.OFF);
+                        Logger.logSilly("SILLY-Test");
                         Logger.logDebug("DEBUG-Test");
                         Logger.logInfo("INFO-Test");
                         Logger.logWarn("WARN-Test");
@@ -52,6 +54,10 @@ export default class Logger {
 
     static shouldLog(level) {
         if (LoggerLevel == undefined) {
+            return true;
+        }
+
+        if (LoggerLevel == LogLevel.SILLY && (level.toLowerCase() == LogLevel.SILLY || level.toLowerCase() == LogLevel.DEBUG || level.toLowerCase() == LogLevel.INFO || level.toLowerCase() == LogLevel.WARN || level.toLowerCase() == LogLevel.ERROR)) {
             return true;
         }
 
@@ -140,6 +146,10 @@ export default class Logger {
 
             Logger.enqueueLog(message, level);
         }
+    }
+
+    static logSilly(message) {
+        Logger.logMessage(message, LogLevel.SILLY);
     }
 
     static logDebug(message) {

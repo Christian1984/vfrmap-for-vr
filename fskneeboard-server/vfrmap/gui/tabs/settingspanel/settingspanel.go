@@ -33,10 +33,11 @@ var oaipCacheBinding = binding.NewBool()
 
 var loglevelOptions = []string{
 	strings.Title(logger.Off),
-	strings.Title(logger.Debug),
-	strings.Title(logger.Info),
-	strings.Title(logger.Warn),
 	strings.Title(logger.Error),
+	strings.Title(logger.Warn),
+	strings.Title(logger.Info),
+	strings.Title(logger.Debug),
+	strings.Title(logger.Silly),
 }
 var loglevelBinding = binding.NewString()
 
@@ -69,7 +70,7 @@ func UpdateOpenAipApiKey(apiKey string) {
 func UpdateLogLevelStatus(level string) {
 	lowerLevel := strings.ToLower(level)
 
-	if lowerLevel != logger.Debug && lowerLevel != logger.Info && lowerLevel != logger.Warn && lowerLevel != logger.Error {
+	if lowerLevel != logger.Silly && lowerLevel != logger.Debug && lowerLevel != logger.Info && lowerLevel != logger.Warn && lowerLevel != logger.Error {
 		lowerLevel = "off"
 	}
 
@@ -177,12 +178,12 @@ func SettingsPanel() *fyne.Container {
 
 	// set log level
 	loglevelLabel := widget.NewLabel("Log Level")
-	logevelWarningLabel := widget.NewLabel("WARNING: The Log Level \"Debug\" may result in very large log files!")
+	logevelWarningLabel := widget.NewLabel("WARNING: The Log Levels \"Debug\" and \"Silly\" may result in very large log files!")
 	logevelWarningLabel.Hidden = true
 	logevelWarningLabel.Alignment = fyne.TextAlignCenter
 
 	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
-		logevelWarningLabel.Hidden = strings.ToLower(selected) != "debug"
+		logevelWarningLabel.Hidden = strings.ToLower(selected) != "debug" && strings.ToLower(selected) != "silly"
 		loglevelBinding.Set(selected)
 	})
 	logsOpenFolderBtn := widget.NewButton("Open Log Folder", func() {

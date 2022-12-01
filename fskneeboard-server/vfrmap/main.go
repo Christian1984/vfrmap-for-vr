@@ -230,13 +230,12 @@ func main() {
 		"\tnoupdatecheck:    " + strconv.FormatBool(noupdatecheck) + "\n" +
 		"\tquietshutdown:    " + strconv.FormatBool(globals.Quietshutdown) + "\n")
 
-	/*
-		logger.LogMessage("OFF-Test", logger.Off, "", false)
-		logger.LogDebug("DEBUG-Test", false)
-		logger.LogInfo("INFO-Test", false)
-		logger.LogWarn("WARN-Test", false)
-		logger.LogError("ERROR-Test", false)
-	*/
+	logger.LogMessage("OFF-Test", logger.Off, "", false)
+	logger.LogSilly("SILLY-Test")
+	logger.LogDebug("DEBUG-Test")
+	logger.LogInfo("INFO-Test")
+	logger.LogWarn("WARN-Test")
+	logger.LogError("ERROR-Test")
 
 	gui.InitGui()
 	registerGuiCallbacks()

@@ -258,12 +258,19 @@ function updateMap() {
 
 ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/ws");
 ws.onopen = function() {
+    Logger.logDebug("mapsModule.js => connection to /ws websocket opened");
     //console.log("ws open");
 };
 ws.onclose = function() {
+    Logger.logDebug("mapsModule.js => connection to /ws websocket closed");
+    //console.log("ws close");
+};
+ws.onerror = function(e) {
+    Logger.logDebug("mapsModule.js => an error occurred on /ws websocket: " + e);
     //console.log("ws close");
 };
 ws.onmessage = function(e) {
+    Logger.logSilly("mapsModule.js => received message from /ws websocket: " + e.data.length > 100 ? e.data.substring(0, 99) : e.data);
     const msg = JSON.parse(e.data);
     last_report = msg;
 
