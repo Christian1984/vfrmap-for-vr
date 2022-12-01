@@ -342,6 +342,8 @@ func initMaptileCache() {
 }
 
 func StartFskServer() {
+	logger.LogDebug("Server startup: enter StartFskServer()...")
+
 	if globals.Pro && !globals.DrmValid {
 		dialogs.ShowLicenseError()
 		utils.Println("WARNING: Cannot start FSKneeboard server, reason: no valid license found!")
@@ -350,6 +352,7 @@ func StartFskServer() {
 	}
 
 	if started {
+		logger.LogWarn("Server startup: Server has already been started... Returning...")
 		return
 	}
 
@@ -358,6 +361,7 @@ func StartFskServer() {
 	exitSignal := make(chan os.Signal, 1)
 	signal.Notify(exitSignal, os.Interrupt, syscall.SIGTERM)
 
+	logger.LogDebug("Server startup: Waiting 1 s...")
 	time.Sleep(1 * time.Second)
 
 	exePath, _ := os.Executable()
@@ -401,6 +405,7 @@ func StartFskServer() {
 		}
 	}
 
+	logger.LogDebug("Server startup: initialize web sockets")
 	ws := websockets.New()
 
 	hotkeysWs := websockets.New()
@@ -416,6 +421,7 @@ func StartFskServer() {
 	eventSimStartID := simconnect.DWORD(0)
 	startupTextEventID := simconnect.DWORD(0)
 
+	logger.LogDebug("Server startup: initialize simconnect data definitions...")
 	if s != nil {
 		err = s.RegisterDataDefinition(report)
 		if err != nil {
@@ -445,6 +451,7 @@ func StartFskServer() {
 	}
 
 	go func() {
+		logger.LogDebug("Server startup: initialize charts index...")
 		charts.UpdateIndex()
 
 		getContentType := func(requestedResource string) string {
@@ -558,9 +565,13 @@ func StartFskServer() {
 			<-ch
 		}
 
+		logger.LogDebug("Server startup: initialize map tile cache...")
 		initMaptileCache()
 
+		logger.LogDebug("Server startup: initialize chart server...")
 		chartServer := http.FileServer(http.Dir("./charts"))
+
+		logger.LogDebug("Server startup: initialize endpoints...")
 
 		http.HandleFunc("/ws", ws.Serve)
 		http.HandleFunc("/hotkeysWs", hotkeysWs.Serve)
@@ -581,34 +592,47 @@ func StartFskServer() {
 		http.Handle("/premium/charts/", http.StripPrefix("/premium/charts/", chartServer))
 		http.HandleFunc("/", index)
 
+		logger.LogDebug("Server startup: initialize endpoints done!")
+
 		if globals.DevMode {
+			logger.LogDebug("Server startup: initialize dev mode fileserver...")
 			testServer := http.FileServer(http.Dir("../fskneeboard-panel/christian1984-ingamepanel-fskneeboard/html_ui/InGamePanels/FSKneeboardPanel"))
 			http.Handle("/test/", http.StripPrefix("/test/", testServer))
 		}
 
 		// connect tablet etc.
+		logger.LogDebug("Server startup: obtaining public ip address...")
+
 		ip, addr_err := utils.GetOutboundIP()
 		server_addr_arr := strings.Split(globals.HttpListen, ":")
 		port := server_addr_arr[len(server_addr_arr)-1]
 
-		if addr_err == nil && ip != nil {
+		if addr_err != nil {
+			logger.LogError("Server startup: Could not obtain public IP address... Reason: " + addr_err.Error())
+		} else if ip != nil {
+			logger.LogDebug("Server startup: processing and displaying public ip address...")
+
 			connectInfo := "http://" + ip.To4().String() + ":" + port
-			logger.LogInfoVerboseOverride("FSKneeboard available at: "+connectInfo, false)
+			logger.LogInfoVerbose("FSKneeboard available at: " + connectInfo)
 			utils.Println("=== INFO: Connecting Your Tablet")
 			utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
 			utils.Println("FSKneeboard Server-Address: " + connectInfo)
 			utils.Println("")
 
 			callbacks.UpdateServerStatus("Ready at", connectInfo)
+			logger.LogDebug("Server startup: processing and displaying public ip address done!")
 		}
 
 		err := http.ListenAndServe(globals.HttpListen, nil)
 		if err != nil {
-			logger.LogErrorVerboseOverride("FSKneeboard Server could not be started! Reason: "+err.Error(), false)
+			logger.LogErrorVerbose("FSKneeboard Server could not be started! Reason: " + err.Error())
 			dialogs.ShowErrorAndExit("FSKneeboard Server could not be started!\nPlease close ALL running instances of FSKneeboard an try again.")
 		}
+
+		logger.LogDebug("Server startup: Server started!")
 	}()
 
+	logger.LogDebug("Server startup: initialize tickers")
 	simconnectTick := time.NewTicker(100 * time.Millisecond)
 	planePositionTick := time.NewTicker(200 * time.Millisecond)
 	trafficPositionTick := time.NewTicker(10000 * time.Millisecond)
