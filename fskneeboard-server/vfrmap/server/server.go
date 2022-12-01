@@ -83,6 +83,80 @@ type Report struct {
 	WindVelocity  float64   `name:"AMBIENT WIND VELOCITY" unit:"knots"`
 }
 
+type MapServiceUrls struct {
+	CacheUrl  string
+	RemoteUrl string
+}
+
+var OsmUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35302/maptilecache/osm/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+}
+
+var OtmUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35303/maptilecache/otm/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+}
+
+var StamenBwUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35304/maptilecache/stamenbw/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+}
+
+var StamenTUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35305/maptilecache/stament/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
+}
+
+var StamenWUrls = MapServiceUrls{
+	CacheUrl:  "",
+	RemoteUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",
+}
+
+var CartoD = MapServiceUrls{
+	CacheUrl:  "http://localhost:35307/maptilecache/cartod/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+}
+
+var Ofm = MapServiceUrls{
+	CacheUrl:  "http://localhost:35308/maptilecache/ofm/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png",
+}
+
+var OaipAirportsUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35309/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}",
+}
+
+var OaipAirspacesUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}",
+}
+
+var OaipNavaidsUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35311/maptilecache/oaip-navaids/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}",
+}
+
+var OaipReportingUrls = MapServiceUrls{
+	CacheUrl:  "http://localhost:35312/maptilecache/oaip-reportingpoints/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}",
+}
+
+type MapServiceUrlsDto struct {
+	Osm      string `json:"osm"`
+	Otm      string `json:"otm"`
+	StamenBw string `json:"stamenbw"`
+	StamenT  string `json:"stament"`
+	StamenW  string `json:"stamenw"`
+	CartoD   string `json:"cartod"`
+	//Ofm           string `json:"ofm"` // does not work because of airac cycle
+	OaipAirports  string `json:"oaipAirports"`
+	OaipAirspaces string `json:"oaipAirspaces"`
+	OaipNavaids   string `json:"oaipNavaids"`
+	OaipReporting string `json:"oaipReporting"`
+}
+
 func (r *Report) RequestData(s *simconnect.SimConnect) {
 	defineID := s.GetDefineID(r)
 	requestID := defineID
@@ -345,13 +419,13 @@ func initMaptileCache() {
 	}
 	sharedMemoryCache := maptilecache.NewSharedMemoryCache(sharedMemoryCacheConfig)
 
-	initCache(ttl, globalRoot, "osm", "35302", "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "otm", "35303", "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stamenbw", "35304", "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stament", "35305", "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "cartod", "35307", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "osm", "35302", OsmUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "otm", "35303", OtmUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stamenbw", "35304", StamenBwUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "stament", "35305", StamenTUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "cartod", "35307", "", CartoD.RemoteUrl, true, []string{}, sharedMemoryCache)
 
-	initCache(ttl, globalRoot, "ofm", "35308", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "ofm", "35308", "", Ofm.RemoteUrl, true, []string{"path"}, sharedMemoryCache)
 
 	var oaipCaches = []*maptilecache.Cache{}
 
@@ -364,22 +438,22 @@ func initMaptileCache() {
 
 	logger.LogDebugVerbose("Initializing OAIP caches with api key: [" + oaipApiKeyLog + "]")
 
-	oaipAirports, oaipAirportsErr := initCache(ttl, globalRoot, "oaip-airports", "35309", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	oaipAirports, oaipAirportsErr := initCache(ttl, globalRoot, "oaip-airports", "35309", OaipAirportsUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
 	if oaipAirportsErr == nil {
 		oaipCaches = append(oaipCaches, oaipAirports)
 	}
 
-	oaipAirspaces, oaipAirspacesErr := initCache(ttl, globalRoot, "oaip-airspaces", "35310", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	oaipAirspaces, oaipAirspacesErr := initCache(ttl, globalRoot, "oaip-airspaces", "35310", OaipAirspacesUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
 	if oaipAirspacesErr == nil {
 		oaipCaches = append(oaipCaches, oaipAirspaces)
 	}
 
-	oaipNavaids, oaipNavaidsErr := initCache(ttl, globalRoot, "oaip-navaids", "35311", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	oaipNavaids, oaipNavaidsErr := initCache(ttl, globalRoot, "oaip-navaids", "35311", OaipNavaidsUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
 	if oaipNavaidsErr == nil {
 		oaipCaches = append(oaipCaches, oaipNavaids)
 	}
 
-	oaipReporting, oaipReportingErr := initCache(ttl, globalRoot, "oaip-reportingpoints", "35312", "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	oaipReporting, oaipReportingErr := initCache(ttl, globalRoot, "oaip-reportingpoints", "35312", OaipReportingUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
 	if oaipReportingErr == nil {
 		oaipCaches = append(oaipCaches, oaipReporting)
 	}
@@ -387,6 +461,39 @@ func initMaptileCache() {
 	globals.OaipCaches = oaipCaches
 
 	//initCache(ttl, globalRoot, "oaip-obstacles", "35313", "https://api.tiles.openaip.net/api/data/obstacles/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+}
+
+func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
+	logger.LogDebug("serveMapServiceUrls called!")
+
+	mapServiceUrls := MapServiceUrlsDto{
+		Osm:      OsmUrls.CacheUrl,
+		Otm:      OtmUrls.CacheUrl,
+		StamenBw: StamenBwUrls.CacheUrl,
+		StamenT:  StamenTUrls.CacheUrl,
+		StamenW:  StamenWUrls.RemoteUrl, // cache was buggy
+		CartoD:   CartoD.RemoteUrl,
+
+		OaipAirports:  strings.ReplaceAll(OaipAirportsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
+		OaipAirspaces: strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
+		OaipNavaids:   strings.ReplaceAll(OaipNavaidsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
+		OaipReporting: strings.ReplaceAll(OaipReportingUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
+	}
+
+	responseJson, jsonErr := json.Marshal(mapServiceUrls)
+
+	if jsonErr != nil {
+		logger.LogError(jsonErr.Error())
+		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(responseJson))
 }
 
 func StartFskServer() {
@@ -625,6 +732,7 @@ func StartFskServer() {
 		http.HandleFunc("/hotkeysWs", hotkeysWs.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkeys.ServeMasterHotkey)
+		http.HandleFunc("/mapserviceurls/", serveMapServiceUrls)
 		http.HandleFunc("/tour/", tour.ServeTourStatus)
 		http.HandleFunc("/log/", logger.LogController)
 		http.HandleFunc("/loglevel/", logger.LogLevelController)

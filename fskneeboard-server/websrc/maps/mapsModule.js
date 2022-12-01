@@ -408,7 +408,31 @@ function calculate_airac_cycle() {
     return airac_id.toString();
 }
 
-function initMap() {
+function loadMapTileUrls(callback) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/mapserviceurls", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+
+                if (json != null) {
+                    callback(json);
+                }
+            }
+            else {
+                Logger.logError("Could not load maptile urls from server!")
+            }
+        }
+    };
+
+    xhr.send();
+}
+
+function initMap(mapTileUrls) {
+    Logger.logDebug("initMap with " + JSON.stringify(mapTileUrls));
+
     let pos = initial_pos;
 
     const hostArr = location.host.split(":");
@@ -420,7 +444,7 @@ function initMap() {
     const loc = location.protocol + "//" + hostAddr;
 
     // base maps
-    const osm = new L.TileLayer(loc + ":35302/maptilecache/osm/{s}/{z}/{y}/{x}/", {
+    const osm = new L.TileLayer(mapTileUrls.osm, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -429,7 +453,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const otm = new L.TileLayer(loc + ":35303/maptilecache/otm/{s}/{z}/{y}/{x}/", {
+    const otm = new L.TileLayer(mapTileUrls.otm, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -438,7 +462,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_black_white = new L.TileLayer(loc + ":35304/maptilecache/stamenbw/{s}/{z}/{y}/{x}/", {
+    const stamen_black_white = new L.TileLayer(mapTileUrls.stamenbw, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -447,7 +471,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_terrain = new L.TileLayer(loc + ":35305/maptilecache/stament/{s}/{z}/{y}/{x}/", {
+    const stamen_terrain = new L.TileLayer(mapTileUrls.stament, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -456,7 +480,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const stamen_water = new L.TileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {
+    const stamen_water = new L.TileLayer(mapTileUrls.stamenw, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -465,7 +489,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    const carto_dark = new L.TileLayer(loc + ":35307/maptilecache/cartod/{s}/{z}/{y}/{x}/", {
+    const carto_dark = new L.TileLayer(mapTileUrls.cartod, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -474,7 +498,7 @@ function initMap() {
         subdomains: ["a", "b", "c"]
     });
 
-    // nav overlays
+    // ofm nav overlay
     const airac = calculate_airac_cycle();
 
     const ofm = new L.TileLayer(loc + ":35308/maptilecache/ofm/{s}/{z}/{y}/{x}/?path=" + airac + "/aero/latest", {
@@ -485,7 +509,8 @@ function initMap() {
         format: "image/png"
     });
 
-    const openaip_airports = new L.TileLayer(loc + ":35309/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/", {
+    // oaip nav overlays
+    const openaip_airports = new L.TileLayer(mapTileUrls.oaipAirports, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -494,7 +519,7 @@ function initMap() {
         transparent: true
     });
 
-    const openaip_airspaces = new L.TileLayer(loc + ":35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/", {
+    const openaip_airspaces = new L.TileLayer(mapTileUrls.oaipAirspaces, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -503,7 +528,7 @@ function initMap() {
         transparent: true
     });
 
-    const openaip_navaids = new L.TileLayer(loc + ":35311/maptilecache/oaip-navaids/{s}/{z}/{y}/{x}/", {
+    const openaip_navaids = new L.TileLayer(mapTileUrls.oaipNavaids, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -512,7 +537,7 @@ function initMap() {
         transparent: true
     });
 
-    const openaip_reportingpoints = new L.TileLayer(loc + ":35312/maptilecache/oaip-reportingpoints/{s}/{z}/{y}/{x}/", {
+    const openaip_reportingpoints = new L.TileLayer(mapTileUrls.oaipReporting, {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -1332,7 +1357,7 @@ function onDomContentLoaded(waypointsClass) {
         }
     });
 
-    initMap();
+    loadMapTileUrls(mapTileUrls => initMap(mapTileUrls));
 }
 
 export { onDomContentLoaded, MODES };
