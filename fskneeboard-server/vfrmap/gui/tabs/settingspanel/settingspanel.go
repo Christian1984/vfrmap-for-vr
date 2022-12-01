@@ -249,11 +249,16 @@ func SettingsPanel() *fyne.Container {
 	// oaip api key
 	oaipApiKeyLabel := widget.NewLabel("openAIP.net")
 	oaipApiKeyInput := widget.NewEntryWithData(oaipApiKeyBinding)
-	oaipApiKeyInput.Validator = func(s string) error { return nil }
+	oaipApiKeyInput.Validator = nil
+	oaipApiKeyInput.PlaceHolder = "SHARED API KEY"
 
 	oaipApiKeyBinding.AddListener(binding.NewDataListener(func() {
-		oaipApiKey, _ := oaipApiKeyBinding.Get()
+		oaipApiKeyRaw, _ := oaipApiKeyBinding.Get()
+		oaipApiKey := strings.TrimSpace(oaipApiKeyRaw)
 		globals.OpenAipApiKey = oaipApiKey
+
+		server.UpdateCacheApiKeys()
+
 		logger.LogInfo("openAIP API key updated: " + oaipApiKey)
 
 		dbmanager.StoreOpenAipApiKey()

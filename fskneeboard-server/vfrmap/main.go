@@ -11,7 +11,6 @@ import (
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
 	"vfrmap-for-vr/vfrmap/application/msfsinterfacing"
-	"vfrmap-for-vr/vfrmap/application/secrets"
 	"vfrmap-for-vr/vfrmap/gui"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
@@ -205,7 +204,6 @@ func main() {
 	flag.BoolVar(&globals.DevMode, "dev", false, "enable dev mode, i.e. no running msfs required")
 	flag.BoolVar(&globals.MockData, "mockdata", false, "mock with randomized flight data")
 	flag.StringVar(&globals.HttpListen, "listen", "0.0.0.0:9000", "http listen")
-	flag.StringVar(&globals.MaptileCacheOaipApiKey, "apikeyoaip", secrets.API_KEY_OPENAIP, "inject custom OpenAIP API key")
 	flag.BoolVar(&noupdatecheck, "noupdatecheck", false, "prevent FSKneeboard from checking the GitHub API for updates")
 	flag.BoolVar(&globals.Verbose, "verbose", false, "verbose output")
 	flag.BoolVar(&globals.WipeMaptileCaches, "wipemaptilecaches", false, "wipe maptile caches")

@@ -24,6 +24,7 @@ import (
 	"vfrmap-for-vr/simconnect"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/secrets"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/html/fontawesome"
@@ -277,7 +278,7 @@ func UpdateAutosaveInterval(verbose bool) {
 	callbacks.UpdateAutosaveStatus(globals.AutosaveInterval)
 }
 
-func initCache(ttl time.Duration, root string, provider string, port string, url string, apiKey string, forwardHeaders bool, expectedParams []string, sharedMemoryCache *maptilecache.SharedMemoryCache) {
+func initCache(ttl time.Duration, root string, provider string, port string, url string, apiKey string, forwardHeaders bool, expectedParams []string, sharedMemoryCache *maptilecache.SharedMemoryCache) (*maptilecache.Cache, error) {
 	cacheConfig := maptilecache.CacheConfig{
 		Host:              "0.0.0.0",
 		Port:              port,
@@ -310,6 +311,23 @@ func initCache(ttl time.Duration, root string, provider string, port string, url
 		logger.LogError("An error was raised during the initialization of maptilecache [" + provider + "], reason: " + err.Error())
 	}
 
+	return c, err
+}
+
+func UpdateCacheApiKeys() {
+	logger.LogDebugVerbose("Enter UpdateCacheApiKeys() with " + globals.OpenAipApiKey)
+
+	oaipApiKey := globals.OpenAipApiKey
+	oaipLog := oaipApiKey
+	if oaipApiKey == "" {
+		oaipApiKey = secrets.API_KEY_OPENAIP
+		oaipLog = "DEFAULT API KEY"
+	}
+
+	for _, cache := range globals.OaipCaches {
+		logger.LogDebugVerbose("Update api key on cache " + cache.UrlScheme + " from " + cache.ApiKey + " to " + oaipLog)
+		cache.ApiKey = oaipApiKey
+	}
 }
 
 func initMaptileCache() {
@@ -334,10 +352,40 @@ func initMaptileCache() {
 	initCache(ttl, globalRoot, "cartod", "35307", "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png", "", true, []string{}, sharedMemoryCache)
 
 	initCache(ttl, globalRoot, "ofm", "35308", "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png", "", true, []string{"path"}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-airports", "35309", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-airspaces", "35310", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-navaids", "35311", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "oaip-reportingpoints", "35312", "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+
+	var oaipCaches = []*maptilecache.Cache{}
+
+	oaipApiKey := strings.TrimSpace(globals.OpenAipApiKey)
+	oaipApiKeyLog := oaipApiKey
+	if oaipApiKey == "" {
+		oaipApiKey = secrets.API_KEY_OPENAIP
+		oaipApiKeyLog = "DEFAULT API KEY"
+	}
+
+	logger.LogDebugVerbose("Initializing OAIP caches with api key: [" + oaipApiKeyLog + "]")
+
+	oaipAirports, oaipAirportsErr := initCache(ttl, globalRoot, "oaip-airports", "35309", "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	if oaipAirportsErr == nil {
+		oaipCaches = append(oaipCaches, oaipAirports)
+	}
+
+	oaipAirspaces, oaipAirspacesErr := initCache(ttl, globalRoot, "oaip-airspaces", "35310", "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	if oaipAirspacesErr == nil {
+		oaipCaches = append(oaipCaches, oaipAirspaces)
+	}
+
+	oaipNavaids, oaipNavaidsErr := initCache(ttl, globalRoot, "oaip-navaids", "35311", "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	if oaipNavaidsErr == nil {
+		oaipCaches = append(oaipCaches, oaipNavaids)
+	}
+
+	oaipReporting, oaipReportingErr := initCache(ttl, globalRoot, "oaip-reportingpoints", "35312", "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}", oaipApiKey, false, []string{}, sharedMemoryCache)
+	if oaipReportingErr == nil {
+		oaipCaches = append(oaipCaches, oaipReporting)
+	}
+
+	globals.OaipCaches = oaipCaches
+
 	//initCache(ttl, globalRoot, "oaip-obstacles", "35313", "https://api.tiles.openaip.net/api/data/obstacles/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
 }
 
@@ -613,7 +661,7 @@ func StartFskServer() {
 			logger.LogDebug("Server startup: processing and displaying public ip address...")
 
 			connectInfo := "http://" + ip.To4().String() + ":" + port
-			logger.LogInfoVerbose("FSKneeboard available at: " + connectInfo)
+			logger.LogInfo("FSKneeboard available at: " + connectInfo)
 			utils.Println("=== INFO: Connecting Your Tablet")
 			utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
 			utils.Println("FSKneeboard Server-Address: " + connectInfo)
