@@ -6,6 +6,7 @@ import (
 	"vfrmap-for-vr/_vendor/premium/autosave"
 	"vfrmap-for-vr/vfrmap/application/dbmanager"
 	"vfrmap-for-vr/vfrmap/application/globals"
+	"vfrmap-for-vr/vfrmap/application/secrets"
 	"vfrmap-for-vr/vfrmap/gui/callbacks"
 	"vfrmap-for-vr/vfrmap/gui/dialogs"
 	"vfrmap-for-vr/vfrmap/logger"
@@ -29,7 +30,7 @@ var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
 
 var oaipApiKeyBinding = binding.NewString()
-var oaipCacheBinding = binding.NewBool()
+var oaipBypassCacheBinding = binding.NewBool()
 
 var loglevelOptions = []string{
 	strings.Title(logger.Off),
@@ -67,6 +68,10 @@ func UpdateOpenAipApiKey(apiKey string) {
 	oaipApiKeyBinding.Set(apiKey)
 }
 
+func UpdateOpenAipBypassCache(bypassCache bool) {
+	oaipBypassCacheBinding.Set(bypassCache)
+}
+
 func UpdateLogLevelStatus(level string) {
 	lowerLevel := strings.ToLower(level)
 
@@ -94,19 +99,19 @@ func SettingsPanel() *fyne.Container {
 
 		if selected == msfsVersionOptionWinstore {
 			globals.WinstoreFs = true
-			logger.LogInfoVerboseOverride("Selected MSFS Version: Windows Store", false)
+			logger.LogInfo("Selected MSFS Version: Windows Store")
 		} else if selected == msfsVersionOptionSteam {
 			globals.SteamFs = true
-			logger.LogInfoVerboseOverride("Selected MSFS Version: Steam", false)
+			logger.LogInfo("Selected MSFS Version: Steam")
 		} else {
 			return
 		}
 
 		if strings.ToLower(selected) != strings.ToLower(msfsVersionSelect.Selected) {
-			logger.LogDebugVerboseOverride("msfsVersionBinding changed: ["+selected+"]; updating ui select element...", false)
+			logger.LogDebug("msfsVersionBinding changed: [" + selected + "]; updating ui select element...")
 			msfsVersionSelect.SetSelected(selected)
 		} else {
-			logger.LogDebugVerboseOverride("msfsVersionBinding change listener: ui select element already up to date => ["+selected+"]", false)
+			logger.LogDebug("msfsVersionBinding change listener: ui select element already up to date => [" + selected + "]")
 		}
 
 		dbmanager.StoreMsfsVersion()
@@ -116,12 +121,12 @@ func SettingsPanel() *fyne.Container {
 
 	// msfs autostart select
 	msfsAutostartLabel := widget.NewLabel("Flight Simulator Autostart")
-	msfsAutostartCb := widget.NewCheckWithData("Start MSFS when FSKneeboard starts", msfsAutostartBinding)
+	msfsAutostartCb := widget.NewCheckWithData("Start MSFS When FSKneeboard Starts", msfsAutostartBinding)
 
 	msfsAutostartBinding.AddListener(binding.NewDataListener(func() {
 		msfsAutostart, _ := msfsAutostartBinding.Get()
 		globals.MsfsAutostart = msfsAutostart
-		logger.LogInfoVerboseOverride("MSFS Autostart updated: "+strconv.FormatBool(msfsAutostart), false)
+		logger.LogInfo("MSFS Autostart updated: " + strconv.FormatBool(msfsAutostart))
 
 		dbmanager.StoreMsfsAutostart()
 	}))
@@ -139,7 +144,7 @@ func SettingsPanel() *fyne.Container {
 		autosaveString, bindingErr := autosaveBinding.Get()
 
 		if bindingErr != nil {
-			logger.LogErrorVerboseOverride(bindingErr.Error(), false)
+			logger.LogError(bindingErr.Error())
 		}
 
 		if autosaveString != "Off" && !globals.Pro {
@@ -150,10 +155,10 @@ func SettingsPanel() *fyne.Container {
 		for _, v := range autosaveOptions {
 			if strings.ToLower(v) == strings.ToLower(autosaveString) {
 				if strings.ToLower(autosaveString) != strings.ToLower(autosaveSelect.Selected) {
-					logger.LogDebugVerboseOverride("autosaveBinding changed: ["+autosaveString+"]; updating ui select element...", false)
+					logger.LogDebug("autosaveBinding changed: [" + autosaveString + "]; updating ui select element...")
 					autosaveSelect.SetSelected(autosaveString)
 				} else {
-					logger.LogDebugVerboseOverride("autosaveBinding change listener: ui select element already up to date => ["+autosaveString+"]", false)
+					logger.LogDebug("autosaveBinding change listener: ui select element already up to date => [" + autosaveString + "]")
 				}
 				break
 			}
@@ -203,10 +208,10 @@ func SettingsPanel() *fyne.Container {
 		}
 
 		if strings.ToLower(loglevelString) != strings.ToLower(loglevelSelect.Selected) {
-			logger.LogDebugVerboseOverride("loglevelBinding changed: ["+loglevelString+"]; updating ui select element...", false)
+			logger.LogDebug("loglevelBinding changed: [" + loglevelString + "]; updating ui select element...")
 			loglevelSelect.SetSelected(loglevelOptions[matchIndex])
 		} else {
-			logger.LogDebugVerboseOverride("loglevelBinding change listener: ui select element already up to date => ["+loglevelString+"]", false)
+			logger.LogDebug("loglevelBinding change listener: ui select element already up to date => [" + loglevelString + "]")
 		}
 
 		globals.LogLevel = strings.ToLower(loglevelString)
@@ -247,6 +252,20 @@ func SettingsPanel() *fyne.Container {
 
 	//API KEYS
 	// oaip api key
+	oaipBypassCacheCb := widget.NewCheckWithData("Deactivate & Bypass Local Cache", oaipBypassCacheBinding)
+	oaipBypassCacheCb.Disable()
+
+	oaipBypassCacheBinding.AddListener(binding.NewDataListener(func() {
+		// if oaipBypassCacheCb.Disabled() {
+		// 	oaipBypassCacheBinding.Set(false)
+		// }
+
+		oaipBypassCache, _ := oaipBypassCacheBinding.Get()
+		globals.OpenAipBypassCache = oaipBypassCache
+
+		dbmanager.StoreOpenAipBypassCache()
+	}))
+
 	oaipApiKeyLabel := widget.NewLabel("openAIP.net")
 	oaipApiKeyInput := widget.NewEntryWithData(oaipApiKeyBinding)
 	oaipApiKeyInput.Validator = nil
@@ -259,14 +278,21 @@ func SettingsPanel() *fyne.Container {
 
 		server.UpdateCacheApiKeys()
 
-		logger.LogInfo("openAIP API key updated: " + oaipApiKey)
+		logger.LogInfo("openAIP API key updated: [" + oaipApiKey + "]")
 
 		dbmanager.StoreOpenAipApiKey()
+
+		if oaipApiKey == "" || oaipApiKey == secrets.API_KEY_OPENAIP {
+			//oaipBypassCacheBinding.Set(false)
+			oaipBypassCacheCb.Disable()
+		} else {
+			oaipBypassCacheCb.Enable()
+		}
 	}))
 
 	apiKeysGrid := container.NewGridWithColumns(
 		3,
-		oaipApiKeyLabel, oaipApiKeyInput, widget.NewLabel(""),
+		oaipApiKeyLabel, oaipApiKeyInput, oaipBypassCacheCb,
 	)
 
 	generalLabel := widget.NewLabel("General")
@@ -289,7 +315,7 @@ func SettingsPanel() *fyne.Container {
 	scroll := container.NewVScroll(vBox)
 	maxContainer := container.NewMax(scroll)
 
-	logger.LogDebugVerboseOverride("Settings Panel initialized", false)
+	logger.LogDebug("Settings Panel initialized")
 
 	return maxContainer
 }

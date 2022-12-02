@@ -2,6 +2,7 @@ package dbmanager
 
 import (
 	"strconv"
+	"strings"
 	"vfrmap-for-vr/vfrmap/application/globals"
 )
 
@@ -89,10 +90,19 @@ func LoadLogLevel() string {
 
 // openAPI
 func StoreOpenAipApiKey() {
-	DbWriteSettings("oaipApiKey", globals.OpenAipApiKey)
+	DbWriteSettings("oaipApiKey", strings.TrimSpace(globals.OpenAipApiKey))
 }
 
 func LoadOpenAipApiKey() {
-	openAipApiKey := DbReadSettings("oaipApiKey")
+	openAipApiKey := strings.TrimSpace(DbReadSettings("oaipApiKey"))
 	globals.OpenAipApiKey = openAipApiKey
+}
+
+func StoreOpenAipBypassCache() {
+	DbWriteSettings("oaipBypassCache", strconv.FormatBool(globals.OpenAipBypassCache))
+}
+
+func LoadOpenAipBypassCache() {
+	openAipBypassCache, _ := strconv.ParseBool(DbReadSettings("oaipBypassCache"))
+	globals.OpenAipBypassCache = openAipBypassCache
 }

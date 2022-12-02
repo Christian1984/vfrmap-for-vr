@@ -101,7 +101,11 @@ func initFsk() {
 	dbmanager.LoadTourStates()
 	callbacks.ShowGuiTourChanged(!globals.TourGuiStarted)
 
-	//load apikeys
+	// load cache bypass settings
+	dbmanager.LoadOpenAipBypassCache()
+	callbacks.OpenAipBypassCacheChanged(globals.OpenAipBypassCache)
+
+	// load apikeys
 	dbmanager.LoadOpenAipApiKey()
 	callbacks.UpdateOpenAipApi(globals.OpenAipApiKey)
 
@@ -179,6 +183,7 @@ func registerGuiCallbacks() {
 	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
 	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
 
+	callbacks.OpenAipBypassCacheChangedCallback = settingspanel.UpdateOpenAipBypassCache
 	callbacks.UpdateOpenAipApiCallback = settingspanel.UpdateOpenAipApiKey
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus

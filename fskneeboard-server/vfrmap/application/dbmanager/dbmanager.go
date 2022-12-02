@@ -28,7 +28,7 @@ func DbConnect() error {
 func initBucket(name string, tx *bolt.Tx) error {
 	_, err := tx.CreateBucketIfNotExists([]byte(name))
 	if err != nil {
-		logger.LogErrorVerboseOverride("Cannot create bucket "+name+" in db "+boltFileName+", details: "+err.Error(), false)
+		logger.LogError("Cannot create bucket " + name + " in db " + boltFileName + ", details: " + err.Error())
 		return fmt.Errorf("Cannot create bucket: %s", err)
 	}
 	return nil
@@ -55,10 +55,10 @@ func DbClose() {
 }
 
 func dbWrite(bucket string, key string, value string) {
-	logger.LogDebugVerboseOverride("Storing data: ["+key+"]=["+value+"] in bucket ["+bucket+"]", false)
+	logger.LogDebug("Storing data: [" + key + "]=[" + value + "] in bucket [" + bucket + "]")
 
 	if db == nil {
-		logger.LogDebugVerboseOverride("DB not initialized! Cannot store value for ["+key+"]", false)
+		logger.LogDebug("DB not initialized! Cannot store value for [" + key + "]")
 	} else {
 		db.Update(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte(bucket))
@@ -69,12 +69,12 @@ func dbWrite(bucket string, key string, value string) {
 }
 
 func dbRead(bucket string, key string) string {
-	logger.LogDebugVerboseOverride("Reading data for key ["+key+"] from bucket ["+bucket+"]", false)
+	logger.LogDebug("Reading data for key [" + key + "] from bucket [" + bucket + "]")
 
 	var out *string
 
 	if db == nil {
-		logger.LogDebugVerboseOverride("DB not initialized! Cannot read value for ["+key+"]", false)
+		logger.LogDebug("DB not initialized! Cannot read value for [" + key + "]")
 	} else {
 		db.View(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte(bucket))
@@ -83,7 +83,7 @@ func dbRead(bucket string, key string) string {
 			outs := string(v[:])
 			out = &outs
 
-			logger.LogDebugVerboseOverride("["+key+"] is: ["+*out+"]", false)
+			logger.LogDebug("[" + key + "] is: [" + *out + "]")
 
 			return nil
 		})

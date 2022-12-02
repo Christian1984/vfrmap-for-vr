@@ -41,7 +41,7 @@ func SupportPanel() *fyne.Container {
 	)
 	centerContainer := container.NewCenter(vBox)
 
-	logger.LogDebugVerboseOverride("Support Panel initialized", false)
+	logger.LogDebugVerbose("Support Panel initialized")
 
 	return centerContainer
 

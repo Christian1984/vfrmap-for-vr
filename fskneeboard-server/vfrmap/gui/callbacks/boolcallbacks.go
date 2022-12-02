@@ -35,3 +35,9 @@ var ShowGuiTourChangedCallback func(bool)
 func ShowGuiTourChanged(show bool) {
 	runBoolCallback(show, ShowGuiTourChangedCallback)
 }
+
+var OpenAipBypassCacheChangedCallback func(bool)
+
+func OpenAipBypassCacheChanged(show bool) {
+	runBoolCallback(show, OpenAipBypassCacheChangedCallback)
+}

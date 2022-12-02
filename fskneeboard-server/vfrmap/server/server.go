@@ -323,7 +323,7 @@ func ShutdownWithPrompt() {
 
 func UpdateAutosaveInterval(verbose bool) {
 	if autosaveTick != nil {
-		logger.LogDebugVerboseOverride("Autosave interval updated: Stopping old timer...", false)
+		logger.LogDebug("Autosave interval updated: Stopping old timer...")
 		autosaveTick.Stop()
 	}
 
@@ -336,14 +336,14 @@ func UpdateAutosaveInterval(verbose bool) {
 			utils.Printf("Autosave Interval set to %d minute(s)...\n", globals.AutosaveInterval)
 		}
 
-		logger.LogInfoVerboseOverride("Autosave interval updated: Creating new ticker with an interval of "+strconv.Itoa(globals.AutosaveInterval)+" minutes", false)
+		logger.LogInfo("Autosave interval updated: Creating new ticker with an interval of " + strconv.Itoa(globals.AutosaveInterval) + " minutes")
 		autosaveTick = time.NewTicker(time.Duration(globals.AutosaveInterval) * time.Minute)
 	} else {
 		if verbose {
 			utils.Println("Autosave deactivated. Please configure the autosave interval in the settings section.")
 		}
 
-		logger.LogInfoVerboseOverride("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes", false)
+		logger.LogInfo("Autosave interval disabled: Creating new ticker with an interval of 9999 minutes")
 		autosaveTick = time.NewTicker(9999 * time.Minute)
 	}
 
@@ -389,7 +389,7 @@ func initCache(ttl time.Duration, root string, provider string, port string, url
 }
 
 func UpdateCacheApiKeys() {
-	logger.LogDebugVerbose("Enter UpdateCacheApiKeys() with " + globals.OpenAipApiKey)
+	logger.LogDebug("Enter UpdateCacheApiKeys() with " + globals.OpenAipApiKey)
 
 	oaipApiKey := globals.OpenAipApiKey
 	oaipLog := oaipApiKey
@@ -398,8 +398,8 @@ func UpdateCacheApiKeys() {
 		oaipLog = "DEFAULT API KEY"
 	}
 
-	for _, cache := range globals.OaipCaches {
-		logger.LogDebugVerbose("Update api key on cache " + cache.UrlScheme + " from " + cache.ApiKey + " to " + oaipLog)
+	for _, cache := range globals.OpenAipCaches {
+		logger.LogDebug("Update api key on cache " + cache.UrlScheme + " from " + cache.ApiKey + " to " + oaipLog)
 		cache.ApiKey = oaipApiKey
 	}
 }
@@ -436,7 +436,7 @@ func initMaptileCache() {
 		oaipApiKeyLog = "DEFAULT API KEY"
 	}
 
-	logger.LogDebugVerbose("Initializing OAIP caches with api key: [" + oaipApiKeyLog + "]")
+	logger.LogDebug("Initializing OAIP caches with api key: [" + oaipApiKeyLog + "]")
 
 	oaipAirports, oaipAirportsErr := initCache(ttl, globalRoot, "oaip-airports", "35309", OaipAirportsUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
 	if oaipAirportsErr == nil {
@@ -458,13 +458,29 @@ func initMaptileCache() {
 		oaipCaches = append(oaipCaches, oaipReporting)
 	}
 
-	globals.OaipCaches = oaipCaches
+	globals.OpenAipCaches = oaipCaches
 
 	//initCache(ttl, globalRoot, "oaip-obstacles", "35313", "https://api.tiles.openaip.net/api/data/obstacles/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
 }
 
 func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 	logger.LogDebug("serveMapServiceUrls called!")
+
+	oaipAirportsUrl := OaipAirportsUrls.CacheUrl
+	oaipAirspacesUrl := OaipAirspacesUrls.CacheUrl
+	oaipNavaidsUrl := OaipNavaidsUrls.CacheUrl
+	oaipReportingUrl := OaipReportingUrls.CacheUrl
+
+	if globals.OpenAipBypassCache && globals.OpenAipApiKey != "" && globals.OpenAipApiKey != secrets.API_KEY_OPENAIP {
+		logger.LogDebug("serving openAIP remote urls")
+
+		oaipAirportsUrl = strings.ReplaceAll(OaipAirportsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
+		oaipAirspacesUrl = strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
+		oaipNavaidsUrl = strings.ReplaceAll(OaipNavaidsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
+		oaipReportingUrl = strings.ReplaceAll(OaipReportingUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
+	} else {
+		logger.LogDebug("serving openAIP cache urls")
+	}
 
 	mapServiceUrls := MapServiceUrlsDto{
 		Osm:      OsmUrls.CacheUrl,
@@ -474,10 +490,10 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		StamenW:  StamenWUrls.RemoteUrl, // cache was buggy
 		CartoD:   CartoD.CacheUrl,
 
-		OaipAirports:  strings.ReplaceAll(OaipAirportsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
-		OaipAirspaces: strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
-		OaipNavaids:   strings.ReplaceAll(OaipNavaidsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
-		OaipReporting: strings.ReplaceAll(OaipReportingUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
+		OaipAirports:  oaipAirportsUrl,
+		OaipAirspaces: oaipAirspacesUrl,
+		OaipNavaids:   oaipNavaidsUrl,
+		OaipReporting: oaipReportingUrl,
 	}
 
 	responseJson, jsonErr := json.Marshal(mapServiceUrls)
