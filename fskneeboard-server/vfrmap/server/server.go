@@ -423,9 +423,9 @@ func initMaptileCache() {
 	initCache(ttl, globalRoot, "otm", "35303", OtmUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "stamenbw", "35304", StamenBwUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "stament", "35305", StamenTUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "cartod", "35307", "", CartoD.RemoteUrl, true, []string{}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "cartod", "35307", CartoD.RemoteUrl, "", true, []string{}, sharedMemoryCache)
 
-	initCache(ttl, globalRoot, "ofm", "35308", "", Ofm.RemoteUrl, true, []string{"path"}, sharedMemoryCache)
+	initCache(ttl, globalRoot, "ofm", "35308", Ofm.RemoteUrl, "", true, []string{"path"}, sharedMemoryCache)
 
 	var oaipCaches = []*maptilecache.Cache{}
 
@@ -472,7 +472,7 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		StamenBw: StamenBwUrls.CacheUrl,
 		StamenT:  StamenTUrls.CacheUrl,
 		StamenW:  StamenWUrls.RemoteUrl, // cache was buggy
-		CartoD:   CartoD.RemoteUrl,
+		CartoD:   CartoD.CacheUrl,
 
 		OaipAirports:  strings.ReplaceAll(OaipAirportsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
 		OaipAirspaces: strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey),
