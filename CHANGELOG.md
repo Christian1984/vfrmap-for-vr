@@ -1,5 +1,20 @@
 > REMARKS: changes indicated with (*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.10.0
+
+## MAJOR:
+
+- added a trail line to the map module, can be toggled via GUI
+- added a distance and angle measuring tool
+- added custom API key section to the settings dialog to add custom API keys (replaces the legacy CLI argument)
+- added the option to disable the local maptile cache for services with custom API keys
+
+## MINOR:
+
+- improved logging during startup to improve customer support
+
+---
+
 # v1.9.0
 
 ## MAJOR:
