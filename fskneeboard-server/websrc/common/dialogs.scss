@@ -34,6 +34,15 @@
                     background-color: lightblue;
                 }
             }
+
+            &.dialog-buttons--vertical {
+                display: flex;
+                flex-direction: column;
+
+                > span {
+                    margin-bottom: 0.25rem;
+                }
+            }
         }
     }
 }

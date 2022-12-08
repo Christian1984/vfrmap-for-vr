@@ -1019,7 +1019,7 @@ function registerHandlers() {
     const trash_waypoints_btn = document.querySelector("#trash-waypoints");
     if (trash_waypoints_btn) {
         trash_waypoints_btn.addEventListener("click", () => {
-            hide_trash_waypoints_confirm_dialog(false);
+            hide_trash_select_dialog(false);
         });
     }
 
@@ -1121,15 +1121,51 @@ function registerHandlers() {
         });
     }
 
+    // trash select dialog
+    const trash_select_delete_waypoints_btn = document.querySelector("#trash-select-dialog-waypoints");
+    if (trash_select_delete_waypoints_btn) {
+        trash_select_delete_waypoints_btn.addEventListener("click", () => {
+            hide_trash_select_dialog();
+
+            if (waypoints.is_mode_available()) {
+                hide_trash_waypoints_confirm_dialog(false);
+            }
+        });
+    }
+
+    const trash_select_delete_measuring_tool_pins_btn = document.querySelector("#trash-select-dialog-measure-tool-pins");
+    if (trash_select_delete_measuring_tool_pins_btn) {
+        trash_select_delete_measuring_tool_pins_btn.addEventListener("click", () => {
+            hide_trash_select_dialog();
+
+            if (waypoints.is_mode_available()) {
+                hide_trash_measuring_tool_pins_confirm_dialog(false);
+            }
+        });
+    }
+
+    const trash_select_delete_trail_btn = document.querySelector("#trash-select-dialog-trail");
+    if (trash_select_delete_trail_btn) {
+        trash_select_delete_trail_btn.addEventListener("click", () => {
+            hide_trash_select_dialog();
+            hide_trash_trail_confirm_dialog(false);
+        });
+    }
+
+    const trash_select_cancel_btn = document.querySelector("#trash-select-dialog-cancel");
+    if (trash_select_cancel_btn) {
+        trash_select_cancel_btn.addEventListener("click", () => {
+            hide_trash_select_dialog();
+        });
+    }
+
+    // confirm waypoint delete
     const confirm_trash_waypoints_btn = document.querySelector("#trash-waypoints-confirm-dialog-yes");
     if (confirm_trash_waypoints_btn) {
         confirm_trash_waypoints_btn.addEventListener("click", () => {
             if (waypoints.is_mode_available()) {
                 waypoints.clear_track(true, true);
-                waypoints.clear_measure_tool_data(true, true);
             }
-
-            clear_trail_data();
 
             hide_trash_waypoints_confirm_dialog();
         });
@@ -1142,6 +1178,43 @@ function registerHandlers() {
         });
     }
 
+    // confirm measuring tool delete
+    const confirm_trash_measuring_tool_pins_btn = document.querySelector("#trash-tools-confirm-dialog-yes");
+    if (confirm_trash_measuring_tool_pins_btn) {
+        confirm_trash_measuring_tool_pins_btn.addEventListener("click", () => {
+            if (waypoints.is_mode_available()) {
+                waypoints.clear_measure_tool_data(true, true);
+            }
+
+            hide_trash_measuring_tool_pins_confirm_dialog();
+        });
+    }
+
+    const cancel_trash_measuring_tool_pins_btn = document.querySelector("#trash-tools-confirm-dialog-no");
+    if (cancel_trash_measuring_tool_pins_btn) {
+        cancel_trash_measuring_tool_pins_btn.addEventListener("click", () => {
+            hide_trash_measuring_tool_pins_confirm_dialog();
+        });
+    }
+
+    // confirm trail delete
+    const confirm_trash_trail_btn = document.querySelector("#trash-trail-confirm-dialog-yes");
+    if (confirm_trash_trail_btn) {
+        confirm_trash_trail_btn.addEventListener("click", () => {
+            clear_trail_data();
+            hide_trash_trail_confirm_dialog();
+        });
+    }
+
+    const cancel_trash_trail_btn = document.querySelector("#trash-trail-confirm-dialog-no");
+    if (cancel_trash_trail_btn) {
+        cancel_trash_trail_btn.addEventListener("click", () => {
+            hide_trash_trail_confirm_dialog();
+        });
+    }
+
+
+    
     const mode_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='mode-controls']");
     for (let i = 0; i < mode_control_btns.length; i++) {
         mode_control_btns[i].addEventListener("click", () => {
@@ -1290,8 +1363,20 @@ function hide_waypoint_confirm_dialog(hide = true) {
     hide_confirm_dialog("#waypoint-confirm-dialog-wrapper", hide);
 }
 
+function hide_trash_select_dialog(hide = true) {
+    hide_confirm_dialog("#trash-select-dialog-wrapper", hide);
+}
+
 function hide_trash_waypoints_confirm_dialog(hide = true) {
     hide_confirm_dialog("#trash-waypoints-confirm-dialog-wrapper", hide);
+}
+
+function hide_trash_measuring_tool_pins_confirm_dialog(hide = true) {
+    hide_confirm_dialog("#trash-tools-confirm-dialog-wrapper", hide);
+}
+
+function hide_trash_trail_confirm_dialog(hide = true) {
+    hide_confirm_dialog("#trash-trail-confirm-dialog-wrapper", hide);
 }
 
 function hide_search_map_panel(hide = true) {
