@@ -183,12 +183,13 @@ func SettingsPanel() *fyne.Container {
 
 	// set log level
 	loglevelLabel := widget.NewLabel("Log Level")
-	logevelWarningLabel := widget.NewLabel("WARNING: The Log Levels \"Debug\" and \"Silly\" may result in very large log files!")
-	logevelWarningLabel.Hidden = true
-	logevelWarningLabel.Alignment = fyne.TextAlignCenter
+	loglevelWarningLabel := widget.NewLabel("WARNING: The Log Levels \"Debug\" and \"Silly\" may result in very large log files!")
+	loglevelWarningLabel.Hidden = true
+	loglevelWarningLabel.TextStyle.Italic = true
+	loglevelWarningLabel.Alignment = fyne.TextAlignCenter
 
 	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
-		logevelWarningLabel.Hidden = strings.ToLower(selected) != "debug" && strings.ToLower(selected) != "silly"
+		loglevelWarningLabel.Hidden = strings.ToLower(selected) != "debug" && strings.ToLower(selected) != "silly"
 		loglevelBinding.Set(selected)
 	})
 	logsOpenFolderBtn := widget.NewButton("Open Log Folder", func() {
@@ -301,15 +302,19 @@ func SettingsPanel() *fyne.Container {
 	apiKeysLabel := widget.NewLabel("API Keys")
 	apiKeysLabel.TextStyle.Bold = true
 
+	apiKeysInfoLabel := widget.NewLabel("Obtain and add your own, private API keys below for better map performance.\nDepending on your internet connection, bypassing the local cache may also impact map performance.")
+	apiKeysInfoLabel.TextStyle.Italic = true
+
 	vBox := container.NewVBox(
 		widget.NewLabel(""),
 		generalLabel,
 		widget.NewSeparator(),
 		generalGrid,
-		logevelWarningLabel,
+		loglevelWarningLabel,
 		widget.NewLabel(""),
 		apiKeysLabel,
 		widget.NewSeparator(),
+		apiKeysInfoLabel,
 		apiKeysGrid,
 	)
 	scroll := container.NewVScroll(vBox)
