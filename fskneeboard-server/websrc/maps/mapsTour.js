@@ -11,8 +11,8 @@ const mapsTour = () => {
                 action() {
                     return this.cancel();
                 },
-                    classes: "shepherd-button-secondary",
-                    text: "Skip Tour"
+                classes: "shepherd-button-secondary",
+                text: "Skip Tour"
             },
             {
                 action() {

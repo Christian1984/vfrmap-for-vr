@@ -62,8 +62,9 @@ const TRAIL_HD_BUFFER_SIZE = 3000;
 const TRAIL_UPDATE_INTERVAL_MS = 2000;
 const TRAIL_MIN_DST_M = 50;
 const trail = L.polyline([], { 
-    color: "#32cd32",
-    weight: 3,
+    //color: "#32cd32",
+    color: "#FF5300",
+    weight: 4,
     //dashArray: "1, 10"
 });
 
