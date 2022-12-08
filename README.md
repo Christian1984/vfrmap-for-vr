@@ -157,6 +157,13 @@ Yes</td>
 Yes</td>
 </tr>
 <tr>
+<td>Optional trail, showing your recent flight path on the map</td>
+<td>✅
+Yes</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
 <td>Hide airplane for full "paper map navigation" experience</td>
 <td>✅
 Yes</td>
@@ -186,6 +193,13 @@ Yes</td>
 </tr>
 <tr>
 <td>Waypoints</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
+<td>Navigation Tools (measure arbitrary distances and angles)</td>
 <td>❌
 No</td>
 <td>✅
@@ -664,6 +678,18 @@ The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
 - The "Log Level" will be "Off" by default. If you run into any issues while using FSKneeboard and want to report a bug, it makes sense to set this to "Debug" and then reproduce the bug you want to report. That way, I will have detailed information that can use to assess and analyze what is going on. You will, hopefully, not need this setting on a daily basis :-)
 
+#### API Keys
+
+The API Keys section allows you to add your own API keys to FSKneeboard to either replace "global" the "hardcoded" API keys shared by all FSKneeboard users for better performance or to enable additional services within FSKneeboard (like Google Maps or Bing Maps, for example; likely coming soon).
+
+For services that you own a custom API key for you can also select to deactivate and bypass the local map tile cache for. This may, depending on your internet connection and/or data volume restrictions enhance your experience with FSKneeboard even further.
+
+Currently, openAIP is the only service that is supported with custom API keys, but more are likely to follow soon.
+
+##### openAIP.net
+
+Replace the "global" API key shared by all FSKneeboard users with your own API key. You can obtain your own API key by [creating a new account with openAIP](https://www.openaip.net/new-account). Then [go here](https://www.openaip.net/users/clients#tab-clients) and request your API key by clicking the "+ REQUEST NEW API KEY HERE".
+
 ### Hotkeys Panel
 
 The hotkeys panel allows you to setup hotkey(s) to use with FSKneeboard.
@@ -764,7 +790,6 @@ The FSKneeboard server can be started with several commandline arguments to furt
 - `--noupdatecheck`: Prevent FSKneeboard from checking the GitHub API for updates every three days.
 - `--quietshutdown`: Prevent FSKneeboard from showing a prompt after disconnecting from MSFS.
 - `--maxramusage [number of bytes]`: Set the maximum memory footprint shared across all maptile caches to `[number of bytes]` bytes (defaults to 8 * 256 * 1024 * 1024 bytes, roughly 2 GB).
-- `--apikeyoaip [API KEY]`: Replace the "global" API key shared by all FSKneeboard users with your own API key. You can obtain your own API key by [creating a new account with openAIP](https://www.openaip.net/new-account). Then [go here](https://www.openaip.net/users/clients#tab-clients) and request your API key by clicking the "+ REQUEST NEW API KEY HERE".
 
 ![Quietshutdown Shortcut](screenshots/fskneeboard-quietshutdown.png)
 
@@ -806,7 +831,7 @@ The FSKneeboard server can be started with several commandline arguments to furt
 
 ## "The OpenAIP map layer doesn't work!"
 
-> If the rate limit of the global FSKneeboard openAIP API key gets exceeded, the openAIP server will refuse to serve more tiles. If you encounter this problem, please create and register your own API key as described [here](#command-line-arguments) under `--apikeyoaip`.
+> If the rate limit of the global FSKneeboard openAIP API key gets exceeded, the openAIP server will refuse to serve more tiles. If you encounter this problem, please create and register your own API key as described [here](#openaipnet).
 
 ## "I can't get it to work! What can I do?"
 
@@ -884,7 +909,7 @@ If you have suggestions or issues, please feel free to reach out to me or create
 
 ---
 
-# HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?
+# HELP!!! Why Does My Virus-Scanning Software Thinks This Program Is Infected?
 
 From official golang website https://golang.org/doc/faq#virus
 
@@ -914,3 +939,12 @@ However, here's a virus [report from virustotal for the binaries of Version 1.2.
 If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section above. It allows us to keep developing addons and mods like these ones and making them available for free. Any amount is welcome! Thank you.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
+
+---
+
+# What Else?
+
+Here's a list of mods I have published for Microsoft Flight Simulator. Please let me know how you like them and share your thoughts in our community Discord.
+
+- [FSKneeboard](https://fskneeboard.com) - FSKneeboard is the All-In-One Solution for VR-Pilots: Maps, Charts and Notes inside your VR-Cockpit!
+- [FSdeskto](https://fsdesktop.com) - FSdesktop is a tool to monitor and control all your essential desktop applications directly from your Flight Simulator cockpit. Build for VR Enthusiasts!
