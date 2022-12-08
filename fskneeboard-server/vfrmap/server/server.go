@@ -272,28 +272,65 @@ func trailDataController(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+var prevLat float64
+var prevLng float64
+
+const MSFS_ZERO_LAT = 0.000407
+const MSFS_ZERO_LNG = 0.013975
+
 func (r *Report) process(ws *websockets.Websocket) {
+	logger.LogSilly("trail lat: " + fmt.Sprintf("%f", r.Latitude) + ", lng: " + fmt.Sprintf("%f", r.Longitude))
+
 	if r.Latitude == 0 && r.Longitude == 0 {
+		logger.LogSilly("lat and lng are 0, ignoring...")
 		return
 	}
 
-	td := []float64{
-		math.Round(r.Latitude*10000) / 10000,
-		math.Round(r.Longitude*10000) / 10000,
-	}
-	trail.TrailDataHd = append(trail.TrailDataHd, td)
-
-	if len(trail.TrailDataSd) == 0 {
-		trail.TrailDataSd = append(trail.TrailDataSd, td)
+	if math.Abs(r.Latitude-MSFS_ZERO_LAT) < 1e-6 && math.Abs(r.Longitude-MSFS_ZERO_LNG) < 1e-6 {
+		logger.LogSilly("lat and lng are very close to MSFS defaults! ignoring...")
+		return
 	}
 
-	if len(trail.TrailDataHd) > trailDataHdCapacity {
-		trail.TrailDataSd = append(trail.TrailDataSd, trail.TrailDataHd[0])
-		trail.TrailDataHd = trail.TrailDataHd[trailDataSdResolution:]
-
-		//logger.LogInfoVerbose("len(trail.TrailDataHd)" + strconv.Itoa(len(trail.TrailDataHd)))
-		//logger.LogInfoVerbose("len(trail.TrailDataSd)" + strconv.Itoa(len(trail.TrailDataSd)))
+	// check if position has ever changed
+	if prevLat < 1e-9 {
+		prevLat = r.Latitude
 	}
+
+	if prevLng < 1e-9 {
+		prevLng = r.Longitude
+	}
+
+	if len(trail.TrailDataHd) == 0 && math.Abs(r.Latitude-prevLat) < 1e-9 && math.Abs(r.Longitude-prevLng) < 1e-9 {
+		logger.LogSilly("lat and/or lng have never changed... not processing!")
+		return
+	}
+
+	if math.Abs(r.Latitude-prevLat) > 1e-6 || math.Abs(r.Longitude-prevLng) > 1e-6 {
+		logger.LogSilly("lat and/or lng are far enough apart, adding them to history")
+
+		td := []float64{
+			math.Round(r.Latitude*1000000) / 1000000,
+			math.Round(r.Longitude*1000000) / 1000000,
+		}
+		trail.TrailDataHd = append(trail.TrailDataHd, td)
+
+		if len(trail.TrailDataSd) == 0 {
+			trail.TrailDataSd = append(trail.TrailDataSd, td)
+		}
+
+		if len(trail.TrailDataHd) > trailDataHdCapacity {
+			trail.TrailDataSd = append(trail.TrailDataSd, trail.TrailDataHd[0])
+			trail.TrailDataHd = trail.TrailDataHd[trailDataSdResolution:]
+
+			//logger.LogInfoVerbose("len(trail.TrailDataHd)" + strconv.Itoa(len(trail.TrailDataHd)))
+			//logger.LogInfoVerbose("len(trail.TrailDataSd)" + strconv.Itoa(len(trail.TrailDataSd)))
+		}
+	} else {
+		logger.LogSilly("lat and/or lng are very close, NOT adding them to history")
+	}
+
+	prevLat = r.Latitude
+	prevLng = r.Longitude
 
 	ws.Broadcast(map[string]interface{}{
 		"type":           "plane",
