@@ -58,8 +58,9 @@ const autoremoval_proximity_threshold = 0.5; //miles
 
 let trail_hd = [];
 let trail_sd = [];
+let current_sd_update_ticks = 0;
 const TRAIL_HD_BUFFER_SIZE = 3000;
-const TRAIL_UPDATE_INTERVAL_MS = 2000;
+const TRAIL_UPDATE_INTERVAL = 20;
 const TRAIL_MIN_DST_M = 50;
 const trail = L.polyline([], { 
     //color: "#32cd32",
@@ -216,6 +217,11 @@ function median(input){
     return (values[half - 1] + values[half]) / 2.0;*/
   }
 
+function setTrailData() {
+    const trail_concat = trail_sd.concat(trail_hd);
+    trail.setLatLngs(trail_concat);
+}
+
 function updateMap() {
     const pos = L.latLng(last_report.latitude, last_report.longitude);
     marker.setLatLng(pos);
@@ -237,17 +243,20 @@ function updateMap() {
     }
 
     if (trail_hd.length > TRAIL_HD_BUFFER_SIZE && trail_hd.length > 1) {
-        trail_hd.shift(); // remove previously copied point (just moving this from hd to sd will leave a gap in the line!)
-        const second_oldest = trail_hd[0];
-        if (trail_sd.length < 2) {
-            trail_sd.push(second_oldest);
-        }
-        else {
-            trail_sd[trail_sd.length - 1] = second_oldest;
+        const oldest_hd = trail_hd.shift();
+
+        current_sd_update_ticks++;
+
+        if (trail_sd.length == 0 || current_sd_update_ticks > TRAIL_UPDATE_INTERVAL) {
+            // console.log("adding a keyframe to the trail_sd array!");
+            trail_sd.push(oldest_hd);
+
+            current_sd_update_ticks = 0;
         }
     }
 
-    trail.setLatLngs([trail_sd, trail_hd]);
+    // console.log("length: sd =", trail_sd.length, "- hd:", trail_hd.length);
+    setTrailData();
 
     if (follow_plane) {
         map.panTo(pos);
@@ -617,7 +626,6 @@ function initMap(mapTileUrls) {
     waypoints = new Waypoints(map, pos, plane_visible, mode_options, autoremoval_proximity_threshold, 1000);
 
     trail.addTo(map);
-    setInterval(() => update_trail_sd_legs(), TRAIL_UPDATE_INTERVAL_MS);
 
     marker.on("click", function() {
         toggle_rubberband();
@@ -829,7 +837,7 @@ function clear_trail_data() {
     trail_sd = [];
     trail_hd = [];
 
-    trail.setLatLngs([trail_sd, trail_hd]);
+    setTrailData();
 
     // clear server side data
     let xhr = new XMLHttpRequest();
@@ -839,12 +847,15 @@ function clear_trail_data() {
 }
 
 function update_trail_sd_legs() {
-    //console.log("update_trail_sd_legs: hd.length", trail_hd.length, "- sd.length", trail_sd.length);
+    // console.log("update_trail_sd_legs: hd.length", trail_hd.length, "- sd.length", trail_sd.length);
+
 
     if (trail_sd.length == 0) return;
 
     const keyframe = trail_sd[trail_sd.length - 1];
     trail_sd.push(keyframe);
+
+    setTrailData();
 }
 
 function loadTrailData() {
@@ -865,7 +876,7 @@ function loadTrailData() {
                         trail_sd.push(trail_hd[0])
                     }
 
-                    trail.setLatLngs([trail_sd, trail_hd]);
+                    setTrailData();
                 }
             }
         }
@@ -966,7 +977,7 @@ function loadStoredState() {
                 wind_indicator_toggle.click();
             }
 
-            console.log("data.trail_visibility", data.trail_visibility);
+            // console.log("data.trail_visibility", data.trail_visibility);
             const trail_toggle = document.querySelector("#trail-toggle");
             if (data.trail_visibility != null && data.trail_visibility == "false" && trail_toggle != null) {
                 trail_toggle.click();
