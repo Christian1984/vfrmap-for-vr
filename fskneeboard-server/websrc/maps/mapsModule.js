@@ -1137,22 +1137,28 @@ function registerHandlers() {
     const trash_select_delete_waypoints_btn = document.querySelector("#trash-select-dialog-waypoints");
     if (trash_select_delete_waypoints_btn) {
         trash_select_delete_waypoints_btn.addEventListener("click", () => {
-            hide_trash_select_dialog();
-
-            if (waypoints.is_mode_available()) {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+            }
+            else {
                 hide_trash_waypoints_confirm_dialog(false);
             }
+
+            hide_trash_select_dialog();
         });
     }
 
     const trash_select_delete_measuring_tool_pins_btn = document.querySelector("#trash-select-dialog-measure-tool-pins");
     if (trash_select_delete_measuring_tool_pins_btn) {
         trash_select_delete_measuring_tool_pins_btn.addEventListener("click", () => {
-            hide_trash_select_dialog();
-
-            if (waypoints.is_mode_available()) {
+            if (!waypoints.is_mode_available()) {
+                waypoints.activate_mode_failed(hide_premium_info);
+            }
+            else {
                 hide_trash_measuring_tool_pins_confirm_dialog(false);
             }
+
+            hide_trash_select_dialog();
         });
     }
 
