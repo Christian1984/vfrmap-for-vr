@@ -653,7 +653,7 @@ If a new version of FSKneeboard is available, a notification on the bottom of th
 
 The settings panel is where you can configure general settings that control the behaviour of FSKneeboard.
 
-![FSKneeboard - Settings Panel](screenshots/fskneeboard-gui-settingspanel-190.png)
+![FSKneeboard - Settings Panel](screenshots/fskneeboard-gui-settingspanel-1-10-0.png)
 
 *FSKneeboard - Settings Panel*
 
@@ -947,4 +947,4 @@ If you enjoy this project, please consider buying me a coffee and/or donating to
 Here's a list of mods I have published for Microsoft Flight Simulator. Please let me know how you like them and share your thoughts in our community Discord.
 
 - [FSKneeboard](https://fskneeboard.com) - FSKneeboard is the All-In-One Solution for VR-Pilots: Maps, Charts and Notes inside your VR-Cockpit!
-- [FSdeskto](https://fsdesktop.com) - FSdesktop is a tool to monitor and control all your essential desktop applications directly from your Flight Simulator cockpit. Build for VR Enthusiasts!
+- [FSdesktop](https://fsdesktop.com) - FSdesktop is a tool to monitor and control all your essential desktop applications directly from your Flight Simulator cockpit. Build for VR Enthusiasts!
