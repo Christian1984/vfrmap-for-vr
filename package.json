@@ -1,51 +1,51 @@
 {
-  "name": "fskneeboard",
-  "version": "1.10.0",
-  "description": "This project (formerly known as VFR Map For VR) adds a helpful ingame panel to your flight simulator which brings",
-  "main": "index.js",
-  "scripts": {
-    "build-panel": "webpack --config=webpack/webpack.config.panel.prod.js",
-    "build-panel-dev": "webpack --config=webpack/webpack.config.panel.dev.js",
-    "build-server-free": "webpack --config=webpack/webpack.config.server.free.prod.js",
-    "build-server-free-dev": "webpack --config=webpack/webpack.config.server.free.dev.js",
-    "build-server-pro": "webpack --config=webpack/webpack.config.server.pro.prod.js",
-    "build-server-pro-dev": "webpack --config=webpack/webpack.config.server.pro.dev.js",
-    "watch-free": "webpack --watch --config=webpack/webpack.config.panel.dev.js --config=webpack/webpack.config.server.free.dev.js",
-    "watch-pro": "webpack --watch --config=webpack/webpack.config.panel.dev.js --config=webpack/webpack.config.server.pro.dev.js",
-    "build-readme": "md-to-pdf README.md --config-file readme-pdf-config.js",
-    "watch-readme": "md-to-pdf README.md --config-file readme-pdf-config.js -w"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Christian1984/vfrmap-for-vr.git"
-  },
-  "author": "Christian-Alexander Hoffmann",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Christian1984/vfrmap-for-vr/issues"
-  },
-  "homepage": "https://github.com/Christian1984/vfrmap-for-vr#readme",
-  "devDependencies": {
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "babel-loader": "^8.2.5",
-    "css-loader": "^6.7.1",
-    "filemanager-webpack-plugin": "^7.0.0-beta.0",
-    "html-webpack-plugin": "^5.5.0",
-    "md-to-pdf": "^5.1.0",
-    "mini-css-extract-plugin": "^2.6.0",
-    "node-sass": "^7.0.1",
-    "sass-loader": "^12.6.0",
-    "terser-webpack-plugin": "^5.3.1",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2",
-    "webpack-merge": "^5.8.0"
-  },
-  "dependencies": {
-    "font-awesome": "^4.7.0",
-    "leaflet": "^1.8.0",
-    "leaflet-rotate": "^0.1.4",
-    "md5": "^2.3.0",
-    "shepherd.js": "^10.0.0"
-  }
+    "name": "fskneeboard",
+    "version": "1.10.1-alpha",
+    "description": "This project (formerly known as VFR Map For VR) adds a helpful ingame panel to your flight simulator which brings",
+    "main": "index.js",
+    "scripts": {
+        "build-panel": "webpack --config=webpack/webpack.config.panel.prod.js",
+        "build-panel-dev": "webpack --config=webpack/webpack.config.panel.dev.js",
+        "build-server-free": "webpack --config=webpack/webpack.config.server.free.prod.js",
+        "build-server-free-dev": "webpack --config=webpack/webpack.config.server.free.dev.js",
+        "build-server-pro": "webpack --config=webpack/webpack.config.server.pro.prod.js",
+        "build-server-pro-dev": "webpack --config=webpack/webpack.config.server.pro.dev.js",
+        "watch-free": "webpack --watch --config=webpack/webpack.config.panel.dev.js --config=webpack/webpack.config.server.free.dev.js",
+        "watch-pro": "webpack --watch --config=webpack/webpack.config.panel.dev.js --config=webpack/webpack.config.server.pro.dev.js",
+        "build-readme": "md-to-pdf README.md --config-file readme-pdf-config.js",
+        "watch-readme": "md-to-pdf README.md --config-file readme-pdf-config.js -w"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Christian1984/vfrmap-for-vr.git"
+    },
+    "author": "Christian-Alexander Hoffmann",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Christian1984/vfrmap-for-vr/issues"
+    },
+    "homepage": "https://github.com/Christian1984/vfrmap-for-vr#readme",
+    "devDependencies": {
+        "@babel/core": "^7.17.10",
+        "@babel/preset-env": "^7.17.10",
+        "babel-loader": "^8.2.5",
+        "css-loader": "^6.7.1",
+        "filemanager-webpack-plugin": "^7.0.0-beta.0",
+        "html-webpack-plugin": "^5.5.0",
+        "md-to-pdf": "^5.1.0",
+        "mini-css-extract-plugin": "^2.6.0",
+        "node-sass": "^7.0.1",
+        "sass-loader": "^12.6.0",
+        "terser-webpack-plugin": "^5.3.1",
+        "webpack": "^5.72.1",
+        "webpack-cli": "^4.9.2",
+        "webpack-merge": "^5.8.0"
+    },
+    "dependencies": {
+        "font-awesome": "^4.7.0",
+        "leaflet": "^1.8.0",
+        "leaflet-rotate": "^0.1.4",
+        "md5": "^2.3.0",
+        "shepherd.js": "^10.0.0"
+    }
 }

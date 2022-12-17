@@ -809,7 +809,21 @@ func StartFskServer() {
 			http.Handle("/test/", http.StripPrefix("/test/", testServer))
 		}
 
+		logger.LogDebug("Server startup: starting server...")
+		callbacks.UpdateServerStatus("Ready", "")
+		logger.LogDebug("Server startup: updated GUI info to >Ready<!")
+
+		go func() {
+			err := http.ListenAndServe(globals.HttpListen, nil)
+			if err != nil {
+				logger.LogErrorVerbose("FSKneeboard Server could not be started! Reason: " + err.Error())
+				callbacks.UpdateServerStatus("Could not start server...", "")
+				dialogs.ShowErrorAndExit("FSKneeboard Server could not be started!\nPlease close ALL running instances of FSKneeboard an try again.")
+			}
+		}()
+
 		// connect tablet etc.
+		time.Sleep(2 * time.Second)
 		logger.LogDebug("Server startup: obtaining public ip address...")
 
 		ip, addr_err := utils.GetOutboundIP()
@@ -821,24 +835,22 @@ func StartFskServer() {
 		} else if ip != nil {
 			logger.LogDebug("Server startup: processing and displaying public ip address...")
 
-			connectInfo := "http://" + ip.To4().String() + ":" + port
-			logger.LogInfo("FSKneeboard available at: " + connectInfo)
-			utils.Println("=== INFO: Connecting Your Tablet")
-			utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
-			utils.Println("FSKneeboard Server-Address: " + connectInfo)
-			utils.Println("")
+			if ip.To4() != nil {
+				connectInfo := "http://" + ip.To4().String() + ":" + port
+				logger.LogInfo("FSKneeboard available at: " + connectInfo)
+				utils.Println("=== INFO: Connecting Your Tablet")
+				utils.Println("Besides using the FSKneeboard ingame panel from within Flight Simulator you can also connect to FSKneeboard with your tablet or web browser. To do so please enter follwing IP address and port into the address bar.")
+				utils.Println("FSKneeboard Server-Address: " + connectInfo)
+				utils.Println("")
 
-			callbacks.UpdateServerStatus("Ready at", connectInfo)
-			logger.LogDebug("Server startup: processing and displaying public ip address done!")
+				callbacks.UpdateServerStatus("Ready at", connectInfo)
+				logger.LogDebug("Server startup: processing and displaying public ip address done!")
+			} else {
+				logger.LogWarn("Server startup: could not obtain public ip address")
+
+			}
+
 		}
-
-		err := http.ListenAndServe(globals.HttpListen, nil)
-		if err != nil {
-			logger.LogErrorVerbose("FSKneeboard Server could not be started! Reason: " + err.Error())
-			dialogs.ShowErrorAndExit("FSKneeboard Server could not be started!\nPlease close ALL running instances of FSKneeboard an try again.")
-		}
-
-		logger.LogDebug("Server startup: Server started!")
 	}()
 
 	logger.LogDebug("Server startup: initialize tickers")
