@@ -158,9 +158,18 @@ type MapServiceUrlsDto struct {
 }
 
 func (r *Report) RequestData(s *simconnect.SimConnect) {
+	logger.LogSilly("requesting simconnect data...")
+
 	defineID := s.GetDefineID(r)
+	logger.LogSilly("simconnect defineID: " + strconv.FormatUint(uint64(defineID), 10))
+
 	requestID := defineID
-	s.RequestDataOnSimObjectType(requestID, defineID, 0, simconnect.SIMOBJECT_TYPE_USER)
+	logger.LogSilly("simconnect requestID: " + strconv.FormatUint(uint64(requestID), 10))
+
+	err := s.RequestDataOnSimObjectType(requestID, defineID, 0, simconnect.SIMOBJECT_TYPE_USER)
+	if (err != nil) {
+		logger.LogError("could not request simconnect data, reason: " + err.Error())
+	}
 }
 
 func (r *Report) MockData() {
@@ -890,6 +899,9 @@ func StartFskServer() {
 			}
 
 			ppData, r1, err := s.GetNextDispatch()
+			if (err != nil) {
+				logger.LogSilly(fmt.Sprintf("SimConnect error -> GetNextDispatch error: %d %s", r1, err))
+			}
 
 			if r1 < 0 {
 				if uint32(r1) == simconnect.E_FAIL {
@@ -897,7 +909,7 @@ func StartFskServer() {
 					continue
 				} else {
 					if !loggedGetNextDispatchError {
-						logger.LogErrorVerboseOverride(fmt.Sprintf("GetNextDispatch error: %d %s", r1, err), false)
+						logger.LogError(fmt.Sprintf("GetNextDispatch error: %d %s", r1, err))
 						loggedGetNextDispatchError = true
 					}
 
@@ -910,7 +922,7 @@ func StartFskServer() {
 			switch recvInfo.ID {
 			case simconnect.RECV_ID_EXCEPTION:
 				recvErr := *(*simconnect.RecvException)(ppData)
-				utils.Printf("SIMCONNECT_RECV_ID_EXCEPTION %#v\n", recvErr)
+				logger.LogError(fmt.Sprintf("SIMCONNECT_RECV_ID_EXCEPTION %#v\n", recvErr))
 
 			case simconnect.RECV_ID_OPEN:
 				recvOpen := *(*simconnect.RecvOpen)(ppData)
@@ -924,7 +936,7 @@ func StartFskServer() {
 					recvOpen.SimConnectVersionMinor,
 					recvOpen.SimConnectBuildMajor,
 					recvOpen.SimConnectBuildMinor)
-				logger.LogInfoVerboseOverride("Connected to MSFS, details:"+fsInfo, false)
+				logger.LogInfo("Connected to MSFS, details:"+fsInfo)
 				utils.Println(fsInfo + "\n")
 				utils.Printf("Ready... Please leave this window open during your Flight Simulator session. Have a safe flight :-)\n\n")
 
