@@ -1,35 +1,46 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="/SCSS/common.css" />
-    <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/SCSS/common.css" />
+        <link rel="stylesheet" href="http://localhost:9000/fontawesome/css/all.min.css" />
 
-    <script type="text/javascript" src="/JS/coherent.js"></script>
-    <script type="text/javascript" src="/JS/common.js"></script>
-    <script type="text/javascript" src="/JS/dataStorage.js"></script>
-    <script type="text/javascript" src="/JS/buttons.js"></script>
-    <script type="text/javascript" src="/JS/Services/ToolBarPanels.js"></script>
-    <script type="text/javascript" src="/Pages/VCockpit/Instruments/Shared/BaseInstrument.js"></script>
+        <script type="text/javascript" src="/JS/coherent.js"></script>
+        <script type="text/javascript" src="/JS/common.js"></script>
+        <script type="text/javascript" src="/JS/dataStorage.js"></script>
+        <script type="text/javascript" src="/JS/buttons.js"></script>
+        <script type="text/javascript" src="/JS/simvar.js"></script>
+        <script type="text/javascript" src="/JS/Services/ToolBarPanels.js"></script>
+        <script type="text/javascript" src="/Pages/VCockpit/Instruments/Shared/BaseInstrument.js"></script>
 
-    <link rel="import" href="/templates/NewPushButton/NewPushButton.html" />
-    <link rel="import" href="/templates/ingameUi/ingameUi.html" />
-    <link rel="import" href="/templates/ingameUiHeader/ingameUiHeader.html" />
+        <link rel="import" href="/templates/NewPushButton/NewPushButton.html" />
+        <link rel="import" href="/templates/ingameUi/ingameUi.html" />
+        <link rel="import" href="/templates/ingameUiHeader/ingameUiHeader.html" />
 
-    <script src="http://localhost:9000/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
-</head>
+        <script src="http://localhost:9000/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
 
-<body class="border-box">
-    <ingamepanel-custom>
-        <ingame-ui id="FSKneeboardPanel" panel-id="FSKNEEBOARD_PANEL" title="" class="ingameUiFrame panelInvisible" content-fit="true" min-width="160" min-height="90">
-            <iframe id="content_iframe"></iframe>
-            <div id="warning_message">
-                <h1>Not connected to FSKneeboard!</h1>
-                <p>Please make sure that <i>fskneeboard.exe</i> is running.</p>
-            </div>
-            <div class="overlay" id="overlay_red"></div>
-            <div class="overlay" id="overlay_brightness"></div>
-        </ingame-ui>
-    </ingamepanel-custom>
-</body>
+    <body class="border-box">
+        <ingamepanel-custom>
+            <ingame-ui
+                id="FSKneeboardPanel"
+                panel-id="FSKNEEBOARD_PANEL"
+                title=""
+                class="ingameUiFrame panelInvisible"
+                content-fit="true"
+                min-width="160"
+                min-height="90">
+                <iframe id="content_iframe"></iframe>
+                <div id="warning_message">
+                    <h1>Not connected to FSKneeboard!</h1>
+                    <p>Please make sure that <i>fskneeboard.exe</i> is running.</p>
+                </div>
+                <div class="overlay" id="overlay_red"></div>
+                <div class="overlay" id="overlay_brightness"></div>
+                <!--<div class="overlay" id="log" style="color: white; background-color: rgba(0, 0, 0, 0.4)">
+                    <p>LOG!!!</p>
+                </div>-->
+            </ingame-ui>
+        </ingamepanel-custom>
+    </body>
 </html>
