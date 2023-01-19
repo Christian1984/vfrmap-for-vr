@@ -1,13 +1,18 @@
 "use strict";
 
-
 import "../common/mainmenu.scss";
 import "../common/submenu.scss";
 import "../common/dialogs.scss";
 import "./maps.scss";
 
 import Logger from "../common/logger.js";
-import { dispatch_keyevent, hide_confirm_dialog, store_data, store_data_set, retrieve_data_set } from "../common/common.js";
+import {
+    dispatch_keyevent,
+    hide_confirm_dialog,
+    store_data,
+    store_data_set,
+    retrieve_data_set,
+} from "../common/common.js";
 import tour from "./mapsTour";
 
 let Waypoints;
@@ -17,25 +22,25 @@ const MODES = {
     delete_track_markers: 1,
     teleport: 2,
     add_tool_pin: 3,
-    off: 4
-}
+    off: 4,
+};
 
 const BEARING_MODES = {
     north_up: 0,
     track_up: 1,
     manual: 2,
-}
+};
 
 const AC_TYPE = {
     airplane: 0,
     helicopter: 1,
-}
+};
 
 const AC_COLOR = {
     black: 0,
     white: 1,
     green: 2,
-}
+};
 
 let map;
 let marker;
@@ -49,11 +54,11 @@ let rubberband_visibility = true;
 let mode_options = { mode: MODES.add_track_markers };
 let ac_visibility_options = {
     ac_visibility: true,
-    ac_type: AC_TYPE.airplane, 
-    ac_color: AC_COLOR.black
+    ac_type: AC_TYPE.airplane,
+    ac_color: AC_COLOR.black,
 };
 let last_report = {};
-const initial_pos = L.latLng(50.8694,7.1389);
+const initial_pos = L.latLng(50.8694, 7.1389);
 const autoremoval_proximity_threshold = 0.5; //miles
 
 let trail_hd = [];
@@ -62,7 +67,7 @@ let current_sd_update_ticks = 0;
 const TRAIL_HD_BUFFER_SIZE = 3000;
 const TRAIL_UPDATE_INTERVAL = 20;
 const TRAIL_MIN_DST_M = 50;
-const trail = L.polyline([], { 
+const trail = L.polyline([], {
     //color: "#32cd32",
     color: "#FF5300",
     weight: 4,
@@ -85,24 +90,26 @@ const map_resolutions = {
     high: {
         tile_size: 256,
         zoom_offset: 0,
-        icon_size: 32
+        icon_size: 32,
     },
     medium: {
         tile_size: 512,
         zoom_offset: -1,
-        icon_size: 64
+        icon_size: 64,
     },
     low: {
         tile_size: 1024,
         zoom_offset: -2,
-        icon_size: 128
-    }
+        icon_size: 128,
+    },
 };
 
 let map_resolution = map_resolutions.high;
 
-const svgPlaneIconString = '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" height="249.84" width="248.25" version="1.0"><metadata id="metadata9"/><path id="path5724" d="M 247.51404,152.40266 139.05781,71.800946 c 0.80268,-12.451845 1.32473,-40.256266 0.85468,-45.417599 -3.94034,-43.266462 -31.23018,-24.6301193 -31.48335,-5.320367 -0.0693,5.281361 -1.01502,32.598388 -1.10471,50.836622 L 0.2842717,154.37562 0,180.19575 l 110.50058,-50.48239 3.99332,80.29163 -32.042567,22.93816 -0.203845,16.89693 42.271772,-11.59566 0.008,0.1395 42.71311,10.91879 -0.50929,-16.88213 -32.45374,-22.39903 2.61132,-80.35205 111.35995,48.50611 -0.73494,-25.77295 z" fill-rule="evenodd" fill="__COLOR__"/></svg>';
-const svgHelicopterIconString = '<?xml version="1.0" encoding="iso-8859-1"?><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="250px" height="250px" viewBox="0 0 478.874 478.873"><g><g><path d="M463.096,252.605l-133.38-52.861V78.503V47.101c0-4.338-3.519-7.851-7.851-7.851s-7.851,3.513-7.851,7.851v31.402h-11.569C293.433,32.987,266.884,0,235.512,0c-31.37,0-57.919,32.987-66.938,78.503h-19.416V47.101c0-4.338-3.519-7.851-7.851-7.851s-7.85,3.513-7.85,7.851v31.402v43.46l-109-43.2c-6.987-2.771-14.597-0.112-16.99,5.933c-2.395,6.045,1.327,13.187,8.312,15.961l117.678,46.639v80.363v23.551c0,4.341,3.518,7.851,7.85,7.851s7.851-3.51,7.851-7.851V227.66h48.1c7.64,25.239,14.703,58.196,14.703,94.207v78.502h7.851v39.528c0,8.079,7.027,14.644,15.701,14.644c8.674,0,15.699-6.564,15.699-14.644v-39.528h7.851v-78.502c0-35.618,6.984-68.655,14.606-94.207h40.347v23.551c0,4.341,3.519,7.851,7.851,7.851s7.851-3.51,7.851-7.851V227.66v-2.583l124.703,49.425c6.981,2.773,14.596,0.121,16.987-5.935C473.799,262.512,470.081,255.383,463.096,252.605z M314.015,94.204v99.322l-24.132-9.567c9.91-19.424,15.877-44.248,15.877-71.307c0-6.297-0.409-12.435-1.03-18.448H314.015z M149.158,94.204h17.132c-0.621,6.014-1.023,12.151-1.023,18.448c0,7.694,0.486,15.207,1.406,22.468l-17.515-6.939V94.204z M149.158,211.958v-58.436l23.536,9.327c1.775,5.688,3.829,11.093,6.155,16.186l-0.433-0.148c0,0,6.476,12.457,13.74,33.071H149.158z M278.714,211.958c0.749-2.18,1.479-4.208,2.22-6.215l15.682,6.215H278.714z" fill="__COLOR__"/><path d="M266.913,408.219c-4.328,0-7.851,3.518-7.851,7.85v54.954c0,4.332,3.522,7.851,7.851,7.851c4.332,0,7.85-3.519,7.85-7.851v-54.954C274.762,411.736,271.245,408.219,266.913,408.219z" fill="__COLOR__"/></g></g></svg>';
+const svgPlaneIconString =
+    '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" height="249.84" width="248.25" version="1.0"><metadata id="metadata9"/><path id="path5724" d="M 247.51404,152.40266 139.05781,71.800946 c 0.80268,-12.451845 1.32473,-40.256266 0.85468,-45.417599 -3.94034,-43.266462 -31.23018,-24.6301193 -31.48335,-5.320367 -0.0693,5.281361 -1.01502,32.598388 -1.10471,50.836622 L 0.2842717,154.37562 0,180.19575 l 110.50058,-50.48239 3.99332,80.29163 -32.042567,22.93816 -0.203845,16.89693 42.271772,-11.59566 0.008,0.1395 42.71311,10.91879 -0.50929,-16.88213 -32.45374,-22.39903 2.61132,-80.35205 111.35995,48.50611 -0.73494,-25.77295 z" fill-rule="evenodd" fill="__COLOR__"/></svg>';
+const svgHelicopterIconString =
+    '<?xml version="1.0" encoding="iso-8859-1"?><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="250px" height="250px" viewBox="0 0 478.874 478.873"><g><g><path d="M463.096,252.605l-133.38-52.861V78.503V47.101c0-4.338-3.519-7.851-7.851-7.851s-7.851,3.513-7.851,7.851v31.402h-11.569C293.433,32.987,266.884,0,235.512,0c-31.37,0-57.919,32.987-66.938,78.503h-19.416V47.101c0-4.338-3.519-7.851-7.851-7.851s-7.85,3.513-7.85,7.851v31.402v43.46l-109-43.2c-6.987-2.771-14.597-0.112-16.99,5.933c-2.395,6.045,1.327,13.187,8.312,15.961l117.678,46.639v80.363v23.551c0,4.341,3.518,7.851,7.85,7.851s7.851-3.51,7.851-7.851V227.66h48.1c7.64,25.239,14.703,58.196,14.703,94.207v78.502h7.851v39.528c0,8.079,7.027,14.644,15.701,14.644c8.674,0,15.699-6.564,15.699-14.644v-39.528h7.851v-78.502c0-35.618,6.984-68.655,14.606-94.207h40.347v23.551c0,4.341,3.519,7.851,7.851,7.851s7.851-3.51,7.851-7.851V227.66v-2.583l124.703,49.425c6.981,2.773,14.596,0.121,16.987-5.935C473.799,262.512,470.081,255.383,463.096,252.605z M314.015,94.204v99.322l-24.132-9.567c9.91-19.424,15.877-44.248,15.877-71.307c0-6.297-0.409-12.435-1.03-18.448H314.015z M149.158,94.204h17.132c-0.621,6.014-1.023,12.151-1.023,18.448c0,7.694,0.486,15.207,1.406,22.468l-17.515-6.939V94.204z M149.158,211.958v-58.436l23.536,9.327c1.775,5.688,3.829,11.093,6.155,16.186l-0.433-0.148c0,0,6.476,12.457,13.74,33.071H149.158z M278.714,211.958c0.749-2.18,1.479-4.208,2.22-6.215l15.682,6.215H278.714z" fill="__COLOR__"/><path d="M266.913,408.219c-4.328,0-7.851,3.518-7.851,7.85v54.954c0,4.332,3.522,7.851,7.851,7.851c4.332,0,7.85-3.519,7.85-7.851v-54.954C274.762,411.736,271.245,408.219,266.913,408.219z" fill="__COLOR__"/></g></g></svg>';
 
 const icons = {
     planes: {
@@ -117,7 +124,7 @@ const icons = {
         green: L.icon({
             iconUrl: encodeURI("data:image/svg+xml," + svgPlaneIconString).replace("__COLOR__", "green"),
             iconSize: [map_resolution.icon_size, map_resolution.icon_size],
-        })
+        }),
     },
     helicopters: {
         black: L.icon({
@@ -131,16 +138,23 @@ const icons = {
         green: L.icon({
             iconUrl: encodeURI("data:image/svg+xml," + svgHelicopterIconString).replace("__COLOR__", "green"),
             iconSize: [map_resolution.icon_size, map_resolution.icon_size],
-        })
-    }
-}
+        }),
+    },
+};
 
 let currentIconGroup = icons.planes;
 let currentIcon = currentIconGroup.black;
 
 function open_in_google_maps() {
-    const url = "https://www.google.com/maps/@" + last_report.latitude + "," + last_report.longitude + "," + map.getZoom() + "z"
-    window.open(url,"_blank");
+    const url =
+        "https://www.google.com/maps/@" +
+        last_report.latitude +
+        "," +
+        last_report.longitude +
+        "," +
+        map.getZoom() +
+        "z";
+    window.open(url, "_blank");
 }
 
 function hide_trail(hide = true) {
@@ -148,11 +162,9 @@ function hide_trail(hide = true) {
 
     if (hide) {
         trail.removeFrom(map);
-    }
-    else {
+    } else {
         trail.addTo(map);
     }
-
 }
 
 function hide_wind_indicator(hide = true) {
@@ -160,8 +172,7 @@ function hide_wind_indicator(hide = true) {
 
     if (hide) {
         wind_indicator.classList.add("hidden");
-    }
-    else {
+    } else {
         wind_indicator.classList.remove("hidden");
     }
 }
@@ -183,8 +194,7 @@ function updateWindIndicator() {
         if (wind_indicator_velocity != null) {
             wind_indicator_velocity.innerText = "-";
         }
-    }
-    else {
+    } else {
         if (wind_indicator_arrow != null) {
             wind_indicator_arrow.classList.remove("hidden");
             wind_indicator_arrow.style.transform = "rotate(" + last_report.wind_direction + "deg)";
@@ -200,22 +210,22 @@ function updateWindIndicator() {
     }
 }
 
-function median(input){
-    if(input.length ===0) return 0;
+function median(input) {
+    if (input.length === 0) return 0;
 
     const values = JSON.parse(JSON.stringify(input));
-    values.sort(function(a,b){
-      return a-b;
+    values.sort(function (a, b) {
+        return a - b;
     });
-  
+
     var half = Math.floor(values.length / 2);
-    
+
     return values[half];
     /*if (values.length % 2)
       return values[half];
     
     return (values[half - 1] + values[half]) / 2.0;*/
-  }
+}
 
 function setTrailData() {
     const trail_concat = trail_sd.concat(trail_hd);
@@ -230,33 +240,33 @@ function updateMap() {
     waypoints.set_plane_visibility(plane_visible);
     waypoints.update_planepos(pos);
 
-    if (trail_hd.length == 0) {
-        trail_hd.push(pos);
-    }
-    else {
-        const latest = trail_hd[trail_hd.length - 1];
-        const dst = latest.distanceTo(pos);
-
-        if (dst >= TRAIL_MIN_DST_M) {
+    if (last_report.add_to_trail) {
+        if (trail_hd.length == 0) {
             trail_hd.push(pos);
+        } else {
+            const latest = trail_hd[trail_hd.length - 1];
+            const dst = latest.distanceTo(pos);
+
+            if (dst >= TRAIL_MIN_DST_M) {
+                trail_hd.push(pos);
+            }
         }
-    }
 
-    if (trail_hd.length > TRAIL_HD_BUFFER_SIZE && trail_hd.length > 1) {
-        const oldest_hd = trail_hd.shift();
+        if (trail_hd.length > TRAIL_HD_BUFFER_SIZE && trail_hd.length > 1) {
+            const oldest_hd = trail_hd.shift();
 
-        current_sd_update_ticks++;
+            current_sd_update_ticks++;
 
-        if (trail_sd.length == 0 || current_sd_update_ticks > TRAIL_UPDATE_INTERVAL) {
-            // console.log("adding a keyframe to the trail_sd array!");
-            trail_sd.push(oldest_hd);
-
-            current_sd_update_ticks = 0;
+            if (trail_sd.length == 0 || current_sd_update_ticks > TRAIL_UPDATE_INTERVAL) {
+                // console.log("adding a keyframe to the trail_sd array!");
+                trail_sd.push(oldest_hd);
+                current_sd_update_ticks = 0;
+            }
         }
-    }
 
-    // console.log("length: sd =", trail_sd.length, "- hd:", trail_hd.length);
-    setTrailData();
+        // console.log("length: sd =", trail_sd.length, "- hd:", trail_hd.length);
+        setTrailData();
+    }
 
     if (follow_plane) {
         map.panTo(pos);
@@ -267,20 +277,24 @@ function updateMap() {
 }
 
 ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/ws");
-ws.onopen = function() {
+ws.onopen = function () {
     Logger.logDebug("mapsModule.js => connection to /ws websocket opened");
     //console.log("ws open");
 };
-ws.onclose = function() {
+ws.onclose = function () {
     Logger.logDebug("mapsModule.js => connection to /ws websocket closed");
     //console.log("ws close");
 };
-ws.onerror = function(e) {
+ws.onerror = function (e) {
     Logger.logDebug("mapsModule.js => an error occurred on /ws websocket: " + e);
     //console.log("ws close");
 };
-ws.onmessage = function(e) {
-    Logger.logSilly("mapsModule.js => received message from /ws websocket: " + e.data.length > 100 ? e.data.substring(0, 99) : e.data);
+ws.onmessage = function (e) {
+    Logger.logSilly(
+        "mapsModule.js => received message from /ws websocket: " + e.data.length > 100
+            ? e.data.substring(0, 99)
+            : e.data
+    );
     const msg = JSON.parse(e.data);
     last_report = msg;
 
@@ -327,7 +341,7 @@ function initDummyRun() {
 
 function updateIcon() {
     let iconType = icons.planes;
-    
+
     if (ac_visibility_options.ac_type === AC_TYPE.helicopter) {
         iconType = icons.helicopters;
     }
@@ -352,7 +366,7 @@ function updateIcon() {
 }
 
 function updateBearingModeButtons() {
-    switch(bearingMode) {
+    switch (bearingMode) {
         case BEARING_MODES.manual:
             const rb_manual = document.querySelector("#map-bearing-manual");
             if (rb_manual) rb_manual.click();
@@ -380,7 +394,7 @@ function updateManualBearingControlsVisibility() {
 }
 
 function updateBearing() {
-    switch(bearingMode) {
+    switch (bearingMode) {
         case BEARING_MODES.north_up:
             map.setBearing(0);
             break;
@@ -398,7 +412,7 @@ function calculate_airac_cycle() {
     let year = date.getFullYear();
 
     while (c_date.getTime() < date.getTime()) {
-        if (c_date.getFullYear() === date.getFullYear()-1) {
+        if (c_date.getFullYear() === date.getFullYear() - 1) {
             last_count++;
         }
 
@@ -407,14 +421,14 @@ function calculate_airac_cycle() {
         }
 
         c_date.setDate(c_date.getDate() + 28);
-    };
+    }
 
     if (counter == 0) {
         year -= 1;
         counter = last_count;
     }
 
-    const airac_id = (parseFloat(year.toString().substring(2, 4)) * 100) + counter;
+    const airac_id = parseFloat(year.toString().substring(2, 4)) * 100 + counter;
     return airac_id.toString();
 }
 
@@ -430,9 +444,8 @@ function loadMapTileUrls(callback) {
                 if (json != null) {
                     callback(json);
                 }
-            }
-            else {
-                Logger.logError("Could not load maptile urls from server!")
+            } else {
+                Logger.logError("Could not load maptile urls from server!");
             }
         }
     };
@@ -460,7 +473,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        subdomains: ["a", "b", "c"]
+        subdomains: ["a", "b", "c"],
     });
 
     const otm = new L.TileLayer(mapTileUrls.otm, {
@@ -469,7 +482,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        subdomains: ["a", "b", "c"]
+        subdomains: ["a", "b", "c"],
     });
 
     const stamen_black_white = new L.TileLayer(mapTileUrls.stamenbw, {
@@ -478,7 +491,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        subdomains: ["a", "b", "c"]
+        subdomains: ["a", "b", "c"],
     });
 
     const stamen_terrain = new L.TileLayer(mapTileUrls.stament, {
@@ -487,7 +500,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        subdomains: ["a", "b", "c"]
+        subdomains: ["a", "b", "c"],
     });
 
     const stamen_water = new L.TileLayer(mapTileUrls.stamenw, {
@@ -496,7 +509,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/jpeg",
-        subdomains: ["a", "b", "c"]
+        subdomains: ["a", "b", "c"],
     });
 
     const carto_dark = new L.TileLayer(mapTileUrls.cartod, {
@@ -505,7 +518,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        subdomains: ["a", "b", "c"]
+        subdomains: ["a", "b", "c"],
     });
 
     // ofm nav overlay
@@ -516,7 +529,7 @@ function initMap(mapTileUrls) {
         minZoom: 2,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        format: "image/png"
+        format: "image/png",
     });
 
     // oaip nav overlays
@@ -526,7 +539,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        transparent: true
+        transparent: true,
     });
 
     const openaip_airspaces = new L.TileLayer(mapTileUrls.oaipAirspaces, {
@@ -535,7 +548,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        transparent: true
+        transparent: true,
     });
 
     const openaip_navaids = new L.TileLayer(mapTileUrls.oaipNavaids, {
@@ -544,7 +557,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        transparent: true
+        transparent: true,
     });
 
     const openaip_reportingpoints = new L.TileLayer(mapTileUrls.oaipReporting, {
@@ -553,7 +566,7 @@ function initMap(mapTileUrls) {
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
         format: "image/png",
-        transparent: true
+        transparent: true,
     });
 
     /*
@@ -568,7 +581,7 @@ function initMap(mapTileUrls) {
     */
 
     map = new L.Map("map", {
-        layers: [ osm ],
+        layers: [osm],
         center: pos,
         zoom: 10,
         attributionControl: false,
@@ -577,18 +590,18 @@ function initMap(mapTileUrls) {
         touchRotate: false,
         rotateControl: {
             closeOnZeroBearing: false,
-            position: "bottomright"
+            position: "bottomright",
         },
-        bearing: 0
+        bearing: 0,
     });
 
     const baseMaps = {
-        "OpenStreetMap": osm,
-        "OpenTopoMap": otm,
+        OpenStreetMap: osm,
+        OpenTopoMap: otm,
         "Stamen Terrain": stamen_terrain,
         "Stamen Toner": stamen_black_white,
         "Stamen Water": stamen_water,
-        "Carto Dark (Night Mode)": carto_dark
+        "Carto Dark (Night Mode)": carto_dark,
     };
 
     const overlayMaps = {
@@ -602,24 +615,26 @@ function initMap(mapTileUrls) {
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
 
-    map.addControl(new L.Control.ScaleNautic({
-        metric: false,
-        imperial: false,
-        nautic: true
-    }));
+    map.addControl(
+        new L.Control.ScaleNautic({
+            metric: false,
+            imperial: false,
+            nautic: true,
+        })
+    );
 
     marker = L.marker(pos, {
         icon: icons.planes.black,
         rotation: 0,
-        rotateWithView: true
+        rotateWithView: true,
     });
 
     marker.addTo(map);
 
-    let markerPos = L.latLng(0,0);
+    let markerPos = L.latLng(0, 0);
     markerTeleport = L.marker(markerPos, {});
     markerTeleport.addTo(map);
-    markerTeleport.bindPopup(L.popup({autoPan: false, closeButton: false}).setContent(teleport_popup.main));
+    markerTeleport.bindPopup(L.popup({ autoPan: false, closeButton: false }).setContent(teleport_popup.main));
     set_teleport_marker(markerPos, false);
     hide_teleport_marker();
 
@@ -627,25 +642,25 @@ function initMap(mapTileUrls) {
 
     trail.addTo(map);
 
-    marker.on("click", function() {
+    marker.on("click", function () {
         toggle_rubberband();
     });
 
-    map.on("dragstart", function(e) {
+    map.on("dragstart", function (e) {
         set_follow(false);
     });
 
-    map.on("moveend", function(e) {
+    map.on("moveend", function (e) {
         updateStoredCenter();
     });
 
-    map.on("zoomend", function(e) {
+    map.on("zoomend", function (e) {
         updateStoredCenter();
         store_data("n_zoom", map.getZoom(), false);
     });
 
-    map.on("click", function(e) {
-        switch(mode_options.mode) {
+    map.on("click", function (e) {
+        switch (mode_options.mode) {
             case MODES.add_track_markers:
                 waypoints.add_marker(e.latlng);
                 break;
@@ -658,25 +673,23 @@ function initMap(mapTileUrls) {
         }
     });
 
-    map.on("baselayerchange", function(e) {
+    map.on("baselayerchange", function (e) {
         if (e.name == "Carto Dark (Night Mode)") {
             ac_visibility_options.ac_color = AC_COLOR.white;
-        }
-        else if (e.name == "Stamen Toner") {
+        } else if (e.name == "Stamen Toner") {
             ac_visibility_options.ac_color = AC_COLOR.green;
-        }
-        else {
+        } else {
             ac_visibility_options.ac_color = AC_COLOR.black;
         }
 
         updateIcon();
     });
 
-    map.on("rotate", function() {
+    map.on("rotate", function () {
         updateWindIndicator();
     });
 
-    map.whenReady(function() {
+    map.whenReady(function () {
         manualBearingControl = document.querySelector(".leaflet-control-rotate");
         updateManualBearingControlsVisibility();
 
@@ -739,14 +752,12 @@ function hide_teleport_marker() {
 }
 
 function teleport_here() {
-    const msg = JSON.stringify(
-        {
-            "type": "teleport",
-            "lat": parseFloat(teleport_popup.gps.value.split(",")[0]),
-            "lng": parseFloat(teleport_popup.gps.value.split(",")[1]),
-            "altitude": parseFloat(teleport_popup.altitude.value) + 0.5,
-        }
-    );
+    const msg = JSON.stringify({
+        type: "teleport",
+        lat: parseFloat(teleport_popup.gps.value.split(",")[0]),
+        lng: parseFloat(teleport_popup.gps.value.split(",")[1]),
+        altitude: parseFloat(teleport_popup.altitude.value) + 0.5,
+    });
 
     ws.send(msg);
 }
@@ -756,7 +767,7 @@ function set_follow(follow) {
     store_data("b_follow", follow, false);
 
     if (follow) {
-        ac_visibility_options.ac_visibility = follow
+        ac_visibility_options.ac_visibility = follow;
         save_ac_visibility();
     }
 }
@@ -766,8 +777,7 @@ function set_airplane_marker_visibility(visible) {
 
     if (visible) {
         marker.setOpacity(1);
-    }
-    else {
+    } else {
         marker.setOpacity(0);
         set_follow(false);
     }
@@ -789,12 +799,10 @@ function update_visibility_buttons() {
 
     if (ac_visibility_options.ac_visibility == false) {
         if (rb_hidden) rb_hidden.click();
-    }
-    else {
+    } else {
         if (ac_visibility_options.ac_type == AC_TYPE.helicopter) {
             if (rb_helicopter) rb_helicopter.click();
-        }
-        else {
+        } else {
             if (rb_plane) rb_plane.click();
         }
     }
@@ -815,10 +823,13 @@ function center_airplane() {
 
 function updateStoredCenter() {
     const center = map.getCenter();
-    store_data_set([
-        {key: "n_last_lat", value: center.lat},
-        {key: "n_last_long", value: center.lng}
-    ], false);
+    store_data_set(
+        [
+            { key: "n_last_lat", value: center.lat },
+            { key: "n_last_long", value: center.lng },
+        ],
+        false
+    );
 }
 
 function save_ac_visibility() {
@@ -849,7 +860,6 @@ function clear_trail_data() {
 function update_trail_sd_legs() {
     // console.log("update_trail_sd_legs: hd.length", trail_hd.length, "- sd.length", trail_sd.length);
 
-
     if (trail_sd.length == 0) return;
 
     const keyframe = trail_sd[trail_sd.length - 1];
@@ -869,11 +879,11 @@ function loadTrailData() {
                 //console.log("GET to /traildata responded with:", json)
 
                 if (json != null) {
-                    trail_hd = json.TrailDataHd.map(latlng => L.latLng(latlng));
-                    trail_sd = json.TrailDataSd.map(latlng => L.latLng(latlng));
+                    trail_hd = json.TrailDataHd.map((latlng) => L.latLng(latlng));
+                    trail_sd = json.TrailDataSd.map((latlng) => L.latLng(latlng));
 
                     if (trail_hd.length > 0) {
-                        trail_sd.push(trail_hd[0])
+                        trail_sd.push(trail_hd[0]);
                     }
 
                     setTrailData();
@@ -886,31 +896,29 @@ function loadTrailData() {
 }
 
 function loadStoredState() {
-    const local_key_array = [
-        "b_follow",
-        "n_last_long",
-        "n_last_lat",
-        "n_zoom"
-    ];
+    const local_key_array = ["b_follow", "n_last_long", "n_last_lat", "n_zoom"];
 
-    retrieve_data_set(local_key_array, data => {
-        if (data.b_follow != null) {
-            set_follow(data.b_follow == "true" && ac_visibility_options.ac_visibility);
-        }
-        else {
-            set_follow(true);
-        }
-    
-        if (!follow_plane && data.n_last_long != null && data.n_last_lat != null) {
-            setTimeout(() => {
-                map.panTo(L.latLng(data.n_last_lat, data.n_last_long));
-            }, 500);
-        }
-    
-        if (data.n_zoom != null) {
-            map.setZoom(data.n_zoom);
-        }
-    }, false);
+    retrieve_data_set(
+        local_key_array,
+        (data) => {
+            if (data.b_follow != null) {
+                set_follow(data.b_follow == "true" && ac_visibility_options.ac_visibility);
+            } else {
+                set_follow(true);
+            }
+
+            if (!follow_plane && data.n_last_long != null && data.n_last_lat != null) {
+                setTimeout(() => {
+                    map.panTo(L.latLng(data.n_last_lat, data.n_last_long));
+                }, 500);
+            }
+
+            if (data.n_zoom != null) {
+                map.setZoom(data.n_zoom);
+            }
+        },
+        false
+    );
 
     let remote_key_array = [
         "ac_visibility_options",
@@ -918,7 +926,7 @@ function loadStoredState() {
         "rubberband_visibility",
         "n_active_map",
         "wind_indicator_visibility",
-        "trail_visibility"
+        "trail_visibility",
     ];
 
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
@@ -926,68 +934,72 @@ function loadStoredState() {
         remote_key_array.push("b_nav_data_" + i);
     }
 
-    retrieve_data_set(remote_key_array,
-        data => {
-            if (data.ac_visibility_options != null) {
-                try {
-                    ac_visibility_options = JSON.parse(data.ac_visibility_options);
-                    updateIcon();
-                }
-                catch(e) {
-                    /* ignore silently */
-                }
+    retrieve_data_set(remote_key_array, (data) => {
+        if (data.ac_visibility_options != null) {
+            try {
+                ac_visibility_options = JSON.parse(data.ac_visibility_options);
+                updateIcon();
+            } catch (e) {
+                /* ignore silently */
             }
-
-            if (data.bearing_mode != null) {
-                try {
-                    const value = parseInt(data.bearing_mode);
-                    
-                    if (!isNaN(value)) {
-                        bearingMode = value;
-                    }
-
-                    updateBearingModeButtons();
-                    updateManualBearingControlsVisibility();
-                    updateBearing();
-                }
-                catch(e) {
-                    /* ignore silently */
-                }
-            }
-
-            if (data.rubberband_visibility != null && data.rubberband_visibility != "") {
-                rubberband_visibility = data.rubberband_visibility != "true";
-                toggle_rubberband();
-            }
-            
-            for (let i = 0; i < nav_data_cbs.length; i++) {
-                const active = data["b_nav_data_" + i];
-                if (active != null && active == "true") {
-                    nav_data_cbs[i].click();
-                }
-            }
-        
-            const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
-            if (data.n_active_map != null && data.n_active_map != "" && nav_data_rbs.length > 0 && data.n_active_map < nav_data_rbs.length) {
-                nav_data_rbs[data.n_active_map].click();
-            }
-        
-            const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
-            if (data.wind_indicator_visibility != null && data.wind_indicator_visibility == "false" && wind_indicator_toggle != null) {
-                wind_indicator_toggle.click();
-            }
-
-            // console.log("data.trail_visibility", data.trail_visibility);
-            const trail_toggle = document.querySelector("#trail-toggle");
-            if (data.trail_visibility != null && data.trail_visibility == "false" && trail_toggle != null) {
-                trail_toggle.click();
-            }
-        
-            update_visibility_buttons();
-            waypoints.load_state();
         }
-    );
 
+        if (data.bearing_mode != null) {
+            try {
+                const value = parseInt(data.bearing_mode);
+
+                if (!isNaN(value)) {
+                    bearingMode = value;
+                }
+
+                updateBearingModeButtons();
+                updateManualBearingControlsVisibility();
+                updateBearing();
+            } catch (e) {
+                /* ignore silently */
+            }
+        }
+
+        if (data.rubberband_visibility != null && data.rubberband_visibility != "") {
+            rubberband_visibility = data.rubberband_visibility != "true";
+            toggle_rubberband();
+        }
+
+        for (let i = 0; i < nav_data_cbs.length; i++) {
+            const active = data["b_nav_data_" + i];
+            if (active != null && active == "true") {
+                nav_data_cbs[i].click();
+            }
+        }
+
+        const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
+        if (
+            data.n_active_map != null &&
+            data.n_active_map != "" &&
+            nav_data_rbs.length > 0 &&
+            data.n_active_map < nav_data_rbs.length
+        ) {
+            nav_data_rbs[data.n_active_map].click();
+        }
+
+        const wind_indicator_toggle = document.querySelector("#wind-indicator-toggle");
+        if (
+            data.wind_indicator_visibility != null &&
+            data.wind_indicator_visibility == "false" &&
+            wind_indicator_toggle != null
+        ) {
+            wind_indicator_toggle.click();
+        }
+
+        // console.log("data.trail_visibility", data.trail_visibility);
+        const trail_toggle = document.querySelector("#trail-toggle");
+        if (data.trail_visibility != null && data.trail_visibility == "false" && trail_toggle != null) {
+            trail_toggle.click();
+        }
+
+        update_visibility_buttons();
+        waypoints.load_state();
+    });
 }
 
 function registerHandlers() {
@@ -999,14 +1011,14 @@ function registerHandlers() {
     const nav_data_cbs = document.querySelectorAll(".leaflet-control-layers-selector[type='checkbox']");
     for (let i = 0; i < nav_data_cbs.length; i++) {
         nav_data_cbs[i].addEventListener("change", () => {
-            store_data("b_nav_data_" + i, nav_data_cbs[i].checked)
+            store_data("b_nav_data_" + i, nav_data_cbs[i].checked);
         });
     }
 
     const nav_data_rbs = document.querySelectorAll(".leaflet-control-layers-selector[type='radio']");
     for (let i = 0; i < nav_data_rbs.length; i++) {
         nav_data_rbs[i].addEventListener("change", () => {
-            store_data("n_active_map", i)
+            store_data("n_active_map", i);
         });
     }
 
@@ -1016,12 +1028,10 @@ function registerHandlers() {
             if (!waypoints.is_mode_available()) {
                 waypoints.activate_mode_failed(hide_premium_info);
                 activate_default_mode();
-            }
-            else {
+            } else {
                 if (waypoints.has_waypoints()) {
                     hide_waypoint_confirm_dialog(false);
-                }
-                else {
+                } else {
                     waypoints.load_flightplan();
                 }
             }
@@ -1042,8 +1052,7 @@ function registerHandlers() {
             if (!waypoints.is_mode_available()) {
                 waypoints.activate_mode_failed(hide_premium_info);
                 activate_default_mode();
-            }
-            else {
+            } else {
                 hide_search_map_panel(false);
                 if (search_map_panel_search_input) {
                     search_map_panel_search_input.focus();
@@ -1074,10 +1083,16 @@ function registerHandlers() {
             if (!waypoints.is_mode_available()) {
                 waypoints.activate_mode_failed(hide_premium_info);
                 activate_default_mode();
-            }
-            else {
+            } else {
                 search_map_panel_keyboard.classList.add("hidden");
-                waypoints.search_map(search_map_panel_search_input.value, search_map_result_div, search_map_spinner_div, hide_search_map_panel, pan_to, set_teleport_marker);
+                waypoints.search_map(
+                    search_map_panel_search_input.value,
+                    search_map_result_div,
+                    search_map_spinner_div,
+                    hide_search_map_panel,
+                    pan_to,
+                    set_teleport_marker
+                );
             }
         });
     }
@@ -1098,20 +1113,21 @@ function registerHandlers() {
             search_map_panel_keyboard_btn.addEventListener("click", () => {
                 if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-backspace") {
                     search_map_panel_search_input.value = search_map_panel_search_input.value.slice(0, -1);
-                }
-                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-space") {
+                } else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-space") {
                     search_map_panel_search_input.value += " ";
-                }
-                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-clear" && search_map_panel_clear_btn) {
+                } else if (
+                    search_map_panel_keyboard_btn.id == "onscreen-keyboard-clear" &&
+                    search_map_panel_clear_btn
+                ) {
                     search_map_panel_clear_btn.click();
-                }
-                else if (search_map_panel_keyboard_btn.id == "onscreen-keyboard-enter" && search_map_panel_search_btn) {
+                } else if (
+                    search_map_panel_keyboard_btn.id == "onscreen-keyboard-enter" &&
+                    search_map_panel_search_btn
+                ) {
                     search_map_panel_search_btn.click();
-                }
-                else if (search_map_panel_keyboard_btn.innerText) {
+                } else if (search_map_panel_keyboard_btn.innerText) {
                     search_map_panel_search_input.value += search_map_panel_keyboard_btn.innerText;
                 }
-                
             });
         }
     }
@@ -1139,8 +1155,7 @@ function registerHandlers() {
         trash_select_delete_waypoints_btn.addEventListener("click", () => {
             if (!waypoints.is_mode_available()) {
                 waypoints.activate_mode_failed(hide_premium_info);
-            }
-            else {
+            } else {
                 hide_trash_waypoints_confirm_dialog(false);
             }
 
@@ -1148,13 +1163,14 @@ function registerHandlers() {
         });
     }
 
-    const trash_select_delete_measuring_tool_pins_btn = document.querySelector("#trash-select-dialog-measure-tool-pins");
+    const trash_select_delete_measuring_tool_pins_btn = document.querySelector(
+        "#trash-select-dialog-measure-tool-pins"
+    );
     if (trash_select_delete_measuring_tool_pins_btn) {
         trash_select_delete_measuring_tool_pins_btn.addEventListener("click", () => {
             if (!waypoints.is_mode_available()) {
                 waypoints.activate_mode_failed(hide_premium_info);
-            }
-            else {
+            } else {
                 hide_trash_measuring_tool_pins_confirm_dialog(false);
             }
 
@@ -1231,8 +1247,6 @@ function registerHandlers() {
         });
     }
 
-
-    
     const mode_control_btns = document.querySelectorAll("#submenu input[type='radio'][name='mode-controls']");
     for (let i = 0; i < mode_control_btns.length; i++) {
         mode_control_btns[i].addEventListener("click", () => {
@@ -1315,7 +1329,7 @@ function registerHandlers() {
         wind_indicator_btn.addEventListener("change", () => {
             hide_wind_indicator(!wind_indicator_btn.checked);
             store_data("wind_indicator_visibility", wind_indicator_btn.checked);
-        })
+        });
     }
 
     const trail_btn = document.querySelector("#trail-toggle");
@@ -1323,7 +1337,7 @@ function registerHandlers() {
         trail_btn.addEventListener("change", () => {
             hide_trail(!trail_btn.checked);
             store_data("trail_visibility", trail_btn.checked);
-        })
+        });
     }
 
     const zoom_in_btn = document.querySelector("#map-zoom-in");
@@ -1403,8 +1417,7 @@ function hide_search_map_panel(hide = true) {
 
     if (hide) {
         search_map_panel.classList.add("hidden");
-    }
-    else {
+    } else {
         search_map_panel.classList.remove("hidden");
     }
 }
@@ -1419,8 +1432,7 @@ function hide_premium_info(hide = true) {
     if (hide) {
         infobox.classList.add("hidden");
         infobox_iframe.src = "";
-    }
-    else {
+    } else {
         infobox.classList.remove("hidden");
         infobox_iframe.src = "https://fskneeboard.com/maps-ingame/";
     }
@@ -1448,7 +1460,15 @@ function onDomContentLoaded(waypointsClass) {
     wind_indicator_velocity = document.getElementById("wind-indicator-velocity");
 
     window.document.addEventListener("keydown", (e) => {
-        Logger.logDebug("maps.js => keydown event registered: [" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");
+        Logger.logDebug(
+            "maps.js => keydown event registered: [" +
+                e.key +
+                "], e.keyCode=[" +
+                e.keyCode +
+                "], e.code=[" +
+                e.code +
+                "]"
+        );
         dispatch_keyevent(e);
     });
 
@@ -1460,7 +1480,7 @@ function onDomContentLoaded(waypointsClass) {
         }
     });
 
-    loadMapTileUrls(mapTileUrls => initMap(mapTileUrls));
+    loadMapTileUrls((mapTileUrls) => initMap(mapTileUrls));
 }
 
 export { onDomContentLoaded, MODES };
