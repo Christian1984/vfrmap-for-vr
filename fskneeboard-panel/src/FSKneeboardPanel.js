@@ -37,19 +37,23 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         this.collapse_altKey = false;
         this.collapse_ctrlKey = false;
         this.collapse_shiftKey = false;
-        this.posInterval = -1;
+        //this.posInterval = -1;
 
+        /*
         this.logDiv = document.querySelector("#log");
         if (this.logDiv) {
             this.logDiv.innerHTML = "<p>log initialized</p>";
         }
+        */
     }
 
+    /*
     log(msg) {
         if (this.logDiv) {
             this.logDiv.innerHTML = "<p>" + msg + "</p>" + this.logDiv.innerHTML;
         }
     }
+    */
 
     collapse(collapsed) {
         if (collapsed) {
@@ -158,6 +162,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                         self.content_iframe.src = "http://localhost:9000/index.html";
                     }
 
+                    /*
                     if (this.posInterval == -1) {
                         this.posInterval = setInterval(() => {
                             try {
@@ -170,14 +175,16 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                             }
                         }, 5000);
                     }
+                    */
+
                     self.collapse(false);
                 });
 
                 this.ingameUi.addEventListener("panelInactive", (e) => {
                     self.panelActive = false;
                     self.warning_message.classList.remove("show");
-                    clearInterval(this.posInterval);
-                    this.posInterval = -1;
+                    //clearInterval(this.posInterval);
+                    //this.posInterval = -1;
 
                     if (self.content_iframe) {
                         self.content_iframe.src = "";
