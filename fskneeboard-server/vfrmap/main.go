@@ -109,6 +109,12 @@ func initFsk() {
 	dbmanager.LoadOpenAipApiKey()
 	callbacks.UpdateOpenAipApi(globals.OpenAipApiKey)
 
+	dbmanager.LoadBingMapsApiKey()
+	callbacks.UpdateBingMapsApi(globals.BingMapsApiKey)
+
+	dbmanager.LoadGoogleMapsApiKey()
+	callbacks.UpdateGoogleMapsApi(globals.GoogleMapsApiKey)
+
 	// load hotkeys
 	// master hotkey
 	dbmanager.LoadMasterHotkey()
@@ -185,6 +191,8 @@ func registerGuiCallbacks() {
 
 	callbacks.OpenAipBypassCacheChangedCallback = settingspanel.UpdateOpenAipBypassCache
 	callbacks.UpdateOpenAipApiCallback = settingspanel.UpdateOpenAipApiKey
+	callbacks.UpdateBingMapsApiCallback = settingspanel.UpdateBingMapsApiKey
+	callbacks.UpdateGoogleMapsApiCallback = settingspanel.UpdateGoogleMapsApiKey
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
 

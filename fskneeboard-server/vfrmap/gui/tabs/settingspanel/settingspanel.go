@@ -32,6 +32,9 @@ var autosaveBinding = binding.NewString()
 var oaipApiKeyBinding = binding.NewString()
 var oaipBypassCacheBinding = binding.NewBool()
 
+var bingMapsApiKeyBinding = binding.NewString()
+var googleMapsApiKeyBinding = binding.NewString()
+
 var loglevelOptions = []string{
 	strings.Title(logger.Off),
 	strings.Title(logger.Error),
@@ -66,6 +69,14 @@ func UpdateMsfsAutostartStatus(autostart bool) {
 
 func UpdateOpenAipApiKey(apiKey string) {
 	oaipApiKeyBinding.Set(apiKey)
+}
+
+func UpdateBingMapsApiKey(apiKey string) {
+	bingMapsApiKeyBinding.Set(apiKey)
+}
+
+func UpdateGoogleMapsApiKey(apiKey string) {
+	googleMapsApiKeyBinding.Set(apiKey)
 }
 
 func UpdateOpenAipBypassCache(bypassCache bool) {
@@ -291,9 +302,43 @@ func SettingsPanel() *fyne.Container {
 		}
 	}))
 
+	// bing maps api key
+	bingApiKeyLabel := widget.NewLabel("Bing Maps")
+	bingApiKeyInput := widget.NewEntryWithData(bingMapsApiKeyBinding)
+	bingApiKeyInput.Validator = nil
+	// bingApiKeyInput.PlaceHolder = "SHARED API KEY"
+
+	bingMapsApiKeyBinding.AddListener(binding.NewDataListener(func() {
+		bingApiKeyRaw, _ := bingMapsApiKeyBinding.Get()
+		bingApiKey := strings.TrimSpace(bingApiKeyRaw)
+		globals.BingMapsApiKey = bingApiKey
+
+		logger.LogInfo("Bing Maps API key updated: [" + bingApiKey + "]")
+
+		dbmanager.StoreBingMapsApiKey()
+	}))
+
+	// googleMaps maps api key
+	googleMapsApiKeyLabel := widget.NewLabel("Google Maps")
+	googleMapsApiKeyInput := widget.NewEntryWithData(googleMapsApiKeyBinding)
+	googleMapsApiKeyInput.Validator = nil
+	// googleMapsApiKeyInput.PlaceHolder = "SHARED API KEY"
+
+	googleMapsApiKeyBinding.AddListener(binding.NewDataListener(func() {
+		googleMapsApiKeyRaw, _ := googleMapsApiKeyBinding.Get()
+		googleMapsApiKey := strings.TrimSpace(googleMapsApiKeyRaw)
+		globals.GoogleMapsApiKey = googleMapsApiKey
+
+		logger.LogInfo("GoogleMaps API key updated: [" + googleMapsApiKey + "]")
+
+		dbmanager.StoreGoogleMapsApiKey()
+	}))
+
 	apiKeysGrid := container.NewGridWithColumns(
 		3,
 		oaipApiKeyLabel, oaipApiKeyInput, oaipBypassCacheCb,
+		bingApiKeyLabel, bingApiKeyInput, widget.NewLabel(""),
+		googleMapsApiKeyLabel, googleMapsApiKeyInput, widget.NewLabel(""),
 	)
 
 	generalLabel := widget.NewLabel("General")

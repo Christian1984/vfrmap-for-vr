@@ -33,6 +33,9 @@ var OpenAipApiKey string
 var OpenAipBypassCache bool
 var OpenAipCaches []*maptilecache.Cache
 
+var BingMapsApiKey string
+var GoogleMapsApiKey string
+
 const MaptileCacheMaxMemoryUsageDefault int = 512 * 1024 * 1024
 const MaptileCacheTimeToLiveDefault time.Duration = 45 * 24 * time.Hour
 const MaptileCacheStatsLogDelay = 5 * time.Minute

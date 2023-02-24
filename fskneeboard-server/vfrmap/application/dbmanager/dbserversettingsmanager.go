@@ -106,3 +106,23 @@ func LoadOpenAipBypassCache() {
 	openAipBypassCache, _ := strconv.ParseBool(DbReadSettings("oaipBypassCache"))
 	globals.OpenAipBypassCache = openAipBypassCache
 }
+
+// bing
+func StoreBingMapsApiKey() {
+	DbWriteSettings("bingMapsApiKey", strings.TrimSpace(globals.BingMapsApiKey))
+}
+
+func LoadBingMapsApiKey() {
+	bingMapsApiKey := strings.TrimSpace(DbReadSettings("bingMapsApiKey"))
+	globals.BingMapsApiKey = bingMapsApiKey
+}
+
+// google maps
+func StoreGoogleMapsApiKey() {
+	DbWriteSettings("googleMapsApiKey", strings.TrimSpace(globals.GoogleMapsApiKey))
+}
+
+func LoadGoogleMapsApiKey() {
+	googleMapsApiKey := strings.TrimSpace(DbReadSettings("googleMapsApiKey"))
+	globals.GoogleMapsApiKey = googleMapsApiKey
+}
