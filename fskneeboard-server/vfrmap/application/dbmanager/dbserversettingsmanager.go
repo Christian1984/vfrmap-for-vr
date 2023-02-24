@@ -113,6 +113,10 @@ func StoreBingMapsApiKey() {
 }
 
 func LoadBingMapsApiKey() {
+	if !globals.Pro {
+		return
+	}
+
 	bingMapsApiKey := strings.TrimSpace(DbReadSettings("bingMapsApiKey"))
 	globals.BingMapsApiKey = bingMapsApiKey
 }

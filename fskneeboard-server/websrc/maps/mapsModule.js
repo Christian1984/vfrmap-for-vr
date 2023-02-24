@@ -717,7 +717,27 @@ function initMap(mapTileUrls) {
     });
 
     map.on("baselayerchange", function (e) {
-        // TODO: check bingSat init
+        if (e.name.includes("Bing")) {
+            let enable_default_layer = false;
+
+            if (!waypoints.is_mode_available()) {
+                // show premium info
+                waypoints.activate_mode_failed(hide_premium_info);
+                enable_default_layer = true;
+            } else if (!mapTileUrls.bingRoadsMaps || !mapTileUrls.bingSatMaps) {
+                // show set apiKey info
+                enable_default_layer = true;
+                hide_api_key_info(false);
+            }
+
+            if (enable_default_layer) {
+                const nav_data_rb = document.querySelector(".leaflet-control-layers-selector[type='radio']");
+                if (nav_data_rb) {
+                    nav_data_rb.click();
+                }
+            }
+        }
+
         if (e.name == "Carto Dark (Night Mode)") {
             ac_visibility_options.ac_color = AC_COLOR.white;
         } else if (e.name == "Stamen Toner") {
@@ -1443,6 +1463,14 @@ function registerHandlers() {
         });
     }
 
+    const api_key_info_close = document.querySelector("#api-key-info-dialog-ok");
+    if (api_key_info_close) {
+        api_key_info_close.addEventListener("click", (e) => {
+            e.preventDefault();
+            hide_api_key_info();
+        });
+    }
+
     const rotateControlToggle = document.querySelector("a.leaflet-control-rotate-toggle");
     if (rotateControlToggle) {
         rotateControlToggle.addEventListener("click", () => {
@@ -1509,6 +1537,17 @@ function hide_premium_info(hide = true) {
     } else {
         infobox.classList.remove("hidden");
         infobox_iframe.src = "https://fskneeboard.com/maps-ingame/";
+    }
+}
+
+function hide_api_key_info(hide = true) {
+    const infobox = document.querySelector("#api-key-info-dialog-wrapper");
+    if (!infobox) return;
+
+    if (hide) {
+        infobox.classList.add("hidden");
+    } else {
+        infobox.classList.remove("hidden");
     }
 }
 

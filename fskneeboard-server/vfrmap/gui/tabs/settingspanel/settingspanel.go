@@ -303,10 +303,11 @@ func SettingsPanel() *fyne.Container {
 	}))
 
 	// bing maps api key
+	bingApiKeyProLabel := widget.NewLabel("")
 	bingApiKeyLabel := widget.NewLabel("Bing Maps")
 	bingApiKeyInput := widget.NewEntryWithData(bingMapsApiKeyBinding)
 	bingApiKeyInput.Validator = nil
-	// bingApiKeyInput.PlaceHolder = "SHARED API KEY"
+	bingApiKeyInput.PlaceHolder = "Your Bing Maps API Key"
 
 	bingMapsApiKeyBinding.AddListener(binding.NewDataListener(func() {
 		bingApiKeyRaw, _ := bingMapsApiKeyBinding.Get()
@@ -317,6 +318,13 @@ func SettingsPanel() *fyne.Container {
 
 		dbmanager.StoreBingMapsApiKey()
 	}))
+
+	if (!globals.Pro) {
+		bingApiKeyInput.PlaceHolder = "Requires FSKneeboard PRO"
+		//bingApiKeyProLabel.SetText("Requires FSKneeboard PRO")
+		bingApiKeyInput.Disable()
+		bingMapsApiKeyBinding.Set("")
+	}
 
 	// googleMaps maps api key
 	// googleMapsApiKeyLabel := widget.NewLabel("Google Maps")
@@ -337,7 +345,7 @@ func SettingsPanel() *fyne.Container {
 	apiKeysGrid := container.NewGridWithColumns(
 		3,
 		oaipApiKeyLabel, oaipApiKeyInput, oaipBypassCacheCb,
-		bingApiKeyLabel, bingApiKeyInput, widget.NewLabel(""),
+		bingApiKeyLabel, bingApiKeyInput, bingApiKeyProLabel,
 		// googleMapsApiKeyLabel, googleMapsApiKeyInput, widget.NewLabel(""),
 	)
 

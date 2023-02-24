@@ -2,12 +2,12 @@
 <html>
     <head>
         <title>FSKneeboard - Map</title>
-        <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+        <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=" />
         <link rel="stylesheet" href="/leafletjs/leaflet.css" />
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="VFRMap">
-        <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="VFRMap" />
+        <link rel="stylesheet" href="/fontawesome/css/all.min.css" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" />
         <script type="text/javascript" src="/fontawesome/js/all.min.js" crossorigin="anonymous"></script>
         <script type="text/javascript" src="/leafletjs/leaflet.js"></script>
@@ -17,20 +17,34 @@
     <body>
         <div id="map"></div>
 
-        <div style="display:none;">
+        <div style="display: none">
             <div id="teleport-popup">
                 <table>
                     <tr class="border-bottom">
-                        <td><label for="teleport-popup-gps">GPS:</label></td><td><input type="text" id="teleport-popup-gps"></td>
+                        <td><label for="teleport-popup-gps">GPS:</label></td>
+                        <td><input type="text" id="teleport-popup-gps" /></td>
                     </tr>
                     <tr>
-                        <td><label for="teleport-popup-alt">Altitude:</label></td><td><input type="number" id="teleport-popup-altitude"></td>
+                        <td><label for="teleport-popup-alt">Altitude:</label></td>
+                        <td><input type="number" id="teleport-popup-altitude" /></td>
                     </tr>
                     <tr class="border-bottom">
-                        <td></td><td><input type="range" id="teleport-popup-altitude-slider" min="-1000" max="50000" step="100"></td>
+                        <td></td>
+                        <td>
+                            <input
+                                type="range"
+                                id="teleport-popup-altitude-slider"
+                                min="-1000"
+                                max="50000"
+                                step="100" />
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="2"><button type="button" id="teleport-popup-submit"><i class="fas fa-magic"></i> Teleport here!</button></td>
+                        <td colspan="2">
+                            <button type="button" id="teleport-popup-submit">
+                                <i class="fas fa-magic"></i> Teleport here!
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -40,56 +54,92 @@
             <ul>
                 <li id="tour-center-ac">
                     <span class="tooltip">Center A/C</span>
-                    <span><span id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span></span>
+                    <span
+                        ><span id="ac-toggle-follow"><i class="fas fa-crosshairs"></i></span
+                    ></span>
                 </li>
                 <li id="tour-flightplan">
                     <span class="flyout-menu children-3">
                         <ul>
                             <li>
                                 <span class="tooltip">Load Flightplan</span>
-                                <span><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span></span>
+                                <span
+                                    ><span id="load-waypoints"><i class="fas fa-cloud-download-alt"></i></span
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Clear Waypoints, Pins &amp; Trail</span>
-                                <span><span id="trash-waypoints"><i class="fas fa-trash"></i></span></span>
+                                <span
+                                    ><span id="trash-waypoints"><i class="fas fa-trash"></i></span
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Find Location</span>
-                                <span><span id="search-map"><i class="fas fa-search-location"></i></span></span>
+                                <span
+                                    ><span id="search-map"><i class="fas fa-search-location"></i></span
+                                ></span>
                             </li>
                         </ul>
                     </span>
-                    <span><span><i class="fas fa-wrench"></i></span></span>
+                    <span
+                        ><span><i class="fas fa-wrench"></i></span
+                    ></span>
                 </li>
-                
+
                 <li id="tour-add-waypoints" class="marginator">
                     <span class="tooltip">Add Waypoint</span>
-                    <span><input type="radio" id="mode-add-marker" name="mode-controls" value="add-marker" checked /><label for="mode-add-marker"><i class="fas fa-map-marker-alt"></i></label></span>
+                    <span
+                        ><input
+                            type="radio"
+                            id="mode-add-marker"
+                            name="mode-controls"
+                            value="add-marker"
+                            checked /><label for="mode-add-marker"><i class="fas fa-map-marker-alt"></i></label
+                    ></span>
                 </li>
                 <li id="tour-add-tool-pin">
                     <span class="tooltip">Add Measuring Pin</span>
-                    <span><input type="radio" id="mode-add-tool-pin" name="mode-controls" value="add-tool-pin" /><label for="mode-add-tool-pin"><i class="fas fa-ruler-combined"></i></label></span>
+                    <span
+                        ><input type="radio" id="mode-add-tool-pin" name="mode-controls" value="add-tool-pin" /><label
+                            for="mode-add-tool-pin"
+                            ><i class="fas fa-ruler-combined"></i></label
+                    ></span>
                 </li>
                 <li id="tour-remove-waypoints">
                     <span class="tooltip">Remove Waypoints &amp; Pins</span>
-                    <span><input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker" /><label for="mode-remove-marker"><i class="fas fa-eraser"></i></label></span>
+                    <span
+                        ><input type="radio" id="mode-remove-marker" name="mode-controls" value="remove-marker" /><label
+                            for="mode-remove-marker"
+                            ><i class="fas fa-eraser"></i></label
+                    ></span>
                 </li>
                 <li id="tour-teleport">
                     <span class="tooltip">Teleport</span>
-                    <span><input type="radio" id="mode-teleport" name="mode-controls" value="teleport" /><label for="mode-teleport"><i class="fas fa-magic"></i></label></span>
+                    <span
+                        ><input type="radio" id="mode-teleport" name="mode-controls" value="teleport" /><label
+                            for="mode-teleport"
+                            ><i class="fas fa-magic"></i></label
+                    ></span>
                 </li>
                 <li id="tour-deactivate-maptools">
                     <span class="tooltip">Deactivate Tools</span>
-                    <span><input type="radio" id="mode-off" name="mode-controls" value="off" /><label for="mode-off"><i class="fas fa-power-off"></i></label></span>
+                    <span
+                        ><input type="radio" id="mode-off" name="mode-controls" value="off" /><label for="mode-off"
+                            ><i class="fas fa-power-off"></i></label
+                    ></span>
                 </li>
 
                 <li id="tour-zoom" class="big-marginator">
                     <span class="tooltip">Zoom In</span>
-                    <span><span id="map-zoom-in"><i class="fas fa-search-plus"></i></span></span>
+                    <span
+                        ><span id="map-zoom-in"><i class="fas fa-search-plus"></i></span
+                    ></span>
                 </li>
                 <li>
                     <span class="tooltip">Zoom Out</span>
-                    <span><span id="map-zoom-out"><i class="fas fa-search-minus"></i></span></span>
+                    <span
+                        ><span id="map-zoom-out"><i class="fas fa-search-minus"></i></span
+                    ></span>
                 </li>
 
                 <li id="tour-visibility" class="marginator">
@@ -97,27 +147,58 @@
                         <ul>
                             <li>
                                 <span class="tooltip">Hide Aircraft</span>
-                                <span><input type="radio" id="ac-visibility-none" name="ac-visibility" value="none" /><label for="ac-visibility-none"><i class="fas fa-eye-slash"></i></label></span>
+                                <span
+                                    ><input
+                                        type="radio"
+                                        id="ac-visibility-none"
+                                        name="ac-visibility"
+                                        value="none" /><label for="ac-visibility-none"
+                                        ><i class="fas fa-eye-slash"></i></label
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Icon: Airplane</span>
-                                <span><input type="radio" id="ac-visibility-plane" name="ac-visibility" value="plane" checked/><label for="ac-visibility-plane"><i class="fas fa-plane fa-flip-horizontal"></i></label></span>
+                                <span
+                                    ><input
+                                        type="radio"
+                                        id="ac-visibility-plane"
+                                        name="ac-visibility"
+                                        value="plane"
+                                        checked /><label for="ac-visibility-plane"
+                                        ><i class="fas fa-plane fa-flip-horizontal"></i></label
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Icon: Helicopter</span>
-                                <span><input type="radio" id="ac-visibility-helicopter" name="ac-visibility" value="helicopter" /><label for="ac-visibility-helicopter"><i class="fas fa-helicopter fa-flip-horizontal"></i></label></span>
+                                <span
+                                    ><input
+                                        type="radio"
+                                        id="ac-visibility-helicopter"
+                                        name="ac-visibility"
+                                        value="helicopter" /><label for="ac-visibility-helicopter"
+                                        ><i class="fas fa-helicopter fa-flip-horizontal"></i></label
+                                ></span>
                             </li>
                             <li class="marginator">
                                 <span class="tooltip">Show Wind Indicator</span>
-                                <span><input type="checkbox" id="wind-indicator-toggle" checked /><label for="wind-indicator-toggle"><i class="fas fa-wind"></i></label></span>
+                                <span
+                                    ><input type="checkbox" id="wind-indicator-toggle" checked /><label
+                                        for="wind-indicator-toggle"
+                                        ><i class="fas fa-wind"></i></label
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Show Trail</span>
-                                <span><input type="checkbox" id="trail-toggle" checked /><label for="trail-toggle"><i class="fas fa-route"></i></label></span>
+                                <span
+                                    ><input type="checkbox" id="trail-toggle" checked /><label for="trail-toggle"
+                                        ><i class="fas fa-route"></i></label
+                                ></span>
                             </li>
                         </ul>
                     </span>
-                    <span><span><i class="fas fa-eye"></i></span></span>
+                    <span
+                        ><span><i class="fas fa-eye"></i></span
+                    ></span>
                 </li>
 
                 <li id="tour-rotation">
@@ -125,19 +206,43 @@
                         <ul>
                             <li>
                                 <span class="tooltip">North Up</span>
-                                <span><input type="radio" id="map-bearing-north-up" name="map-bearing" value="north-up" checked /><label for="map-bearing-north-up"><i class="fas fa-arrow-alt-circle-up"></i></label></span>
+                                <span
+                                    ><input
+                                        type="radio"
+                                        id="map-bearing-north-up"
+                                        name="map-bearing"
+                                        value="north-up"
+                                        checked /><label for="map-bearing-north-up"
+                                        ><i class="fas fa-arrow-alt-circle-up"></i></label
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Track Up</span>
-                                <span><input type="radio" id="map-bearing-track-up" name="map-bearing" value="track-up" /><label for="map-bearing-track-up"><i class="fas fa-plane fa-rotate-270"></i></label></span>
+                                <span
+                                    ><input
+                                        type="radio"
+                                        id="map-bearing-track-up"
+                                        name="map-bearing"
+                                        value="track-up" /><label for="map-bearing-track-up"
+                                        ><i class="fas fa-plane fa-rotate-270"></i></label
+                                ></span>
                             </li>
                             <li>
                                 <span class="tooltip">Manual Rotation</span>
-                                <span><input type="radio" id="map-bearing-manual" name="map-bearing" value="manual" /><label for="map-bearing-manual"><i class="fas fa-lock-open"></i></label></span>
+                                <span
+                                    ><input
+                                        type="radio"
+                                        id="map-bearing-manual"
+                                        name="map-bearing"
+                                        value="manual" /><label for="map-bearing-manual"
+                                        ><i class="fas fa-lock-open"></i></label
+                                ></span>
                             </li>
                         </ul>
                     </span>
-                    <span><span><i class="fas fa-compass"></i></span></span>
+                    <span
+                        ><span><i class="fas fa-compass"></i></span
+                    ></span>
                 </li>
             </ul>
         </nav>
@@ -147,8 +252,8 @@
             <span id="wind-indicator-gauge-wrapper">
                 <span id="wind-indicator-gauge">
                     <span id="wind-indicator-north-wrapper">
-                        <span style="line-height: 2px;">N</span>
-                        <span style="line-height: 2px;"><i class="fas fa-caret-down"></i></span>
+                        <span style="line-height: 2px">N</span>
+                        <span style="line-height: 2px"><i class="fas fa-caret-down"></i></span>
                     </span>
                     <span id="wind-indicator-arrow-wrapper">
                         <span id="wind-indicator-arrow" class="hidden">
@@ -160,12 +265,8 @@
                     </span>
                 </span>
             </span>
-            <span>
-                <span id="wind-indicator-direction">-</span><sup>o</sup>
-            </span>
-            <span>
-                <span id="wind-indicator-velocity">-</span>kts
-            </span>
+            <span> <span id="wind-indicator-direction">-</span><sup>o</sup> </span>
+            <span> <span id="wind-indicator-velocity">-</span>kts </span>
         </div>
 
         <div id="waypoint-confirm-dialog-wrapper" class="confirm-dialog-wrapper hidden">
@@ -182,12 +283,14 @@
 
         <div id="trash-select-dialog-wrapper" class="confirm-dialog-wrapper hidden">
             <div id="trash-select-dialog" class="confirm-dialog">
-                <h3>
-                    Please select what you would like to clear:
-                </h3>
+                <h3>Please select what you would like to clear:</h3>
                 <div class="dialog-buttons dialog-buttons--vertical">
-                    <span id="trash-select-dialog-waypoints"><i class="fas fa-map-marker-alt"></i> Delete Waypoints</span>
-                    <span id="trash-select-dialog-measure-tool-pins"><i class="fas fa-ruler-combined"></i> Delete Measuring Pins</span>
+                    <span id="trash-select-dialog-waypoints"
+                        ><i class="fas fa-map-marker-alt"></i> Delete Waypoints</span
+                    >
+                    <span id="trash-select-dialog-measure-tool-pins"
+                        ><i class="fas fa-ruler-combined"></i> Delete Measuring Pins</span
+                    >
                     <span id="trash-select-dialog-trail"><i class="fas fa-route"></i> Delete Trail</span>
                     <div>&nbsp;</div>
                     <span id="trash-select-dialog-cancel">Cancel</span>
@@ -195,12 +298,9 @@
             </div>
         </div>
 
-
         <div id="trash-waypoints-confirm-dialog-wrapper" class="confirm-dialog-wrapper hidden">
             <div id="trash-waypoints-confirm-dialog" class="confirm-dialog">
-                <h3>
-                    You are about to REMOVE ALL of your manually placed waypoints.<br />Do you wish to proceed?
-                </h3>
+                <h3>You are about to REMOVE ALL of your manually placed waypoints.<br />Do you wish to proceed?</h3>
                 <div class="dialog-buttons">
                     <span id="trash-waypoints-confirm-dialog-yes">Yes</span>
                     <span id="trash-waypoints-confirm-dialog-no">No</span>
@@ -211,7 +311,8 @@
         <div id="trash-tools-confirm-dialog-wrapper" class="confirm-dialog-wrapper hidden">
             <div id="trash-tools-confirm-dialog" class="confirm-dialog">
                 <h3>
-                    You are about to REMOVE ALL of your manually placed measuring tool pins.<br />Do you wish to proceed?
+                    You are about to REMOVE ALL of your manually placed measuring tool pins.<br />Do you wish to
+                    proceed?
                 </h3>
                 <div class="dialog-buttons">
                     <span id="trash-tools-confirm-dialog-yes">Yes</span>
@@ -222,12 +323,23 @@
 
         <div id="trash-trail-confirm-dialog-wrapper" class="confirm-dialog-wrapper hidden">
             <div id="trash-trail-confirm-dialog" class="confirm-dialog">
-                <h3>
-                    You are about to REMOVE your current flight's trail.<br />Do you wish to proceed?
-                </h3>
+                <h3>You are about to REMOVE your current flight's trail.<br />Do you wish to proceed?</h3>
                 <div class="dialog-buttons">
                     <span id="trash-trail-confirm-dialog-yes">Yes</span>
                     <span id="trash-trail-confirm-dialog-no">No</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="api-key-info-dialog-wrapper" class="confirm-dialog-wrapper hidden">
+            <div id="api-key-info-dialog" class="confirm-dialog">
+                <h3>
+                    Please enter your custom Bing Maps API-key into the <b>Settings Tab</b> of the FSKneeboard Server
+                    Application to enable the Bing Maps Layers.<br /><br />The API-key can be obtained FOR FREE from the
+                    Bing Maps website. Please refer to FSKneeboard user manual to learn more.
+                </h3>
+                <div class="dialog-buttons">
+                    <span id="api-key-info-dialog-ok">Ok</span>
                 </div>
             </div>
         </div>
@@ -237,9 +349,19 @@
                 <div class="map-overlay-panel-close">
                     <a href="#" id="premium-info-close"><i class="far fa-window-close"></i></a>
                 </div>
-                <h4><span class="highlight">The Location Finder, Waypoints, Tracks and Navigation Tools</span> are advanced features that are part of <span class="highlight">FSKneeboard PRO</span>.</h4>
-                <h4>Learn more below or purchase your copy of <span class="highlight">FSKneeboard PRO</span> at <a href="https://fskneeboard.com/buy-now">https://fskneeboard.com/buy-now</a></h4>
-                <h4><span class="highlight">FSKneeboard PRO</span> comes with the fairest pricing model on the market: <span class="highlight">YOU PAY WHAT YOU WANT!</span></h4>
+                <h4>
+                    <span class="highlight">The Location Finder, Waypoints, Tracks and Navigation Tools</span> as well
+                    as the <span class="highlight">Bing Maps Layer</span> are advanced features that are part of
+                    <span class="highlight">FSKneeboard PRO</span>.
+                </h4>
+                <h4>
+                    Learn more below or purchase your copy of <span class="highlight">FSKneeboard PRO</span> at
+                    <a href="https://fskneeboard.com/buy-now">https://fskneeboard.com/buy-now</a>
+                </h4>
+                <h4>
+                    <span class="highlight">FSKneeboard PRO</span> comes with the fairest pricing model on the market:
+                    <span class="highlight">YOU PAY WHAT YOU WANT!</span>
+                </h4>
                 <iframe></iframe>
             </div>
         </div>
@@ -250,16 +372,14 @@
                     <a href="#" id="search-map-panel-close"><i class="far fa-window-close"></i></a>
                 </div>
                 <div id="search-map-panel-search">
-                    <label for="search-map-panel-query">Find:</label>&nbsp;
-                    <input id="search-map-panel-query" />&nbsp;
+                    <label for="search-map-panel-query">Find:</label>&nbsp; <input id="search-map-panel-query" />&nbsp;
                     <button id="search-map-panel-clear-btn">Clear</button>
                     <button id="search-map-panel-search-btn">Search</button>
                 </div>
                 <div id="search-map-panel-spinner" class="hidden">
                     <i class="fas fa-spinner fa-pulse fa-2x"></i>
                 </div>
-                <ul id="search-map-panel-results">
-                </ul>
+                <ul id="search-map-panel-results"></ul>
             </div>
             <div id="onscreen-keyboard">
                 <table>

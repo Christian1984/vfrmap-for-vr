@@ -544,7 +544,7 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 
 	bingSatUrl := ""
 	bingRoadsUrl := ""
-	if globals.BingMapsApiKey != "" {
+	if globals.Pro && globals.BingMapsApiKey != "" {
 		bingSatUrl = strings.ReplaceAll(BingMapsSatUrls.RemoteUrl, "{apiKey}", globals.BingMapsApiKey)
 		bingRoadsUrl = strings.ReplaceAll(BingMapsRoadsUrls.RemoteUrl, "{apiKey}", globals.BingMapsApiKey)
 	}
