@@ -143,6 +143,20 @@ var OaipReportingUrls = MapServiceUrls{
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
+var BingMapsSatUrls = MapServiceUrls{
+	CacheUrl:  "",
+	RemoteUrl: "http://dev.virtualearth.net/REST/V1/Imagery/Metadata/AerialWithLabelsOnDemand?output=json&key={apiKey}",
+}
+
+var BingMapsRoadsUrls = MapServiceUrls{
+	CacheUrl:  "",
+	RemoteUrl: "http://dev.virtualearth.net/REST/V1/Imagery/Metadata/RoadOnDemand?output=json&key={apiKey}",
+}
+// var GoogleMapsUrls = MapServiceUrls{
+// 	CacheUrl:  "",
+// 	RemoteUrl: "",
+// }
+
 type MapServiceUrlsDto struct {
 	Osm      string `json:"osm"`
 	Otm      string `json:"otm"`
@@ -155,6 +169,9 @@ type MapServiceUrlsDto struct {
 	OaipAirspaces string `json:"oaipAirspaces"`
 	OaipNavaids   string `json:"oaipNavaids"`
 	OaipReporting string `json:"oaipReporting"`
+	BingSatMaps   string `json:"bingSatMaps"`
+	BingRoadsMaps string `json:"bingRoadsMaps"`
+	// GoogleMaps    string `json:"googleMaps"`
 }
 
 func (r *Report) RequestData(s *simconnect.SimConnect) {
@@ -525,6 +542,18 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		logger.LogDebug("serving openAIP cache urls")
 	}
 
+	bingSatUrl := ""
+	bingRoadsUrl := ""
+	if globals.BingMapsApiKey != "" {
+		bingSatUrl = strings.ReplaceAll(BingMapsSatUrls.RemoteUrl, "{apiKey}", globals.BingMapsApiKey)
+		bingRoadsUrl = strings.ReplaceAll(BingMapsRoadsUrls.RemoteUrl, "{apiKey}", globals.BingMapsApiKey)
+	}
+
+	// googleUrl := ""
+	// if globals.GoogleMapsApiKey != "" {
+	// 	googleUrl = strings.ReplaceAll(GoogleMapsUrls.RemoteUrl, "{apiKey}", globals.GoogleMapsApiKey)
+	// }
+
 	mapServiceUrls := MapServiceUrlsDto{
 		Osm:      OsmUrls.CacheUrl,
 		Otm:      OtmUrls.CacheUrl,
@@ -537,6 +566,10 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		OaipAirspaces: oaipAirspacesUrl,
 		OaipNavaids:   oaipNavaidsUrl,
 		OaipReporting: oaipReportingUrl,
+
+		BingSatMaps: bingSatUrl,
+		BingRoadsMaps: bingRoadsUrl,
+		// GoogleMaps: googleUrl,
 	}
 
 	responseJson, jsonErr := json.Marshal(mapServiceUrls)

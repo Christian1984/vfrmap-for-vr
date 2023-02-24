@@ -319,26 +319,26 @@ func SettingsPanel() *fyne.Container {
 	}))
 
 	// googleMaps maps api key
-	googleMapsApiKeyLabel := widget.NewLabel("Google Maps")
-	googleMapsApiKeyInput := widget.NewEntryWithData(googleMapsApiKeyBinding)
-	googleMapsApiKeyInput.Validator = nil
-	// googleMapsApiKeyInput.PlaceHolder = "SHARED API KEY"
+	// googleMapsApiKeyLabel := widget.NewLabel("Google Maps")
+	// googleMapsApiKeyInput := widget.NewEntryWithData(googleMapsApiKeyBinding)
+	// googleMapsApiKeyInput.Validator = nil
+	// // googleMapsApiKeyInput.PlaceHolder = "SHARED API KEY"
 
-	googleMapsApiKeyBinding.AddListener(binding.NewDataListener(func() {
-		googleMapsApiKeyRaw, _ := googleMapsApiKeyBinding.Get()
-		googleMapsApiKey := strings.TrimSpace(googleMapsApiKeyRaw)
-		globals.GoogleMapsApiKey = googleMapsApiKey
+	// googleMapsApiKeyBinding.AddListener(binding.NewDataListener(func() {
+	// 	googleMapsApiKeyRaw, _ := googleMapsApiKeyBinding.Get()
+	// 	googleMapsApiKey := strings.TrimSpace(googleMapsApiKeyRaw)
+	// 	globals.GoogleMapsApiKey = googleMapsApiKey
 
-		logger.LogInfo("GoogleMaps API key updated: [" + googleMapsApiKey + "]")
+	// 	logger.LogInfo("GoogleMaps API key updated: [" + googleMapsApiKey + "]")
 
-		dbmanager.StoreGoogleMapsApiKey()
-	}))
+	// 	dbmanager.StoreGoogleMapsApiKey()
+	// }))
 
 	apiKeysGrid := container.NewGridWithColumns(
 		3,
 		oaipApiKeyLabel, oaipApiKeyInput, oaipBypassCacheCb,
 		bingApiKeyLabel, bingApiKeyInput, widget.NewLabel(""),
-		googleMapsApiKeyLabel, googleMapsApiKeyInput, widget.NewLabel(""),
+		// googleMapsApiKeyLabel, googleMapsApiKeyInput, widget.NewLabel(""),
 	)
 
 	generalLabel := widget.NewLabel("General")

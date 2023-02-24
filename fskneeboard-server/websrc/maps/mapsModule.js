@@ -142,6 +142,31 @@ const icons = {
     },
 };
 
+var bingSatLayer = L.TileLayer.extend({
+    getTileUrl: function (coords) {
+        var quadkey = this.toQuadKey(coords.x, coords.y, coords.z);
+        var url = L.Util.template(this._url, {
+            q: quadkey,
+            s: this._getSubdomain(coords),
+        });
+        if (typeof this.options.style === "string") {
+            url += "&st=" + this.options.style;
+        }
+        return url;
+    },
+    toQuadKey: function (x, y, z) {
+        var index = "";
+        for (var i = z; i > 0; i--) {
+            var b = 0;
+            var mask = 1 << (i - 1);
+            if ((x & mask) !== 0) b++;
+            if ((y & mask) !== 0) b += 2;
+            index += b.toString();
+        }
+        return index;
+    },
+});
+
 let currentIconGroup = icons.planes;
 let currentIcon = currentIconGroup.black;
 
@@ -476,6 +501,22 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
+    const bingSat = new bingSatLayer("", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+    });
+
+    const bingRoads = new bingSatLayer("", {
+        maxZoom: 18,
+        minZoom: 2,
+        tileSize: map_resolution.tile_size,
+        zoomOffset: map_resolution.zoom_offset,
+        format: "image/png",
+    });
+
     const otm = new L.TileLayer(mapTileUrls.otm, {
         maxZoom: 18,
         minZoom: 2,
@@ -597,6 +638,8 @@ function initMap(mapTileUrls) {
 
     const baseMaps = {
         OpenStreetMap: osm,
+        Bing: bingRoads,
+        "Bing Satellite": bingSat,
         OpenTopoMap: otm,
         "Stamen Terrain": stamen_terrain,
         "Stamen Toner": stamen_black_white,
@@ -674,6 +717,7 @@ function initMap(mapTileUrls) {
     });
 
     map.on("baselayerchange", function (e) {
+        // TODO: check bingSat init
         if (e.name == "Carto Dark (Night Mode)") {
             ac_visibility_options.ac_color = AC_COLOR.white;
         } else if (e.name == "Stamen Toner") {
@@ -714,6 +758,36 @@ function initMap(mapTileUrls) {
             waypoints.load_state();
         }, RELOAD_DELAY);
     });
+
+    fetch(mapTileUrls.bingSatMaps)
+        .then((resp) => resp.json())
+        .then((json) => {
+            if (json.resourceSets?.length == 0) return;
+            const rs = json.resourceSets[0];
+
+            if (rs.resources?.length == 0) return;
+            const r = rs.resources[0];
+
+            bingSat.options.subdomains = r.imageUrlSubdomains;
+            const url = r.imageUrl.replace("{subdomain}", "{s}").replace("{quadkey}", "{q}");
+            bingSat.setUrl(url);
+        })
+        .catch((e) => console.log(e));
+
+    fetch(mapTileUrls.bingRoadsMaps)
+        .then((resp) => resp.json())
+        .then((json) => {
+            if (json.resourceSets?.length == 0) return;
+            const rs = json.resourceSets[0];
+
+            if (rs.resources?.length == 0) return;
+            const r = rs.resources[0];
+
+            bingRoads.options.subdomains = r.imageUrlSubdomains;
+            const url = r.imageUrl.replace("{subdomain}", "{s}").replace("{quadkey}", "{q}");
+            bingRoads.setUrl(url);
+        })
+        .catch((e) => console.log(e));
 }
 
 function pan_to(latlng, follow = false) {
