@@ -89,22 +89,22 @@ type MapServiceUrls struct {
 }
 
 var OsmUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35302/maptilecache/osm/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35302/maptilecache/osm/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 }
 
 var OtmUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35303/maptilecache/otm/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35303/maptilecache/otm/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
 }
 
 var StamenBwUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35304/maptilecache/stamenbw/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35304/maptilecache/stamenbw/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
 }
 
 var StamenTUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35305/maptilecache/stament/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35305/maptilecache/stament/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
 }
 
@@ -114,32 +114,32 @@ var StamenWUrls = MapServiceUrls{
 }
 
 var CartoD = MapServiceUrls{
-	CacheUrl:  "http://localhost:35307/maptilecache/cartod/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35307/maptilecache/cartod/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
 }
 
 var Ofm = MapServiceUrls{
-	CacheUrl:  "http://localhost:35308/maptilecache/ofm/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35308/maptilecache/ofm/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png",
 }
 
 var OaipAirportsUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35309/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35309/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
 var OaipAirspacesUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
 var OaipNavaidsUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35311/maptilecache/oaip-navaids/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35311/maptilecache/oaip-navaids/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
 var OaipReportingUrls = MapServiceUrls{
-	CacheUrl:  "http://localhost:35312/maptilecache/oaip-reportingpoints/{s}/{z}/{y}/{x}/",
+	CacheUrl:  "{fskhost}:35312/maptilecache/oaip-reportingpoints/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 

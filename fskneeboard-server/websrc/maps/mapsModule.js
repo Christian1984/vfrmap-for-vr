@@ -478,6 +478,10 @@ function loadMapTileUrls(callback) {
     xhr.send();
 }
 
+function prepareUrl(url, loc) {
+    return url.replace("{fskhost}", loc);
+}
+
 function initMap(mapTileUrls) {
     Logger.logDebug("initMap with " + JSON.stringify(mapTileUrls));
 
@@ -492,7 +496,7 @@ function initMap(mapTileUrls) {
     const loc = location.protocol + "//" + hostAddr;
 
     // base maps
-    const osm = new L.TileLayer(mapTileUrls.osm, {
+    const osm = new L.TileLayer(prepareUrl(mapTileUrls.osm, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -517,7 +521,7 @@ function initMap(mapTileUrls) {
         format: "image/png",
     });
 
-    const otm = new L.TileLayer(mapTileUrls.otm, {
+    const otm = new L.TileLayer(prepareUrl(mapTileUrls.otm, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -526,7 +530,7 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
-    const stamen_black_white = new L.TileLayer(mapTileUrls.stamenbw, {
+    const stamen_black_white = new L.TileLayer(prepareUrl(mapTileUrls.stamenbw, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -535,7 +539,7 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
-    const stamen_terrain = new L.TileLayer(mapTileUrls.stament, {
+    const stamen_terrain = new L.TileLayer(prepareUrl(mapTileUrls.stament, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -544,7 +548,7 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
-    const stamen_water = new L.TileLayer(mapTileUrls.stamenw, {
+    const stamen_water = new L.TileLayer(prepareUrl(mapTileUrls.stamenw, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -553,7 +557,7 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
-    const carto_dark = new L.TileLayer(mapTileUrls.cartod, {
+    const carto_dark = new L.TileLayer(prepareUrl(mapTileUrls.cartod, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -574,7 +578,7 @@ function initMap(mapTileUrls) {
     });
 
     // oaip nav overlays
-    const openaip_airports = new L.TileLayer(mapTileUrls.oaipAirports, {
+    const openaip_airports = new L.TileLayer(prepareUrl(mapTileUrls.oaipAirports, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -583,7 +587,7 @@ function initMap(mapTileUrls) {
         transparent: true,
     });
 
-    const openaip_airspaces = new L.TileLayer(mapTileUrls.oaipAirspaces, {
+    const openaip_airspaces = new L.TileLayer(prepareUrl(mapTileUrls.oaipAirspaces, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -592,7 +596,7 @@ function initMap(mapTileUrls) {
         transparent: true,
     });
 
-    const openaip_navaids = new L.TileLayer(mapTileUrls.oaipNavaids, {
+    const openaip_navaids = new L.TileLayer(prepareUrl(mapTileUrls.oaipNavaids, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -601,7 +605,7 @@ function initMap(mapTileUrls) {
         transparent: true,
     });
 
-    const openaip_reportingpoints = new L.TileLayer(mapTileUrls.oaipReporting, {
+    const openaip_reportingpoints = new L.TileLayer(prepareUrl(mapTileUrls.oaipReporting, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
