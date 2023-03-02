@@ -33,10 +33,23 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         this.ingameUi = null;
 
         this.collapsed = false;
-        this.collapse_hotkey = -1;
-        this.collapse_altKey = false;
-        this.collapse_ctrlKey = false;
-        this.collapse_shiftKey = false;
+
+        this.collapse_hotkey = {
+            key: -1,
+            keycode: -1,
+            altkey: false,
+            ctrlkey: false,
+            shiftkey: false,
+        };
+
+        this.maps_hotkey = {
+            key: -1,
+            keycode: -1,
+            altkey: false,
+            ctrlkey: false,
+            shiftkey: false,
+        };
+
         //this.posInterval = -1;
 
         /*
@@ -90,6 +103,19 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         }
     }
 
+    equalsHotkey(event, hotkey) {
+        const res =
+            hotkey.key !== -1 &&
+            event.keyCode == hotkey.keycode &&
+            event.altKey == hotkey.altkey &&
+            event.ctrlKey == hotkey.ctrlkey &&
+            event.shiftKey == hotkey.shiftkey;
+
+        // console.log("evaluated hotkey equals:", res);
+
+        return res;
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -101,25 +127,23 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
 
                 switch (data.type) {
                     case "KeyboardEvent":
-                        if (self.collapse_hotkey == -1) return;
+                        // console.log("received KeyboardEvent");
+                        if (data.data.type == "keydown") {
+                            if (self.equalsHotkey(data.data, self.collapse_hotkey)) {
+                                self.toggle_collapse();
+                            }
 
-                        if (
-                            data.data.type == "keydown" &&
-                            data.data.keyCode == self.collapse_hotkey &&
-                            data.data.altKey == self.collapse_altKey &&
-                            data.data.ctrlKey == self.collapse_ctrlKey &&
-                            data.data.shiftKey == self.collapse_shiftKey
-                        ) {
-                            self.toggle_collapse();
+                            if (self.equalsHotkey(data.data, self.maps_hotkey)) {
+                                console.log("maps hotkey!");
+                            }
                         }
 
                         break;
 
                     case "HotkeyConfiguration":
-                        self.collapse_hotkey = data.data.keyCode;
-                        self.collapse_altKey = data.data.altKey;
-                        self.collapse_ctrlKey = data.data.ctrlKey;
-                        self.collapse_shiftKey = data.data.shiftKey;
+                        self.collapse_hotkey = data.data.masterHotkey;
+                        self.maps_hotkey = data.data.mapsHotkey;
+                        // console.log("received hotkey config", self.collapse_hotkey, self.maps_hotkey);
                         break;
 
                     case "SetBrighness":
@@ -136,14 +160,10 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         });
 
         window.addEventListener("keydown", (e) => {
+            // console.log("native keydown");
             if (self.collapse_hotkey == -1) return;
 
-            if (
-                e.keyCode == self.collapse_hotkey &&
-                e.altKey == self.collapse_altKey &&
-                e.ctrlKey == self.collapse_ctrlKey &&
-                e.shiftKey == self.collapse_shiftKey
-            ) {
+            if (self.equalsHotkey(e, self.collapse_hotkey)) {
                 self.toggle_collapse();
             }
         });

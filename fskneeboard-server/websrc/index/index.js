@@ -29,7 +29,6 @@ const zoom_in = document.getElementById("zoom_in");
 const zoom_out = document.getElementById("zoom_out");
 const zoom_reset = document.getElementById("zoom_reset");
 
-
 const stretch = document.getElementById("stretch");
 const unstretch = document.getElementById("unstretch");
 const stretch_reset = document.getElementById("stretch_reset");
@@ -45,13 +44,13 @@ function dispatch_keyevent_top(event) {
             keyCode: event.keyCode,
             altKey: event.altKey,
             shiftKey: event.shiftKey,
-            ctrlKey: event.ctrlKey
-        }
+            ctrlKey: event.ctrlKey,
+        },
     });
 
     Logger.logDebug("index.js => dispatching key event to parent: msg=" + msg);
-    
-    window.parent.window.postMessage(msg , "*");
+
+    window.parent.window.postMessage(msg, "*");
 }
 
 function hide_all_iframes() {
@@ -96,7 +95,7 @@ function switch_to_notepad() {
     setTimeout(() => {
         iframe_notepad.contentWindow.postMessage("load", "*");
     }, 1000);
-    
+
     save_tab(2);
 }
 
@@ -120,35 +119,40 @@ function save_zoom() {
 }
 
 function load_state() {
-    retrieve_data("active_tab", data => {
-        if (data.active_tab != null && data.active_tab !== "") {
-            switch(data.active_tab) {
-                case "1":
-                    switch_to_charts();
-                    break;
-                case "2":
-                    switch_to_notepad();
-                    break;
-                default:
-                    switch_to_map();
-                    break;
+    retrieve_data(
+        "active_tab",
+        (data) => {
+            if (data.active_tab != null && data.active_tab !== "") {
+                switch (data.active_tab) {
+                    case "1":
+                        switch_to_charts();
+                        break;
+                    case "2":
+                        switch_to_notepad();
+                        break;
+                    default:
+                        switch_to_map();
+                        break;
+                }
             }
-        }
-    }, false);
+        },
+        false
+    );
 
-    retrieve_data_set(["zoom", "red", "brightness"], data => {
+    retrieve_data_set(["zoom", "red", "brightness"], (data) => {
         if (data.zoom != null && data.zoom !== "") {
             try {
                 current_zoom = JSON.parse(data.zoom);
+            } catch (e) {
+                /* ignore silently */
             }
-            catch(e) { /* ignore silently */ }
-    
+
             apply_zoom();
         }
 
         if (data.red != null && data.red !== "") {
             set_red_light(data.red == "true");
-    
+
             if (red_light) {
                 red_light.checked = data.red == "true";
             }
@@ -164,11 +168,11 @@ function set_red_light(red) {
     const msg = JSON.stringify({
         type: "SetRedLight",
         data: {
-            red: red
-        }
+            red: red,
+        },
     });
-    
-    window.parent.window.postMessage(msg , "*");
+
+    window.parent.window.postMessage(msg, "*");
 }
 
 function reset_red_light() {
@@ -180,27 +184,24 @@ function reset_red_light() {
 function set_brightness(brightness) {
     try {
         current_brightness = Number.parseInt(brightness);
-    }
-    catch (e) {
+    } catch (e) {
         current_brightness = 100;
     }
 
     if (current_brightness > 100) {
         current_brightness = 100;
-    }
-    else if (current_brightness <= 0) {
+    } else if (current_brightness <= 0) {
         current_brightness = brightness_modification;
     }
 
     const msg = JSON.stringify({
         type: "SetBrighness",
         data: {
-            brightness: current_brightness
-        }
+            brightness: current_brightness,
+        },
     });
-    
-    window.parent.window.postMessage(msg , "*");
 
+    window.parent.window.postMessage(msg, "*");
 }
 
 function brightness_increase() {
@@ -225,7 +226,7 @@ function apply_zoom() {
     const offY = 100 * 0.5 * (1 - 1 / current_zoom.y);
 
     content_div.style.transform = `scale(${current_zoom.x}, ${current_zoom.y})`;
-    content_div.style.left = `${offX}%`;  
+    content_div.style.left = `${offX}%`;
     content_div.style.right = `${offX}%`;
     content_div.style.top = `${offY}%`;
     content_div.style.bottom = `${offY}%`;
@@ -235,8 +236,7 @@ function zoom_views(zoom_in) {
     if (zoom_in) {
         current_zoom.x *= zoom_modification_factor;
         current_zoom.y *= zoom_modification_factor;
-    }
-    else {
+    } else {
         current_zoom.x /= zoom_modification_factor;
         current_zoom.y /= zoom_modification_factor;
     }
@@ -248,8 +248,7 @@ function zoom_views(zoom_in) {
 function stretch_views(stretch) {
     if (stretch) {
         current_zoom.x *= zoom_modification_factor;
-    }
-    else {
+    } else {
         current_zoom.x /= zoom_modification_factor;
     }
 
@@ -274,11 +273,11 @@ function reset_stretch() {
     save_zoom();
 }
 
-function request_hotkey() {
+function request_hotkeys() {
     Logger.logDebug("index.js => requesting hotkey configuration...");
 
     var xhr = new XMLHttpRequest();
-    var url = "/hotkey";
+    var url = "/hotkeys";
     xhr.open("GET", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
@@ -288,20 +287,15 @@ function request_hotkey() {
 
                 var json = JSON.parse(xhr.responseText);
 
-                if (json && json.keycode != null) {
+                if (json) {
                     const msg = JSON.stringify({
                         type: "HotkeyConfiguration",
-                        data: {
-                            keyCode: json.keycode,
-                            altKey: json.altkey,
-                            ctrlKey: json.ctrlkey,
-                            shiftKey: json.shiftkey
-                        }
+                        data: json,
                     });
 
                     Logger.logDebug("index.js => propagating hotkey configuration to parent: msg=" + msg);
-                    
-                    window.parent.window.postMessage(msg , "*");
+
+                    window.parent.window.postMessage(msg, "*");
                 }
             }
         }
@@ -311,30 +305,30 @@ function request_hotkey() {
 
 function init() {
     if (iframe_map) {
-        iframe_map.src = '/freemium/maps.html';
+        iframe_map.src = "/freemium/maps.html";
     }
 
     if (iframe_charts) {
-        iframe_charts.src = '/premium/charts.html';
+        iframe_charts.src = "/premium/charts.html";
     }
 
     if (iframe_notepad) {
-        iframe_notepad.src = '/premium/notepad.html';
+        iframe_notepad.src = "/premium/notepad.html";
     }
 
-    if(switch_map) {
+    if (switch_map) {
         switch_map.addEventListener("click", () => {
             switch_to_map();
         });
     }
 
-    if(switch_charts) {
+    if (switch_charts) {
         switch_charts.addEventListener("click", () => {
             switch_to_charts();
         });
     }
 
-    if(switch_notepad) {
+    if (switch_notepad) {
         switch_notepad.addEventListener("click", () => {
             switch_to_notepad();
         });
@@ -401,34 +395,42 @@ function init() {
         });
     }
 
-    request_hotkey();
+    request_hotkeys();
 
     // subscribe to websocket
     const ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/hotkeysWs");
-    ws.onopen = function() {
+    ws.onopen = function () {
         Logger.logDebug("index.js => connection to /hotkeysWs websocket opened");
     };
-    ws.onclose = function() {
+    ws.onclose = function () {
         Logger.logDebug("index.js => connection to /hotkeysWs websocket closed");
     };
-    ws.onmessage = e => {
+    ws.onmessage = (e) => {
         Logger.logDebug("index.js => received message from /hotkeysWs websocket: " + e.data);
         const msg = JSON.parse(e.data);
 
         if (msg.msg) {
-            request_hotkey();
+            request_hotkeys();
         }
     };
 
     window.document.addEventListener("keydown", (e) => {
-        Logger.logDebug("index.js => keydown event registered, e.key=[" + e.key + "], e.keyCode=[" + e.keyCode + "], e.code=[" + e.code + "]");
+        Logger.logDebug(
+            "index.js => keydown event registered, e.key=[" +
+                e.key +
+                "], e.keyCode=[" +
+                e.keyCode +
+                "], e.code=[" +
+                e.code +
+                "]"
+        );
         dispatch_keyevent_top(e);
     });
 
     load_state();
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     Logger.logDebug("index.js => DOMContentLoaded fired!");
 
     try {
@@ -440,10 +442,9 @@ document.addEventListener("DOMContentLoaded", function() {
         txt += "\tCookies Enabled:   " + navigator.cookieEnabled + "\n";
         txt += "\tPlatform:          " + navigator.platform + "\n";
         txt += "\tUser-agent header: " + navigator.userAgent + "\n";
-    
+
         Logger.logDebug(txt);
-    }
-    catch (e) {
+    } catch (e) {
         Logger.logWarn("Could not retrieve browser information");
     }
 
