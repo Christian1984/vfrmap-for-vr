@@ -17,3 +17,15 @@ var UpdateMapsHotkeyCallback func(bool, bool, bool, string)
 func UpdateMapsHotkey(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
 	runHotkeyCallback(shiftModifier, ctrlModifier, altModifier, key, UpdateMapsHotkeyCallback)
 }
+
+var UpdateChartsHotkeyCallback func(bool, bool, bool, string)
+
+func UpdateChartsHotkey(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
+	runHotkeyCallback(shiftModifier, ctrlModifier, altModifier, key, UpdateChartsHotkeyCallback)
+}
+
+var UpdateNotepadHotkeyCallback func(bool, bool, bool, string)
+
+func UpdateNotepadHotkey(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
+	runHotkeyCallback(shiftModifier, ctrlModifier, altModifier, key, UpdateNotepadHotkeyCallback)
+}

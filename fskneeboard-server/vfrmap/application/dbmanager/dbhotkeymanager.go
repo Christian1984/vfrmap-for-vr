@@ -66,3 +66,55 @@ func LoadMapsHotkey() {
 
 	globals.MapsHotkey = hotkeys.New(shiftModifier, ctrlModifier, altModifier, key)
 }
+
+// charts hotkey
+func StoreChartsHotkeyShiftModifier() {
+	DbWriteSettings("hotkeyChartsShiftModifier", strconv.FormatBool(globals.ChartsHotkey.ShiftKey))
+}
+
+func StoreChartsHotkeyCtrlModifier() {
+	DbWriteSettings("hotkeyChartsCtrlModifier", strconv.FormatBool(globals.ChartsHotkey.CtrlKey))
+}
+
+func StoreChartsHotkeyAltModifier() {
+	DbWriteSettings("hotkeyChartsAltModifier", strconv.FormatBool(globals.ChartsHotkey.AltKey))
+}
+
+func StoreChartsHotkeyKey() {
+	DbWriteSettings("hotkeyChartsKey", SanitizeHotkey(globals.ChartsHotkey.Key))
+}
+
+func LoadChartsHotkey() {
+	shiftModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyChartsShiftModifier"))
+	ctrlModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyChartsCtrlModifier"))
+	altModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyChartsAltModifier"))
+	key := SanitizeHotkey(DbReadSettings("hotkeyChartsKey"))
+
+	globals.ChartsHotkey = hotkeys.New(shiftModifier, ctrlModifier, altModifier, key)
+}
+
+// notepad hotkey
+func StoreNotepadHotkeyShiftModifier() {
+	DbWriteSettings("hotkeyNotepadShiftModifier", strconv.FormatBool(globals.NotepadHotkey.ShiftKey))
+}
+
+func StoreNotepadHotkeyCtrlModifier() {
+	DbWriteSettings("hotkeyNotepadCtrlModifier", strconv.FormatBool(globals.NotepadHotkey.CtrlKey))
+}
+
+func StoreNotepadHotkeyAltModifier() {
+	DbWriteSettings("hotkeyNotepadAltModifier", strconv.FormatBool(globals.NotepadHotkey.AltKey))
+}
+
+func StoreNotepadHotkeyKey() {
+	DbWriteSettings("hotkeyNotepadKey", SanitizeHotkey(globals.NotepadHotkey.Key))
+}
+
+func LoadNotepadHotkey() {
+	shiftModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyNotepadShiftModifier"))
+	ctrlModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyNotepadCtrlModifier"))
+	altModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyNotepadAltModifier"))
+	key := SanitizeHotkey(DbReadSettings("hotkeyNotepadKey"))
+
+	globals.NotepadHotkey = hotkeys.New(shiftModifier, ctrlModifier, altModifier, key)
+}

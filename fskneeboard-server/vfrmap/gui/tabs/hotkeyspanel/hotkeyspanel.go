@@ -27,6 +27,16 @@ var mapsCtrlModifierBinding = binding.NewBool()
 var mapsAltModifierBinding = binding.NewBool()
 var mapsKeyBinding = binding.NewString()
 
+var chartsShiftModifierBinding = binding.NewBool()
+var chartsCtrlModifierBinding = binding.NewBool()
+var chartsAltModifierBinding = binding.NewBool()
+var chartsKeyBinding = binding.NewString()
+
+var notepadShiftModifierBinding = binding.NewBool()
+var notepadCtrlModifierBinding = binding.NewBool()
+var notepadAltModifierBinding = binding.NewBool()
+var notepadKeyBinding = binding.NewString()
+
 func updateHotkeyStatus(shiftModifier bool, shiftBinding *binding.Bool,
 	ctrlModifier bool, ctrlBinding *binding.Bool,
 	altModifier bool, altBinding *binding.Bool,
@@ -57,6 +67,24 @@ func UpdateMapsHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier b
 		ctrlModifier, &mapsCtrlModifierBinding,
 		altModifier, &mapsAltModifierBinding,
 		key, &mapsKeyBinding,
+	)
+}
+
+func UpdateChartsHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
+	updateHotkeyStatus(
+		shiftModifier, &chartsShiftModifierBinding,
+		ctrlModifier, &chartsCtrlModifierBinding,
+		altModifier, &chartsAltModifierBinding,
+		key, &chartsKeyBinding,
+	)
+}
+
+func UpdateNotepadHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
+	updateHotkeyStatus(
+		shiftModifier, &notepadShiftModifierBinding,
+		ctrlModifier, &notepadCtrlModifierBinding,
+		altModifier, &notepadAltModifierBinding,
+		key, &notepadKeyBinding,
 	)
 }
 
@@ -168,10 +196,112 @@ func HotkeysPanel() *fyne.Container {
 	}))
 	mapsKeyBinding.Set(keyOptions[0])
 
+	// charts switch
+	chartsLabel := widget.NewLabel("Go to Charts")
+
+	chartsShiftCb := widget.NewCheckWithData("Shift", chartsShiftModifierBinding)
+	chartsShiftModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := chartsShiftModifierBinding.Get()
+		globals.ChartsHotkey.ShiftKey = value
+		dbmanager.StoreChartsHotkeyShiftModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	chartsCtrlCb := widget.NewCheckWithData("Ctrl", chartsCtrlModifierBinding)
+	chartsCtrlModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := chartsCtrlModifierBinding.Get()
+		globals.ChartsHotkey.CtrlKey = value
+		dbmanager.StoreChartsHotkeyCtrlModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	chartsAltCb := widget.NewCheckWithData("Alt", chartsAltModifierBinding)
+	chartsAltModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := chartsAltModifierBinding.Get()
+		globals.ChartsHotkey.AltKey = value
+		dbmanager.StoreChartsHotkeyAltModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	chartsHotkey := widget.NewSelect(keyOptions, func(s string) {
+		chartsKeyBinding.Set(strings.ToLower(s))
+	})
+	chartsKeyBinding.AddListener(binding.NewDataListener(func() {
+		key, _ := chartsKeyBinding.Get()
+
+		globals.ChartsHotkey.SetKey(dbmanager.SanitizeHotkey(key))
+		dbmanager.StoreChartsHotkeyKey()
+		hotkeys.NotifyHotkeysUpdated()
+
+		if strings.ToUpper(key) != strings.ToUpper(chartsHotkey.Selected) {
+			logger.LogDebugVerboseOverride("chartsKeyBinding changed: ["+key+"]; updating ui select element...", false)
+			if len(key) == 1 {
+				chartsHotkey.SetSelected(strings.ToUpper(key))
+			} else {
+				chartsHotkey.SetSelected(keyOptions[0])
+			}
+		} else {
+			logger.LogDebugVerboseOverride("chartsKeyBinding change listener: ui select element already up to date => ["+key+"]", false)
+		}
+	}))
+	chartsKeyBinding.Set(keyOptions[0])
+
+	// notepad switch
+	notepadLabel := widget.NewLabel("Go to Notepad")
+
+	notepadShiftCb := widget.NewCheckWithData("Shift", notepadShiftModifierBinding)
+	notepadShiftModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := notepadShiftModifierBinding.Get()
+		globals.NotepadHotkey.ShiftKey = value
+		dbmanager.StoreNotepadHotkeyShiftModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	notepadCtrlCb := widget.NewCheckWithData("Ctrl", notepadCtrlModifierBinding)
+	notepadCtrlModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := notepadCtrlModifierBinding.Get()
+		globals.NotepadHotkey.CtrlKey = value
+		dbmanager.StoreNotepadHotkeyCtrlModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	notepadAltCb := widget.NewCheckWithData("Alt", notepadAltModifierBinding)
+	notepadAltModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := notepadAltModifierBinding.Get()
+		globals.NotepadHotkey.AltKey = value
+		dbmanager.StoreNotepadHotkeyAltModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	notepadHotkey := widget.NewSelect(keyOptions, func(s string) {
+		notepadKeyBinding.Set(strings.ToLower(s))
+	})
+	notepadKeyBinding.AddListener(binding.NewDataListener(func() {
+		key, _ := notepadKeyBinding.Get()
+
+		globals.NotepadHotkey.SetKey(dbmanager.SanitizeHotkey(key))
+		dbmanager.StoreNotepadHotkeyKey()
+		hotkeys.NotifyHotkeysUpdated()
+
+		if strings.ToUpper(key) != strings.ToUpper(notepadHotkey.Selected) {
+			logger.LogDebugVerboseOverride("notepadKeyBinding changed: ["+key+"]; updating ui select element...", false)
+			if len(key) == 1 {
+				notepadHotkey.SetSelected(strings.ToUpper(key))
+			} else {
+				notepadHotkey.SetSelected(keyOptions[0])
+			}
+		} else {
+			logger.LogDebugVerboseOverride("notepadKeyBinding change listener: ui select element already up to date => ["+key+"]", false)
+		}
+	}))
+	notepadKeyBinding.Set(keyOptions[0])
+
 	grid := container.NewGridWithColumns(
 		3,
 		masterLabel, container.NewHBox(masterShiftCb, masterCtrlCb, masterAltCb), masterHotkey,
 		mapsLabel, container.NewHBox(mapsShiftCb, mapsCtrlCb, mapsAltCb), mapsHotkey,
+		chartsLabel, container.NewHBox(chartsShiftCb, chartsCtrlCb, chartsAltCb), chartsHotkey,
+		notepadLabel, container.NewHBox(notepadShiftCb, notepadCtrlCb, notepadAltCb), notepadHotkey,
 		//msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
 	)
 

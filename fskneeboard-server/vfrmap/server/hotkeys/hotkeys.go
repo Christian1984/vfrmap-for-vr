@@ -27,6 +27,8 @@ func ServeHotkeys(w http.ResponseWriter, r *http.Request) {
 	hotkeys := hotkeys.Hotkeys {
 		MasterHotkey: globals.MasterHotkey,
 		MapsHotkey: globals.MapsHotkey,
+		ChartsHotkey: globals.ChartsHotkey,
+		NotepadHotkey: globals.NotepadHotkey,
 	}
 
 	responseJson, jsonErr := json.Marshal(hotkeys)

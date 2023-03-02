@@ -124,6 +124,14 @@ func initFsk() {
 	dbmanager.LoadMapsHotkey()
 	callbacks.UpdateMapsHotkey(globals.MapsHotkey.ShiftKey, globals.MapsHotkey.CtrlKey, globals.MapsHotkey.AltKey, globals.MapsHotkey.Key)
 
+	// charts hotkey
+	dbmanager.LoadChartsHotkey()
+	callbacks.UpdateChartsHotkey(globals.ChartsHotkey.ShiftKey, globals.ChartsHotkey.CtrlKey, globals.ChartsHotkey.AltKey, globals.ChartsHotkey.Key)
+
+	// notepad hotkey
+	dbmanager.LoadNotepadHotkey()
+	callbacks.UpdateNotepadHotkey(globals.NotepadHotkey.ShiftKey, globals.NotepadHotkey.CtrlKey, globals.NotepadHotkey.AltKey, globals.NotepadHotkey.Key)
+
 	// check license
 	if globals.Pro {
 		logger.LogInfoVerboseOverride("FSKneeboard PRO started. Checking license information...", false)
@@ -200,6 +208,8 @@ func registerGuiCallbacks() {
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
 	callbacks.UpdateMapsHotkeyCallback = hotkeyspanel.UpdateMapsHotkeyStatus
+	callbacks.UpdateChartsHotkeyCallback = hotkeyspanel.UpdateChartsHotkeyStatus
+	callbacks.UpdateNotepadHotkeyCallback = hotkeyspanel.UpdateNotepadHotkeyStatus
 
 	callbacks.ShowGuiTourChangedCallback = gui.UpdateShowGuiTour
 }
