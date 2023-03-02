@@ -50,6 +50,8 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
             shiftkey: false,
         };
 
+        this.child = null;
+
         //this.posInterval = -1;
 
         /*
@@ -116,6 +118,17 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         return res;
     }
 
+    sendNavigationIntent(target) {
+        if (this.child) {
+            const msg = JSON.stringify({
+                type: "NavigationIntent",
+                data: { target: target },
+            });
+
+            this.child.postMessage(msg, "*");
+        }
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -126,6 +139,11 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                 const data = JSON.parse(e.data);
 
                 switch (data.type) {
+                    case "RegisterChild":
+                        console.log("register child", e.source);
+                        this.child = e.source;
+                        break;
+
                     case "KeyboardEvent":
                         // console.log("received KeyboardEvent");
                         if (data.data.type == "keydown") {
@@ -134,10 +152,9 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                             }
 
                             if (self.equalsHotkey(data.data, self.maps_hotkey)) {
-                                console.log("maps hotkey!");
+                                this.sendNavigationIntent("maps");
                             }
                         }
-
                         break;
 
                     case "HotkeyConfiguration":

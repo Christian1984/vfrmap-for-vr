@@ -428,6 +428,28 @@ function init() {
     });
 
     load_state();
+
+    const registerChildMsg = JSON.stringify({
+        type: "RegisterChild",
+    });
+    window.parent.window.postMessage(registerChildMsg, "*");
+
+    window.addEventListener("message", (e) => {
+        // console.log("index.js received msg:", e);
+        try {
+            const data = JSON.parse(e.data);
+
+            switch (data.type) {
+                case "NavigationIntent":
+                    if (data.data.target === "maps") {
+                        switch_to_map();
+                    }
+                    break;
+            }
+        } catch (e) {
+            /* ignore silently */
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
