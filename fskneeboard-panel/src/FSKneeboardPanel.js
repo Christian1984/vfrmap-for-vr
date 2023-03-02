@@ -133,7 +133,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
         } else if (equalsHotkey(event, this.maps_hotkey)) {
             this.sendNavigationIntent("maps");
         } else if (equalsHotkey(event, this.charts_hotkey)) {
-            this.sendNavigationIntent("chats");
+            this.sendNavigationIntent("charts");
         } else if (equalsHotkey(event, this.notepad_hotkey)) {
             this.sendNavigationIntent("notepad");
         }
@@ -164,7 +164,7 @@ class IngamePanelFSKneeboardPanel extends MyTemplateElement {
                         self.collapse_hotkey = data.data.masterHotkey ?? emptyHotkey();
                         self.maps_hotkey = data.data.mapsHotkey ?? emptyHotkey();
                         self.charts_hotkey = data.data.chartsHotkey ?? emptyHotkey();
-                        self.notepad_hotkey = data.data.notepadHotke ?? emptyHotkey();
+                        self.notepad_hotkey = data.data.notepadHotkey ?? emptyHotkey();
                         break;
 
                     case "SetBrighness":
