@@ -824,6 +824,7 @@ func StartFskServer() {
 		http.HandleFunc("/hotkeysWs", hotkeysWs.Serve)
 		http.HandleFunc("/notepadWs", notepadWs.Serve)
 		http.HandleFunc("/hotkey/", hotkeys.ServeMasterHotkey)
+		http.HandleFunc("/hotkeys/", hotkeys.ServeHotkeys)
 		http.HandleFunc("/mapserviceurls/", serveMapServiceUrls)
 		http.HandleFunc("/tour/", tour.ServeTourStatus)
 		http.HandleFunc("/log/", logger.LogController)

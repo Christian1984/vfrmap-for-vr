@@ -12,6 +12,11 @@ type Hotkey struct {
 	Key      string `json:"key"`
 }
 
+type Hotkeys struct {
+	MasterHotkey Hotkey `json:"masterHotkey"`
+	MapsHotkey Hotkey `json:"mapsHotkey"`
+}
+
 func sanitizedKeycode(key string) int {
 	keyCode := keycode(key)
 
