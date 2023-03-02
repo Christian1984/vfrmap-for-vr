@@ -5,7 +5,8 @@
     user-select: none;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -39,14 +40,14 @@ body {
         width: 100%;
 
         td {
-            padding:0.2em;
+            padding: 0.2em;
             margin: 0;
             /*text-align: center;*/
 
             label {
                 padding-right: 0.2em;
             }
-            
+
             input,
             button {
                 box-sizing: border-box;
@@ -74,6 +75,8 @@ body {
 #wind-indicator-gauge-wrapper,
 #wind-indicator-gauge,
 #wind-indicator-north-wrapper,
+#wind-indicator-heading-wrapper,
+#wind-indicator-heading,
 #wind-indicator-arrow-wrapper {
     display: flex;
     flex-direction: column;
@@ -92,6 +95,7 @@ body {
 }
 
 #wind-indicator-north-wrapper,
+#wind-indicator-heading-wrapper,
 #wind-indicator-arrow-wrapper {
     position: absolute;
     left: 0;
@@ -106,7 +110,8 @@ body {
     }
 }
 
-#wind-indicator-north-wrapper {
+#wind-indicator-north-wrapper,
+#wind-indicator-heading-wrapper {
     justify-content: flex-start;
 
     > span {
@@ -119,7 +124,7 @@ body {
     border: none !important;
     background-color: rgba($bg-primary, 0.9);
     background-clip: unset !important;
-    
+
     > a {
         border-radius: 5px !important;
         background-color: unset;
@@ -132,14 +137,14 @@ body {
     }
 }
 
-input[type=checkbox],
-input[type=radio] {
+input[type="checkbox"],
+input[type="radio"] {
     display: none;
 }
 
 .leaflet-control {
-    input[type=checkbox],
-    input[type=radio] {
+    input[type="checkbox"],
+    input[type="radio"] {
         + label,
         + span {
             position: relative;
@@ -152,7 +157,7 @@ input[type=radio] {
 
             &::before,
             &::after {
-                content: '';
+                content: "";
                 position: absolute;
                 transition: all 0.1s ease;
                 border: 1px solid $color-secondary;
@@ -200,7 +205,7 @@ input[type=radio] {
 }
 
 .map-overlay-panel {
-    top:1em;
+    top: 1em;
     right: 1em;
     bottom: 1em;
     left: 1em;
@@ -218,20 +223,20 @@ input[type=radio] {
         text-align: center;
         display: flex;
         flex-direction: column;
-        
+
         h3 {
             flex-grow: 0;
             margin: 0.5em;
             padding: 0;
         }
     }
-    
+
     .highlight,
     a {
         color: #ffbf00;
         text-decoration: none;
     }
-    
+
     .map-overlay-panel-close {
         text-align: right;
         top: 0.25em;
@@ -263,7 +268,7 @@ input[type=radio] {
 #search-map-panel-search {
     display: flex;
     margin: 1em;
-    
+
     input {
         flex-grow: 1;
     }
@@ -274,7 +279,7 @@ input[type=radio] {
     overflow: auto;
     padding: 0;
     margin: 1em;
-    
+
     li {
         padding: 1em;
         margin: 0.5em;
@@ -286,12 +291,12 @@ input[type=radio] {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        
+
         &.warning {
             border: red 1px solid;
             color: red;
         }
-        
+
         &:not(.warning) {
             &:hover {
                 background-color: darkslategray;

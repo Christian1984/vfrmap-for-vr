@@ -80,6 +80,7 @@ let bearingMode = BEARING_MODES.north_up;
 let wind_indicator;
 let wind_indicator_gauge;
 let wind_indicator_arrow;
+let wind_indicator_heading;
 let wind_indicator_direction;
 let wind_indicator_velocity;
 
@@ -206,6 +207,8 @@ function updateWindIndicator() {
     if (wind_indicator_gauge != null) {
         wind_indicator_gauge.style.transform = "rotate(" + map.getBearing() + "deg)";
     }
+
+    wind_indicator_heading.style.transform = "rotate(" + last_report.heading + "deg)";
 
     if (last_report.wind_direction == null || last_report.wind_velocity == null) {
         if (wind_indicator_arrow != null) {
@@ -1573,6 +1576,7 @@ function onDomContentLoaded(waypointsClass) {
     wind_indicator = document.getElementById("wind-indicator");
     wind_indicator_gauge = document.getElementById("wind-indicator-gauge");
     wind_indicator_arrow = document.getElementById("wind-indicator-arrow");
+    wind_indicator_heading = document.getElementById("wind-indicator-heading-wrapper");
     wind_indicator_direction = document.getElementById("wind-indicator-direction");
     wind_indicator_velocity = document.getElementById("wind-indicator-velocity");
 
