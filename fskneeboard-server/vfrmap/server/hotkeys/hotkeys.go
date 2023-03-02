@@ -21,25 +21,6 @@ func NotifyHotkeysUpdated() {
 	}
 }
 
-func ServeMasterHotkey(w http.ResponseWriter, r *http.Request) {
-	logger.LogDebugVerboseOverride("ServeMasterHotkey called!", false)
-
-	responseJson, jsonErr := json.Marshal(globals.MasterHotkey)
-
-	if jsonErr != nil {
-		logger.LogError(jsonErr.Error())
-		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-	w.Header().Set("Pragma", "no-cache")
-	w.Header().Set("Expires", "0")
-	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(responseJson))
-}
-
 func ServeHotkeys(w http.ResponseWriter, r *http.Request) {
 	logger.LogDebugVerboseOverride("ServeHotkeys called!", false)
 
