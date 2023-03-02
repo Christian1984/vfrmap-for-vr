@@ -443,6 +443,10 @@ function init() {
                 case "NavigationIntent":
                     if (data.data.target === "maps") {
                         switch_to_map();
+                    } else if (data.data.target === "charts") {
+                        switch_to_charts();
+                    } else if (data.data.target === "notepad") {
+                        switch_to_notepad();
                     }
                     break;
             }
