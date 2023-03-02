@@ -208,7 +208,12 @@ function updateWindIndicator() {
         wind_indicator_gauge.style.transform = "rotate(" + map.getBearing() + "deg)";
     }
 
-    wind_indicator_heading.style.transform = "rotate(" + last_report.heading + "deg)";
+    if (last_report.heading == null) {
+        wind_indicator_heading.classList.add("hidden");
+    } else {
+        wind_indicator_heading.classList.remove("hidden");
+        wind_indicator_heading.style.transform = "rotate(" + last_report.heading + "deg)";
+    }
 
     if (last_report.wind_direction == null || last_report.wind_velocity == null) {
         if (wind_indicator_arrow != null) {
