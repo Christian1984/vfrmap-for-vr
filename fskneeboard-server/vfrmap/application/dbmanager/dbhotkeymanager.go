@@ -15,6 +15,7 @@ func SanitizeHotkey(key string) string {
 	return strings.ToLower(key)
 }
 
+// master hotkey
 func StoreMasterHotkeyShiftModifier() {
 	DbWriteSettings("hotkeyMasterShiftModifier", strconv.FormatBool(globals.MasterHotkey.ShiftKey))
 }
@@ -38,4 +39,30 @@ func LoadMasterHotkey() {
 	key := SanitizeHotkey(DbReadSettings("hotkeyMasterKey"))
 
 	globals.MasterHotkey = hotkeys.New(shiftModifier, ctrlModifier, altModifier, key)
+}
+
+// maps hotkey
+func StoreMapsHotkeyShiftModifier() {
+	DbWriteSettings("hotkeyMapsShiftModifier", strconv.FormatBool(globals.MapsHotkey.ShiftKey))
+}
+
+func StoreMapsHotkeyCtrlModifier() {
+	DbWriteSettings("hotkeyMapsCtrlModifier", strconv.FormatBool(globals.MapsHotkey.CtrlKey))
+}
+
+func StoreMapsHotkeyAltModifier() {
+	DbWriteSettings("hotkeyMapsAltModifier", strconv.FormatBool(globals.MapsHotkey.AltKey))
+}
+
+func StoreMapsHotkeyKey() {
+	DbWriteSettings("hotkeyMapsKey", SanitizeHotkey(globals.MapsHotkey.Key))
+}
+
+func LoadMapsHotkey() {
+	shiftModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMapsShiftModifier"))
+	ctrlModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMapsCtrlModifier"))
+	altModifier, _ := strconv.ParseBool(DbReadSettings("hotkeyMapsAltModifier"))
+	key := SanitizeHotkey(DbReadSettings("hotkeyMapsKey"))
+
+	globals.MapsHotkey = hotkeys.New(shiftModifier, ctrlModifier, altModifier, key)
 }

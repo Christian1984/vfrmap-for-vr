@@ -120,6 +120,10 @@ func initFsk() {
 	dbmanager.LoadMasterHotkey()
 	callbacks.UpdateMasterHotkey(globals.MasterHotkey.ShiftKey, globals.MasterHotkey.CtrlKey, globals.MasterHotkey.AltKey, globals.MasterHotkey.Key)
 
+	// maps hotkey
+	dbmanager.LoadMapsHotkey()
+	callbacks.UpdateMapsHotkey(globals.MapsHotkey.ShiftKey, globals.MapsHotkey.CtrlKey, globals.MapsHotkey.AltKey, globals.MapsHotkey.Key)
+
 	// check license
 	if globals.Pro {
 		logger.LogInfoVerboseOverride("FSKneeboard PRO started. Checking license information...", false)
@@ -195,6 +199,7 @@ func registerGuiCallbacks() {
 	callbacks.UpdateGoogleMapsApiCallback = settingspanel.UpdateGoogleMapsApiKey
 
 	callbacks.UpdateMasterHotkeyCallback = hotkeyspanel.UpdateMasterHotkeyStatus
+	callbacks.UpdateMapsHotkeyCallback = hotkeyspanel.UpdateMapsHotkeyStatus
 
 	callbacks.ShowGuiTourChangedCallback = gui.UpdateShowGuiTour
 }

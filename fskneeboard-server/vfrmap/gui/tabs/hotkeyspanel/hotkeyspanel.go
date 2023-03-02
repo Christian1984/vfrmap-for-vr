@@ -22,6 +22,11 @@ var masterCtrlModifierBinding = binding.NewBool()
 var masterAltModifierBinding = binding.NewBool()
 var masterKeyBinding = binding.NewString()
 
+var mapsShiftModifierBinding = binding.NewBool()
+var mapsCtrlModifierBinding = binding.NewBool()
+var mapsAltModifierBinding = binding.NewBool()
+var mapsKeyBinding = binding.NewString()
+
 func updateHotkeyStatus(shiftModifier bool, shiftBinding *binding.Bool,
 	ctrlModifier bool, ctrlBinding *binding.Bool,
 	altModifier bool, altBinding *binding.Bool,
@@ -43,6 +48,15 @@ func UpdateMasterHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier
 		ctrlModifier, &masterCtrlModifierBinding,
 		altModifier, &masterAltModifierBinding,
 		key, &masterKeyBinding,
+	)
+}
+
+func UpdateMapsHotkeyStatus(shiftModifier bool, ctrlModifier bool, altModifier bool, key string) {
+	updateHotkeyStatus(
+		shiftModifier, &mapsShiftModifierBinding,
+		ctrlModifier, &mapsCtrlModifierBinding,
+		altModifier, &mapsAltModifierBinding,
+		key, &mapsKeyBinding,
 	)
 }
 
@@ -104,20 +118,67 @@ func HotkeysPanel() *fyne.Container {
 	}))
 	masterKeyBinding.Set(keyOptions[0])
 
+	// maps switch
+	mapsLabel := widget.NewLabel("Go to Maps")
+
+	mapsShiftCb := widget.NewCheckWithData("Shift", mapsShiftModifierBinding)
+	mapsShiftModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := mapsShiftModifierBinding.Get()
+		globals.MapsHotkey.ShiftKey = value
+		dbmanager.StoreMapsHotkeyShiftModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	mapsCtrlCb := widget.NewCheckWithData("Ctrl", mapsCtrlModifierBinding)
+	mapsCtrlModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := mapsCtrlModifierBinding.Get()
+		globals.MapsHotkey.CtrlKey = value
+		dbmanager.StoreMapsHotkeyCtrlModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	mapsAltCb := widget.NewCheckWithData("Alt", mapsAltModifierBinding)
+	mapsAltModifierBinding.AddListener(binding.NewDataListener(func() {
+		value, _ := mapsAltModifierBinding.Get()
+		globals.MapsHotkey.AltKey = value
+		dbmanager.StoreMapsHotkeyAltModifier()
+		hotkeys.NotifyHotkeysUpdated()
+	}))
+
+	mapsHotkey := widget.NewSelect(keyOptions, func(s string) {
+		mapsKeyBinding.Set(strings.ToLower(s))
+	})
+	mapsKeyBinding.AddListener(binding.NewDataListener(func() {
+		key, _ := mapsKeyBinding.Get()
+
+		globals.MapsHotkey.SetKey(dbmanager.SanitizeHotkey(key))
+		dbmanager.StoreMapsHotkeyKey()
+		hotkeys.NotifyHotkeysUpdated()
+
+		if strings.ToUpper(key) != strings.ToUpper(mapsHotkey.Selected) {
+			logger.LogDebugVerboseOverride("mapsKeyBinding changed: ["+key+"]; updating ui select element...", false)
+			if len(key) == 1 {
+				mapsHotkey.SetSelected(strings.ToUpper(key))
+			} else {
+				mapsHotkey.SetSelected(keyOptions[0])
+			}
+		} else {
+			logger.LogDebugVerboseOverride("mapsKeyBinding change listener: ui select element already up to date => ["+key+"]", false)
+		}
+	}))
+	mapsKeyBinding.Set(keyOptions[0])
+
 	grid := container.NewGridWithColumns(
 		3,
 		masterLabel, container.NewHBox(masterShiftCb, masterCtrlCb, masterAltCb), masterHotkey,
+		mapsLabel, container.NewHBox(mapsShiftCb, mapsCtrlCb, mapsAltCb), mapsHotkey,
 		//msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
 	)
-
-	labelSpoiler := widget.NewLabel("(more hotkeys coming soon...)")
 
 	vBox := container.NewVBox(
 		labelNotes,
 		widget.NewLabel(""),
 		grid,
-		widget.NewLabel(""),
-		labelSpoiler,
 	)
 	centerContainer := container.NewCenter(vBox)
 
