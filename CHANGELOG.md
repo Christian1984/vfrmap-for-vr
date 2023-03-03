@@ -4,11 +4,10 @@
 
 ## MAJOR:
 
--   TODO
-
-## MINOR:
-
--   TODO
+-   added Bing Maps (requires a custom, free API key to work, \*)
+-   added configurable hotkeys for navigating to the maps, charts and notepad pages
+-   added a heading indicator to the wind gauge
+-   fixed a bug that broke the map module on external devices (e.g. tablet computers)
 
 ---
 
@@ -29,8 +28,8 @@
 
 ## MAJOR:
 
--   added a trail line to the map module, can be toggled via GUI
--   added a distance and angle measuring tool
+-   added a trail line to the map module, can be toggled via GUI (\*)
+-   added a distance and angle measuring tool (\*)
 -   added custom API key section to the settings dialog to add custom API keys (replaces the legacy CLI argument)
 -   added the option to disable the local maptile cache for services with custom API keys
 
@@ -45,10 +44,10 @@
 ## MAJOR:
 
 -   added a "product tour" to introduce new users to important core features of FSKneeboard
--   added favorites to the charts viewer so that users can open up to 5 charts and quickly navigate between them
--   added seamless charts rotation to charts viewer
--   added a PDF-to-PNG importer
--   improved charts viewer with zoom and rotation settings on a per-chart-basis
+-   added favorites to the charts viewer so that users can open up to 5 charts and quickly navigate between them (\*)
+-   added seamless charts rotation to charts viewer (\*)
+-   added a PDF-to-PNG importer (\*)
+-   improved charts viewer with zoom and rotation settings on a per-chart-basis (\*)
 -   improved map tile cache performance by adding an in-memory caching mechanism and serving each cache on a separate host
 -   fixed openAIP navigation map layer, enabled individual layers for different nav data (aiports, airspaces, navaids etc.)
 
@@ -58,7 +57,7 @@
 -   fixed the "FastLaunch" command line argument for the Windows Store MSFS autostarter
 -   improved the layout of the charts viewer user interface
 -   improved logging, added system stats to log output
--   improved installer so that it will no longer ask for a license if it is already in the intended install directory
+-   improved installer so that it will no longer ask for a license if it is already in the intended install directory (\*)
 -   improved repair FSKneeboard script by also clearing the maptile cache
 
 ---

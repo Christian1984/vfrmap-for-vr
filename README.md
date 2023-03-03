@@ -192,6 +192,13 @@ Yes</td>
 Yes</td>
 </tr>
 <tr>
+<td>Additional Map Layers with custom API keys (e.g. Bing Maps)</td>
+<td>❌
+No</td>
+<td>✅
+Yes</td>
+</tr>
+<tr>
 <td>Waypoints</td>
 <td>❌
 No</td>
@@ -732,13 +739,20 @@ Enable the Bing Maps layers in the map module by providing your own Bing Maps AP
 
 The hotkeys panel allows you to setup hotkey(s) to use with FSKneeboard.
 
-![FSKneeboard - Hotkeys Panel](screenshots/fskneeboard-gui-hotkeyspanel-170.png)
+> For the time being, hotkeys are still considered to be _experimental_ as described [here](#hotkey-experimental).
+
+![FSKneeboard - Hotkeys Panel](screenshots/fskneeboard-gui-hotkeyspanel-1-11-0.png)
 
 _FSKneeboard - Hotkeys Panel_
 
-For now, there is only one hotkey available, which enables you to toggle the visibility the FSKneeboard ingame panel inside Flight Simulator. This feature is somewhat experimental, though, as described [here](#hotkey-experimental).
+The follwing hotkeys are available,
 
-You can customize your hotkey by selecting any letter from the dropdown menu and also toggle modifiers (by clicking the checkboxes next to them), so that your custom keyboard shortcut does not interfere with any other hotkeys that may have been configured elsewhere in the Simulator.
+1.) **Master Hotkey**: The Master Hotkey enables you to toggle the visibility the FSKneeboard ingame panel inside Flight Simulator.
+2.) **Maps Hotkey**: Use the Maps Hotkey to navigate to the maps page inside the FSKneeboard ingame panel.
+3.) **Charts Hotkey**: Use the Charts Hotkey to navigate to the charts page inside the FSKneeboard ingame panel.
+4.) **Notepad Hotkey**: Use the Notepad Hotkey to navigate to the notepad page inside the FSKneeboard ingame panel.
+
+You can customize your hotkeys by selecting any letter from the dropdown menu and also toggle modifiers (by clicking the checkboxes next to them), so that your custom keyboard shortcut does not interfere with any other hotkeys that may have been configured elsewhere in the Simulator.
 
 Select `[Off]` to completely deactivate the hotkey in question.
 
