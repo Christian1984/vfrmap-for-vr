@@ -3,6 +3,7 @@
 import "../common/mainmenu.scss";
 import "../common/submenu.scss";
 import "../common/dialogs.scss";
+import "../common/fonts.scss";
 import "./maps.scss";
 
 import Logger from "../common/logger.js";

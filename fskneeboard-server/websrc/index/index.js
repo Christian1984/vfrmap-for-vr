@@ -1,4 +1,5 @@
 import "./index.scss";
+import "../common/fonts.scss";
 import "../common/mainmenu.scss";
 
 import Logger from "../common/logger.js";

@@ -1,4 +1,5 @@
 import "../../common/common.scss";
+import "../../common/fonts.scss";
 import "./notepad.scss";
 
 import Logger from "./../../common/logger";
@@ -15,6 +16,6 @@ window.addEventListener("message", (m) => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     Logger.logDebug("notepad.js (FREE) => DOMContentLoaded fired!");
 });

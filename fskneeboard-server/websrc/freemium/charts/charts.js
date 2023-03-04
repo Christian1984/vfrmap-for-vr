@@ -1,5 +1,5 @@
-
 import "../../common/common.scss";
+import "../../common/fonts.scss";
 import "./charts.scss";
 
 import Logger from "./../../common/logger";
@@ -16,6 +16,6 @@ window.addEventListener("message", (m) => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     Logger.logDebug("charts.js (FREE) => DOMContentLoaded fired!");
 });
