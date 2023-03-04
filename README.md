@@ -91,6 +91,8 @@ If you enjoy this project, please consider buying me a coffee and/or donating to
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
 
+If you want to go above and beyond, you're invited to kindly check out my [Patreon](https://patreon.com/chrisvomrhein), which is another highly welcome way to show your support of and love for the project. You can find it here: [https://patreon.com/chrisvomrhein](https://patreon.com/chrisvomrhein)
+
 # Go PRO
 
 Alternatively, you may decide to "go pro" at a Pay-What-You-Want-Price! It's really your call! You'll unlock all features of FSKneeboard plus you support the mod development. Also, you'll make a 1-year-old and a 5-year-old very, very happy, as I can buy them more ice cream :-)
@@ -699,7 +701,7 @@ Currently, openAIP and Bing Maps are supported with custom API keys.
 
 Replace the "global" API key shared by all FSKneeboard users with your own API key. You can obtain your own API key by [creating a new account with openAIP](https://www.openaip.net/new-account). Then [go here](https://www.openaip.net/users/clients#tab-clients) and request your API key by clicking the "+ REQUEST NEW API KEY HERE".
 
-##### openAIP.net
+##### Bing Maps
 
 Enable the Bing Maps layers in the map module by providing your own Bing Maps API key. At the time of writing this, a "basic" level API key is available for free when you sign up at https://www.bingmapsportal.com/.
 
@@ -993,6 +995,8 @@ _Virustotal Report of Version 1.2.0_
 If you enjoy this project, please consider buying me a coffee and/or donating to the guys I mentioned in the Attribution section above. It allows us to keep developing addons and mods like these ones and making them available for free. Any amount is welcome! Thank you.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=ED8RR2JTV9BGU)
+
+If you want to go above and beyond, you're invited to kindly check out my [Patreon](https://patreon.com/chrisvomrhein), which is another highly welcome way to show your support of and love for the project. You can find it here: [https://patreon.com/chrisvomrhein](https://patreon.com/chrisvomrhein)
 
 ---
 
