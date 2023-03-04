@@ -9,6 +9,10 @@
 -   added a heading indicator to the wind gauge
 -   fixed a bug that broke the map module on external devices (e.g. tablet computers)
 
+## MINOR:
+
+-   changed fonts to being served locally instead of relying on public CDNs
+
 ---
 
 # v1.10.1
