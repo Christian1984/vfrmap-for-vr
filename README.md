@@ -443,7 +443,7 @@ _How to open the ingame panel (old icon)_
 
 When you open the FSKneeboard ingame panel for the very first time, a guided tour will introduce you to all the features FSKneeboard adds to your flight simulator experience.
 
-![FSKneeboard - Take the Tour](screenshots/fskneeboard-guided-tour.png)
+![FSKneeboard - Take the Tour](screenshots/fskneeboard-guided-tour-1.png)
 
 _FSKneeboard Guided Tour_
 
