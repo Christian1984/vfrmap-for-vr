@@ -1,6 +1,8 @@
 package settingspanel
 
 import (
+	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"vfrmap-for-vr/_vendor/premium/autosave"
@@ -28,6 +30,9 @@ var msfsAutostartBinding = binding.NewBool()
 
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
 var autosaveBinding = binding.NewString()
+
+var interfaceScaleBinding = binding.NewFloat()
+var interfaceScaleStringBinding = binding.NewString()
 
 var oaipApiKeyBinding = binding.NewString()
 var oaipBypassCacheBinding = binding.NewBool()
@@ -192,50 +197,7 @@ func SettingsPanel() *fyne.Container {
 
 	autosaveBinding.Set("Off")
 
-	// set log level
-	loglevelLabel := widget.NewLabel("Log Level")
-	loglevelWarningLabel := widget.NewLabel("WARNING: The Log Levels \"Debug\" and \"Silly\" may result in very large log files!")
-	loglevelWarningLabel.Hidden = true
-	loglevelWarningLabel.TextStyle.Italic = true
-	loglevelWarningLabel.Alignment = fyne.TextAlignCenter
-
-	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
-		loglevelWarningLabel.Hidden = strings.ToLower(selected) != "debug" && strings.ToLower(selected) != "silly"
-		loglevelBinding.Set(selected)
-	})
-	logsOpenFolderBtn := widget.NewButton("Open Log Folder", func() {
-		logger.OpenLogFolder()
-	})
-
-	loglevelBinding.AddListener(binding.NewDataListener(func() {
-		loglevelString, _ := loglevelBinding.Get()
-
-		matchIndex := 0
-
-		for index, value := range loglevelOptions {
-			if strings.ToLower(loglevelString) == strings.ToLower(value) {
-				matchIndex = index
-				break
-			}
-		}
-
-		if strings.ToLower(loglevelString) != strings.ToLower(loglevelSelect.Selected) {
-			logger.LogDebug("loglevelBinding changed: [" + loglevelString + "]; updating ui select element...")
-			loglevelSelect.SetSelected(loglevelOptions[matchIndex])
-		} else {
-			logger.LogDebug("loglevelBinding change listener: ui select element already up to date => [" + loglevelString + "]")
-		}
-
-		globals.LogLevel = strings.ToLower(loglevelString)
-
-		dbmanager.StoreLogLevel()
-
-		logger.SetLevel(loglevelString)
-		logger.TryCreateLogFile()
-	}))
-
-	loglevelBinding.Set(globals.LogLevel)
-
+	// reset ingame tour
 	restartTourLabel := widget.NewLabel("Ingame Tutorial Tour")
 	restartTourBtn := widget.NewButton("Restart Tour", func() {
 		logger.LogDebug("Resetting ingame panel tour...")
@@ -252,14 +214,52 @@ func SettingsPanel() *fyne.Container {
 		callbacks.ShowGuiTourChanged(true)
 	})
 
-	// grid and centerContainer
+	// set interface scale
+	interfaceScaleLabel := widget.NewLabel("Interface Scale [%]")
+	interfaceScaleSlider := widget.NewSliderWithData(0.5, 4.0, interfaceScaleBinding)
+	interfaceScaleSlider.Step = 0.1
+	interfaceScaleSliderLabel := widget.NewLabelWithData(interfaceScaleStringBinding)
+
+	interfaceScale2DBtn := widget.NewButton("Optimize for 2D", func() {
+		// interfaceScale.OpeninterfaceScaleFolder()
+	})
+	interfaceScaleVRBtn := widget.NewButton("Optimize for VR", func() {
+		// interfaceScale.OpeninterfaceScaleFolder()
+	})
+
+	interfaceScaleBinding.AddListener(binding.NewDataListener(func() {
+		interfaceScale, bindingErr := interfaceScaleBinding.Get()
+
+		if bindingErr != nil {
+			logger.LogError(bindingErr.Error())
+			return
+		}
+
+		percent := fmt.Sprintf("%d%%", int64(math.Floor(interfaceScale * 100)))
+
+		interfaceScaleStringBinding.Set(percent)
+
+		// hasChanged := globals.interfaceScaleInterval != interfaceScaleInterval
+
+		// if hasChanged {
+		// 	globals.interfaceScaleInterval = interfaceScaleInterval
+		// 	dbmanager.StoreinterfaceScaleInterval()
+		// }
+
+		// server.UpdateinterfaceScaleInterval(hasChanged)
+	}))
+
+	interfaceScaleBinding.Set(1)
+
+	// general settings grid
 	generalGrid := container.NewGridWithColumns(
 		3,
 		msfsVersionLabel, msfsVersionSelect, widget.NewLabel(""),
 		msfsAutostartLabel, msfsAutostartCb, widget.NewLabel(""),
 		restartTourLabel, restartTourBtn, widget.NewLabel(""),
 		autosaveLabel, autosaveSelect, autosaveOpenFolderBtn,
-		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
+		interfaceScaleLabel, container.NewBorder(nil, nil, nil, interfaceScaleSliderLabel, interfaceScaleSlider), container.NewGridWithColumns(2, interfaceScale2DBtn, interfaceScaleVRBtn),
+
 	)
 
 	//API KEYS
@@ -349,6 +349,58 @@ func SettingsPanel() *fyne.Container {
 		// googleMapsApiKeyLabel, googleMapsApiKeyInput, widget.NewLabel(""),
 	)
 
+	// LOG LEVEL
+	// set log level
+	loglevelLabel := widget.NewLabel("Log Level")
+	loglevelWarningLabel := widget.NewLabel("WARNING: The Log Levels \"Debug\" and \"Silly\" may result in very large log files!")
+	loglevelWarningLabel.Hidden = true
+	loglevelWarningLabel.TextStyle.Italic = true
+	// loglevelWarningLabel.Alignment = fyne.TextAlignCenter
+
+	loglevelSelect := widget.NewSelect(loglevelOptions, func(selected string) {
+		loglevelWarningLabel.Hidden = strings.ToLower(selected) != "debug" && strings.ToLower(selected) != "silly"
+		loglevelBinding.Set(selected)
+	})
+	logsOpenFolderBtn := widget.NewButton("Open Log Folder", func() {
+		logger.OpenLogFolder()
+	})
+
+	loglevelBinding.AddListener(binding.NewDataListener(func() {
+		loglevelString, _ := loglevelBinding.Get()
+
+		matchIndex := 0
+
+		for index, value := range loglevelOptions {
+			if strings.ToLower(loglevelString) == strings.ToLower(value) {
+				matchIndex = index
+				break
+			}
+		}
+
+		if strings.ToLower(loglevelString) != strings.ToLower(loglevelSelect.Selected) {
+			logger.LogDebug("loglevelBinding changed: [" + loglevelString + "]; updating ui select element...")
+			loglevelSelect.SetSelected(loglevelOptions[matchIndex])
+		} else {
+			logger.LogDebug("loglevelBinding change listener: ui select element already up to date => [" + loglevelString + "]")
+		}
+
+		globals.LogLevel = strings.ToLower(loglevelString)
+
+		dbmanager.StoreLogLevel()
+
+		logger.SetLevel(loglevelString)
+		logger.TryCreateLogFile()
+	}))
+
+	loglevelBinding.Set(globals.LogLevel)
+
+	// general settings grid
+	loggingGrid := container.NewGridWithColumns(
+		3,
+		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
+	)
+
+
 	generalLabel := widget.NewLabel("General")
 	generalLabel.TextStyle.Bold = true
 
@@ -358,17 +410,26 @@ func SettingsPanel() *fyne.Container {
 	apiKeysInfoLabel := widget.NewLabel("Obtain and add your own, private API keys below for better map performance.\nDepending on your internet connection, bypassing the local cache may also impact map performance.")
 	apiKeysInfoLabel.TextStyle.Italic = true
 
+	loggingLabel := widget.NewLabel("Logging")
+	loggingLabel.TextStyle.Bold = true
+
 	vBox := container.NewVBox(
 		widget.NewLabel(""),
 		generalLabel,
 		widget.NewSeparator(),
 		generalGrid,
-		loglevelWarningLabel,
+
 		widget.NewLabel(""),
 		apiKeysLabel,
 		widget.NewSeparator(),
 		apiKeysInfoLabel,
 		apiKeysGrid,
+
+		widget.NewLabel(""),
+		loggingLabel,
+		widget.NewSeparator(),
+		loglevelWarningLabel,
+		loggingGrid,
 	)
 	scroll := container.NewVScroll(vBox)
 	maxContainer := container.NewMax(scroll)
