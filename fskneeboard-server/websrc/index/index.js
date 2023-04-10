@@ -34,6 +34,7 @@ const stretch = document.getElementById("stretch");
 const unstretch = document.getElementById("unstretch");
 const stretch_reset = document.getElementById("stretch_reset");
 
+let root_scale = 1;
 let current_zoom = { x: 1, y: 1 };
 let current_brightness = 100;
 
@@ -220,13 +221,25 @@ function reset_brightness() {
     save_brightness();
 }
 
+function set_root_scale(value) {
+    root_scale = value;
+
+    const root = document.documentElement;
+    root.style.setProperty("--root-scale", value);
+
+    apply_zoom();
+}
+
 function apply_zoom() {
     if (!content_div) return;
 
-    const offX = 100 * 0.5 * (1 - 1 / current_zoom.x);
-    const offY = 100 * 0.5 * (1 - 1 / current_zoom.y);
+    const zoom_x = current_zoom.x * root_scale;
+    const zoom_y = current_zoom.y * root_scale;
 
-    content_div.style.transform = `scale(${current_zoom.x}, ${current_zoom.y})`;
+    const offX = 100 * 0.5 * (1 - 1 / zoom_x);
+    const offY = 100 * 0.5 * (1 - 1 / zoom_y);
+
+    content_div.style.transform = `scale(${zoom_x}, ${zoom_y})`;
     content_div.style.left = `${offX}%`;
     content_div.style.right = `${offX}%`;
     content_div.style.top = `${offY}%`;
@@ -305,12 +318,8 @@ function request_hotkeys() {
 }
 
 function init() {
-    const root = document.documentElement;
-    var scale = 0.5;
-
     setInterval(() => {
-        scale = (scale + 0.1) % 2;
-        root.style.setProperty("--root-scale", scale);
+        set_root_scale(0.1 + ((root_scale + 0.1) % 2));
     }, 500);
 
     if (iframe_map) {
