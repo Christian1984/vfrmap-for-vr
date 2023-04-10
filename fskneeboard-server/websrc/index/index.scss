@@ -1,6 +1,10 @@
 @import "../common/consts";
 @import "../common/logging";
 
+:root {
+    --root-scale: 2;
+}
+
 html,
 body {
     padding: 0;
@@ -31,7 +35,7 @@ body {
             }
 
             > span {
-                height: 1.25rem;
+                height: $main-nav-font-size;
 
                 &.active {
                     border-right-color: $color-highlight;
@@ -39,8 +43,9 @@ body {
             }
 
             span {
+                font-size: $main-nav-font-size;
+
                 > svg {
-                    font-size: $main-nav-font-size;
                     width: $main-nav-font-size;
                     min-width: $main-nav-font-size;
                 }

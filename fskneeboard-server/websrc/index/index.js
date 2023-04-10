@@ -305,6 +305,14 @@ function request_hotkeys() {
 }
 
 function init() {
+    const root = document.documentElement;
+    var scale = 0.5;
+
+    setInterval(() => {
+        scale = (scale + 0.1) % 2;
+        root.style.setProperty("--root-scale", scale);
+    }, 500);
+
     if (iframe_map) {
         iframe_map.src = "/freemium/maps.html";
     }

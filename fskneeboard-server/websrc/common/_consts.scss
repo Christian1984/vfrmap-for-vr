@@ -1,7 +1,7 @@
-$main-nav-font-size: 1.25rem;
+$main-nav-font-size: calc(1.25rem * var(--root-scale));
 
-$width-collapsed: 3.75rem;
-$width-expanded: 12rem;
+$width-collapsed: calc(3.75rem * var(--root-scale));
+$width-expanded: calc(12rem * var(--root-scale));
 
 $menu-collapse-height: 46rem;
 

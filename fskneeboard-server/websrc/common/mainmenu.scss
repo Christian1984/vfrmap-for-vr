@@ -33,10 +33,10 @@ nav {
             > span {
                 display: flex;
                 align-items: center;
-                padding: 1rem;
+                padding: calc(1rem * var(--root-scale));
                 text-decoration: none;
                 color: $color-primary;
-                border: 0.25rem solid transparent;
+                border: calc(0.25rem * var(--root-scale)) solid transparent;
                 transition: all $transition-speed-fast ease;
 
                 &.active {
@@ -47,20 +47,19 @@ nav {
                 }
 
                 > span {
-                    margin-left: 1rem;
+                    margin-left: calc(1rem * var(--root-scale));
                     display: none;
                     transition: all 200ms ease;
 
                     > input {
                         + label {
-                            .checked
-                            {
+                            .checked {
                                 display: none;
                             }
                         }
 
                         &:checked {
-                            +label {
+                            + label {
                                 .checked {
                                     display: unset;
                                 }
