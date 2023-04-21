@@ -56,14 +56,18 @@ var turnLeft = true
 const trailDataHdCapacity = 3000
 const trailDataSdResolution = 20
 
+type Trail struct {
+	TrailDataHd [][]float64 `json:"TrailDataHd"`
+	TrailDataSd [][]float64 `json:"TrailDataSd"`
+}
+
 var trail = Trail{
 	TrailDataHd: [][]float64{},
 	TrailDataSd: [][]float64{},
 }
 
-type Trail struct {
-	TrailDataHd [][]float64 `json:"TrailDataHd"`
-	TrailDataSd [][]float64 `json:"TrailDataSd"`
+type InterfaceScale struct {
+	InterfaceScale float64 `json:"InterfaceScale"`
 }
 
 type Report struct {
@@ -296,6 +300,28 @@ func trailDataController(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(""))
 	}
+}
+
+func interfaceScaleController(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method "+r.Method+" not allowed!", http.StatusMethodNotAllowed)
+		return
+	}
+
+	responseJson, jsonErr := json.Marshal(InterfaceScale{InterfaceScale: globals.InterfaceScale})
+
+	if jsonErr != nil {
+		logger.LogError(jsonErr.Error())
+		http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(responseJson))
 }
 
 var prevLat float64
@@ -831,6 +857,7 @@ func StartFskServer() {
 		http.HandleFunc("/data/", dbmanager.DataController)
 		http.HandleFunc("/dataSet/", dbmanager.DataSetController)
 		http.HandleFunc("/traildata/", trailDataController)
+		http.HandleFunc("/interfacescale/", interfaceScaleController)
 		http.HandleFunc("/freemium/", freemium)
 		http.HandleFunc("/premium/", premium)
 		http.HandleFunc("/premium/chartsIndex", chartsIndex)

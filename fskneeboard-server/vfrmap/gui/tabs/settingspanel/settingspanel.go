@@ -24,7 +24,7 @@ const msfsVersionOptionWinstore = "Windows Store Version"
 const msfsVersionOptionSteam = "Steam Version"
 
 const InterfaceScaleMin float64 = 0.5
-const InterfaceScaleMax float64 = 5
+const InterfaceScaleMax float64 = 10
 const DefaultInterfaceScale2D float64 = 1
 const DefaultInterfaceScaleVR float64 = 3
 

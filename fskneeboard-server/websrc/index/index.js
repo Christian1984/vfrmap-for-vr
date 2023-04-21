@@ -317,10 +317,36 @@ function request_hotkeys() {
     xhr.send();
 }
 
+function request_interface_scale() {
+    Logger.logDebug("index.js => requesting interface scale...");
+
+    var xhr = new XMLHttpRequest();
+    var url = "/interfacescale";
+    xhr.open("GET", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                Logger.logDebug("index.js => received interface scale: " + xhr.responseText);
+
+                var json = JSON.parse(xhr.responseText);
+
+                if (json) {
+                    const scale = parseFloat(json.InterfaceScale);
+                    if (!isNaN(scale)) {
+                        set_root_scale(scale);
+                    }
+                }
+            }
+        }
+    };
+    xhr.send();
+}
+
 function init() {
-    setInterval(() => {
-        set_root_scale(0.1 + ((root_scale + 0.1) % 2));
-    }, 500);
+    // setInterval(() => {
+    //     set_root_scale(0.1 + ((root_scale + 0.1) % 2));
+    // }, 500);
 
     if (iframe_map) {
         iframe_map.src = "/freemium/maps.html";
@@ -414,6 +440,7 @@ function init() {
     }
 
     request_hotkeys();
+    request_interface_scale();
 
     // subscribe to websocket
     const ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/hotkeysWs");
