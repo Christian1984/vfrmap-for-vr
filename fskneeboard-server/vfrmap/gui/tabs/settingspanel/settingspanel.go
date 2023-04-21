@@ -23,6 +23,11 @@ import (
 const msfsVersionOptionWinstore = "Windows Store Version"
 const msfsVersionOptionSteam = "Steam Version"
 
+const InterfaceScaleMin float64 = 0.5
+const InterfaceScaleMax float64 = 5
+const DefaultInterfaceScale2D float64 = 1
+const DefaultInterfaceScaleVR float64 = 3
+
 var msfsVersionOptions = []string{msfsVersionOptionWinstore, msfsVersionOptionSteam}
 var msfsVersionBinding = binding.NewString()
 
@@ -220,15 +225,16 @@ func SettingsPanel() *fyne.Container {
 
 	// set interface scale
 	interfaceScaleLabel := widget.NewLabel("Interface Scale [%]")
-	interfaceScaleSlider := widget.NewSliderWithData(0.5, 4.0, interfaceScaleBinding)
+	interfaceScaleSlider := widget.NewSliderWithData(InterfaceScaleMin, InterfaceScaleMax, interfaceScaleBinding)
 	interfaceScaleSlider.Step = 0.1
 	interfaceScaleSliderLabel := widget.NewLabelWithData(interfaceScaleStringBinding)
 
 	interfaceScale2DBtn := widget.NewButton("Optimize for 2D", func() {
-		// interfaceScale.OpeninterfaceScaleFolder()
+		interfaceScaleBinding.Set(DefaultInterfaceScale2D)
 	})
+
 	interfaceScaleVRBtn := widget.NewButton("Optimize for VR", func() {
-		// interfaceScale.OpeninterfaceScaleFolder()
+		interfaceScaleBinding.Set(DefaultInterfaceScaleVR)
 	})
 
 	interfaceScaleBinding.AddListener(binding.NewDataListener(func() {
@@ -249,8 +255,6 @@ func SettingsPanel() *fyne.Container {
 			globals.InterfaceScale = interfaceScale
 			dbmanager.StoreInterfaceScale()
 		}
-
-		// server.UpdateinterfaceScaleInterval(hasChanged)
 	}))
 
 	interfaceScaleBinding.Set(1)
