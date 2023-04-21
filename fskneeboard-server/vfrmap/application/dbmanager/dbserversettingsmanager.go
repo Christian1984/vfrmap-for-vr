@@ -1,6 +1,7 @@
 package dbmanager
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"vfrmap-for-vr/vfrmap/application/globals"
@@ -86,6 +87,24 @@ func LoadLogLevel() string {
 	}
 
 	return res
+}
+
+// interface scale 
+func StoreInterfaceScale() {
+	interfaceScaleString := fmt.Sprintf("%f", globals.InterfaceScale)
+	DbWriteSettings("interfacescale", interfaceScaleString)
+}
+
+func LoadInterfaceScale() {
+	res := DbReadSettings("interfacescale")
+
+	floatValue, err := strconv.ParseFloat(res, 64)
+
+	if res == "" || err != nil || floatValue < 0 {
+		floatValue = 1
+	}
+
+	globals.InterfaceScale = floatValue
 }
 
 // openAPI

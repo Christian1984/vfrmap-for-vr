@@ -24,6 +24,7 @@ var BuildVersion string
 var AutosaveInterval int
 var HttpListen string
 var LogLevel string
+var InterfaceScale float64
 
 var SteamFs bool
 var WinstoreFs bool

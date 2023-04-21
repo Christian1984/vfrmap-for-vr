@@ -72,6 +72,10 @@ func UpdateMsfsAutostartStatus(autostart bool) {
 	msfsAutostartBinding.Set(autostart)
 }
 
+func UpdateInterfaceScale(scale float64) {
+	interfaceScaleBinding.Set(scale)
+}
+
 func UpdateOpenAipApiKey(apiKey string) {
 	oaipApiKeyBinding.Set(apiKey)
 }
@@ -239,12 +243,12 @@ func SettingsPanel() *fyne.Container {
 
 		interfaceScaleStringBinding.Set(percent)
 
-		// hasChanged := globals.interfaceScaleInterval != interfaceScaleInterval
+		hasChanged := globals.InterfaceScale != interfaceScale
 
-		// if hasChanged {
-		// 	globals.interfaceScaleInterval = interfaceScaleInterval
-		// 	dbmanager.StoreinterfaceScaleInterval()
-		// }
+		if hasChanged {
+			globals.InterfaceScale = interfaceScale
+			dbmanager.StoreInterfaceScale()
+		}
 
 		// server.UpdateinterfaceScaleInterval(hasChanged)
 	}))
