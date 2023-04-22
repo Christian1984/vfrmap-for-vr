@@ -12,6 +12,6 @@ func runFloat64Callbacks(value float64, callback func(float64)) {
 
 var UpdateInterfaceScaleCallback func(float64)
 
-func UpdateInterfaceScale(float64erval float64) {
-	runFloat64Callbacks(float64erval, UpdateInterfaceScaleCallback)
+func UpdateInterfaceScale(scale float64) {
+	runFloat64Callbacks(scale, UpdateInterfaceScaleCallback)
 }

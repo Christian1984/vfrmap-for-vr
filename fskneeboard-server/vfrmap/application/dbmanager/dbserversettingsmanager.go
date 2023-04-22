@@ -107,6 +107,15 @@ func LoadInterfaceScale() {
 	globals.InterfaceScale = floatValue
 }
 
+func StoreInterfaceScalePromptShown() {
+	DbWriteSettings("interfacescaleShowPrompt", strconv.FormatBool(globals.InterfaceScalePromptShown))
+}
+
+func LoadInterfaceScalePromptShown() {
+	interfacescaleShowPrompt, _ := strconv.ParseBool(DbReadSettings("interfacescaleShowPrompt"))
+	globals.InterfaceScalePromptShown = interfacescaleShowPrompt 
+}
+
 // openAPI
 func StoreOpenAipApiKey() {
 	DbWriteSettings("oaipApiKey", strings.TrimSpace(globals.OpenAipApiKey))

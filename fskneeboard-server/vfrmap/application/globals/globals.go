@@ -12,6 +12,11 @@ var Pro bool
 const DownloadLinkPro = "https://fskneeboard.com/download-latest"
 const DownloadLinkFree = "https://fskneeboard.com/free-download/"
 
+const InterfaceScaleMin float64 = 0.5
+const InterfaceScaleMax float64 = 10
+const DefaultInterfaceScale2D float64 = 1
+const DefaultInterfaceScaleVR float64 = 3
+
 var DownloadLink string
 
 var Quietshutdown bool
@@ -25,6 +30,7 @@ var AutosaveInterval int
 var HttpListen string
 var LogLevel string
 var InterfaceScale float64
+var InterfaceScalePromptShown bool
 
 var SteamFs bool
 var WinstoreFs bool

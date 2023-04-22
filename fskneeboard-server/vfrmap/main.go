@@ -22,6 +22,7 @@ import (
 	"vfrmap-for-vr/vfrmap/server"
 	"vfrmap-for-vr/vfrmap/utils"
 
+	"fyne.io/fyne/v2/dialog"
 	updatechecker "github.com/Christian1984/go-update-checker"
 )
 
@@ -171,6 +172,25 @@ func initFsk() {
 		utils.Println("")
 
 		callbacks.UpdateLicenseStatus("TRIAL (FSKneeboard FREE)")
+	}
+
+	// show interface scale dialog
+	dbmanager.LoadInterfaceScalePromptShown()
+
+	if !globals.InterfaceScalePromptShown {
+	// if true {
+		dialog.ShowConfirm("Optimize For Virtual Reality", "Do you want FSKneeboard to optimize the Ingame Panel User Interface for VR?\n(Tip: You can always change or fine-adjust this setting from the settings panel.)", func(b bool) {
+			if (b) {
+				globals.InterfaceScale = globals.DefaultInterfaceScaleVR
+			} else {
+				globals.InterfaceScale = globals.DefaultInterfaceScale2D
+			}
+
+			callbacks.UpdateInterfaceScale(globals.InterfaceScale)
+
+			globals.InterfaceScalePromptShown = true
+			dbmanager.StoreInterfaceScalePromptShown()
+		}, *dialogs.ParentWindow)
 	}
 
 	// starting Flight Simulator
