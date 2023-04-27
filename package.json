@@ -1,6 +1,6 @@
 {
     "name": "fskneeboard",
-    "version": "1.11.0",
+    "version": "1.12.0",
     "description": "This project (formerly known as VFR Map For VR) adds a helpful ingame panel to your flight simulator which brings",
     "main": "index.js",
     "scripts": {

@@ -424,6 +424,7 @@ In order to launch FSKneeboard, you need to do two things:
 ## Starting The FSKneeboard Core Application
 
 -   Step 1: Run `fskneeboard.exe` by clicking either the approprite desktop icon or selecting it from the start menu. This will bring up the FSKneeboard core application's desktop window. FSKneeboard will now wait for Microsoft Flight Simulator and connect to it.
+-   Step 1.1: On the first launch, FSKneeboard will ask you if you want to optimize the ingame panel user interface for VR or "2D". Choose wisely 🧙, and change it/fine tune it in the settings dialog whenever you like.
 -   Step 2: Start Microsoft Flight Simulator. You can do this by either clicking the appropriate icon on your desktop or by clicking the "Launch Flight Simulator" button on the FSKneeboard Control Panel. This requires you to first configure the version of your copy of Flight Simulator through the Settings Panel, as described [here](#flight-simulator-autostart).
 -   Step 3: Open up the ingame panel once inside the sim (like you would do with other ingame panels like the ATC or weather panel etc.)
 -   Step 4: Place the FSKneeboard Panel conveniently in your VR space
@@ -457,9 +458,33 @@ If you would like to skip the tour for now, you can do that and [restart it late
 
 # Usage
 
+## Ingame Panel Interface Scaling
+
+Depending on your personal preference and various external factors (like your 2D screen resolution, your MSFS window size, your supersampling settings) chances are the map inside your FSKneeboard panel may appear too small or to large, or in some cases even stretched in a weird way.
+
+You can change the scale of the user interface from the settings panel on the FSKneeboard core application or from within the ingame panel. This is particularly useful for VR users.
+
+Both ways behave slightly different. Here is how:
+
+## Global Interface Scale
+
+You can set the ingame panel scale from the core application's settings dialog. This will affect the entire ingame panel, including the left hand main menu bar.
+
+Set the scale anywhere between 50% an 1000% or click the "Optimize for 2D" (sets the scale to 100%) or "Optimize for VR" (sets the scale to 300%)
+
+![FSKneeboard - Global Interface Scale](screenshots/fskneeboard-global-interface-scale-vr-optimized.png)
+
+_Global Interface Scale at 300%_
+
+When you start FSKneeboard for the very first time, a popup will ask you if you want to optimize FSKneeboard for 2D or VR.
+
+![FSKneeboard - Global Interface Scale (Wizard)](screenshots/fskneeboard-global-interface-scale-popup.png)
+
+_Global Interface Scale Popup_
+
 ## Dynamic Resolution Scaling
 
-Depending on your personal preference and various external factors (like your 2D screen resolution, your MSFS window size, your supersampling settings) chances are the map inside your FSKneeboard panel may appear too small or to large, or in some cases even stretched in a weird way. In that case you may use FSKneeboard's dynamic resolution controls to adjust the panel's resolution to your personal preference.
+FSKneeboard's dynamic resolution controls can be accessed directly from the ingame panel and does NOT affect the appearance of the menu bar.
 
 ![FSKneeboard - Dynamic Resolution Control](screenshots/fskneeboard-dynamic-resolution-controls.png)
 
