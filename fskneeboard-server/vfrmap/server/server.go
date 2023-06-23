@@ -127,15 +127,15 @@ var Ofm = MapServiceUrls{
 	RemoteUrl: "https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png",
 }
 
-var OaipAirportsUrls = MapServiceUrls{
-	CacheUrl:  "{fskhost}:35309/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/",
+var OaipBaseUrls = MapServiceUrls{
+	CacheUrl:  "{fskhost}:35309/maptilecache/oaip-base/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
-var OaipAirspacesUrls = MapServiceUrls{
-	CacheUrl:  "{fskhost}:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "https://api.tiles.openaip.net/api/data/hotspots/{z}/{x}/{y}.png?apiKey={apiKey}",
-}
+// var OaipAirspacesUrls = MapServiceUrls{
+// 	CacheUrl:  "{fskhost}:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
+// 	RemoteUrl: "https://api.tiles.openaip.net/api/data/hotspots/{z}/{x}/{y}.png?apiKey={apiKey}",
+// }
 
 var BingMapsSatUrls = MapServiceUrls{
 	CacheUrl:  "",
@@ -159,8 +159,8 @@ type MapServiceUrlsDto struct {
 	StamenW  string `json:"stamenw"`
 	CartoD   string `json:"cartod"`
 	//Ofm           string `json:"ofm"` // does not work because of airac cycle
-	OaipAirports  string `json:"oaipAirports"`
-	OaipAirspaces string `json:"oaipAirspaces"`
+	OaipBase  string `json:"oaipBase"`
+	// OaipAirspaces string `json:"oaipAirspaces"`
 	OaipNavaids   string `json:"oaipNavaids"`
 	OaipReporting string `json:"oaipReporting"`
 	BingSatMaps   string `json:"bingSatMaps"`
@@ -514,15 +514,15 @@ func initMaptileCache() {
 
 	logger.LogDebug("Initializing OAIP caches with api key: [" + oaipApiKeyLog + "]")
 
-	oaipAirports, oaipAirportsErr := initCache(ttl, globalRoot, "oaip-airports", "35309", OaipAirportsUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
-	if oaipAirportsErr == nil {
-		oaipCaches = append(oaipCaches, oaipAirports)
+	oaipBase, oaipBaseErr := initCache(ttl, globalRoot, "oaip-base", "35309", OaipBaseUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
+	if oaipBaseErr == nil {
+		oaipCaches = append(oaipCaches, oaipBase)
 	}
 
-	oaipAirspaces, oaipAirspacesErr := initCache(ttl, globalRoot, "oaip-airspaces", "35310", OaipAirspacesUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
-	if oaipAirspacesErr == nil {
-		oaipCaches = append(oaipCaches, oaipAirspaces)
-	}
+	// oaipAirspaces, oaipAirspacesErr := initCache(ttl, globalRoot, "oaip-airspaces", "35310", OaipAirspacesUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
+	// if oaipAirspacesErr == nil {
+	// 	oaipCaches = append(oaipCaches, oaipAirspaces)
+	// }
 
 	globals.OpenAipCaches = oaipCaches
 
@@ -532,14 +532,14 @@ func initMaptileCache() {
 func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 	logger.LogDebug("serveMapServiceUrls called!")
 
-	oaipAirportsUrl := OaipAirportsUrls.CacheUrl
-	oaipAirspacesUrl := OaipAirspacesUrls.CacheUrl
+	oaipBaseUrl := OaipBaseUrls.CacheUrl
+	// oaipAirspacesUrl := OaipAirspacesUrls.CacheUrl
 
 	if globals.OpenAipBypassCache && globals.OpenAipApiKey != "" && globals.OpenAipApiKey != secrets.API_KEY_OPENAIP {
 		logger.LogDebug("serving openAIP remote urls")
 
-		oaipAirportsUrl = strings.ReplaceAll(OaipAirportsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
-		oaipAirspacesUrl = strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
+		oaipBaseUrl = strings.ReplaceAll(OaipBaseUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
+		// oaipAirspacesUrl = strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
 	} else {
 		logger.LogDebug("serving openAIP cache urls")
 	}
@@ -564,8 +564,8 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		StamenW:  StamenWUrls.RemoteUrl, // cache was buggy
 		CartoD:   CartoD.CacheUrl,
 
-		OaipAirports:  oaipAirportsUrl,
-		OaipAirspaces: oaipAirspacesUrl,
+		OaipBase:  oaipBaseUrl,
+		// OaipAirspaces: oaipAirspacesUrl,
 
 		BingSatMaps: bingSatUrl,
 		BingRoadsMaps: bingRoadsUrl,

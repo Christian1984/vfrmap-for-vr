@@ -587,7 +587,7 @@ function initMap(mapTileUrls) {
     });
 
     // oaip nav overlays
-    const openaip_base = new L.TileLayer(prepareUrl(mapTileUrls.oaipAirports, loc), {
+    const openaip_base = new L.TileLayer(prepareUrl(mapTileUrls.oaipBase, loc), {
         maxZoom: 18,
         minZoom: 2,
         tileSize: map_resolution.tile_size,
@@ -596,14 +596,14 @@ function initMap(mapTileUrls) {
         transparent: true,
     });
 
-    const openaip_hotspots = new L.TileLayer(prepareUrl(mapTileUrls.oaipAirspaces, loc), {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        transparent: true,
-    });
+    // const openaip_hotspots = new L.TileLayer(prepareUrl(mapTileUrls.oaipAirspaces, loc), {
+    //     maxZoom: 18,
+    //     minZoom: 2,
+    //     tileSize: map_resolution.tile_size,
+    //     zoomOffset: map_resolution.zoom_offset,
+    //     format: "image/png",
+    //     transparent: true,
+    // });
 
     map = new L.Map("map", {
         layers: [osm],
@@ -634,7 +634,7 @@ function initMap(mapTileUrls) {
     const overlayMaps = {
         "open flightmaps (Europe)": ofm,
         "openAIP (Worldwide)": openaip_base,
-        "openAIP Hotspots (Worldwide)": openaip_hotspots,
+        // "openAIP Hotspots (Worldwide)": openaip_hotspots,
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
