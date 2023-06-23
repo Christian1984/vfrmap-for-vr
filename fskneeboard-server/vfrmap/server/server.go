@@ -129,22 +129,12 @@ var Ofm = MapServiceUrls{
 
 var OaipAirportsUrls = MapServiceUrls{
 	CacheUrl:  "{fskhost}:35309/maptilecache/oaip-airports/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "https://api.tiles.openaip.net/api/data/airports/{z}/{x}/{y}.png?apiKey={apiKey}",
+	RemoteUrl: "https://api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
 var OaipAirspacesUrls = MapServiceUrls{
 	CacheUrl:  "{fskhost}:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "https://api.tiles.openaip.net/api/data/airspaces/{z}/{x}/{y}.png?apiKey={apiKey}",
-}
-
-var OaipNavaidsUrls = MapServiceUrls{
-	CacheUrl:  "{fskhost}:35311/maptilecache/oaip-navaids/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "https://api.tiles.openaip.net/api/data/navaids/{z}/{x}/{y}.png?apiKey={apiKey}",
-}
-
-var OaipReportingUrls = MapServiceUrls{
-	CacheUrl:  "{fskhost}:35312/maptilecache/oaip-reportingpoints/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "https://api.tiles.openaip.net/api/data/reporting-points/{z}/{x}/{y}.png?apiKey={apiKey}",
+	RemoteUrl: "https://api.tiles.openaip.net/api/data/hotspots/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
 var BingMapsSatUrls = MapServiceUrls{
@@ -534,16 +524,6 @@ func initMaptileCache() {
 		oaipCaches = append(oaipCaches, oaipAirspaces)
 	}
 
-	oaipNavaids, oaipNavaidsErr := initCache(ttl, globalRoot, "oaip-navaids", "35311", OaipNavaidsUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
-	if oaipNavaidsErr == nil {
-		oaipCaches = append(oaipCaches, oaipNavaids)
-	}
-
-	oaipReporting, oaipReportingErr := initCache(ttl, globalRoot, "oaip-reportingpoints", "35312", OaipReportingUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
-	if oaipReportingErr == nil {
-		oaipCaches = append(oaipCaches, oaipReporting)
-	}
-
 	globals.OpenAipCaches = oaipCaches
 
 	//initCache(ttl, globalRoot, "oaip-obstacles", "35313", "https://api.tiles.openaip.net/api/data/obstacles/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
@@ -554,16 +534,12 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 
 	oaipAirportsUrl := OaipAirportsUrls.CacheUrl
 	oaipAirspacesUrl := OaipAirspacesUrls.CacheUrl
-	oaipNavaidsUrl := OaipNavaidsUrls.CacheUrl
-	oaipReportingUrl := OaipReportingUrls.CacheUrl
 
 	if globals.OpenAipBypassCache && globals.OpenAipApiKey != "" && globals.OpenAipApiKey != secrets.API_KEY_OPENAIP {
 		logger.LogDebug("serving openAIP remote urls")
 
 		oaipAirportsUrl = strings.ReplaceAll(OaipAirportsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
 		oaipAirspacesUrl = strings.ReplaceAll(OaipAirspacesUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
-		oaipNavaidsUrl = strings.ReplaceAll(OaipNavaidsUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
-		oaipReportingUrl = strings.ReplaceAll(OaipReportingUrls.RemoteUrl, "{apiKey}", globals.OpenAipApiKey)
 	} else {
 		logger.LogDebug("serving openAIP cache urls")
 	}
@@ -590,8 +566,6 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 
 		OaipAirports:  oaipAirportsUrl,
 		OaipAirspaces: oaipAirspacesUrl,
-		OaipNavaids:   oaipNavaidsUrl,
-		OaipReporting: oaipReportingUrl,
 
 		BingSatMaps: bingSatUrl,
 		BingRoadsMaps: bingRoadsUrl,
