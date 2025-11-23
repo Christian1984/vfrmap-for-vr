@@ -89,13 +89,224 @@ Type: filesandordirs; Name: "{app}\logs";
 var
   CommunityFolderDirWizardPage: TInputDirWizardPage;
   CommunityFolderDir: String;
+  CommunityFoldersListPage: TInputOptionWizardPage;
+  DetectedCommunityFolders: TArrayOfString;
+  CommunityFolderVersions: TArrayOfString;
   LicenseFileWizardPage: TInputFileWizardPage;
   LicenseFile: String;
   ShouldInstallLicenseFile: Boolean;
 
 function GetCommunityFolderDir(Value: string): string;
 begin
-    Result := CommunityFolderDir;
+    // For multiple folders, return the first one for the main installation
+    // Additional copies will be handled by CurStepChanged
+    if GetArrayLength(DetectedCommunityFolders) > 1 then
+      Result := DetectedCommunityFolders[0]
+    else
+      Result := CommunityFolderDir;
+end;
+
+// Parse UserCfg.opt file to extract InstalledPackagesPath
+function ParseUserCfgOpt(FilePath: String): String;
+var
+  Lines: TArrayOfString;
+  i: Integer;
+  Line: String;
+  StartPos: Integer;
+begin
+  Result := '';
+  if FileExists(FilePath) then
+  begin
+    LoadStringsFromFile(FilePath, Lines);
+    for i := 0 to GetArrayLength(Lines) - 1 do
+    begin
+      Line := Trim(Lines[i]);
+      if Pos('InstalledPackagesPath', Line) > 0 then
+      begin
+        StartPos := Pos('"', Line);
+        if StartPos > 0 then
+        begin
+          Delete(Line, 1, StartPos);
+          StartPos := Pos('"', Line);
+          if StartPos > 0 then
+          begin
+            Delete(Line, StartPos, Length(Line) - StartPos + 1);
+            Result := Line;
+            Exit;
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+// Discover community folders by searching for UserCfg.opt files
+procedure DiscoverCommunityFolders();
+var
+  UserCfgPaths: TArrayOfString;
+  i, Count: Integer;
+  PackagesPath, CommunityPath: String;
+  Version: String;
+begin
+  SetArrayLength(DetectedCommunityFolders, 10); // Reserve space
+  SetArrayLength(CommunityFolderVersions, 10);
+  Count := 0;
+
+  // Known paths for MSFS 2020
+  SetArrayLength(UserCfgPaths, 6);
+  UserCfgPaths[0] := ExpandConstant('{localappdata}\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\UserCfg.opt');
+  UserCfgPaths[1] := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\UserCfg.opt');
+  UserCfgPaths[2] := ExpandConstant('{userappdata}\Microsoft Flight Simulator\UserCfg.opt');
+  
+  // Known paths for MSFS 2024
+  UserCfgPaths[3] := ExpandConstant('{localappdata}\Packages\Microsoft.Limitless_8wekyb3d8bbwe\LocalCache\UserCfg.opt');
+  UserCfgPaths[4] := ExpandConstant('{userappdata}\Microsoft Flight Simulator 2024\UserCfg.opt');
+  UserCfgPaths[5] := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard2024_8wekyb3d8bbwe\LocalCache\UserCfg.opt'); // Potential Steam 2024 path
+
+  for i := 0 to GetArrayLength(UserCfgPaths) - 1 do
+  begin
+    if FileExists(UserCfgPaths[i]) then
+    begin
+      PackagesPath := ParseUserCfgOpt(UserCfgPaths[i]);
+      if PackagesPath <> '' then
+      begin
+        CommunityPath := PackagesPath + '\Community';
+        if DirExists(CommunityPath) then
+        begin
+          // Determine version based on path
+          if (Pos('Microsoft.FlightSimulator_8wekyb3d8bbwe', UserCfgPaths[i]) > 0) or 
+             (Pos('Microsoft.FlightDashboard_8wekyb3d8bbwe', UserCfgPaths[i]) > 0) or
+             (Pos('Microsoft Flight Simulator\UserCfg.opt', UserCfgPaths[i]) > 0) then
+            Version := 'MSFS 2020'
+          else if (Pos('Microsoft.Limitless_8wekyb3d8bbwe', UserCfgPaths[i]) > 0) or
+                  (Pos('Microsoft Flight Simulator 2024\UserCfg.opt', UserCfgPaths[i]) > 0) or
+                  (Pos('Microsoft.FlightDashboard2024_8wekyb3d8bbwe', UserCfgPaths[i]) > 0) then
+            Version := 'MSFS 2024'
+          else
+            Version := 'Unknown';
+
+          // Check for duplicates
+          if Count = 0 then
+          begin
+            DetectedCommunityFolders[Count] := CommunityPath;
+            CommunityFolderVersions[Count] := Version;
+            Count := Count + 1;
+          end else begin
+            // Check if this path is already added
+            if CommunityPath <> DetectedCommunityFolders[Count-1] then
+            begin
+              DetectedCommunityFolders[Count] := CommunityPath;
+              CommunityFolderVersions[Count] := Version;
+              Count := Count + 1;
+            end;
+          end;
+        end;
+      end;
+    end;
+  end;
+
+  // Resize arrays to actual count
+  SetArrayLength(DetectedCommunityFolders, Count);
+  SetArrayLength(CommunityFolderVersions, Count);
+end;
+
+// Install panel to additional community folders
+procedure InstallPanelToAdditionalFolders();
+var
+  i: Integer;
+  SourceDir: String;
+  TargetDir: String;
+  FolderPaths: TArrayOfString;
+  j: Integer;
+begin
+  if GetArrayLength(DetectedCommunityFolders) <= 1 then
+    Exit; // No additional folders to process
+
+  // Parse selected folders from semicolon-separated string
+  FolderPaths := StrSplit(CommunityFolderDir, ';');
+  
+  SourceDir := DetectedCommunityFolders[0] + '\christian1984-ingamepanel-fskneeboard';
+  
+  // Copy to each additional selected folder (skip first one as it's already installed)
+  for i := 1 to GetArrayLength(FolderPaths) - 1 do
+  begin
+    TargetDir := FolderPaths[i] + '\christian1984-ingamepanel-fskneeboard';
+    Log('Copying panel from ' + SourceDir + ' to ' + TargetDir);
+    
+    if DirExists(SourceDir) then
+    begin
+      // Create target directory
+      ForceDirectories(TargetDir);
+      
+      // Copy all files recursively
+      if not DirCopy(SourceDir, TargetDir, True) then
+        Log('Warning: Failed to copy panel to ' + TargetDir);
+    end;
+  end;
+end;
+
+// Helper function to split strings
+function StrSplit(Text: String; Separator: String): TArrayOfString;
+var
+  i, p: Integer;
+  Dest: TArrayOfString;
+begin
+  i := 0;
+  repeat
+    SetArrayLength(Dest, i + 1);
+    p := Pos(Separator, Text);
+    if p > 0 then
+    begin
+      Dest[i] := Copy(Text, 1, p - 1);
+      Text := Copy(Text, p + Length(Separator), Length(Text));
+      i := i + 1;
+    end
+    else
+    begin
+      Dest[i] := Text;
+      Text := '';
+    end;
+  until Length(Text) = 0;
+  Result := Dest;
+end;
+
+// Helper function to copy directory recursively
+function DirCopy(SourcePath, DestPath: String; Overwrite: Boolean): Boolean;
+var
+  FindRec: TFindRec;
+  SourceFilePath, DestFilePath: String;
+begin
+  Result := True;
+  
+  if FindFirst(SourcePath + '\*', FindRec) then
+  begin
+    try
+      repeat
+        if (FindRec.Name <> '.') and (FindRec.Name <> '..') then
+        begin
+          SourceFilePath := SourcePath + '\' + FindRec.Name;
+          DestFilePath := DestPath + '\' + FindRec.Name;
+          
+          if FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0 then
+          begin
+            // Directory
+            if not DirExists(DestFilePath) then
+              ForceDirectories(DestFilePath);
+            if not DirCopy(SourceFilePath, DestFilePath, Overwrite) then
+              Result := False;
+          end
+          else
+          begin
+            // File
+            if not FileCopy(SourceFilePath, DestFilePath, Overwrite) then
+              Result := False;
+          end;
+        end;
+      until not FindNext(FindRec);
+    finally
+      FindClose(FindRec);
+    end;
+  end;
 end;
 
 function GetLicenseFile(Value: string): string;
@@ -116,27 +327,96 @@ var
   winstoreCommunityFolder: String;
   steamCommunityFolder: String;
   communityFolderDirWizardDescription: String;
+  i: Integer;
+  FolderCount: Integer;
 
 begin
   AfterID := wpSelectDir;
   communityFolderSuccess := False;
 
-  winstoreCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community');
-  steamCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community');
-  
-  if DirExists(winstoreCommunityFolder) or DirExists(steamCommunityFolder) then begin
-    communityFolderSuccess := True;
-    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your Flight Simulator Community Folder.';
+  // First try the new UserCfg.opt-based discovery
+  DiscoverCommunityFolders();
+  FolderCount := GetArrayLength(DetectedCommunityFolders);
 
-    if DirExists(steamCommunityFolder) then begin
-        communityFolder := steamCommunityFolder;
-        Log('steamCommunityFolder found!');
-    end else if DirExists(winstoreCommunityFolder) then begin
-        communityFolder := winstoreCommunityFolder;
-        Log('winstoreCommunityFolder found!');
-    end
-  end else begin
-    communityFolderDirWizardDescription := '*** PLEASE DO NOT CLICK NEXT BEFORE READING THIS ***'#13#10#13#10
+  if FolderCount > 1 then
+  begin
+    // Multiple community folders found - create selection page
+    CommunityFoldersListPage := CreateInputOptionPage(
+      AfterID,
+      'Select Community Folders',
+      'Multiple Microsoft Flight Simulator installations detected!',
+      'Please select the Community Folder(s) where you want to install the FSKneeboard panel. You can select multiple folders:',
+      True, False);
+
+    for i := 0 to FolderCount - 1 do
+    begin
+      CommunityFoldersListPage.Add(CommunityFolderVersions[i] + ': ' + DetectedCommunityFolders[i]);
+      CommunityFoldersListPage.Values[i] := True; // Select all by default
+    end;
+
+    AfterID := CommunityFoldersListPage.ID;
+    communityFolderSuccess := True;
+  end
+  else if FolderCount = 1 then
+  begin
+    // Single community folder found - use it directly
+    communityFolder := DetectedCommunityFolders[0];
+    communityFolderSuccess := True;
+    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your ' + CommunityFolderVersions[0] + ' Community Folder via UserCfg.opt analysis.';
+    Log('Auto-detected community folder via UserCfg.opt: ' + communityFolder);
+  end
+  else
+  begin
+    // No folders found via UserCfg.opt, fall back to hardcoded detection
+    winstoreCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community');
+    steamCommunityFolder := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community');
+    
+    if DirExists(winstoreCommunityFolder) or DirExists(steamCommunityFolder) then begin
+      communityFolderSuccess := True;
+      communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your Flight Simulator Community Folder (fallback method).';
+
+      if DirExists(steamCommunityFolder) then begin
+          communityFolder := steamCommunityFolder;
+          Log('steamCommunityFolder found via fallback!');
+      end else if DirExists(winstoreCommunityFolder) then begin
+          communityFolder := winstoreCommunityFolder;
+          Log('winstoreCommunityFolder found via fallback!');
+      end
+    end else begin
+      communityFolderDirWizardDescription := '*** PLEASE DO NOT CLICK NEXT BEFORE READING THIS ***'#13#10#13#10
+      + 'WARNING: Your Flight Simulator Community Folder could NOT be auto-detected! Please set AND VERIFY the path to your community folder manually:'#13#10#13#10
+      + '- WINDOWS STORE USERS (MSFS 2020): C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10
+      + '- WINDOWS STORE USERS (MSFS 2024): C:\Users\[username]\AppData\Local\Packages\Microsoft.Limitless_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10#13#10
+      + '- STEAM USERS (MSFS 2020): C:\Users\[username]\AppData\Local\Packages\Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10
+      + '- STEAM USERS (MSFS 2024): Varies by installation - check your UserCfg.opt file';
+
+      communityFolder := 'C:\'
+    end;
+  end;
+
+  // Only create the manual input page if we don't have the multi-selection page
+  if FolderCount <= 1 then
+  begin
+    CommunityFolderDirWizardPage := CreateInputDirPage(
+          AfterID,
+          'Select Community Folder Location',
+          'Please tell us where your Flight Simulator Community Folder is located!',
+          communityFolderDirWizardDescription,
+          False, '');
+    CommunityFolderDirWizardPage.Add('IMPORTANT: If the FSKneeboard-Ingame-Panel does NOT appear inside the game, then double-check that you have this directory right!' + #13#10#13#10 + 'Microsoft Flight Simulator Community Folder:');
+    CommunityFolderDirWizardPage.Values[0] := communityFolder;
+
+    if communityFolderSuccess then begin
+      CommunityFolderDirWizardPage.SubCaptionLabel.Font.Color := clGreen;
+    end else begin
+      CommunityFolderDirWizardPage.SubCaptionLabel.Font.Color := clRed;
+    end;
+
+    CommunityFolderDirWizardPage.SubCaptionLabel.Font.Style := [fsBold];
+    CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
+    CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
+    AfterID := CommunityFolderDirWizardPage.ID;
+  end;
     + 'WARNING: Your Flight Simulator Community Folder could NOT be auto-detected! Please set AND VERIFY the path to your community folder manually:'#13#10#13#10
     + '- WINDOWS STORE USERS: If you have purchased MSFS through the Windows Store, you will typically find it under C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10#13#10
     + '- STEAM USERS: If you have purchased MSFS through Steam, the default path for your Community Folder would typically be C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community';
@@ -178,6 +458,8 @@ end;
 function NextButtonClick(CurrPageID: Integer): Boolean;
 var
   licFilePath: String;
+  i: Integer;
+  SelectedFolders: String;
 begin
   if CurrPageID = wpWelcome then begin
     Log('Set ShouldInstallLicenseFile to True');
@@ -191,7 +473,22 @@ begin
         Log('No License file found! (Looked at ' + licFilePath + ')');
         ShouldInstallLicenseFile := True;
       end;
-  end else if CurrPageID = CommunityFolderDirWizardPage.ID then begin
+  end else if (GetArrayLength(DetectedCommunityFolders) > 1) and (CurrPageID = CommunityFoldersListPage.ID) then
+  begin
+    // Handle multiple folder selection
+    SelectedFolders := '';
+    for i := 0 to GetArrayLength(DetectedCommunityFolders) - 1 do
+    begin
+      if CommunityFoldersListPage.Values[i] then
+      begin
+        if SelectedFolders <> '' then
+          SelectedFolders := SelectedFolders + ';';
+        SelectedFolders := SelectedFolders + DetectedCommunityFolders[i];
+      end;
+    end;
+    CommunityFolderDir := SelectedFolders;
+    Log('Selected Community Folders: ' + CommunityFolderDir);
+  end else if (GetArrayLength(DetectedCommunityFolders) <= 1) and (CurrPageID = CommunityFolderDirWizardPage.ID) then begin
     CommunityFolderDir := CommunityFolderDirWizardPage.Values[0];
     Log('CommunityFolderDir is: ' + CommunityFolderDir);
   end else if CurrPageID = LicenseFileWizardPage.ID then begin
@@ -215,18 +512,45 @@ begin
     Result := not ShouldInstallLicenseFile;
 end;
 
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+  begin
+    // Install panel to additional community folders if multiple were selected
+    InstallPanelToAdditionalFolders();
+  end;
+end;
+
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
   MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
 var
   S: String;
+  FolderPaths: TArrayOfString;
+  i: Integer;
 begin
   S := 'FSKneeboard PRO is Ready for Installation!' + NewLine;
   S := S + NewLine;
   S := S + 'FSKneeboard Server Component will be installed to:' + NewLine;
   S := S + Space + ExpandConstant('{app}') + NewLine;
   S := S + NewLine;
-  S := S + 'FSKneeboard Ingame Panel will be installed to:' + NewLine;
-  S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
+
+  if GetArrayLength(DetectedCommunityFolders) > 1 then
+  begin
+    // Multiple folders selected
+    FolderPaths := StrSplit(CommunityFolderDir, ';');
+    S := S + 'FSKneeboard Ingame Panel will be installed to ' + IntToStr(GetArrayLength(FolderPaths)) + ' Community Folder(s):' + NewLine;
+    for i := 0 to GetArrayLength(FolderPaths) - 1 do
+    begin
+      S := S + Space + FolderPaths[i] + '\christian1984-ingamepanel-fskneeboard' + NewLine;
+    end;
+  end
+  else
+  begin
+    // Single folder
+    S := S + 'FSKneeboard Ingame Panel will be installed to:' + NewLine;
+    S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
+  end;
+
   S := S + NewLine;
 
   if ShouldInstallLicenseFile then begin
