@@ -1,5 +1,9 @@
 > REMARKS: changes indicated with (\*) are exclusive features for "FSKneeboard PRO Supporters". If you want to support the development of the mod and unlock exclusive features, purchase a PRO license at https://fskneeboard.com/buy-now
 
+# v1.13.0
+
+// TODO
+
 # v1.12.1
 
 ## HOTFIX:
