@@ -27,3 +27,35 @@
 - Bump version numbers for server and panel to v1.13.0.
 - Update README and changelog.
 - Announce MSFS 2024 support on the website.
+
+## 5. Open Questions Requiring Clarification
+
+### 5.1 Installer Scope & Backwards Compatibility
+- **Question**: Should the new installer logic **replace** the existing Community folder detection entirely, or should it be **additive** (keeping current MSFS 2020 detection as fallback)?
+- **Current state**: The existing installer already has hardcoded paths for MSFS 2020 Windows Store and Steam (`Microsoft.FlightSimulator_8wekyb3d8bbwe` and `Microsoft.FlightDashboard_8wekyb3d8bbwe`)
+- **Impact**: This affects whether we refactor the existing logic or add parallel detection
+- **Decision**: Use existing detection logic as fallback! If multiple community folders where detected, the user can pick any number of these with checkboxes. The panel should be installed in each of the selected community folders, while the server should only be installed once.
+
+### 5.2 MSFS 2024 Windows Store PFN Verification
+- **Question**: The research shows `Microsoft.Limitless_8wekyb3d8bbwe` as the candidate PFN for MSFS 2024, but this needs confirmation.
+- **Current state**: We have a PowerShell verification command, but haven't run it on a machine with MSFS 2024 installed
+- **Impact**: Without the correct PFN, we can't reliably detect MSFS 2024 Windows Store installations
+- **Decision**: We use this for now. My research and communication with MSFS 2024 owners indicates this information is reliable.
+
+### 5.3 Autostart Feature Integration Points
+- **Question**: Where exactly in the codebase is the autostart feature implemented? Need to locate the current UI and backend logic.
+- **Current state**: We found `msfsautostart.go` with hardcoded Steam commands, but haven't located the UI components
+- **Impact**: Need to understand the current architecture before adding the new dropdown
+- **Decision**: That is where the logic resides, correct. Config booleans are located in `globals.go` as `SteamFs` (for existing MSFS 2020 Steam launcher), `WinstoreFs` (for existing MSFS 2020 Windows Store launcher) and `MsfsAutostart` (for enabling the feature globally). I'm okay with just adding `SteamFs2024` and `WindtoreFs2024` for now. Persistence of these booleans is implemented in `dbserversettingsmanager.go`. The UI is implemented in `settingspanel.go`. Also register GUI-Callbacks in `main.go` Look for other occurences across the codebase, e.g. `boolcallback.go`.
+
+### 5.4 Bing Maps Removal Strategy
+- **Question**: Should we completely remove Bing Maps code/UI, or just disable it with a deprecation notice?
+- **Current state**: Found multiple Bing references in README and codebase
+- **Impact**: Affects user migration experience and potential rollback scenarios
+- **Decision**: Step 1: Remove it. Bing Maps are dead! Step 2: Implement MapTiler.
+
+### 5.5 Version Numbering & Release Strategy
+- **Question**: Should this be released as v1.13.0 for both server and panel components simultaneously, or can they be versioned independently?
+- **Current state**: Both components seem to share version numbers based on existing patterns
+- **Impact**: Affects build scripts and compatibility matrix
+- **Decision**: They are tightly coupled. v.1.13.0 is good for both!
