@@ -18,7 +18,7 @@
 6. [x] Add UI controls in `settingspanel.go` for MSFS 2024 options (Steam/Windows Store checkboxes)
 7. [x] Register GUI callbacks in `main.go` and update `boolcallback.go` as needed
 8. [x] Update `msfsautostart.go` to handle new launch combinations (2024 Steam AppID 2537590, 2024 Windows Store PFN)
-9. [ ] Update UI help text and layout for the new options
+9. [x] Update UI help text and layout for the new options
 
 ## Bing Maps Layer Replacement
 10. [ ] Remove Bing Maps layer completely (code + UI + documentation)

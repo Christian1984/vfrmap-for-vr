@@ -697,7 +697,7 @@ The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
 #### Flight Simulator Autostart
 
--   Under "Flight Simulator Version", please tell FSKneeboard if you have installed the Steam or Windows Store version of Microsoft Flight Simulator. This will FSKneeboard tell where to look for and how to start Flight Simulator when you either click the "Launch Flight Simulator" button on the Control Panel or activate the autostart option
+-   Under "Flight Simulator Version", please tell FSKneeboard if you have installed the Steam or Windows Store version of Microsoft Flight Simulator, and also if you are using Flight Simulator 2020 or 2024. This will FSKneeboard tell where to look for and how to start Flight Simulator when you either click the "Launch Flight Simulator" button on the Control Panel or activate the autostart option
 -   Under "Flight Simulator Autostart" you can enable or disable whether FSKneeboard should automatically launch your copy of Microsoft Flight Simulator when you start FSKneeboard
 
 #### Restart Ingame Tour
