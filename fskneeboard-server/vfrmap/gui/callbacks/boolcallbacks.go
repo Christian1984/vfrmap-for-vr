@@ -18,12 +18,6 @@ func NewVersionAvailable(status bool) {
 	runBoolCallback(status, NewVersionAvailableCallback)
 }
 
-var MsfsVersionChangedCallback func(bool)
-
-func MsfsVersionChanged(steam bool) {
-	runBoolCallback(steam, MsfsVersionChangedCallback)
-}
-
 var MsfsAutostartChangedCallback func(bool)
 
 func MsfsAutostartChanged(autostart bool) {

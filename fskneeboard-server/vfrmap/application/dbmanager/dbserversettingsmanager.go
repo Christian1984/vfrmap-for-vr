@@ -9,26 +9,25 @@ import (
 
 // msfs version
 func StoreMsfsVersion() {
-	if globals.WinstoreFs && !globals.SteamFs {
-		DbWriteSettings("msfsVersion", "winstore")
-	} else if !globals.WinstoreFs && globals.SteamFs {
-		DbWriteSettings("msfsVersion", "steam")
-	}
+	DbWriteSettings("msfsVersion", globals.MsfsVersion)
 }
 
 func LoadMsfsVersion() {
-	res := DbReadSettings("msfsVersion")
+	version := DbReadSettings("msfsVersion")
 
-	if res == "steam" {
-		globals.SteamFs = true
-		globals.WinstoreFs = false
-	} else {
-		globals.WinstoreFs = true
-		globals.SteamFs = false
+	if version == "" {
+		// Default to MSFS 2020 Windows Store
+		version = "2020-winstore"
 	}
-}
 
-// msfs autostart
+	// Validate the version string
+	switch version {
+	case "2020-steam", "2020-winstore", "2024-steam", "2024-winstore":
+		globals.MsfsVersion = version
+	default:
+		globals.MsfsVersion = "2020-winstore" // fallback to default
+	}
+} // msfs autostart
 func StoreMsfsAutostart() {
 	DbWriteSettings("msfsAutostart", strconv.FormatBool(globals.MsfsAutostart))
 }
@@ -89,7 +88,7 @@ func LoadLogLevel() string {
 	return res
 }
 
-// interface scale 
+// interface scale
 func StoreInterfaceScale() {
 	interfaceScaleString := fmt.Sprintf("%f", globals.InterfaceScale)
 	DbWriteSettings("interfacescale", interfaceScaleString)
@@ -113,7 +112,7 @@ func StoreInterfaceScalePromptShown() {
 
 func LoadInterfaceScalePromptShown() {
 	interfacescaleShowPrompt, _ := strconv.ParseBool(DbReadSettings("interfacescaleShowPrompt"))
-	globals.InterfaceScalePromptShown = interfacescaleShowPrompt 
+	globals.InterfaceScalePromptShown = interfacescaleShowPrompt
 }
 
 // openAPI

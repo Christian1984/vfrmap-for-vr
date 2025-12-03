@@ -24,6 +24,12 @@ func UpdateLogLevelStatus(status string) {
 	runStringCallback(status, UpdateLogLevelStatusCallback)
 }
 
+var MsfsVersionChangedStringCallback func(string)
+
+func MsfsVersionChangedString(version string) {
+	runStringCallback(version, MsfsVersionChangedStringCallback)
+}
+
 var UpdateOpenAipApiCallback func(string)
 
 func UpdateOpenAipApi(apiKey string) {

@@ -20,12 +20,18 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-const msfsVersionOptionWinstore = "Windows Store Version"
-const msfsVersionOptionSteam = "Steam Version"
+const msfsVersionOption2020Winstore = "Flight Simulator 2020 (Windows Store)"
+const msfsVersionOption2020Steam = "Flight Simulator 2020 (Steam)"
+const msfsVersionOption2024Winstore = "Flight Simulator 2024 (Windows Store)"
+const msfsVersionOption2024Steam = "Flight Simulator 2024 (Steam)"
 
-var msfsVersionOptions = []string{msfsVersionOptionWinstore, msfsVersionOptionSteam}
+var msfsVersionOptions = []string{
+	msfsVersionOption2020Winstore,
+	msfsVersionOption2020Steam,
+	msfsVersionOption2024Winstore,
+	msfsVersionOption2024Steam,
+}
 var msfsVersionBinding = binding.NewString()
-
 var msfsAutostartBinding = binding.NewBool()
 
 var autosaveOptions = []string{"Off", "1", "5", "10", "15", "30", "60"}
@@ -60,11 +66,18 @@ func UpdateAutosaveStatus(interval int) {
 	autosaveBinding.Set(intervalString)
 }
 
-func UpdateMsfsVersionStatus(steam bool) {
-	if steam {
-		msfsVersionBinding.Set(msfsVersionOptionSteam)
-	} else {
-		msfsVersionBinding.Set(msfsVersionOptionWinstore)
+func UpdateMsfsVersionStatus(version string) {
+	switch version {
+	case "2020-steam":
+		msfsVersionBinding.Set(msfsVersionOption2020Steam)
+	case "2020-winstore":
+		msfsVersionBinding.Set(msfsVersionOption2020Winstore)
+	case "2024-steam":
+		msfsVersionBinding.Set(msfsVersionOption2024Steam)
+	case "2024-winstore":
+		msfsVersionBinding.Set(msfsVersionOption2024Winstore)
+	default:
+		msfsVersionBinding.Set(msfsVersionOption2020Winstore) // default fallback
 	}
 }
 
@@ -114,17 +127,22 @@ func SettingsPanel() *fyne.Container {
 	msfsVersionBinding.AddListener(binding.NewDataListener(func() {
 		selected, _ := msfsVersionBinding.Get()
 
-		globals.SteamFs = false
-		globals.WinstoreFs = false
-
-		if selected == msfsVersionOptionWinstore {
-			globals.WinstoreFs = true
-			logger.LogInfo("Selected MSFS Version: Windows Store")
-		} else if selected == msfsVersionOptionSteam {
-			globals.SteamFs = true
-			logger.LogInfo("Selected MSFS Version: Steam")
-		} else {
-			return
+		switch selected {
+		case msfsVersionOption2020Winstore:
+			globals.MsfsVersion = "2020-winstore"
+			logger.LogInfo("Selected MSFS Version: 2020 Windows Store")
+		case msfsVersionOption2020Steam:
+			globals.MsfsVersion = "2020-steam"
+			logger.LogInfo("Selected MSFS Version: 2020 Steam")
+		case msfsVersionOption2024Winstore:
+			globals.MsfsVersion = "2024-winstore"
+			logger.LogInfo("Selected MSFS Version: 2024 Windows Store")
+		case msfsVersionOption2024Steam:
+			globals.MsfsVersion = "2024-steam"
+			logger.LogInfo("Selected MSFS Version: 2024 Steam")
+		default:
+			globals.MsfsVersion = "2020-winstore" // default fallback
+			logger.LogInfo("Selected MSFS Version: 2020 Windows Store (default)")
 		}
 
 		if strings.ToLower(selected) != strings.ToLower(msfsVersionSelect.Selected) {
@@ -135,9 +153,12 @@ func SettingsPanel() *fyne.Container {
 		}
 
 		dbmanager.StoreMsfsVersion()
+
+		// Trigger callback to update UI
+		callbacks.MsfsVersionChangedString(globals.MsfsVersion)
 	}))
 
-	msfsVersionBinding.Set(msfsVersionOptionWinstore)
+	msfsVersionBinding.Set(msfsVersionOption2020Winstore)
 
 	// msfs autostart select
 	msfsAutostartLabel := widget.NewLabel("Flight Simulator Autostart")
@@ -240,7 +261,7 @@ func SettingsPanel() *fyne.Container {
 			return
 		}
 
-		percent := fmt.Sprintf("%d%%", int64(math.Floor(interfaceScale * 100)))
+		percent := fmt.Sprintf("%d%%", int64(math.Floor(interfaceScale*100)))
 
 		interfaceScaleStringBinding.Set(percent)
 
@@ -262,7 +283,6 @@ func SettingsPanel() *fyne.Container {
 		restartTourLabel, restartTourBtn, widget.NewLabel(""),
 		autosaveLabel, autosaveSelect, autosaveOpenFolderBtn,
 		interfaceScaleLabel, container.NewBorder(nil, nil, nil, interfaceScaleSliderLabel, interfaceScaleSlider), container.NewGridWithColumns(2, interfaceScale2DBtn, interfaceScaleVRBtn),
-
 	)
 
 	//API KEYS
@@ -322,7 +342,7 @@ func SettingsPanel() *fyne.Container {
 		dbmanager.StoreBingMapsApiKey()
 	}))
 
-	if (!globals.Pro) {
+	if !globals.Pro {
 		bingApiKeyInput.PlaceHolder = "Requires FSKneeboard PRO"
 		//bingApiKeyProLabel.SetText("Requires FSKneeboard PRO")
 		bingApiKeyInput.Disable()
@@ -402,7 +422,6 @@ func SettingsPanel() *fyne.Container {
 		3,
 		loglevelLabel, loglevelSelect, logsOpenFolderBtn,
 	)
-
 
 	generalLabel := widget.NewLabel("General")
 	generalLabel.TextStyle.Bold = true

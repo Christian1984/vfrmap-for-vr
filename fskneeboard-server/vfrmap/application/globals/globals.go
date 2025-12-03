@@ -32,9 +32,10 @@ var LogLevel string
 var InterfaceScale float64
 var InterfaceScalePromptShown bool
 
-var SteamFs bool
-var WinstoreFs bool
 var MsfsAutostart bool
+
+// MSFS version enum - cleaner approach than individual booleans
+var MsfsVersion string // "2020-steam", "2020-winstore", "2024-steam", "2024-winstore"
 
 var OpenAipApiKey string
 var OpenAipBypassCache bool

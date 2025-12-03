@@ -8,16 +8,16 @@
 	- [x] Parse InstalledPackagesPath from each UserCfg.opt and build Community folder candidates
 	- [x] Deduplicate and classify candidates by version/distribution
 	- [x] If one candidate: present confirmation step
-	- [x] If multiple candidates: present selection UI (checkboxes) - panel installed to all selected, server installed once
+	- [x] If multiple candidates: present selection UI (checkboxes) - panel installed to one selected folder, server installed once
 	- [x] If none: fall back to existing hardcoded detection logic, then prompt for manual path if still none
-3. [ ] Update Inno Setup scripts with PowerShell / custom code to run the above discovery before file deployment
+3. [x] Update Inno Setup scripts with PowerShell / custom code to run the above discovery before file deployment
 
 ## Autostart Feature Extension
-4. [ ] Add new config booleans: `SteamFs2024`, `WinstoreFs2024` to `globals.go`
-5. [ ] Update persistence logic in `dbserversettingsmanager.go` for new booleans
-6. [ ] Add UI controls in `settingspanel.go` for MSFS 2024 options (Steam/Windows Store checkboxes)
-7. [ ] Register GUI callbacks in `main.go` and update `boolcallback.go` as needed
-8. [ ] Update `msfsautostart.go` to handle new launch combinations (2024 Steam AppID 2537590, 2024 Windows Store PFN)
+4. [x] Add new config booleans: `SteamFs2024`, `WinstoreFs2024` to `globals.go`
+5. [x] Update persistence logic in `dbserversettingsmanager.go` for new booleans
+6. [x] Add UI controls in `settingspanel.go` for MSFS 2024 options (Steam/Windows Store checkboxes)
+7. [x] Register GUI callbacks in `main.go` and update `boolcallback.go` as needed
+8. [x] Update `msfsautostart.go` to handle new launch combinations (2024 Steam AppID 2537590, 2024 Windows Store PFN)
 9. [ ] Update UI help text and layout for the new options
 
 ## Bing Maps Layer Replacement

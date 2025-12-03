@@ -92,7 +92,7 @@ func initFsk() {
 
 	// msfs version
 	dbmanager.LoadMsfsVersion()
-	callbacks.MsfsVersionChanged(globals.SteamFs)
+	callbacks.MsfsVersionChangedString(globals.MsfsVersion)
 
 	// msfs autostart
 	dbmanager.LoadMsfsAutostart()
@@ -178,9 +178,9 @@ func initFsk() {
 	dbmanager.LoadInterfaceScalePromptShown()
 
 	if !globals.InterfaceScalePromptShown {
-	// if true {
+		// if true {
 		dialog.ShowConfirm("Optimize For Virtual Reality", "Do you want FSKneeboard to optimize the Ingame Panel User Interface for VR?\n(Tip: You can always change or fine-adjust this setting from the settings panel.)", func(b bool) {
-			if (b) {
+			if b {
 				globals.InterfaceScale = globals.DefaultInterfaceScaleVR
 			} else {
 				globals.InterfaceScale = globals.DefaultInterfaceScale2D
@@ -222,7 +222,7 @@ func registerGuiCallbacks() {
 	callbacks.UpdateMsfsStartedCallback = controlpanel.UpdateMsfsStarted
 	callbacks.NewVersionAvailableCallback = controlpanel.UpdateNewVersionAvailable
 
-	callbacks.MsfsVersionChangedCallback = settingspanel.UpdateMsfsVersionStatus
+	callbacks.MsfsVersionChangedStringCallback = settingspanel.UpdateMsfsVersionStatus
 	callbacks.MsfsAutostartChangedCallback = settingspanel.UpdateMsfsAutostartStatus
 	callbacks.UpdateInterfaceScaleCallback = settingspanel.UpdateInterfaceScale
 
