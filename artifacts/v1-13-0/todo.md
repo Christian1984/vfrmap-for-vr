@@ -27,7 +27,8 @@
 13. [x] Update UI and documentation for map changes (add MapTiler guidance)
 
 ## Post-Implementation
-14. [ ] Check for dead code!
-15. [ ] Bump version numbers for server and panel to v1.13.0
-16. [ ] Update README and changelog for v1.13.0
-17. [ ] Announce MSFS 2024 support on the website
+14. [ ] Check for dead code
+15. [x] Bump version numbers for server and panel to v1.13.0
+16. [x] Update changelog for v1.13.0
+17. [x] Update README for v1.13.0
+18. [ ] Announce MSFS 2024 support on the website

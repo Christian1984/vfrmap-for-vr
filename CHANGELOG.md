@@ -2,7 +2,15 @@
 
 # v1.13.0
 
-// TODO
+## MAJOR:
+
+-   added support for Microsoft Flight Simulator 2024 (Steam and Windows Store editions)
+-   enhanced installer to automatically detect and support installation for both MSFS 2020 and MSFS 2024 community folders
+-   extended autostart feature to support MSFS 2024 Steam and Windows Store editions
+-   replaced discontinued Bing Maps satellite layer with MapTiler satellite layer integration
+-   removed discontinued stamen map layers
+
+---
 
 # v1.12.1
 
