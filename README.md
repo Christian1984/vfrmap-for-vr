@@ -194,7 +194,7 @@ Yes</td>
 Yes</td>
 </tr>
 <tr>
-<td>Additional Map Layers with custom API keys (e.g. Bing Maps)</td>
+<td>Additional Map Layers with custom API keys (e.g. MapTiler)</td>
 <td>❌
 No</td>
 <td>✅
@@ -716,51 +716,35 @@ The main sections here cover **MSFS autostart**, **autosave** and **logging**.
 
 #### API Keys
 
-The API Keys section allows you to add your own API keys to FSKneeboard to either replace "global" the "hardcoded" API keys shared by all FSKneeboard users for better performance or to enable additional services within FSKneeboard (like Bing Maps, for example).
+The API Keys section allows you to add your own API keys to FSKneeboard to either replace "global" the "hardcoded" API keys shared by all FSKneeboard users for better performance or to enable additional services within FSKneeboard (like MapTiler, for example).
 
 For services that you own a custom API key for you can also select to deactivate and bypass the local map tile cache for. This may, depending on your internet connection and/or data volume restrictions enhance your experience with FSKneeboard even further.
 
-Currently, openAIP and Bing Maps are supported with custom API keys.
+Currently, openAIP and MapTiler Maps are supported with custom API keys.
 
 ##### openAIP.net
 
 Replace the "global" API key shared by all FSKneeboard users with your own API key. You can obtain your own API key by [creating a new account with openAIP](https://www.openaip.net/new-account). Then [go here](https://www.openaip.net/users/clients#tab-clients) and request your API key by clicking the "+ REQUEST NEW API KEY HERE".
 
-##### Bing Maps
+##### MapTiler Maps
 
-Enable the Bing Maps layers in the map module by providing your own Bing Maps API key. At the time of writing this, a "basic" level API key is available for free when you sign up at https://www.bingmapsportal.com/.
+Enable the MapTiler layers in the map module by providing your own MapTiler API key. At the time of writing this, a "basic" level API key is available for free when you sign up at https://www.maptiler.com/.
 
--   Browse to https://www.bingmapsportal.com/ and click "Sign in". Sign in with your Microsoft Account login credentials. If you don't have one, create a new Microsoft account.
+-   Browse to https://www.maptiler.com/ and click "Create Account". Sign in with your Microsoft Account login credentials. If you don't have one, create a new Microsoft account.
 
-    ![Bing Maps - Sign In](screenshots/fskneeboard-bing-maps-1.png)
+    ![MapTiler - Create Account](screenshots/fskneeboard-maptiler-1.png)
 
-    _Bing Maps - Sign In_
+    _MapTiler - Create Account_
 
 <div style="page-break-after: always;"></div>
 
--   Once logged in to the "Dev Center", hover over "My account" and click "My Keys" from the dropdown menu.
+-   Once logged in, navigate to the "API Keys" section on the right hand side. There should be "Default Key" waiting for you. If not, click the "New Key" button to create one.
 
-    ![Bing Maps - My Keys](screenshots/fskneeboard-bing-maps-2.png)
+    ![MapTiler - API Keys](screenshots/fskneeboard-maptiler-2.png)
 
-    _Bing Maps - My Keys_
+    _MapTiler - API Keys_
 
--   Select "Click here to create a new key"
-
-    ![Bing Maps - Create New Key (1)](screenshots/fskneeboard-bing-maps-3.png)
-
-    _Bing Maps - Create New Key (1)_
-
--   Fill out the form. For the form as shown below. For the application name, type something with FSKneeboard. This is just for you so you'll know what this key was created for. For "Key Type" choose "Basic" and for "Application Type" select "Dev/Test". Then click "Create".
-
-    ![Bing Maps - Create New Key (2)](screenshots/fskneeboard-bing-maps-4.png)
-
-    _Bing Maps - Create New Key (2)_
-
--   Finally, click the "Show Key"-link to reveal your new API key. Copy it to your clipboard and paste it into the **Settings Tab** of the FSKneeboard server application. Make sure to close and open the ingame panel for the changes to sync over.
-
-    ![Bing Maps - Import Key](screenshots/fskneeboard-bing-maps-5.png)
-
-    _Bing Maps - Import Key_
+-   Copy the key your clipboard and paste it into the **Settings Tab** of the FSKneeboard server application. Make sure to close and open the ingame panel for the changes to sync over.
 
 ### Hotkeys Panel
 
