@@ -58,6 +58,8 @@ begin
   UserCfgPaths[2] := ExpandConstant('{userappdata}\Microsoft Flight Simulator\UserCfg.opt');
   
   // Known paths for MSFS 2024
+  // Testing
+  // UserCfgPaths[3] := ExpandConstant('C:\Users\chris\Documents\temp\2024-LocalCache\UserCfg.opt');
   UserCfgPaths[3] := ExpandConstant('{localappdata}\Packages\Microsoft.Limitless_8wekyb3d8bbwe\LocalCache\UserCfg.opt');
   UserCfgPaths[4] := ExpandConstant('{userappdata}\Microsoft Flight Simulator 2024\UserCfg.opt');
   UserCfgPaths[5] := ExpandConstant('{localappdata}\Packages\Microsoft.FlightDashboard2024_8wekyb3d8bbwe\LocalCache\UserCfg.opt'); // Potential Steam 2024 path
@@ -109,49 +111,10 @@ begin
   SetArrayLength(CommunityFolderVersions, Count);
 end;
 
-// Install panel to additional community folders
-procedure InstallPanelToAdditionalFolders();
-var
-  i: Integer;
-  SourceDir: String;
-  TargetDir: String;
-  FolderPaths: TArrayOfString;
-begin
-  if GetArrayLength(DetectedCommunityFolders) <= 1 then
-    Exit; // No additional folders to process
-
-  // Parse selected folders from semicolon-separated string
-  FolderPaths := StrSplit(CommunityFolderDir, ';');
-  
-  SourceDir := DetectedCommunityFolders[0] + '\christian1984-ingamepanel-fskneeboard';
-  
-  // Copy to each additional selected folder (skip first one as it's already installed)
-  for i := 1 to GetArrayLength(FolderPaths) - 1 do
-  begin
-    TargetDir := FolderPaths[i] + '\christian1984-ingamepanel-fskneeboard';
-    Log('Copying panel from ' + SourceDir + ' to ' + TargetDir);
-    
-    if DirExists(SourceDir) then
-    begin
-      // Create target directory
-      ForceDirectories(TargetDir);
-      
-      // Copy all files recursively
-      if not DirCopy(SourceDir, TargetDir, True) then
-        Log('Warning: Failed to copy panel to ' + TargetDir);
-    end;
-  end;
-end;
-
-// Get community folder directory (handles multiple folders)
+// Get community folder directory
 function GetCommunityFolderDir(Value: string): string;
 begin
-    // For multiple folders, return the first one for the main installation
-    // Additional copies will be handled by CurStepChanged
-    if GetArrayLength(DetectedCommunityFolders) > 1 then
-      Result := DetectedCommunityFolders[0]
-    else
-      Result := CommunityFolderDir;
+    Result := CommunityFolderDir;
 end;
 
 // Helper function to split strings

@@ -86,7 +86,6 @@ var
 // Forward declarations for common functions/procedures
 function ParseUserCfgOpt(FilePath: String): String; forward;
 procedure DiscoverCommunityFolders(); forward;
-procedure InstallPanelToAdditionalFolders(); forward;
 function GetCommunityFolderDir(Value: string): string; forward;
 function StrSplit(Text: String; Separator: String): TArrayOfString; forward;
 function DirCopy(SourcePath, DestPath: String; Overwrite: Boolean): Boolean; forward;
@@ -115,16 +114,16 @@ begin
     // Multiple community folders found - create selection page
     CommunityFoldersListPage := CreateInputOptionPage(
       AfterID,
-      'Select Community Folders',
+      'Select Community Folder',
       'Multiple Microsoft Flight Simulator installations detected!',
-      'Please select the Community Folder(s) where you want to install the FSKneeboard panel. You can select multiple folders:',
-      False, False);
+      'Please select the Community Folder where you want to install the FSKneeboard panel:',
+      True, False);
 
     for i := 0 to FolderCount - 1 do
     begin
       CommunityFoldersListPage.Add(CommunityFolderVersions[i] + ': ' + DetectedCommunityFolders[i]);
-      CommunityFoldersListPage.Values[i] := True; // Select all by default
     end;
+    CommunityFoldersListPage.Values[0] := True; // Select first one by default
 
     AfterID := CommunityFoldersListPage.ID;
     communityFolderSuccess := True;
@@ -196,23 +195,19 @@ end;
 function NextButtonClick(CurrPageID: Integer): Boolean;
 var
   i: Integer;
-  SelectedFolders: String;
 begin
   if (GetArrayLength(DetectedCommunityFolders) > 1) and (CurrPageID = CommunityFoldersListPage.ID) then
   begin
-    // Handle multiple folder selection
-    SelectedFolders := '';
+    // Handle single folder selection from radio buttons
     for i := 0 to GetArrayLength(DetectedCommunityFolders) - 1 do
     begin
       if CommunityFoldersListPage.Values[i] then
       begin
-        if SelectedFolders <> '' then
-          SelectedFolders := SelectedFolders + ';';
-        SelectedFolders := SelectedFolders + DetectedCommunityFolders[i];
+        CommunityFolderDir := DetectedCommunityFolders[i];
+        break;
       end;
     end;
-    CommunityFolderDir := SelectedFolders;
-    Log('Selected Community Folders: ' + CommunityFolderDir);
+    Log('Selected Community Folder: ' + CommunityFolderDir);
   end
   else if (GetArrayLength(DetectedCommunityFolders) <= 1) and (CurrPageID = CommunityFolderDirWizardPage.ID) then
   begin
@@ -220,15 +215,6 @@ begin
     Log('CommunityFolderDir is: ' + CommunityFolderDir);
   end;
   Result := True;
-end;
-
-procedure CurStepChanged(CurStep: TSetupStep);
-begin
-  if CurStep = ssPostInstall then
-  begin
-    // Install panel to additional community folders if multiple were selected
-    InstallPanelToAdditionalFolders();
-  end;
 end;
 
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
@@ -244,25 +230,12 @@ begin
   S := S + Space + ExpandConstant('{app}') + NewLine;
   S := S + NewLine;
 
-  if GetArrayLength(DetectedCommunityFolders) > 1 then
-  begin
-    // Multiple folders selected
-    FolderPaths := StrSplit(CommunityFolderDir, ';');
-    S := S + 'FSKneeboard Ingame Panel will be installed to ' + IntToStr(GetArrayLength(FolderPaths)) + ' Community Folder(s):' + NewLine;
-    for i := 0 to GetArrayLength(FolderPaths) - 1 do
-    begin
-      S := S + Space + FolderPaths[i] + '\christian1984-ingamepanel-fskneeboard' + NewLine;
-    end;
-  end
-  else
-  begin
-    // Single folder
-    S := S + 'FSKneeboard Ingame Panel will be installed to:' + NewLine;
-    S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
-  end;
+  S := S + 'FSKneeboard Ingame Panel will be installed to:' + NewLine;
+  S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
 
   S := S + NewLine;
-  S := S + 'If you enjoy FSKneeboard FREE please consider upgrading to PRO at https://fskneeboard.com/buy-now' + NewLine;
+  S := S + 'If you enjoy FSKneeboard FREE please consider upgrading to PRO at' + NewLine;
+  S := S + 'https://fskneeboard.com/buy-now to unlock all features and support the development.' + NewLine;
   S := S + NewLine;
   S := S + 'Join us on Discord at https://discord.fskneeboard.com';
   Result := S;
