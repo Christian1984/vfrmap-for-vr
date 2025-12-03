@@ -141,7 +141,7 @@ begin
       'Select Community Folders',
       'Multiple Microsoft Flight Simulator installations detected!',
       'Please select the Community Folder(s) where you want to install the FSKneeboard panel. You can select multiple folders:',
-      True, False);
+      False, False);
 
     for i := 0 to FolderCount - 1 do
     begin
@@ -157,7 +157,7 @@ begin
     // Single community folder found - use it directly
     communityFolder := DetectedCommunityFolders[0];
     communityFolderSuccess := True;
-    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your ' + CommunityFolderVersions[0] + ' Community Folder via UserCfg.opt analysis.';
+    communityFolderDirWizardDescription := 'SUCCESS! Automatically detected your ' + CommunityFolderVersions[0] + ' Community Folder.';
     Log('Auto-detected community folder via UserCfg.opt: ' + communityFolder);
   end
   else
@@ -211,7 +211,7 @@ begin
 
     CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
     CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
-    
+
     AfterID := CommunityFolderDirWizardPage.ID;
   end;
 
