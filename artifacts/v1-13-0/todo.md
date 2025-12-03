@@ -27,7 +27,7 @@
 13. [x] Update UI and documentation for map changes (add MapTiler guidance)
 
 ## Post-Implementation
-14. [ ] Check for dead code
+14. [x] Check for dead code
 15. [x] Bump version numbers for server and panel to v1.13.0
 16. [x] Update changelog for v1.13.0
 17. [x] Update README for v1.13.0
