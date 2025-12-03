@@ -539,33 +539,6 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
-    const stamen_black_white = new L.TileLayer(prepareUrl(mapTileUrls.stamenbw, loc), {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        subdomains: ["a", "b", "c"],
-    });
-
-    const stamen_terrain = new L.TileLayer(prepareUrl(mapTileUrls.stament, loc), {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-        subdomains: ["a", "b", "c"],
-    });
-
-    const stamen_water = new L.TileLayer(prepareUrl(mapTileUrls.stamenw, loc), {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/jpeg",
-        subdomains: ["a", "b", "c"],
-    });
-
     const carto_dark = new L.TileLayer(prepareUrl(mapTileUrls.cartod, loc), {
         maxZoom: 18,
         minZoom: 2,
@@ -625,9 +598,6 @@ function initMap(mapTileUrls) {
         Bing: bingRoads,
         "Bing Satellite": bingSat,
         OpenTopoMap: otm,
-        "Stamen Terrain": stamen_terrain,
-        "Stamen Toner": stamen_black_white,
-        "Stamen Water": stamen_water,
         "Carto Dark (Night Mode)": carto_dark,
     };
 
@@ -721,8 +691,6 @@ function initMap(mapTileUrls) {
 
         if (e.name == "Carto Dark (Night Mode)") {
             ac_visibility_options.ac_color = AC_COLOR.white;
-        } else if (e.name == "Stamen Toner") {
-            ac_visibility_options.ac_color = AC_COLOR.green;
         } else {
             ac_visibility_options.ac_color = AC_COLOR.black;
         }

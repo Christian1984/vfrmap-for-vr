@@ -102,21 +102,6 @@ var OtmUrls = MapServiceUrls{
 	RemoteUrl: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
 }
 
-var StamenBwUrls = MapServiceUrls{
-	CacheUrl:  "{fskhost}:35304/maptilecache/stamenbw/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-}
-
-var StamenTUrls = MapServiceUrls{
-	CacheUrl:  "{fskhost}:35305/maptilecache/stament/{s}/{z}/{y}/{x}/",
-	RemoteUrl: "http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png",
-}
-
-var StamenWUrls = MapServiceUrls{
-	CacheUrl:  "",
-	RemoteUrl: "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",
-}
-
 var CartoD = MapServiceUrls{
 	CacheUrl:  "{fskhost}:35307/maptilecache/cartod/{s}/{z}/{y}/{x}/",
 	RemoteUrl: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
@@ -146,20 +131,18 @@ var BingMapsRoadsUrls = MapServiceUrls{
 	CacheUrl:  "",
 	RemoteUrl: "http://dev.virtualearth.net/REST/V1/Imagery/Metadata/RoadOnDemand?output=json&key={apiKey}",
 }
+
 // var GoogleMapsUrls = MapServiceUrls{
 // 	CacheUrl:  "",
 // 	RemoteUrl: "",
 // }
 
 type MapServiceUrlsDto struct {
-	Osm      string `json:"osm"`
-	Otm      string `json:"otm"`
-	StamenBw string `json:"stamenbw"`
-	StamenT  string `json:"stament"`
-	StamenW  string `json:"stamenw"`
-	CartoD   string `json:"cartod"`
+	Osm    string `json:"osm"`
+	Otm    string `json:"otm"`
+	CartoD string `json:"cartod"`
 	//Ofm           string `json:"ofm"` // does not work because of airac cycle
-	OaipBase  string `json:"oaipBase"`
+	OaipBase string `json:"oaipBase"`
 	// OaipAirspaces string `json:"oaipAirspaces"`
 	OaipNavaids   string `json:"oaipNavaids"`
 	OaipReporting string `json:"oaipReporting"`
@@ -178,7 +161,7 @@ func (r *Report) RequestData(s *simconnect.SimConnect) {
 	logger.LogSilly("simconnect requestID: " + strconv.FormatUint(uint64(requestID), 10))
 
 	err := s.RequestDataOnSimObjectType(requestID, defineID, 0, simconnect.SIMOBJECT_TYPE_USER)
-	if (err != nil) {
+	if err != nil {
 		logger.LogError("could not request simconnect data, reason: " + err.Error())
 	}
 }
@@ -497,8 +480,6 @@ func initMaptileCache() {
 
 	initCache(ttl, globalRoot, "osm", "35302", OsmUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "otm", "35303", OtmUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stamenbw", "35304", StamenBwUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
-	initCache(ttl, globalRoot, "stament", "35305", StamenTUrls.RemoteUrl, "", true, []string{}, sharedMemoryCache)
 	initCache(ttl, globalRoot, "cartod", "35307", CartoD.RemoteUrl, "", true, []string{}, sharedMemoryCache)
 
 	initCache(ttl, globalRoot, "ofm", "35308", Ofm.RemoteUrl, "", true, []string{"path"}, sharedMemoryCache)
@@ -557,17 +538,14 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	mapServiceUrls := MapServiceUrlsDto{
-		Osm:      OsmUrls.CacheUrl,
-		Otm:      OtmUrls.CacheUrl,
-		StamenBw: StamenBwUrls.CacheUrl,
-		StamenT:  StamenTUrls.CacheUrl,
-		StamenW:  StamenWUrls.RemoteUrl, // cache was buggy
-		CartoD:   CartoD.CacheUrl,
+		Osm:    OsmUrls.CacheUrl,
+		Otm:    OtmUrls.CacheUrl,
+		CartoD: CartoD.CacheUrl,
 
-		OaipBase:  oaipBaseUrl,
+		OaipBase: oaipBaseUrl,
 		// OaipAirspaces: oaipAirspacesUrl,
 
-		BingSatMaps: bingSatUrl,
+		BingSatMaps:   bingSatUrl,
 		BingRoadsMaps: bingRoadsUrl,
 		// GoogleMaps: googleUrl,
 	}
@@ -930,7 +908,7 @@ func StartFskServer() {
 			}
 
 			ppData, r1, err := s.GetNextDispatch()
-			if (err != nil) {
+			if err != nil {
 				logger.LogSilly(fmt.Sprintf("SimConnect error -> GetNextDispatch error: %d %s", r1, err))
 			}
 
@@ -967,7 +945,7 @@ func StartFskServer() {
 					recvOpen.SimConnectVersionMinor,
 					recvOpen.SimConnectBuildMajor,
 					recvOpen.SimConnectBuildMinor)
-				logger.LogInfo("Connected to MSFS, details:"+fsInfo)
+				logger.LogInfo("Connected to MSFS, details:" + fsInfo)
 				utils.Println(fsInfo + "\n")
 				utils.Printf("Ready... Please leave this window open during your Flight Simulator session. Have a safe flight :-)\n\n")
 

@@ -940,7 +940,6 @@ Great work, guys! Thanks for sharing your work with us!!!
 
 -   [OpenStreetMap](https://www.openstreetmap.org/copyright)
 -   [OpenTopoMap](https://opentopomap.org/about)
--   [Stamen](http://maps.stamen.com)
 -   [Carto](https://carto.com/)
 -   [openAIP](https://www.openaip.net)
 -   [open flightmaps](https://www.openflightmaps.org/)
