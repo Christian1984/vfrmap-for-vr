@@ -41,7 +41,9 @@ var OpenAipApiKey string
 var OpenAipBypassCache bool
 var OpenAipCaches []*maptilecache.Cache
 
-var BingMapsApiKey string
+var MapTilerCaches []*maptilecache.Cache
+
+var MapTilerApiKey string
 var GoogleMapsApiKey string
 
 const MaptileCacheMaxMemoryUsageDefault int = 512 * 1024 * 1024

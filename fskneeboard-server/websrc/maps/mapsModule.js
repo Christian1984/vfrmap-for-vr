@@ -144,31 +144,6 @@ const icons = {
     },
 };
 
-var bingSatLayer = L.TileLayer.extend({
-    getTileUrl: function (coords) {
-        var quadkey = this.toQuadKey(coords.x, coords.y, coords.z);
-        var url = L.Util.template(this._url, {
-            q: quadkey,
-            s: this._getSubdomain(coords),
-        });
-        if (typeof this.options.style === "string") {
-            url += "&st=" + this.options.style;
-        }
-        return url;
-    },
-    toQuadKey: function (x, y, z) {
-        var index = "";
-        for (var i = z; i > 0; i--) {
-            var b = 0;
-            var mask = 1 << (i - 1);
-            if ((x & mask) !== 0) b++;
-            if ((y & mask) !== 0) b += 2;
-            index += b.toString();
-        }
-        return index;
-    },
-});
-
 let currentIconGroup = icons.planes;
 let currentIcon = currentIconGroup.black;
 
@@ -514,20 +489,12 @@ function initMap(mapTileUrls) {
         subdomains: ["a", "b", "c"],
     });
 
-    const bingSat = new bingSatLayer("", {
-        maxZoom: 18,
-        minZoom: 2,
+    const mapTilerSat = new L.TileLayer(prepareUrl(mapTileUrls.mapTilerSat, loc), {
+        maxZoom: 13,
+        minZoom: 0,
         tileSize: map_resolution.tile_size,
         zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
-    });
-
-    const bingRoads = new bingSatLayer("", {
-        maxZoom: 18,
-        minZoom: 2,
-        tileSize: map_resolution.tile_size,
-        zoomOffset: map_resolution.zoom_offset,
-        format: "image/png",
+        format: "image/jpg",
     });
 
     const otm = new L.TileLayer(prepareUrl(mapTileUrls.otm, loc), {
@@ -595,8 +562,7 @@ function initMap(mapTileUrls) {
 
     const baseMaps = {
         OpenStreetMap: osm,
-        Bing: bingRoads,
-        "Bing Satellite": bingSat,
+        "MapTiler Satellite": mapTilerSat,
         OpenTopoMap: otm,
         "Carto Dark (Night Mode)": carto_dark,
     };
@@ -668,14 +634,14 @@ function initMap(mapTileUrls) {
     });
 
     map.on("baselayerchange", function (e) {
-        if (e.name.includes("Bing")) {
+        if (e.name.includes("MapTiler")) {
             let enable_default_layer = false;
 
             if (!waypoints.is_mode_available()) {
                 // show premium info
                 waypoints.activate_mode_failed(hide_premium_info);
                 enable_default_layer = true;
-            } else if (!mapTileUrls.bingRoadsMaps || !mapTileUrls.bingSatMaps) {
+            } else if (!mapTileUrls.mapTilerSat) {
                 // show set apiKey info
                 enable_default_layer = true;
                 hide_api_key_info(false);
@@ -727,36 +693,6 @@ function initMap(mapTileUrls) {
             waypoints.load_state();
         }, RELOAD_DELAY);
     });
-
-    fetch(mapTileUrls.bingSatMaps)
-        .then((resp) => resp.json())
-        .then((json) => {
-            if (json.resourceSets?.length == 0) return;
-            const rs = json.resourceSets[0];
-
-            if (rs.resources?.length == 0) return;
-            const r = rs.resources[0];
-
-            bingSat.options.subdomains = r.imageUrlSubdomains;
-            const url = r.imageUrl.replace("{subdomain}", "{s}").replace("{quadkey}", "{q}");
-            bingSat.setUrl(url);
-        })
-        .catch((e) => console.log(e));
-
-    fetch(mapTileUrls.bingRoadsMaps)
-        .then((resp) => resp.json())
-        .then((json) => {
-            if (json.resourceSets?.length == 0) return;
-            const rs = json.resourceSets[0];
-
-            if (rs.resources?.length == 0) return;
-            const r = rs.resources[0];
-
-            bingRoads.options.subdomains = r.imageUrlSubdomains;
-            const url = r.imageUrl.replace("{subdomain}", "{s}").replace("{quadkey}", "{q}");
-            bingRoads.setUrl(url);
-        })
-        .catch((e) => console.log(e));
 }
 
 function pan_to(latlng, follow = false) {

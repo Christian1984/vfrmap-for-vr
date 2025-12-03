@@ -134,18 +134,18 @@ func LoadOpenAipBypassCache() {
 	globals.OpenAipBypassCache = openAipBypassCache
 }
 
-// bing
-func StoreBingMapsApiKey() {
-	DbWriteSettings("bingMapsApiKey", strings.TrimSpace(globals.BingMapsApiKey))
+// map tiler
+func StoreMapTilerApiKey() {
+	DbWriteSettings("mapTilerMapsApiKey", strings.TrimSpace(globals.MapTilerApiKey))
 }
 
-func LoadBingMapsApiKey() {
+func LoadMapTilerApiKey() {
 	if !globals.Pro {
 		return
 	}
 
-	bingMapsApiKey := strings.TrimSpace(DbReadSettings("bingMapsApiKey"))
-	globals.BingMapsApiKey = bingMapsApiKey
+	mapTilerMapsApiKey := strings.TrimSpace(DbReadSettings("mapTilerMapsApiKey"))
+	globals.MapTilerApiKey = mapTilerMapsApiKey
 }
 
 // google maps

@@ -36,10 +36,10 @@ func UpdateOpenAipApi(apiKey string) {
 	runStringCallback(apiKey, UpdateOpenAipApiCallback)
 }
 
-var UpdateBingMapsApiCallback func(string)
+var UpdateMapTilerApiCallback func(string)
 
-func UpdateBingMapsApi(apiKey string) {
-	runStringCallback(apiKey, UpdateBingMapsApiCallback)
+func UpdateMapTilerApi(apiKey string) {
+	runStringCallback(apiKey, UpdateMapTilerApiCallback)
 }
 
 var UpdateGoogleMapsApiCallback func(string)

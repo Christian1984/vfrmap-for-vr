@@ -117,38 +117,19 @@ var OaipBaseUrls = MapServiceUrls{
 	RemoteUrl: "https://api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey={apiKey}",
 }
 
-// var OaipAirspacesUrls = MapServiceUrls{
-// 	CacheUrl:  "{fskhost}:35310/maptilecache/oaip-airspaces/{s}/{z}/{y}/{x}/",
-// 	RemoteUrl: "https://api.tiles.openaip.net/api/data/hotspots/{z}/{x}/{y}.png?apiKey={apiKey}",
-// }
-
-var BingMapsSatUrls = MapServiceUrls{
-	CacheUrl:  "",
-	RemoteUrl: "http://dev.virtualearth.net/REST/V1/Imagery/Metadata/AerialWithLabelsOnDemand?output=json&key={apiKey}",
+var MapTilerSatUrls = MapServiceUrls{
+	CacheUrl:  "{fskhost}:35315/maptilecache/maptiler-sat/{s}/{z}/{y}/{x}/",
+	RemoteUrl: "https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key={apiKey}",
 }
-
-var BingMapsRoadsUrls = MapServiceUrls{
-	CacheUrl:  "",
-	RemoteUrl: "http://dev.virtualearth.net/REST/V1/Imagery/Metadata/RoadOnDemand?output=json&key={apiKey}",
-}
-
-// var GoogleMapsUrls = MapServiceUrls{
-// 	CacheUrl:  "",
-// 	RemoteUrl: "",
-// }
 
 type MapServiceUrlsDto struct {
-	Osm    string `json:"osm"`
-	Otm    string `json:"otm"`
-	CartoD string `json:"cartod"`
-	//Ofm           string `json:"ofm"` // does not work because of airac cycle
-	OaipBase string `json:"oaipBase"`
-	// OaipAirspaces string `json:"oaipAirspaces"`
-	OaipNavaids   string `json:"oaipNavaids"`
-	OaipReporting string `json:"oaipReporting"`
-	BingSatMaps   string `json:"bingSatMaps"`
-	BingRoadsMaps string `json:"bingRoadsMaps"`
-	// GoogleMaps    string `json:"googleMaps"`
+	Osm             string `json:"osm"`
+	Otm             string `json:"otm"`
+	CartoD          string `json:"cartod"`
+	OaipBase        string `json:"oaipBase"`
+	OaipNavaids     string `json:"oaipNavaids"`
+	OaipReporting   string `json:"oaipReporting"`
+	MapTilerSatMaps string `json:"mapTilerSat"`
 }
 
 func (r *Report) RequestData(s *simconnect.SimConnect) {
@@ -447,8 +428,9 @@ func initCache(ttl time.Duration, root string, provider string, port string, url
 	return c, err
 }
 
-func UpdateCacheApiKeys() {
-	logger.LogDebug("Enter UpdateCacheApiKeys() with " + globals.OpenAipApiKey)
+func UpdateOpenAipCacheApiKey() {
+	logger.LogDebug("Enter UpdateOpenAipCacheApiKeys() with keys:")
+	logger.LogDebug("OpenAIP:" + globals.OpenAipApiKey)
 
 	oaipApiKey := globals.OpenAipApiKey
 	oaipLog := oaipApiKey
@@ -460,6 +442,18 @@ func UpdateCacheApiKeys() {
 	for _, cache := range globals.OpenAipCaches {
 		logger.LogDebug("Update api key on cache " + cache.UrlScheme + " from " + cache.ApiKey + " to " + oaipLog)
 		cache.ApiKey = oaipApiKey
+	}
+}
+
+func UpdateMapTilerCacheApiKey() {
+	logger.LogDebug("Enter UpdateMapTilerCacheApiKey() with keys:")
+	logger.LogDebug("MapTiler:" + globals.MapTilerApiKey)
+
+	mapTilerApiKey := globals.MapTilerApiKey
+
+	for _, cache := range globals.MapTilerCaches {
+		logger.LogDebug("Update api key on cache " + cache.UrlScheme + " from " + cache.ApiKey + " to " + mapTilerApiKey)
+		cache.ApiKey = mapTilerApiKey
 	}
 }
 
@@ -484,6 +478,7 @@ func initMaptileCache() {
 
 	initCache(ttl, globalRoot, "ofm", "35308", Ofm.RemoteUrl, "", true, []string{"path"}, sharedMemoryCache)
 
+	// OAIP caches
 	var oaipCaches = []*maptilecache.Cache{}
 
 	oaipApiKey := strings.TrimSpace(globals.OpenAipApiKey)
@@ -500,14 +495,20 @@ func initMaptileCache() {
 		oaipCaches = append(oaipCaches, oaipBase)
 	}
 
-	// oaipAirspaces, oaipAirspacesErr := initCache(ttl, globalRoot, "oaip-airspaces", "35310", OaipAirspacesUrls.RemoteUrl, oaipApiKey, false, []string{}, sharedMemoryCache)
-	// if oaipAirspacesErr == nil {
-	// 	oaipCaches = append(oaipCaches, oaipAirspaces)
-	// }
-
 	globals.OpenAipCaches = oaipCaches
 
-	//initCache(ttl, globalRoot, "oaip-obstacles", "35313", "https://api.tiles.openaip.net/api/data/obstacles/{z}/{x}/{y}.png?apiKey={apiKey}", globals.MaptileCacheOaipApiKey, false, []string{}, sharedMemoryCache)
+	// MapTiler caches
+	var mapTilerCaches = []*maptilecache.Cache{}
+
+	// TODO: FIX -> current cache implementation is unable to handle the maptiler responses
+	// logger.LogDebug("Initializing MapTiler caches with api key")
+
+	// mapTilerSat, mapTilerSatErr := initCache(ttl, globalRoot, "maptiler-sat", "35315", MapTilerSatUrls.RemoteUrl, globals.MapTilerApiKey, false, []string{}, sharedMemoryCache)
+	// if mapTilerSatErr == nil {
+	// 	mapTilerCaches = append(mapTilerCaches, mapTilerSat)
+	// }
+
+	globals.MapTilerCaches = mapTilerCaches
 }
 
 func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
@@ -525,11 +526,9 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		logger.LogDebug("serving openAIP cache urls")
 	}
 
-	bingSatUrl := ""
-	bingRoadsUrl := ""
-	if globals.Pro && globals.BingMapsApiKey != "" {
-		bingSatUrl = strings.ReplaceAll(BingMapsSatUrls.RemoteUrl, "{apiKey}", globals.BingMapsApiKey)
-		bingRoadsUrl = strings.ReplaceAll(BingMapsRoadsUrls.RemoteUrl, "{apiKey}", globals.BingMapsApiKey)
+	mapTilerSatUrl := ""
+	if globals.Pro && globals.MapTilerApiKey != "" {
+		mapTilerSatUrl = strings.ReplaceAll(MapTilerSatUrls.RemoteUrl, "{apiKey}", globals.MapTilerApiKey)
 	}
 
 	// googleUrl := ""
@@ -545,8 +544,7 @@ func serveMapServiceUrls(w http.ResponseWriter, r *http.Request) {
 		OaipBase: oaipBaseUrl,
 		// OaipAirspaces: oaipAirspacesUrl,
 
-		BingSatMaps:   bingSatUrl,
-		BingRoadsMaps: bingRoadsUrl,
+		MapTilerSatMaps: mapTilerSatUrl,
 		// GoogleMaps: googleUrl,
 	}
 

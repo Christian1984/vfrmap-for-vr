@@ -43,7 +43,7 @@ var interfaceScaleStringBinding = binding.NewString()
 var oaipApiKeyBinding = binding.NewString()
 var oaipBypassCacheBinding = binding.NewBool()
 
-var bingMapsApiKeyBinding = binding.NewString()
+var MapTilerApiKeyBinding = binding.NewString()
 var googleMapsApiKeyBinding = binding.NewString()
 
 var loglevelOptions = []string{
@@ -93,8 +93,8 @@ func UpdateOpenAipApiKey(apiKey string) {
 	oaipApiKeyBinding.Set(apiKey)
 }
 
-func UpdateBingMapsApiKey(apiKey string) {
-	bingMapsApiKeyBinding.Set(apiKey)
+func UpdateMapTilerApiKey(apiKey string) {
+	MapTilerApiKeyBinding.Set(apiKey)
 }
 
 func UpdateGoogleMapsApiKey(apiKey string) {
@@ -311,7 +311,7 @@ func SettingsPanel() *fyne.Container {
 		oaipApiKey := strings.TrimSpace(oaipApiKeyRaw)
 		globals.OpenAipApiKey = oaipApiKey
 
-		server.UpdateCacheApiKeys()
+		server.UpdateOpenAipCacheApiKey()
 
 		logger.LogInfo("openAIP API key updated: [" + oaipApiKey + "]")
 
@@ -325,28 +325,30 @@ func SettingsPanel() *fyne.Container {
 		}
 	}))
 
-	// bing maps api key
-	bingApiKeyProLabel := widget.NewLabel("")
-	bingApiKeyLabel := widget.NewLabel("Bing Maps")
-	bingApiKeyInput := widget.NewEntryWithData(bingMapsApiKeyBinding)
-	bingApiKeyInput.Validator = nil
-	bingApiKeyInput.PlaceHolder = "Your Bing Maps API Key"
+	// mapTiler maps api key
+	mapTilerApiKeyProLabel := widget.NewLabel("")
+	mapTilerApiKeyLabel := widget.NewLabel("MapTiler")
+	mapTilerApiKeyInput := widget.NewEntryWithData(MapTilerApiKeyBinding)
+	mapTilerApiKeyInput.Validator = nil
+	mapTilerApiKeyInput.PlaceHolder = "Your MapTiler API Key"
 
-	bingMapsApiKeyBinding.AddListener(binding.NewDataListener(func() {
-		bingApiKeyRaw, _ := bingMapsApiKeyBinding.Get()
-		bingApiKey := strings.TrimSpace(bingApiKeyRaw)
-		globals.BingMapsApiKey = bingApiKey
+	MapTilerApiKeyBinding.AddListener(binding.NewDataListener(func() {
+		mapTilerApiKeyRaw, _ := MapTilerApiKeyBinding.Get()
+		mapTilerApiKey := strings.TrimSpace(mapTilerApiKeyRaw)
+		globals.MapTilerApiKey = mapTilerApiKey
 
-		logger.LogInfo("Bing Maps API key updated: [" + bingApiKey + "]")
+		server.UpdateMapTilerCacheApiKey()
 
-		dbmanager.StoreBingMapsApiKey()
+		logger.LogInfo("MapTiler API key updated: [" + mapTilerApiKey + "]")
+
+		dbmanager.StoreMapTilerApiKey()
 	}))
 
 	if !globals.Pro {
-		bingApiKeyInput.PlaceHolder = "Requires FSKneeboard PRO"
-		//bingApiKeyProLabel.SetText("Requires FSKneeboard PRO")
-		bingApiKeyInput.Disable()
-		bingMapsApiKeyBinding.Set("")
+		mapTilerApiKeyInput.PlaceHolder = "Requires FSKneeboard PRO"
+		//mapTilerApiKeyProLabel.SetText("Requires FSKneeboard PRO")
+		mapTilerApiKeyInput.Disable()
+		MapTilerApiKeyBinding.Set("")
 	}
 
 	// googleMaps maps api key
@@ -368,7 +370,7 @@ func SettingsPanel() *fyne.Container {
 	apiKeysGrid := container.NewGridWithColumns(
 		3,
 		oaipApiKeyLabel, oaipApiKeyInput, oaipBypassCacheCb,
-		bingApiKeyLabel, bingApiKeyInput, bingApiKeyProLabel,
+		mapTilerApiKeyLabel, mapTilerApiKeyInput, mapTilerApiKeyProLabel,
 		// googleMapsApiKeyLabel, googleMapsApiKeyInput, widget.NewLabel(""),
 	)
 

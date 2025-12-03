@@ -21,9 +21,9 @@
 9. [x] Update UI help text and layout for the new options
 
 ## Bing Maps Layer Replacement
-10. [ ] Remove Bing Maps layer completely (code + UI + documentation)
-11. [x] Research and select a free-to-use satellite map API (MapTiler recommended; see `research.md`)
-12. [ ] Implement new MapTiler satellite layer integration (API key handling, caching, attribution)
+10. [x] Research and select a free-to-use satellite map API (MapTiler recommended; see `research.md`)
+11. [x] Implement new MapTiler satellite layer integration (API key handling, caching, attribution)
+13. [x] Remove Bing Maps layer completely (code + UI + documentation)
 13. [ ] Update UI and documentation for map changes (add MapTiler guidance)
 
 ## Post-Implementation
