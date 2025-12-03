@@ -116,7 +116,6 @@ var
   SourceDir: String;
   TargetDir: String;
   FolderPaths: TArrayOfString;
-  j: Integer;
 begin
   if GetArrayLength(DetectedCommunityFolders) <= 1 then
     Exit; // No additional folders to process

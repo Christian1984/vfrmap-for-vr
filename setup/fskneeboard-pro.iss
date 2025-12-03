@@ -96,6 +96,14 @@ var
   LicenseFile: String;
   ShouldInstallLicenseFile: Boolean;
 
+// Forward declarations for common functions/procedures
+function ParseUserCfgOpt(FilePath: String): String; forward;
+procedure DiscoverCommunityFolders(); forward;
+procedure InstallPanelToAdditionalFolders(); forward;
+function GetCommunityFolderDir(Value: string): string; forward;
+function StrSplit(Text: String; Separator: String): TArrayOfString; forward;
+function DirCopy(SourcePath, DestPath: String; Overwrite: Boolean): Boolean; forward;
+
 function GetLicenseFile(Value: string): string;
 begin
     Result := LicenseFile;
@@ -200,37 +208,12 @@ begin
     end;
 
     CommunityFolderDirWizardPage.SubCaptionLabel.Font.Style := [fsBold];
+
     CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
     CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
+    
     AfterID := CommunityFolderDirWizardPage.ID;
   end;
-    + 'WARNING: Your Flight Simulator Community Folder could NOT be auto-detected! Please set AND VERIFY the path to your community folder manually:'#13#10#13#10
-    + '- WINDOWS STORE USERS: If you have purchased MSFS through the Windows Store, you will typically find it under C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\Packages\Community'#13#10#13#10
-    + '- STEAM USERS: If you have purchased MSFS through Steam, the default path for your Community Folder would typically be C:\Users\[username]\AppData\Local\Packages\ '#13#10 + 'Microsoft.FlightDashboard_8wekyb3d8bbwe\LocalCache\Packages\Community';
-
-    communityFolder := 'C:\'
-  end;
-
-  CommunityFolderDirWizardPage := CreateInputDirPage(
-        AfterID,
-        'Select Community Folder Location',
-        'Please tell us where your Flight Simulator Community Folder is located!',
-        communityFolderDirWizardDescription,
-        False, '');
-  CommunityFolderDirWizardPage.Add('IMPORTANT: If the FSKneeboard-Ingame-Panel does NOT appear inside the game, then double-check that you have this directory right!' + #13#10#13#10 + 'Microsoft Flight Simulator Community Folder:');
-  CommunityFolderDirWizardPage.Values[0] := communityFolder;
-
-  if communityFolderSuccess then begin
-    CommunityFolderDirWizardPage.SubCaptionLabel.Font.Color := clGreen;
-  end else begin
-    CommunityFolderDirWizardPage.SubCaptionLabel.Font.Color := clRed;
-  end;
-
-  CommunityFolderDirWizardPage.SubCaptionLabel.Font.Style := [fsBold];
-
-  CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
-  CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
-  AfterID := CommunityFolderDirWizardPage.ID;
 
   LicenseFileWizardPage := CreateInputFilePage(
       AfterID,

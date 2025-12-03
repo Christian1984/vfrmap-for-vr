@@ -83,6 +83,14 @@ var
   DetectedCommunityFolders: TArrayOfString;
   CommunityFolderVersions: TArrayOfString;
 
+// Forward declarations for common functions/procedures
+function ParseUserCfgOpt(FilePath: String): String; forward;
+procedure DiscoverCommunityFolders(); forward;
+procedure InstallPanelToAdditionalFolders(); forward;
+function GetCommunityFolderDir(Value: string): string; forward;
+function StrSplit(Text: String; Separator: String): TArrayOfString; forward;
+function DirCopy(SourcePath, DestPath: String; Overwrite: Boolean): Boolean; forward;
+
 procedure InitializeWizard;
 var
   AfterID: Integer;
@@ -177,8 +185,10 @@ begin
     end;
 
     CommunityFolderDirWizardPage.SubCaptionLabel.Font.Style := [fsBold];
+
     CommunityFolderDirWizardPage.PromptLabels[0].Font.Color := $0088FF;
     CommunityFolderDirWizardPage.PromptLabels[0].Font.Style := [fsBold];
+    
     AfterID := CommunityFolderDirWizardPage.ID;
   end;
 end;
