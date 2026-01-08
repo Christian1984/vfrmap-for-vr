@@ -3,17 +3,17 @@
 
 ## Feature: SimConnect Removal
 
-- [ ] **Task 1:** Remove `go-bindata` usage and embedded `SimConnect.dll` from `fskneeboard-server/freemium_src/gosrc/simconnect/simconnect.go`.
-- [ ] **Task 2:** Implement a check for `SimConnect.dll` in the server's root directory on startup.
-- [ ] **Task 3:** If `SimConnect.dll` is missing, stop further startup and send a status to the UI, displaying a popup.
-- [ ] **Task 4:** In the Popup, display a notification if `SimConnect.dll` is missing, with a link to the README.
+- [x] **Task 1:** Remove `go-bindata` usage and embedded `SimConnect.dll` from `fskneeboard-server/freemium_src/gosrc/simconnect/simconnect.go`.
+- [x] **Task 2:** Implement a check for `SimConnect.dll` in the server's root directory on startup.
+- [x] **Task 3:** If `SimConnect.dll` is missing, stop further startup and send a status to the UI, displaying a popup.
+- [x] **Task 4:** In the Popup, display a notification if `SimConnect.dll` is missing, with a link to the README.
 
 ## Feature: Installer Updates
 
-- [ ] **Task 5:** Add a new wizard page to `setup/fskneeboard-free.iss` and `setup/fskneeboard-pro.iss` to prompt for `SimConnect.dll`.
-- [ ] **Task 6:** Add a link to the MSFS SDK download on the new installer page.
-- [ ] **Task 7:** Add a file picker to the new installer page, defaulting to `C:\MSFS 2024 SDK\SimConnect SDK\lib\SimConnect.dll`.
-- [ ] **Task 8:** Implement the logic to copy the selected `SimConnect.dll` to the installation directory.
+- [x] **Task 5:** Add a new wizard page to `setup/fskneeboard-free.iss` and `setup/fskneeboard-pro.iss` to prompt for `SimConnect.dll`.
+- [x] **Task 6:** Add a link to the MSFS SDK download on the new installer page.
+- [x] **Task 7:** Add a file picker to the new installer page, defaulting to `C:\MSFS 2024 SDK\SimConnect SDK\lib\SimConnect.dll`.
+- [x] **Task 8:** Implement the logic to copy the selected `SimConnect.dll` to the installation directory.
 
 ## Feature: Uninstaller Updates
 

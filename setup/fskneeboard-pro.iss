@@ -62,6 +62,7 @@ Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\htm
 Source: "..\dist\pro\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 
 Source: "{code:GetLicenseFile}"; DestDir: "{app}"; DestName: "fskneeboard.lic"; Flags: external uninsneveruninstall; Check: GetShouldInstallLicenseFile
+Source: "{code:GetSimConnectPath}"; DestDir: "{app}"; DestName: "SimConnect.dll"; Flags: external uninsneveruninstall; Check: GetShouldInstallSimConnect
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -82,7 +83,6 @@ Filename: "https://discord.fskneeboard.com"; Flags: nowait shellexec runasorigin
 [UninstallDelete]
 ;This works if it is installed in custom location
 Type: files; Name: "{app}\latestcheck.json"; 
-Type: files; Name: "{app}\SimConnect.dll"; 
 Type: filesandordirs; Name: "{app}\logs"; 
 
 [Code]
@@ -94,6 +94,8 @@ var
   CommunityFolderVersions: TArrayOfString;
   LicenseFileWizardPage: TInputFileWizardPage;
   LicenseFile: String;
+  SimConnectWizardPage: TOutputMsgWizardPage;
+  ShouldInstallSimConnect: Boolean;
   ShouldInstallLicenseFile: Boolean;
 
 // Forward declarations for common functions/procedures
@@ -102,6 +104,7 @@ procedure DiscoverCommunityFolders(); forward;
 function GetCommunityFolderDir(Value: string): string; forward;
 function StrSplit(Text: String; Separator: String): TArrayOfString; forward;
 function DirCopy(SourcePath, DestPath: String; Overwrite: Boolean): Boolean; forward;
+procedure CreateSimConnectWizardPage(AfterID: Integer); forward;
 
 function GetLicenseFile(Value: string): string;
 begin
@@ -111,6 +114,11 @@ end;
 function GetShouldInstallLicenseFile(): Boolean;
 begin
     Result := ShouldInstallLicenseFile;
+end;
+
+function GetShouldInstallSimConnect: Boolean;
+begin
+  Result := ShouldInstallSimConnect;
 end;
 
 procedure InitializeWizard;
@@ -125,6 +133,12 @@ var
   FolderCount: Integer;
 
 begin
+  ShouldInstallSimConnect := not FileExists(ExpandConstant('{app}\SimConnect.dll'));
+  if ShouldInstallSimConnect then
+  begin
+    CreateSimConnectWizardPage(wpWelcome);
+  end;
+
   AfterID := wpSelectDir;
   communityFolderSuccess := False;
 
@@ -230,7 +244,17 @@ var
   i: Integer;
   SelectedFolders: String;
 begin
-  if CurrPageID = wpWelcome then begin
+  if CurrPageID = SimConnectWizardPage.ID then
+  begin
+    SimConnectPath := SimConnectFileEdit.Text;
+    if not FileExists(SimConnectPath) then
+    begin
+      MsgBox('The file ' + SimConnectPath + ' does not exist. Please select a valid SimConnect.dll file.', mbError, MB_OK);
+      Result := False;
+      Exit;
+    end;
+  end
+  else if CurrPageID = wpWelcome then begin
     Log('Set ShouldInstallLicenseFile to True');
     ShouldInstallLicenseFile := True;
   end else if CurrPageID = wpSelectDir then begin
@@ -298,6 +322,15 @@ begin
   S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
 
   S := S + NewLine;
+
+  if ShouldInstallSimConnect then
+  begin
+    S := S + 'SimConnect.dll will be copied from:' + NewLine;
+    S := S + Space + SimConnectPath + NewLine;
+    S := S + 'to:' + NewLine;
+    S := S + Space + ExpandConstant('{app}\SimConnect.dll') + NewLine;
+    S := S + NewLine;
+  end;
 
   if ShouldInstallLicenseFile then begin
     S := S + 'FSKneeboard License File will be copied from:' + NewLine;

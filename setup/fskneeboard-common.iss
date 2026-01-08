@@ -192,6 +192,7 @@ var
   DbFile: String;
   DbLockFile: String;
   LicenseFile: String;
+  SimConnectDll: String;
 begin
   if CurUninstallStep = usPostUninstall then
   begin
@@ -204,8 +205,9 @@ begin
     DbFile := ExpandConstant('{app}\fskneeboard.db');
     DbLockFile := ExpandConstant('{app}\fskneeboard.db.lock');
     LicenseFile := ExpandConstant('{app}\fskneeboard.lic');
+    SimConnectDll := ExpandConstant('{app}\SimConnect.dll');
 
-    if MsgBox('Do you want to REMOVE all FSKneeboard data (including your license)? (Hint: Answer "NO!" if you are just updating to a new version of FSKneeboard!)',
+    if MsgBox('Do you want to REMOVE all FSKneeboard data (including your license and SimConnect.dll)? (Hint: Answer "NO!" if you are just updating to a new version of FSKneeboard!)',
       mbConfirmation, MB_YESNO) = IDYES
     then begin
       if DirExists(MaptileFolder) then
@@ -222,9 +224,110 @@ begin
       DeleteFile(DbFile);
       DeleteFile(DbLockFile);
       DeleteFile(LicenseFile);
+      DeleteFile(SimConnectDll);
 
       if DirExists(AppFolder) then
         DelTree(AppFolder, True, False, False);
     end;
   end;
 end;
+
+var
+  CommunityFolderDirWizardPage: TInputDirWizardPage;
+  CommunityFolderDir: String;
+  CommunityFoldersListPage: TInputOptionWizardPage;
+  DetectedCommunityFolders: TArrayOfString;
+  CommunityFolderVersions: TArrayOfString;
+  SimConnectWizardPage: TOutputMsgWizardPage;
+  SimConnectFileEdit: TEdit;
+  SimConnectFileButton: TButton;
+  SimConnectPath: String;
+
+function GetSimConnectPath(Value: string): string;
+begin
+    Result := SimConnectPath;
+end;
+
+procedure OnLinkClick(Sender: TObject);
+var
+  ErrorCode: Integer;
+begin
+  ShellExec('open', 'https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#downloading-simconnect', '', '', SW_SHOWNORMAL, ewNoWait, ErrorCode);
+end;
+
+procedure CreateSimConnectWizardPage(AfterID: Integer);
+var
+  LinkFont: TFont;
+  Linklabel: TNewStaticText;
+  SelectFileLabel: TNewStaticText;
+begin
+  SimConnectWizardPage := CreateOutputMsgPage(
+    AfterID,
+    'SimConnect.dll Installation',
+    'FSKneeboard requires SimConnect.dll to interface with Microsoft Flight Simulator.',
+    'The installer could not find an existing SimConnect.dll in the application directory. ' +
+    'This file is required for FSKneeboard to communicate with the simulator.'#13#10#13#10 +
+    'Please install the Microsoft Flight Simulator SDK to get the required file. You can find the SDK download and installation instructions here:'
+  );
+
+  // Create a clickable link
+  Linklabel := TNewStaticText.Create(SimConnectWizardPage);
+  Linklabel.Caption := 'MSFS SDK Installation Guide';
+  Linklabel.Parent := SimConnectWizardPage.Surface;
+  Linklabel.Top := SimConnectWizardPage.RichEditViewer.Top + SimConnectWizardPage.RichEditViewer.Height + 10;
+  Linklabel.OnClick := @OnLinkClick;
+  Linklabel.Cursor := crHand;
+
+  // Style the link to look like a hyperlink
+  LinkFont := TFont.Create;
+  LinkFont.Assign(Linklabel.Font);
+  LinkFont.Color := clBlue;
+  LinkFont.Style := [fsUnderline];
+  Linklabel.Font := LinkFont;
+
+  // Add file picker
+  SelectFileLabel := TNewStaticText.Create(SimConnectWizardPage);
+  SelectFileLabel.Caption := 'After installing the SDK (or if you already have a copy of SimConnect.dll), please point the installer to the location of the SimConnect.dll file:';
+  SelectFileLabel.Parent := SimConnectWizardPage.Surface;
+  SelectFileLabel.Top := Linklabel.Top + Linklabel.Height + 15;
+  SelectFileLabel.Width := SimConnectWizardPage.SurfaceWidth;
+
+  SimConnectFileEdit := TEdit.Create(SimConnectWizardPage);
+  SimConnectFileEdit.Parent := SimConnectWizardPage.Surface;
+  SimConnectFileEdit.Top := SelectFileLabel.Top + SelectFileLabel.Height + 5;
+  SimConnectFileEdit.Width := SimConnectWizardPage.SurfaceWidth - 80;
+  SimConnectFileEdit.Text := 'C:\MSFS 2024 SDK\SimConnect SDK\lib\SimConnect.dll';
+
+  SimConnectFileButton := TButton.Create(SimConnectWizardPage);
+  SimConnectFileButton.Parent := SimConnectWizardPage.Surface;
+  SimConnectFileButton.Top := SimConnectFileEdit.Top;
+  SimConnectFileButton.Left := SimConnectFileEdit.Left + SimConnectFileEdit.Width + 5;
+  SimConnectFileButton.Width := 75;
+  SimConnectFileButton.Caption := 'Browse...';
+  SimConnectFileButton.OnClick := @OnSimConnectBrowseButtonClick;
+end;
+
+procedure OnSimConnectBrowseButtonClick(Sender: TObject);
+var
+  OpenDialog: TOpenDialog;
+begin
+  OpenDialog := TOpenDialog.Create(nil);
+  try
+    OpenDialog.Filter := 'SimConnect.dll';
+    OpenDialog.Title := 'Select SimConnect.dll';
+    OpenDialog.InitialDir := ExtractFilePath(SimConnectFileEdit.Text);
+    OpenDialog.FileName := ExtractFileName(SimConnectFileEdit.Text);
+    if OpenDialog.Execute then
+    begin
+      SimConnectFileEdit.Text := OpenDialog.FileName;
+    end;
+  finally
+    OpenDialog.Free;
+  end;
+end;
+
+// Forward declarations for common functions/procedures
+function ParseUserCfgOpt(FilePath: String): String; forward;
+function GetSimConnectPath(Value: string): string; forward;
+procedure DiscoverCommunityFolders(); forward;
+function GetCommunityFolderDir(Value: string): string; forward;

@@ -53,6 +53,7 @@ Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\ht
 Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.css"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.html"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
 Source: "..\dist\free\fskneeboard-panel\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel\FSKneeboardPanel.js"; DestDir: "{code:GetCommunityFolderDir}\christian1984-ingamepanel-fskneeboard\html_ui\InGamePanels\FSKneeboardPanel"; Flags: ignoreversion
+Source: "{code:GetSimConnectPath}"; DestDir: "{app}"; DestName: "SimConnect.dll"; Flags: external uninsneveruninstall; Check: GetShouldInstallSimConnect
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -72,7 +73,6 @@ Filename: "https://fskneeboard.com/buy-now"; Flags: nowait shellexec runasorigin
 [UninstallDelete]
 ;This works if it is installed in custom location
 Type: files; Name: "{app}\latestcheck.json"; 
-Type: files; Name: "{app}\SimConnect.dll"; 
 Type: filesandordirs; Name: "{app}\logs"; 
 
 [Code]
@@ -82,6 +82,8 @@ var
   CommunityFoldersListPage: TInputOptionWizardPage;
   DetectedCommunityFolders: TArrayOfString;
   CommunityFolderVersions: TArrayOfString;
+  SimConnectWizardPage: TOutputMsgWizardPage;
+  ShouldInstallSimConnect: Boolean;
 
 // Forward declarations for common functions/procedures
 function ParseUserCfgOpt(FilePath: String): String; forward;
@@ -89,6 +91,12 @@ procedure DiscoverCommunityFolders(); forward;
 function GetCommunityFolderDir(Value: string): string; forward;
 function StrSplit(Text: String; Separator: String): TArrayOfString; forward;
 function DirCopy(SourcePath, DestPath: String; Overwrite: Boolean): Boolean; forward;
+procedure CreateSimConnectWizardPage(AfterID: Integer); forward;
+
+function GetShouldInstallSimConnect: Boolean;
+begin
+  Result := ShouldInstallSimConnect;
+end;
 
 procedure InitializeWizard;
 var
@@ -102,6 +110,12 @@ var
   FolderCount: Integer;
 
 begin
+  ShouldInstallSimConnect := not FileExists(ExpandConstant('{app}\SimConnect.dll'));
+  if ShouldInstallSimConnect then
+  begin
+    CreateSimConnectWizardPage(wpWelcome);
+  end;
+
   AfterID := wpSelectDir;
   communityFolderSuccess := False;
 
@@ -125,7 +139,7 @@ begin
     end;
     CommunityFoldersListPage.Values[0] := True; // Select first one by default
 
-    AfterID := CommunityFoldersListPage.ID;
+    AfterID = CommunityFoldersListPage.ID;
     communityFolderSuccess := True;
   end
   else if FolderCount = 1 then
@@ -196,7 +210,17 @@ function NextButtonClick(CurrPageID: Integer): Boolean;
 var
   i: Integer;
 begin
-  if (GetArrayLength(DetectedCommunityFolders) > 1) and (CurrPageID = CommunityFoldersListPage.ID) then
+  if CurrPageID = SimConnectWizardPage.ID then
+  begin
+    SimConnectPath := SimConnectFileEdit.Text;
+    if not FileExists(SimConnectPath) then
+    begin
+      MsgBox('The file ' + SimConnectPath + ' does not exist. Please select a valid SimConnect.dll file.', mbError, MB_OK);
+      Result := False;
+      Exit;
+    end;
+  end
+  else if (GetArrayLength(DetectedCommunityFolders) > 1) and (CurrPageID = CommunityFoldersListPage.ID) then
   begin
     // Handle single folder selection from radio buttons
     for i := 0 to GetArrayLength(DetectedCommunityFolders) - 1 do
@@ -234,6 +258,16 @@ begin
   S := S + Space + CommunityFolderDir + '\christian1984-ingamepanel-fskneeboard' + NewLine;
 
   S := S + NewLine;
+
+  if ShouldInstallSimConnect then
+  begin
+    S := S + 'SimConnect.dll will be copied from:' + NewLine;
+    S := S + Space + SimConnectPath + NewLine;
+    S := S + 'to:' + NewLine;
+    S := S + Space + ExpandConstant('{app}\SimConnect.dll') + NewLine;
+    S := S + NewLine;
+  end;
+
   S := S + 'If you enjoy FSKneeboard FREE please consider upgrading to PRO at' + NewLine;
   S := S + 'https://fskneeboard.com/buy-now to unlock all features and support the development.' + NewLine;
   S := S + NewLine;
