@@ -2,6 +2,7 @@ package dialogs
 
 import (
 	"os"
+	"os/exec"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -9,6 +10,9 @@ import (
 )
 
 var ParentWindow *fyne.Window
+
+// const SdkDownloadLink = "https://sdk.flightsimulator.com/msfs2024/files/installers/1.5.7/MSFS2024_SDK_Core_Installer_1.5.7.zip"
+const SdkReadmeLink = "https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#downloading-simconnect"
 
 func ProgressDialog(message string, progressDelay time.Duration) *dialog.ProgressDialog {
 	dialog := dialog.NewProgress("Please wait...", message, *ParentWindow)
@@ -53,6 +57,15 @@ func ShowErrorAndExit(message string) {
 		if b {
 			os.Exit(0)
 		}
+	}, *ParentWindow)
+}
+
+func ShowSimConnectDllError() {
+	dialog.ShowConfirm("SimConnect.dll not found", "Please make sure that [SimConnect.dll] is placed next to the [fskneeboard.exe] file.\n\nDo you want to learn more?\nClick \"Yes\" to check out the README or \"No\" to EXIT!", func(b bool) {
+		if b {
+			exec.Command("rundll32", "url.dll,FileProtocolHandler", SdkReadmeLink).Start()
+		}
+		os.Exit(0)
 	}, *ParentWindow)
 }
 

@@ -1,13 +1,7 @@
 package simconnect
 
-//go:generate go-bindata -pkg simconnect -o bindata.go -modtime 1 -prefix "../_vendor" "../_vendor/MSFS-SDK/SimConnect SDK/lib/SimConnect.dll"
-
-// MSFS-SDK/SimConnect\ SDK/include/SimConnect.h
-// MSFS-SDK/SimConnect\ SDK/lib/SimConnect.dll
-
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -55,11 +49,7 @@ func New(name string) (*SimConnect, error) {
 
 		dllPath := filepath.Join(filepath.Dir(exePath), "SimConnect.dll")
 		if _, err = os.Stat(dllPath); os.IsNotExist(err) {
-			buf := MustAsset("MSFS-SDK/SimConnect SDK/lib/SimConnect.dll")
-
-			if err := ioutil.WriteFile(dllPath, buf, 0644); err != nil {
-				return nil, err
-			}
+			return nil, fmt.Errorf("SimConnect.dll not found. Please make sure it is placed next to fskneeboard.exe.")
 		}
 
 		mod := syscall.NewLazyDLL(dllPath)

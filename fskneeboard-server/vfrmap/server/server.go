@@ -605,6 +605,16 @@ func StartFskServer() {
 		s, err = simconnect.New(globals.ProductName)
 
 		if err != nil {
+			if strings.Contains(err.Error(), "SimConnect.dll not found") {
+				logger.LogInfoVerboseOverride(err.Error(), false)
+				utils.Println("")
+				utils.Println(err.Error())
+				utils.Println("")
+
+				callbacks.UpdateMsfsConnectionStatus("SimConnect.dll not found")
+				dialogs.ShowSimConnectDllError()
+				return
+			}
 
 			if globals.DevMode {
 				logger.LogInfoVerboseOverride("Running with --dev: Not connected to Flight Simulator!", false)
