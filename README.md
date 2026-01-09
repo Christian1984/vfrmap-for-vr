@@ -27,15 +27,16 @@ If you like it, please let me know and share it with other VR pilots :-) Also, c
 5. [Getting Support](#getting-support)
 6. [Features](#features)
 7. [Components](#components)
-8. [Installation](#installation)
-9. [First Launch](#first-launch)
-10. [Usage](#usage)
-11. [Advanced Usage](#advanced-usage)
-12. [Troubleshooting](#troubleshooting)
-13. [Attribution](#attribution)
-14. [Releases and Downloads](#releases-and-downloads)
-15. [How to Contribute?](#how-to-contribute)
-16. [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected)
+8. [Prerequisites](#prerequisites)
+9. [Installation](#installation)
+10. [First Launch](#first-launch)
+11. [Usage](#usage)
+12. [Advanced Usage](#advanced-usage)
+13. [Troubleshooting](#troubleshooting)
+14. [Attribution](#attribution)
+15. [Releases and Downloads](#releases-and-downloads)
+16. [How to Contribute?](#how-to-contribute)
+17. [HELP!!! Why Does My Virus-Scanning Software Think This Program Is Infected?](#help-why-does-my-virus-scanning-software-think-this-program-is-infected)
 
 ---
 
@@ -295,6 +296,20 @@ The mod project consists of two components:
 `fskneeboard-panel` is the actual ingame panel.
 
 ---
+
+# Prerequisites
+
+To ensure FSKneeboard runs correctly, you need to have the **Microsoft Flight Simulator SimConnect SDK** installed. This SDK provides the `SimConnect.dll` file, which is essential for FSKneeboard to communicate with the simulator.
+
+## Installing the SimConnect SDK
+
+1.  **Download the MSFS SDK**: You can find the official SDK installer [directly from https://sdk.flightsimulator.com/msfs2024/files/installers/1.5.7/MSFS2024_SDK_Core_Installer_1.5.7.zip](https://sdk.flightsimulator.com/msfs2024/files/installers/1.5.7/MSFS2024_SDK_Core_Installer_1.5.7.zip).
+2.  **Extract and Install the SDK**: After the download has finished, extract the zip-file to a temporary location (e.g. `C:\Users\[username]\Downloads\MSFS-SDK\`). Then navigate to that directory and install the SDK by running `MSFS2024_SDK_Core_Installer_1.5.7.msi`. You can leave the default install path as is (i.e. `C:\MSFS 2024 SDK\`).
+3.  **Locate `SimConnect.dll`**: After installing the SDK, you will need to find the `SimConnect.dll` file. It is typically located in a path similar to `C:\MSFS 2024 SDK\SimConnect SDK\lib\SimConnect.dll`.
+4.  **Install FSKneeboard**: You are now ready to install FSKneeboard as described above. The FSKneeboard installer will prompt you for the location of the `SimConnect.dll` you have installed in steps 1-3 and copy it to the FSKneeboard installation folder.
+5.  **Uninstall the SDK**: After installing FSKneeboard, you can now uninstall the SDK from your computer to free up space. You can also safely delete the downloaded and extracted files from steps 1 and 2.
+
+> Please note: This installs the SDK for MSFS 2024, but the included `SimConnect.dll` works for both MSFS 2020 and MSFS 2024.
 
 # Installation
 
@@ -884,7 +899,7 @@ _Quietshutdown Shortcut_
 
 ## "I get errors when I try to start the server!"
 
-> This can happen if, for whatever reason, `fskneeboard.exe` cannot write `simconnect.dll`. Use your windows search to search for simconnect.dll (or download a copy somewhere on the interwebs) and copy it to the same directory `fskneeboard.exe` is located!
+> This can happen if, for whatever reason, `fskneeboard.exe` cannot find the required `SimConnect.dll`. Please make sure you have installed the MSFS SDK as described in the [Prerequisites](#prerequisites) section. The FSKneeboard installer should have prompted you to locate this file. If you installed manually, you need to copy `SimConnect.dll` into the same directory where `fskneeboard.exe` is located.
 
 ## "Windows says FSKneeboard contains a virus!"
 

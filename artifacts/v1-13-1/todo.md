@@ -17,12 +17,12 @@
 
 ## Feature: Uninstaller Updates
 
-- [ ] **Task 9:** Modify the uninstaller prompt in `setup/fskneeboard-free.iss` and `setup/fskneeboard-pro.iss` to include an option for removing `SimConnect.dll`.
-- [ ] **Task 10:** Implement the logic to delete `SimConnect.dll` based on user choice during uninstallation.
+- [x] **Task 9:** Modify the uninstaller prompt in `setup/fskneeboard-free.iss` and `setup/fskneeboard-pro.iss` to include an option for removing `SimConnect.dll`.
+- [x] **Task 10:** Implement the logic to delete `SimConnect.dll` based on user choice during uninstallation.
 
 ## Feature: Documentation Updates
 
-- [ ] **Task 11:** Update the "Prerequisites" section of `README.md` with instructions for downloading the MSFS SDK and copying `SimConnect.dll`.
+- [x] **Task 11:** Update the "Prerequisites" section of `README.md` with instructions for downloading the MSFS SDK and copying `SimConnect.dll`.
 
 ## Feature: Post-Implementation Tasks
 

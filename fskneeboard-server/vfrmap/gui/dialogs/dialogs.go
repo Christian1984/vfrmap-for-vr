@@ -12,7 +12,7 @@ import (
 var ParentWindow *fyne.Window
 
 // const SdkDownloadLink = "https://sdk.flightsimulator.com/msfs2024/files/installers/1.5.7/MSFS2024_SDK_Core_Installer_1.5.7.zip"
-const SdkReadmeLink = "https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#downloading-simconnect"
+const SdkReadmeLink = "https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#installing-the-simconnect-sdk"
 
 func ProgressDialog(message string, progressDelay time.Duration) *dialog.ProgressDialog {
 	dialog := dialog.NewProgress("Please wait...", message, *ParentWindow)

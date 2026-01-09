@@ -10,7 +10,7 @@ The current implementation embeds `SimConnect.dll`. This will be removed and rep
 - **Server-Side Changes:**
     - The server will check for `SimConnect.dll` in its root directory upon startup.
     - If the DLL is not found, a blocking popup will notify the user to first download and properly place SimConnect.dll.
-    - The popup should contain a link to the appropriate readme section (e.g. https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#downloading-simconnect)
+    - The popup should contain a link to the appropriate readme section (e.g. https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#installing-the-simconnect-sdk)
 
 ## 2. Installer Updates
 
