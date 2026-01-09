@@ -82,7 +82,11 @@ var
   CommunityFoldersListPage: TInputOptionWizardPage;
   DetectedCommunityFolders: TArrayOfString;
   CommunityFolderVersions: TArrayOfString;
+
   SimConnectWizardPage: TOutputMsgWizardPage;
+  SimConnectFileEdit: TEdit;
+  SimConnectFileButton: TButton;
+  SimConnectPath: String;
   ShouldInstallSimConnect: Boolean;
 
 // Forward declarations for common functions/procedures
@@ -110,12 +114,6 @@ var
   FolderCount: Integer;
 
 begin
-  ShouldInstallSimConnect := not FileExists(ExpandConstant('{app}\SimConnect.dll'));
-  if ShouldInstallSimConnect then
-  begin
-    CreateSimConnectWizardPage(wpWelcome);
-  end;
-
   AfterID := wpSelectDir;
   communityFolderSuccess := False;
 
@@ -139,7 +137,7 @@ begin
     end;
     CommunityFoldersListPage.Values[0] := True; // Select first one by default
 
-    AfterID = CommunityFoldersListPage.ID;
+    AfterID := CommunityFoldersListPage.ID;
     communityFolderSuccess := True;
   end
   else if FolderCount = 1 then
@@ -210,7 +208,16 @@ function NextButtonClick(CurrPageID: Integer): Boolean;
 var
   i: Integer;
 begin
-  if CurrPageID = SimConnectWizardPage.ID then
+  if CurrPageID = wpSelectDir then
+  begin
+    // Check if SimConnect.dll exists after the directory is selected
+    ShouldInstallSimConnect := not FileExists(ExpandConstant('{app}\SimConnect.dll'));
+    if ShouldInstallSimConnect then
+    begin
+      CreateSimConnectWizardPage(CurrPageID);
+    end;
+  end
+  else if ShouldInstallSimConnect and (CurrPageID = SimConnectWizardPage.ID) then
   begin
     SimConnectPath := SimConnectFileEdit.Text;
     if not FileExists(SimConnectPath) then
@@ -241,6 +248,16 @@ begin
   Result := True;
 end;
 
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := False;
+
+  if ShouldInstallSimConnect and (PageID = SimConnectWizardPage.ID) then
+    Result := False
+  else if (not ShouldInstallSimConnect) and (SimConnectWizardPage <> nil) and (PageID = SimConnectWizardPage.ID) then
+    Result := True;
+end;
+
 function UpdateReadyMemo(Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo,
   MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
 var
@@ -266,6 +283,8 @@ begin
     S := S + 'to:' + NewLine;
     S := S + Space + ExpandConstant('{app}\SimConnect.dll') + NewLine;
     S := S + NewLine;
+  end else begin
+    S := S + 'Existing SimConnect.dll found!' + NewLine;
   end;
 
   S := S + 'If you enjoy FSKneeboard FREE please consider upgrading to PRO at' + NewLine;

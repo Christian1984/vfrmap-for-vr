@@ -232,34 +232,30 @@ begin
   end;
 end;
 
-var
-  CommunityFolderDirWizardPage: TInputDirWizardPage;
-  CommunityFolderDir: String;
-  CommunityFoldersListPage: TInputOptionWizardPage;
-  DetectedCommunityFolders: TArrayOfString;
-  CommunityFolderVersions: TArrayOfString;
-  SimConnectWizardPage: TOutputMsgWizardPage;
-  SimConnectFileEdit: TEdit;
-  SimConnectFileButton: TButton;
-  SimConnectPath: String;
-
-function GetSimConnectPath(Value: string): string;
-begin
-    Result := SimConnectPath;
-end;
-
 procedure OnLinkClick(Sender: TObject);
 var
   ErrorCode: Integer;
 begin
-  ShellExec('open', 'https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#downloading-simconnect', '', '', SW_SHOWNORMAL, ewNoWait, ErrorCode);
+  ShellExec('open', 'https://github.com/Christian1984/vfrmap-for-vr/blob/master/README.md#installing-the-simconnect-sdk', '', '', SW_SHOWNORMAL, ewNoWait, ErrorCode);
+end;
+
+procedure OnSimConnectBrowseButtonClick(Sender: TObject);
+var
+  FileName: String;
+begin
+  FileName := SimConnectFileEdit.Text;
+  if GetOpenFileName('Select SimConnect.dll', FileName, ExtractFilePath(FileName), 'SimConnect.dll|*.*', 'dll') then
+  begin
+    SimConnectFileEdit.Text := FileName;
+  end;
 end;
 
 procedure CreateSimConnectWizardPage(AfterID: Integer);
 var
   LinkFont: TFont;
   Linklabel: TNewStaticText;
-  SelectFileLabel: TNewStaticText;
+  SelectFileLabel1: TNewStaticText;
+  SelectFileLabel2: TNewStaticText;
 begin
   SimConnectWizardPage := CreateOutputMsgPage(
     AfterID,
@@ -274,7 +270,7 @@ begin
   Linklabel := TNewStaticText.Create(SimConnectWizardPage);
   Linklabel.Caption := 'MSFS SDK Installation Guide';
   Linklabel.Parent := SimConnectWizardPage.Surface;
-  Linklabel.Top := SimConnectWizardPage.RichEditViewer.Top + SimConnectWizardPage.RichEditViewer.Height + 10;
+  Linklabel.Top := 75;
   Linklabel.OnClick := @OnLinkClick;
   Linklabel.Cursor := crHand;
 
@@ -286,48 +282,35 @@ begin
   Linklabel.Font := LinkFont;
 
   // Add file picker
-  SelectFileLabel := TNewStaticText.Create(SimConnectWizardPage);
-  SelectFileLabel.Caption := 'After installing the SDK (or if you already have a copy of SimConnect.dll), please point the installer to the location of the SimConnect.dll file:';
-  SelectFileLabel.Parent := SimConnectWizardPage.Surface;
-  SelectFileLabel.Top := Linklabel.Top + Linklabel.Height + 15;
-  SelectFileLabel.Width := SimConnectWizardPage.SurfaceWidth;
+  SelectFileLabel1 := TNewStaticText.Create(SimConnectWizardPage);
+  SelectFileLabel1.Caption := 'After installing the SDK (or if you already have a copy of SimConnect.dll),';
+  SelectFileLabel1.Parent := SimConnectWizardPage.Surface;
+  SelectFileLabel1.Top := Linklabel.Top + Linklabel.Height + 25;
+  SelectFileLabel1.Width := SimConnectWizardPage.SurfaceWidth;
+
+
+  SelectFileLabel2 := TNewStaticText.Create(SimConnectWizardPage);
+  SelectFileLabel2.Caption := 'please point the installer to the location of the SimConnect.dll file:';
+  SelectFileLabel2.Parent := SimConnectWizardPage.Surface;
+  SelectFileLabel2.Top := SelectFileLabel1.Top + SelectFileLabel1.Height;
+  SelectFileLabel2.Width := SimConnectWizardPage.SurfaceWidth;
 
   SimConnectFileEdit := TEdit.Create(SimConnectWizardPage);
   SimConnectFileEdit.Parent := SimConnectWizardPage.Surface;
-  SimConnectFileEdit.Top := SelectFileLabel.Top + SelectFileLabel.Height + 5;
+  SimConnectFileEdit.Top := SelectFileLabel2.Top + SelectFileLabel2.Height + 5;
   SimConnectFileEdit.Width := SimConnectWizardPage.SurfaceWidth - 80;
   SimConnectFileEdit.Text := 'C:\MSFS 2024 SDK\SimConnect SDK\lib\SimConnect.dll';
 
   SimConnectFileButton := TButton.Create(SimConnectWizardPage);
   SimConnectFileButton.Parent := SimConnectWizardPage.Surface;
-  SimConnectFileButton.Top := SimConnectFileEdit.Top;
+  SimConnectFileButton.Top := SimConnectFileEdit.Top - 2;
   SimConnectFileButton.Left := SimConnectFileEdit.Left + SimConnectFileEdit.Width + 5;
   SimConnectFileButton.Width := 75;
   SimConnectFileButton.Caption := 'Browse...';
   SimConnectFileButton.OnClick := @OnSimConnectBrowseButtonClick;
 end;
 
-procedure OnSimConnectBrowseButtonClick(Sender: TObject);
-var
-  OpenDialog: TOpenDialog;
+function GetSimConnectPath(Value: string): string;
 begin
-  OpenDialog := TOpenDialog.Create(nil);
-  try
-    OpenDialog.Filter := 'SimConnect.dll';
-    OpenDialog.Title := 'Select SimConnect.dll';
-    OpenDialog.InitialDir := ExtractFilePath(SimConnectFileEdit.Text);
-    OpenDialog.FileName := ExtractFileName(SimConnectFileEdit.Text);
-    if OpenDialog.Execute then
-    begin
-      SimConnectFileEdit.Text := OpenDialog.FileName;
-    end;
-  finally
-    OpenDialog.Free;
-  end;
+    Result := SimConnectPath;
 end;
-
-// Forward declarations for common functions/procedures
-function ParseUserCfgOpt(FilePath: String): String; forward;
-function GetSimConnectPath(Value: string): string; forward;
-procedure DiscoverCommunityFolders(); forward;
-function GetCommunityFolderDir(Value: string): string; forward;

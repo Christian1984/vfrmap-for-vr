@@ -92,10 +92,15 @@ var
   CommunityFoldersListPage: TInputOptionWizardPage;
   DetectedCommunityFolders: TArrayOfString;
   CommunityFolderVersions: TArrayOfString;
+
+  SimConnectWizardPage: TOutputMsgWizardPage;
+  SimConnectFileEdit: TEdit;
+  SimConnectFileButton: TButton;
+  SimConnectPath: String;
+  ShouldInstallSimConnect: Boolean;
+  
   LicenseFileWizardPage: TInputFileWizardPage;
   LicenseFile: String;
-  SimConnectWizardPage: TOutputMsgWizardPage;
-  ShouldInstallSimConnect: Boolean;
   ShouldInstallLicenseFile: Boolean;
 
 // Forward declarations for common functions/procedures
@@ -133,12 +138,6 @@ var
   FolderCount: Integer;
 
 begin
-  ShouldInstallSimConnect := not FileExists(ExpandConstant('{app}\SimConnect.dll'));
-  if ShouldInstallSimConnect then
-  begin
-    CreateSimConnectWizardPage(wpWelcome);
-  end;
-
   AfterID := wpSelectDir;
   communityFolderSuccess := False;
 
@@ -244,7 +243,25 @@ var
   i: Integer;
   SelectedFolders: String;
 begin
-  if CurrPageID = SimConnectWizardPage.ID then
+  if CurrPageID = wpSelectDir then
+  begin
+    // Check if SimConnect.dll exists after the directory is selected
+    ShouldInstallSimConnect := not FileExists(ExpandConstant('{app}\SimConnect.dll'));
+    if ShouldInstallSimConnect then
+    begin
+      CreateSimConnectWizardPage(CurrPageID);
+    end;
+    
+    licFilePath := ExpandConstant('{app}\fskneeboard.lic');
+    if FileExists(licFilePath) then begin
+      Log('Existsing license file found at ' + licFilePath + '!');
+      ShouldInstallLicenseFile := False;
+    end else begin
+      Log('No License file found! (Looked at ' + licFilePath + ')');
+      ShouldInstallLicenseFile := True;
+    end;
+  end
+  else if ShouldInstallSimConnect and (CurrPageID = SimConnectWizardPage.ID) then
   begin
     SimConnectPath := SimConnectFileEdit.Text;
     if not FileExists(SimConnectPath) then
@@ -257,15 +274,6 @@ begin
   else if CurrPageID = wpWelcome then begin
     Log('Set ShouldInstallLicenseFile to True');
     ShouldInstallLicenseFile := True;
-  end else if CurrPageID = wpSelectDir then begin
-      licFilePath := ExpandConstant('{app}\fskneeboard.lic')
-      if FileExists(licFilePath) then begin
-        Log('Existsing license file found at ' + licFilePath + '!');
-        ShouldInstallLicenseFile := False;
-      end else begin
-        Log('No License file found! (Looked at ' + licFilePath + ')');
-        ShouldInstallLicenseFile := True;
-      end;
   end else if (GetArrayLength(DetectedCommunityFolders) > 1) and (CurrPageID = CommunityFoldersListPage.ID) then
   begin
     // Handle multiple folder selection
@@ -301,7 +309,11 @@ function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   Result := False;
 
-  if PageID = LicenseFileWizardPage.ID then
+  if ShouldInstallSimConnect and (PageID = SimConnectWizardPage.ID) then
+    Result := False
+  else if (not ShouldInstallSimConnect) and (SimConnectWizardPage <> nil) and (PageID = SimConnectWizardPage.ID) then
+    Result := True
+  else if PageID = LicenseFileWizardPage.ID then
     Result := not ShouldInstallLicenseFile;
 end;
 
@@ -330,6 +342,8 @@ begin
     S := S + 'to:' + NewLine;
     S := S + Space + ExpandConstant('{app}\SimConnect.dll') + NewLine;
     S := S + NewLine;
+  end else begin
+    S := S + 'Existing SimConnect.dll found!' + NewLine;
   end;
 
   if ShouldInstallLicenseFile then begin
